@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, Github, Mail } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin, Github } from 'lucide-react'
 
 const Footer = () => {
   const footerLinks = {
@@ -28,13 +28,7 @@ const Footer = () => {
     ]
   }
 
-  const socialLinks = [
-    { icon: <Linkedin className="h-5 w-5" />, href: '#', label: 'LinkedIn' },
-    { icon: <Twitter className="h-5 w-5" />, href: '#', label: 'Twitter' },
-    { icon: <Instagram className="h-5 w-5" />, href: '#', label: 'Instagram' },
-    { icon: <Facebook className="h-5 w-5" />, href: '#', label: 'Facebook' },
-    { icon: <Github className="h-5 w-5" />, href: '#', label: 'GitHub' }
-  ]
+
 
   return (
     <footer className="bg-slate-900 text-white py-16">
