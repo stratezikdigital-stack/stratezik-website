@@ -23,12 +23,36 @@ export default function ContactSection() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Send to Google Sheets via Apps Script
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxXJsrSuZmbY2icpC-CHxKRKGZvKMlWmOVveKSfPz71VHhrCb8I9qgSn6OCUvsKk9nz/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          message: formData.message,
+          source: 'stratezik.com'
+        })
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        setIsSubmitted(true)
+        setFormData({ name: '', email: '', company: '', message: '' })
+      } else {
+        throw new Error(result.error || 'Failed to submit form')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      alert('Sorry, there was an error submitting your form. Please try again or contact us directly.')
+    } finally {
       setIsSubmitting(false)
-      setIsSubmitted(true)
-      setFormData({ name: '', email: '', company: '', message: '' })
-    }, 2000)
+    }
   }
 
   return (
