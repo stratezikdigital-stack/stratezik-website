@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, Github } from 'lucide-react'
+
 
 const Footer = () => {
   const footerLinks = {
