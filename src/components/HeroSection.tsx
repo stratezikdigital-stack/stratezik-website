@@ -33,9 +33,9 @@ const HeroSection = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-                <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-16 w-auto" />
+                <div className="text-4xl text-red-600">♚</div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                  Toronto's Premier Digital Marketing Agency
+                  Stratezik Digital Marketing
                 </h1>
               </div>
             </motion.div>
@@ -60,24 +60,6 @@ const HeroSection = () => {
                 Get Your Free 1-Hour Consultation
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
-            </motion.div>
-
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="mt-8 space-y-2 text-center lg:text-left"
-            >
-              <p className="text-slate-600">
-                <strong>Phone:</strong> <a href="tel:+16479546557" className="text-red-600 hover:text-red-700">+1 (647) 954-6557</a>
-              </p>
-              <p className="text-slate-600">
-                <strong>Email:</strong> <a href="mailto:dave@stratezik.com" className="text-red-600 hover:text-red-700">dave@stratezik.com</a>
-              </p>
-              <p className="text-slate-600">
-                <strong>Address:</strong> 2466 Eglinton Ave E, Toronto, ON, Canada
-              </p>
             </motion.div>
 
             {/* Stats */}
