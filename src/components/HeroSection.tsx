@@ -33,9 +33,9 @@ const HeroSection = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-                <div className="text-4xl text-red-600">♚</div>
+                <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-16 w-auto" />
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                  Strategic Digital Marketing
+                  Toronto's Premier Digital Marketing Agency
                 </h1>
               </div>
             </motion.div>
@@ -57,13 +57,27 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center group transition-colors">
-                Start Your Strategy
+                Get Your Free 1-Hour Consultation
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="border-2 border-slate-300 text-slate-700 px-8 py-4 rounded-lg font-semibold flex items-center justify-center group hover:border-red-600 hover:text-red-600 transition-colors">
-                <Play className="mr-2 h-5 w-5" />
-                Watch Our Game
-              </button>
+            </motion.div>
+
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="mt-8 space-y-2 text-center lg:text-left"
+            >
+              <p className="text-slate-600">
+                <strong>Phone:</strong> <a href="tel:+16479546557" className="text-red-600 hover:text-red-700">+1 (647) 954-6557</a>
+              </p>
+              <p className="text-slate-600">
+                <strong>Email:</strong> <a href="mailto:dave@stratezik.com" className="text-red-600 hover:text-red-700">dave@stratezik.com</a>
+              </p>
+              <p className="text-slate-600">
+                <strong>Address:</strong> 2466 Eglinton Ave E, Toronto, ON, Canada
+              </p>
             </motion.div>
 
             {/* Stats */}

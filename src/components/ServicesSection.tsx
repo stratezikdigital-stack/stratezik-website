@@ -117,7 +117,7 @@ const ServicesSection = () => {
               Let's discuss how our strategic services can help you achieve checkmate.
             </p>
             <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors duration-200">
-              Get Free Strategy Session
+              Get Your Free 1-Hour Consultation
             </button>
           </div>
         </motion.div>

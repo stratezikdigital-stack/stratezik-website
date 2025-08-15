@@ -2,15 +2,118 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/stratezik logo/favicom (1).png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stratezik - Strategic Solutions</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Stratezik - Toronto's Premier Digital Marketing Agency | Strategic Solutions</title>
+    <meta name="description" content="Toronto's leading digital marketing agency. Strategic planning, analytics, brand strategy, and creative campaigns that help businesses achieve checkmate in the digital marketplace." />
+    <meta name="keywords" content="digital marketing agency, Toronto, strategic marketing, brand strategy, SEO, PPC, social media marketing, analytics" />
+    <meta name="author" content="Stratezik" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Stratezik - Toronto's Premier Digital Marketing Agency" />
+    <meta property="og:description" content="Strategic digital marketing that thinks several moves ahead. Every campaign planned with chess master precision." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.stratezik.com" />
+    <meta property="og:image" content="/stratezik logo/vertical logo (1).png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Stratezik - Toronto's Premier Digital Marketing Agency" />
+    <meta name="twitter:description" content="Strategic digital marketing that thinks several moves ahead. Every campaign planned with chess master precision." />
+    <meta name="twitter:image" content="/stratezik logo/vertical logo (1).png" />
+    
+    <!-- Business Information -->
+    <meta name="geo.region" content="CA-ON" />
+    <meta name="geo.placename" content="Toronto" />
+    <meta name="geo.position" content="43.6532;-79.3832" />
+    <meta name="ICBM" content="43.6532, -79.3832" />
+    
+    <!-- Contact Information -->
+    <meta name="contact:phone" content="+1-647-954-6557" />
+    <meta name="contact:email" content="dave@stratezik.com" />
+    <meta name="contact:address" content="2466 Eglinton Ave E, Toronto, ON, Canada" />
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalMarketingAgency",
+      "name": "Stratezik",
+      "description": "Toronto's premier digital marketing agency specializing in strategic planning, analytics, brand strategy, and creative campaigns.",
+      "url": "https://www.stratezik.com",
+      "logo": "https://www.stratezik.com/stratezik%20logo/vertical%20logo%20(1).png",
+      "image": "https://www.stratezik.com/stratezik%20logo/vertical%20logo%20(1).png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2466 Eglinton Ave E",
+        "addressLocality": "Toronto",
+        "addressRegion": "ON",
+        "addressCountry": "CA"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-647-954-6557",
+        "contactType": "customer service",
+        "email": "dave@stratezik.com"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 43.6532,
+        "longitude": -79.3832
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Toronto"
+      },
+      "serviceArea": {
+        "@type": "City",
+        "name": "Toronto"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Digital Marketing Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Strategic Planning"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Analytics & Data"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Brand Strategy"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Creative Campaigns"
+            }
+          }
+        ]
+      }
+    }
+    </script>
   </body>
 </html>

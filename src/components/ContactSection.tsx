@@ -224,8 +224,9 @@ export default function ContactSection() {
                     <Mail className="w-6 h-6 text-red-600 mt-1" />
                     <div>
                       <h4 className="font-semibold text-slate-900">Email</h4>
-                      <p className="text-slate-600">strategy@stratezik.com</p>
-                      <p className="text-slate-600">hello@stratezik.com</p>
+                      <p className="text-slate-600">
+                        <a href="mailto:dave@stratezik.com" className="hover:text-red-600 transition-colors">dave@stratezik.com</a>
+                      </p>
                     </div>
                   </div>
                   
@@ -233,8 +234,9 @@ export default function ContactSection() {
                     <Phone className="w-6 h-6 text-red-600 mt-1" />
                     <div>
                       <h4 className="font-semibold text-slate-900">Phone</h4>
-                      <p className="text-slate-600">+1 (555) 123-4567</p>
-                      <p className="text-slate-600">+1 (555) 765-4321</p>
+                      <p className="text-slate-600">
+                        <a href="tel:+16479546557" className="hover:text-red-600 transition-colors">+1 (647) 954-6557</a>
+                      </p>
                     </div>
                   </div>
                   
@@ -242,8 +244,8 @@ export default function ContactSection() {
                     <MapPin className="w-6 h-6 text-red-600 mt-1" />
                     <div>
                       <h4 className="font-semibold text-slate-900">Office</h4>
-                      <p className="text-slate-600">123 Strategy Street</p>
-                      <p className="text-slate-600">New York, NY 10001</p>
+                      <p className="text-slate-600">2466 Eglinton Ave E</p>
+                      <p className="text-slate-600">Toronto, ON, Canada</p>
                     </div>
                   </div>
                 </div>

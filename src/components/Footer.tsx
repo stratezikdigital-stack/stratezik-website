@@ -36,11 +36,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="text-3xl text-red-600">♚</div>
-              <div className="text-2xl font-bold">
-                <span className="text-white">STRATE</span>
-                <span className="text-red-600">ZIK</span>
-              </div>
+              <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-12 w-auto" />
             </div>
             <p className="text-slate-400 leading-relaxed">
               Strategic digital marketing that thinks several moves ahead.

@@ -29,11 +29,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="text-3xl text-red-600">♚</div>
-            <div className="text-2xl font-bold">
-              <span className="text-slate-900">STRATE</span>
-              <span className="text-red-600">ZIK</span>
-            </div>
+            <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-8 w-auto" />
           </div>
 
           {/* Desktop Navigation */}
@@ -52,7 +48,7 @@ const Navbar = () => {
           {/* CTA Button */}
           <div className="hidden md:block">
             <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
-              Get Started
+              Get Your Free 1-Hour Consultation
             </button>
           </div>
 
@@ -83,7 +79,7 @@ const Navbar = () => {
               ))}
               <div className="pt-4">
                 <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors w-full">
-                  Get Started
+                  Get Your Free 1-Hour Consultation
                 </button>
               </div>
             </div>
