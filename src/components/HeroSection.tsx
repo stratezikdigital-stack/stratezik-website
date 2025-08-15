@@ -33,7 +33,7 @@ const HeroSection = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-                <div className="text-4xl text-red-600">♚</div>
+                <div className="text-5xl text-red-600">♚</div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
                   Stratezik Digital Marketing
                 </h1>
@@ -67,19 +67,19 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="grid grid-cols-3 gap-8 mt-12 max-w-md mx-auto lg:mx-0"
+              className="grid grid-cols-3 gap-8 mt-12 max-w-md mx-auto"
             >
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">500+</div>
-                <div className="text-sm text-slate-600">Victories</div>
+                <div className="text-3xl font-bold text-red-600">500+</div>
+                <div className="text-sm text-slate-600 font-medium">Victories</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">98%</div>
-                <div className="text-sm text-slate-600">Win Rate</div>
+                <div className="text-3xl font-bold text-red-600">98%</div>
+                <div className="text-sm text-slate-600 font-medium">Win Rate</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">24/7</div>
-                <div className="text-sm text-slate-600">Strategy</div>
+                <div className="text-3xl font-bold text-red-600">24/7</div>
+                <div className="text-sm text-slate-600 font-medium">Strategy</div>
               </div>
             </motion.div>
           </motion.div>
