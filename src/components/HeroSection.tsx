@@ -61,31 +61,6 @@ const HeroSection = () => {
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="grid grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8"
-            >
-              <div className="text-center">
-                <div className="text-4xl font-bold text-red-600 mb-2">150+</div>
-                <div className="text-lg text-slate-700 font-semibold">Strategic Victories</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-red-600 mb-2">98%</div>
-                <div className="text-lg text-slate-700 font-semibold">Client Satisfaction</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-red-600 mb-2">$5M+</div>
-                <div className="text-lg text-slate-700 font-semibold">Revenue Generated</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-red-600 mb-2">24/7</div>
-                <div className="text-lg text-slate-700 font-semibold">Strategic Support</div>
-              </div>
-            </motion.div>
           </motion.div>
 
           {/* Right Content - Chess Board */}
@@ -131,6 +106,33 @@ const HeroSection = () => {
             </div>
           </motion.div>
         </div>
+
+        {/* Stats Section - Full Width */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+          className="mt-16"
+        >
+          <div className="grid grid-cols-4 gap-8 max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">150+</div>
+              <div className="text-lg text-slate-700 font-semibold">Strategic Victories</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">98%</div>
+              <div className="text-lg text-slate-700 font-semibold">Client Satisfaction</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">$5M+</div>
+              <div className="text-lg text-slate-700 font-semibold">Revenue Generated</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">24/7</div>
+              <div className="text-lg text-slate-700 font-semibold">Strategic Support</div>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
