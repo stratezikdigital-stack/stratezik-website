@@ -208,7 +208,7 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="flex flex-col h-full"
           >
             <div className="border-2 border-slate-200 shadow-xl rounded-lg">
               <div className="p-8">
@@ -252,7 +252,7 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg mt-8 flex-1 flex flex-col justify-center">
               <div className="p-6 text-center">
                 <div className="text-3xl text-red-600 mb-3">♚</div>
                 <h3 className="text-lg font-bold text-slate-900 mb-3">
