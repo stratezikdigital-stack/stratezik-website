@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ChevronRight, Play } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 const HeroSection = () => {
   return (
