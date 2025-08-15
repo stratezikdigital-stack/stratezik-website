@@ -253,16 +253,16 @@ export default function ContactSection() {
             </div>
 
             <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg">
-              <div className="p-8 text-center">
-                <div className="text-4xl text-red-600 mb-4">♚</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-4">
+              <div className="p-6 text-center">
+                <div className="text-3xl text-red-600 mb-3">♚</div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">
                   Free Strategy Consultation
                 </h3>
-                <p className="text-slate-600 mb-6">
+                <p className="text-sm text-slate-600 mb-4 leading-relaxed">
                   Book a 30-minute strategy session to discuss your marketing goals
                   and see how we can help you achieve checkmate.
                 </p>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm">
                   Schedule Call
                 </button>
               </div>
