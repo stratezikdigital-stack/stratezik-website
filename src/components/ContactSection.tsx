@@ -208,61 +208,61 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="flex flex-col h-full"
+            className="space-y-6"
           >
             <div className="border-2 border-slate-200 shadow-xl rounded-lg">
-              <div className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-3xl text-slate-800">♜</div>
-                  <h3 className="text-2xl font-bold text-slate-900">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="text-2xl text-slate-800">♜</div>
+                  <h3 className="text-xl font-bold text-slate-900">
                     Get in Touch
                   </h3>
                 </div>
                 
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <Mail className="w-6 h-6 text-red-600 mt-1" />
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-red-600 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-slate-900">Email</h4>
-                      <p className="text-slate-600">
+                      <h4 className="font-semibold text-slate-900 text-sm">Email</h4>
+                      <p className="text-slate-600 text-sm">
                         <a href="mailto:dave@stratezik.com" className="hover:text-red-600 transition-colors">dave@stratezik.com</a>
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-4">
-                    <Phone className="w-6 h-6 text-red-600 mt-1" />
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-red-600 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-slate-900">Phone</h4>
-                      <p className="text-slate-600">
+                      <h4 className="font-semibold text-slate-900 text-sm">Phone</h4>
+                      <p className="text-slate-600 text-sm">
                         <a href="tel:+16479546557" className="hover:text-red-600 transition-colors">+1 (647) 954-6557</a>
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-4">
-                    <MapPin className="w-6 h-6 text-red-600 mt-1" />
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-red-600 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-slate-900">Office</h4>
-                      <p className="text-slate-600">2466 Eglinton Ave E</p>
-                      <p className="text-slate-600">Toronto, ON, Canada</p>
+                      <h4 className="font-semibold text-slate-900 text-sm">Office</h4>
+                      <p className="text-slate-600 text-sm">2466 Eglinton Ave E</p>
+                      <p className="text-slate-600 text-sm">Toronto, ON, Canada</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg mt-8 flex-1 flex flex-col justify-center">
-              <div className="p-6 text-center">
-                <div className="text-3xl text-red-600 mb-3">♚</div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg">
+              <div className="p-4 text-center">
+                <div className="text-2xl text-red-600 mb-2">♚</div>
+                <h3 className="text-base font-bold text-slate-900 mb-2">
                   Free Strategy Consultation
                 </h3>
-                <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                <p className="text-xs text-slate-600 mb-3 leading-relaxed">
                   Book a 30-minute strategy session to discuss your marketing goals
                   and see how we can help you achieve checkmate.
                 </p>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm">
+                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-xs">
                   Schedule Call
                 </button>
               </div>
