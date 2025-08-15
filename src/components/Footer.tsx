@@ -36,7 +36,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-12 w-auto" />
+              <img src="/stratezik logo/reverse logo@2x (2).png" alt="Stratezik Logo" className="h-12 w-auto" />
             </div>
             <p className="text-slate-400 leading-relaxed">
               Strategic digital marketing that thinks several moves ahead.
