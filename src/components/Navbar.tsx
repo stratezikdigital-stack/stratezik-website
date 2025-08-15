@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-8 w-auto" />
+            <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-12 w-auto" />
           </div>
 
           {/* Desktop Navigation */}

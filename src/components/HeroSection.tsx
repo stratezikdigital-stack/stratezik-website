@@ -67,19 +67,23 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="grid grid-cols-3 gap-8 mt-12 max-w-md mx-auto"
+              className="grid grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8"
             >
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600">500+</div>
-                <div className="text-sm text-slate-600 font-medium">Victories</div>
+                <div className="text-4xl font-bold text-red-600 mb-2">150+</div>
+                <div className="text-lg text-slate-700 font-semibold">Strategic Victories</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600">98%</div>
-                <div className="text-sm text-slate-600 font-medium">Win Rate</div>
+                <div className="text-4xl font-bold text-red-600 mb-2">98%</div>
+                <div className="text-lg text-slate-700 font-semibold">Client Satisfaction</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600">24/7</div>
-                <div className="text-sm text-slate-600 font-medium">Strategy</div>
+                <div className="text-4xl font-bold text-red-600 mb-2">$5M+</div>
+                <div className="text-lg text-slate-700 font-semibold">Revenue Generated</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-red-600 mb-2">24/7</div>
+                <div className="text-lg text-slate-700 font-semibold">Strategic Support</div>
               </div>
             </motion.div>
           </motion.div>
