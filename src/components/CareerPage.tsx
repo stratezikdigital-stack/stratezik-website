@@ -52,11 +52,11 @@ const CareerPage: React.FC = () => {
 
             {/* Right Content - Professional Headshot */}
             <div className="relative">
-              <div className="w-80 h-80 mx-auto rounded-full overflow-hidden shadow-lg">
+              <div className="w-80 h-80 mx-auto shadow-lg">
                 <img 
                   src="/headshot.jpeg" 
                   alt="Professional team member" 
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-contain rounded-lg"
                 />
               </div>
             </div>
