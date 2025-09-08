@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -43,6 +44,12 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
+            <Link
+              to="/careers"
+              className="text-slate-600 hover:text-red-600 transition-colors font-medium"
+            >
+              Careers
+            </Link>
           </div>
 
           {/* CTA Button */}
@@ -77,6 +84,13 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
+              <Link
+                to="/careers"
+                className="text-slate-600 hover:text-red-600 block px-3 py-2 text-base font-medium transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                Careers
+              </Link>
               <div className="pt-4">
                 <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors w-full">
                   Get Your Free 1-Hour Consultation
