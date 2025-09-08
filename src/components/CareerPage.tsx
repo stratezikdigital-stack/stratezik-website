@@ -2,6 +2,12 @@ import React from 'react';
 import { Mail, MapPin, Users, Target } from 'lucide-react';
 
 const CareerPage: React.FC = () => {
+  const scrollToApply = () => {
+    const applySection = document.getElementById('how-to-apply');
+    if (applySection) {
+      applySection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
@@ -52,11 +58,15 @@ const CareerPage: React.FC = () => {
 
             {/* Right Content - Professional Headshot */}
             <div className="relative">
-              <div className="w-80 h-80 mx-auto shadow-lg">
+              <div 
+                className="w-80 h-80 mx-auto shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300"
+                onClick={scrollToApply}
+                title="Click to learn how to apply"
+              >
                 <img 
                   src="/headshot.jpeg" 
-                  alt="Professional team member" 
-                  className="w-full h-full object-contain rounded-lg"
+                  alt="Professional team member - Click to learn how to apply" 
+                  className="w-full h-full object-contain rounded-lg hover:scale-105 transition-transform duration-300"
                 />
               </div>
             </div>
@@ -96,7 +106,7 @@ const CareerPage: React.FC = () => {
       </section>
 
       {/* Application Instructions */}
-      <section className="py-16 px-4 bg-slate-50">
+      <section id="how-to-apply" className="py-16 px-4 bg-slate-50">
         <div className="container-custom">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-slate-900 mb-8">
