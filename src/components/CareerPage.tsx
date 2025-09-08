@@ -17,7 +17,6 @@ const CareerPage: React.FC = () => {
               {/* Headline */}
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                  Passion for marketing?<br />
                   Love meeting people?<br />
                   <span className="text-red-600">Join us.</span>
                 </h1>
@@ -48,24 +47,18 @@ const CareerPage: React.FC = () => {
                 </p>
               </div>
 
-              {/* CTA Button */}
+              {/* Company Footer */}
               <div className="space-y-4">
-                <button
-                  onClick={handleApplyNow}
-                  className="btn-primary text-lg px-8 py-4 rounded-xl hover:scale-105 transition-transform duration-300"
-                >
-                  Apply Now
-                </button>
                 <p className="text-sm text-slate-500">Stratezik Digital Inc.</p>
               </div>
             </div>
 
-            {/* Right Content - Image Placeholder */}
+            {/* Right Content - Team Image */}
             <div className="relative">
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center">
+              <div className="w-80 h-80 mx-auto bg-pink-200 rounded-full flex items-center justify-center">
                 <div className="text-center">
                   <Users className="w-24 h-24 text-red-600 mx-auto mb-4" />
-                  <p className="text-red-700 font-semibold text-lg">Join Our Team</p>
+                  <p className="text-red-600 font-semibold text-lg">Join Our Team</p>
                 </div>
               </div>
             </div>
