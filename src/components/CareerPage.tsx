@@ -50,12 +50,25 @@ const CareerPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Content - Team Image */}
+            {/* Right Content - Professional Headshot Placeholder */}
             <div className="relative">
-              <div className="w-80 h-80 mx-auto bg-pink-200 rounded-full flex items-center justify-center">
-                <div className="text-center">
-                  <Users className="w-24 h-24 text-red-600 mx-auto mb-4" />
-                  <p className="text-red-600 font-semibold text-lg">Join Our Team</p>
+              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center relative">
+                  {/* Professional headshot placeholder */}
+                  <div className="w-64 h-64 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center relative overflow-hidden">
+                    {/* Face placeholder */}
+                    <div className="w-40 h-40 bg-gradient-to-br from-slate-300 to-slate-400 rounded-full flex items-center justify-center relative">
+                      {/* Hair */}
+                      <div className="absolute -top-8 w-32 h-16 bg-gradient-to-br from-slate-600 to-slate-700 rounded-t-full"></div>
+                      {/* Eyes */}
+                      <div className="flex gap-8">
+                        <div className="w-3 h-3 bg-slate-700 rounded-full"></div>
+                        <div className="w-3 h-3 bg-slate-700 rounded-full"></div>
+                      </div>
+                      {/* Smile */}
+                      <div className="absolute bottom-4 w-12 h-6 border-b-2 border-slate-700 rounded-full"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
