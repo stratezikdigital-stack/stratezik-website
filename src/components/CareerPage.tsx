@@ -2,9 +2,6 @@ import React from 'react';
 import { Mail, MapPin, Users, Target } from 'lucide-react';
 
 const CareerPage: React.FC = () => {
-  const handleApplyNow = () => {
-    window.location.href = 'mailto:dave@stratezikdigital.com?subject=Application for Business Development Representative - Toronto&body=Dear Hiring Manager,%0D%0A%0D%0AI am writing to express my interest in the Business Development Representative position in Toronto.%0D%0A%0D%0APlease find my resume attached.%0D%0A%0D%0AThank you for your consideration.%0D%0A%0D%0ABest regards,';
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
