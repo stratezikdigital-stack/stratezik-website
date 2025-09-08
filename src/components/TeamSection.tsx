@@ -70,11 +70,11 @@ const TeamSection = () => {
             >
               <div className="relative mb-6">
                 <div className="relative w-48 h-48 mx-auto">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover rounded-full border-4 border-slate-200 group-hover:border-red-600 transition-colors duration-300"
-                  />
+                  <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 rounded-full border-4 border-slate-200 group-hover:border-red-600 transition-colors duration-300 flex items-center justify-center">
+                    <div className="text-6xl text-slate-500 font-bold">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                  </div>
                   <div className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
                     {member.chessPiece}
                   </div>

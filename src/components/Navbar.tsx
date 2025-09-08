@@ -15,12 +15,26 @@ const Navbar = () => {
   }, [])
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Services', href: '#services' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/', isHome: true },
+    { name: 'Services', href: '#services', isHome: false },
+    { name: 'Portfolio', href: '#portfolio', isHome: false },
+    { name: 'About', href: '#about', isHome: false },
+    { name: 'Contact', href: '#contact', isHome: false },
   ]
+
+  const handleNavClick = (item: any) => {
+    setIsOpen(false)
+    if (item.isHome) {
+      // Navigate to home page
+      window.location.href = '/'
+    } else {
+      // Scroll to section on current page
+      const element = document.querySelector(item.href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -36,13 +50,13 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <button
                 key={item.name}
-                href={item.href}
+                onClick={() => handleNavClick(item)}
                 className="text-slate-600 hover:text-red-600 transition-colors font-medium"
               >
                 {item.name}
-              </a>
+              </button>
             ))}
             <Link
               to="/careers"
@@ -75,14 +89,13 @@ const Navbar = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg rounded-lg mt-2">
               {navItems.map((item) => (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
-                  className="text-slate-600 hover:text-red-600 block px-3 py-2 text-base font-medium transition-colors duration-200"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => handleNavClick(item)}
+                  className="text-slate-600 hover:text-red-600 block px-3 py-2 text-base font-medium transition-colors duration-200 w-full text-left"
                 >
                   {item.name}
-                </a>
+                </button>
               ))}
               <Link
                 to="/careers"
