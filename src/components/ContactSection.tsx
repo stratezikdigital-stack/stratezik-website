@@ -33,7 +33,7 @@ export default function ContactSection() {
         source: 'stratezik.com'
       })
       
-      const response = await fetch(`https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec?${params}`, {
+      await fetch(`https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec?${params}`, {
         method: 'GET',
         mode: 'no-cors'
       })
