@@ -24,20 +24,17 @@ export default function ContactSection() {
     setIsSubmitting(true)
     
     try {
-      // Send to Formspree (more reliable than Google Apps Script)
-      const response = await fetch('https://formspree.io/f/xpwnkqkg', {
+      // Use FormData to bypass CORS issues with Google Apps Script
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('company', formData.company)
+      formDataToSend.append('message', formData.message)
+      formDataToSend.append('source', 'stratezik.com')
+      
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyykUFfL_h4hq9xtTr8uY2zus3QRlWNjFA5sGPg4uJaOxDzsoWXlGQFvgJVQdbL3dXt/exec', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          message: formData.message,
-          _subject: `New Lead from Stratezik Website - ${formData.name}`,
-          _replyto: formData.email
-        })
+        body: formDataToSend
       })
       
       if (response.ok) {

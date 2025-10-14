@@ -3,11 +3,25 @@
 
 function doPost(e) {
   try {
-    // Parse the incoming data
-    const data = JSON.parse(e.postData.contents);
+    // Handle FormData (URL-encoded data)
+    let data;
+    if (e.postData && e.postData.contents) {
+      // Parse URL-encoded data from FormData
+      const params = new URLSearchParams(e.postData.contents);
+      data = {
+        name: params.get('name') || '',
+        email: params.get('email') || '',
+        company: params.get('company') || '',
+        message: params.get('message') || '',
+        source: params.get('source') || 'Website Form'
+      };
+    } else {
+      // Fallback for JSON data
+      data = JSON.parse(e.postData.contents);
+    }
     
-    // Get the spreadsheet by URL (replace with your actual Google Sheet URL)
-    const spreadsheet = SpreadsheetApp.openByUrl('YOUR_GOOGLE_SHEET_URL_HERE');
+    // Get the spreadsheet by URL
+    const spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit');
     const sheet = spreadsheet.getActiveSheet();
     
     // Get current timestamp
