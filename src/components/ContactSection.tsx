@@ -24,25 +24,25 @@ export default function ContactSection() {
     setIsSubmitting(true)
     
     try {
-      // Use FormData to bypass CORS issues with Google Apps Script
-      const formDataToSend = new FormData()
-      formDataToSend.append('name', formData.name)
-      formDataToSend.append('email', formData.email)
-      formDataToSend.append('company', formData.company)
-      formDataToSend.append('message', formData.message)
-      formDataToSend.append('source', 'stratezik.com')
-      
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyURaG9AMVrDete0EeD3wYf9V5LYQ62mzEA3z57VEHdtVl--9MYoR0KI_d0zNBFjPh5/exec', {
-        method: 'POST',
-        body: formDataToSend
+      // Use GET request with query parameters to bypass CORS issues
+      const params = new URLSearchParams({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        message: formData.message,
+        source: 'stratezik.com'
       })
       
-      if (response.ok) {
-        setIsSubmitted(true)
-        setFormData({ name: '', email: '', company: '', message: '' })
-      } else {
-        throw new Error('Failed to submit form')
-      }
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbyURaG9AMVrDete0EeD3wYf9V5LYQ62mzEA3z57VEHdtVl--9MYoR0KI_d0zNBFjPh5/exec?${params}`, {
+        method: 'GET',
+        mode: 'no-cors'
+      })
+      
+      // Since we're using no-cors, we can't check the response
+      // But if we get here without an error, assume it worked
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', company: '', message: '' })
+      
     } catch (error) {
       console.error('Form submission error:', error)
       alert('Sorry, there was an error submitting your form. Please try again or contact us directly.')

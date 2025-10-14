@@ -54,10 +54,47 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  // Handle GET requests (for testing)
-  return ContentService
-    .createTextOutput('Stratezik Contact Form Webhook is running')
-    .setMimeType(ContentService.MimeType.TEXT);
+  try {
+    // Handle GET requests with query parameters
+    const data = {
+      name: e.parameter.name || '',
+      email: e.parameter.email || '',
+      company: e.parameter.company || '',
+      message: e.parameter.message || '',
+      source: e.parameter.source || 'Website Form'
+    };
+    
+    // Get the spreadsheet by URL
+    const spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit');
+    const sheet = spreadsheet.getActiveSheet();
+    
+    // Get current timestamp
+    const timestamp = new Date();
+    
+    // Prepare row data
+    const rowData = [
+      timestamp,           // Timestamp
+      data.name,          // Name
+      data.email,         // Email
+      data.company,      // Company
+      data.message,      // Message
+      data.source        // Source
+    ];
+    
+    // Add data to the sheet
+    sheet.appendRow(rowData);
+    
+    // Return success response
+    return ContentService
+      .createTextOutput('Form submitted successfully')
+      .setMimeType(ContentService.MimeType.TEXT);
+      
+  } catch (error) {
+    // Return error response
+    return ContentService
+      .createTextOutput('Error: ' + error.toString())
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
 }
 
 // Setup function to create headers in the sheet
