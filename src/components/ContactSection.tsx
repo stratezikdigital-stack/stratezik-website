@@ -24,8 +24,8 @@ export default function ContactSection() {
     setIsSubmitting(true)
     
     try {
-      // Send to Google Sheets via Apps Script
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyykUFfL_h4hq9xtTr8uY2zus3QRlWNjFA5sGPg4uJaOxDzsoWXlGQFvgJVQdbL3dXt/exec', {
+      // Send to Formspree (more reliable than Google Apps Script)
+      const response = await fetch('https://formspree.io/f/xpwnkqkg', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,17 +35,16 @@ export default function ContactSection() {
           email: formData.email,
           company: formData.company,
           message: formData.message,
-          source: 'stratezik.com'
+          _subject: `New Lead from Stratezik Website - ${formData.name}`,
+          _replyto: formData.email
         })
       })
       
-      const result = await response.json()
-      
-      if (result.success) {
+      if (response.ok) {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', company: '', message: '' })
       } else {
-        throw new Error(result.error || 'Failed to submit form')
+        throw new Error('Failed to submit form')
       }
     } catch (error) {
       console.error('Form submission error:', error)
