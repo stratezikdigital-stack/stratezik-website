@@ -25,7 +25,7 @@ export default function ContactSection() {
     
     try {
       // Send to Google Sheets via Apps Script
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxXJsrSuZmbY2icpC-CHxKRKGZvKMlWmOVveKSfPz71VHhrCb8I9qgSn6OCUvsKk9nz/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyykUFfL_h4hq9xtTr8uY2zus3QRlWNjFA5sGPg4uJaOxDzsoWXlGQFvgJVQdbL3dXt/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
