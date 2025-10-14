@@ -32,7 +32,7 @@ export default function ContactSection() {
       formDataToSend.append('message', formData.message)
       formDataToSend.append('source', 'stratezik.com')
       
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyykUFfL_h4hq9xtTr8uY2zus3QRlWNjFA5sGPg4uJaOxDzsoWXlGQFvgJVQdbL3dXt/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyURaG9AMVrDete0EeD3wYf9V5LYQ62mzEA3z57VEHdtVl--9MYoR0KI_d0zNBFjPh5/exec', {
         method: 'POST',
         body: formDataToSend
       })
