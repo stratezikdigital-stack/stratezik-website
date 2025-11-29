@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stratezik.com/sitemap.xml
+# Disallow old WordPress paths
+Disallow: /author/
+Disallow: /wp-json/
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /front_page/
+
+Sitemap: https://www.stratezik.com/sitemap.xml
