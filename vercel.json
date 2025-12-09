@@ -1,14 +1,8 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "stratezik.com"
-        }
-      ],
-      "destination": "https://www.stratezik.com/:path*",
+      "source": "/author/biplab/",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
@@ -22,7 +16,7 @@
       "permanent": true
     },
     {
-      "source": "/author/:path*",
+      "source": "/wp-json/elementskit/v1/",
       "destination": "https://www.stratezik.com/",
       "permanent": true
     },
@@ -33,6 +27,11 @@
     },
     {
       "source": "/wp-json/elementskit/v1/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/author/:path*",
       "destination": "https://www.stratezik.com/",
       "permanent": true
     },
@@ -52,6 +51,11 @@
       "permanent": true
     },
     {
+      "source": "/front_page/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
       "source": "/front_page",
       "destination": "https://www.stratezik.com/",
       "permanent": true
@@ -59,6 +63,17 @@
     {
       "source": "/front_page/:path*",
       "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "stratezik.com"
+        }
+      ],
+      "destination": "https://www.stratezik.com/:path*",
       "permanent": true
     }
   ],
