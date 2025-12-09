@@ -1,11 +1,18 @@
 User-agent: *
 Allow: /
 
-# Disallow old WordPress paths
+# Disallow old WordPress paths - Explicit blocking
 Disallow: /author/
+Disallow: /author/biplab/
 Disallow: /wp-json/
+Disallow: /wp-json/elementskit/
 Disallow: /wp-admin/
 Disallow: /wp-content/
 Disallow: /front_page/
 
+# Allow only main pages
+Allow: /
+Allow: /careers
+
+# Sitemap location
 Sitemap: https://www.stratezik.com/sitemap.xml

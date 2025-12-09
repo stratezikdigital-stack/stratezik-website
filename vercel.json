@@ -12,33 +12,53 @@
       "permanent": true
     },
     {
-      "source": "/front_page",
-      "destination": "/",
+      "source": "/author/biplab",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
-      "source": "/front_page/:path*",
-      "destination": "/",
+      "source": "/author/biplab/:path*",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
       "source": "/author/:path*",
-      "destination": "/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-json/elementskit/v1",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-json/elementskit/v1/:path*",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
       "source": "/wp-json/:path*",
-      "destination": "/",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
       "source": "/wp-admin/:path*",
-      "destination": "/",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     },
     {
       "source": "/wp-content/:path*",
-      "destination": "/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page/:path*",
+      "destination": "https://www.stratezik.com/",
       "permanent": true
     }
   ],
@@ -46,6 +66,53 @@
     {
       "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        }
+      ]
+    },
+    {
+      "source": "/author/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/wp-json/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/wp-admin/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/wp-content/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }
