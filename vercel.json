@@ -66,11 +66,83 @@
       "permanent": true
     },
     {
+      "source": "/2025/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2024/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2023/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2022/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2021/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2020/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "elementskit_template"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "stratezik.com"
+        }
+      ],
+      "destination": "https://www.stratezik.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.stratezik.com"
+        },
+        {
+          "type": "query",
+          "key": "elementskit_template"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.stratezik.com"
+        },
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
         }
       ],
       "destination": "https://www.stratezik.com/:path*",
@@ -122,6 +194,69 @@
     },
     {
       "source": "/wp-content/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/front_page/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2025/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2024/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2023/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2022/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2021/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/2020/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
