@@ -1,6 +1,21 @@
 {
   "redirects": [
     {
+      "source": "/front_page/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
       "source": "/author/biplab/",
       "destination": "https://www.stratezik.com/",
       "permanent": true
@@ -51,21 +66,6 @@
       "permanent": true
     },
     {
-      "source": "/front_page/",
-      "destination": "https://www.stratezik.com/",
-      "permanent": true
-    },
-    {
-      "source": "/front_page",
-      "destination": "https://www.stratezik.com/",
-      "permanent": true
-    },
-    {
-      "source": "/front_page/:path*",
-      "destination": "https://www.stratezik.com/",
-      "permanent": true
-    },
-    {
       "source": "/2025/:path*",
       "destination": "https://www.stratezik.com/",
       "permanent": true
@@ -107,6 +107,39 @@
       "permanent": true
     },
     {
+      "source": "/front_page/",
+      "has": [
+        {
+          "type": "host",
+          "value": "stratezik.com"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page",
+      "has": [
+        {
+          "type": "host",
+          "value": "stratezik.com"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "stratezik.com"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
@@ -127,6 +160,38 @@
         {
           "type": "query",
           "key": "elementskit_template"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.stratezik.com"
+        },
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
+        }
+      ],
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/front_page",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.stratezik.com"
+        },
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
         }
       ],
       "destination": "https://www.stratezik.com/",

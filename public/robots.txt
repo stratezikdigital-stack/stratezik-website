@@ -8,7 +8,9 @@ Disallow: /wp-json/
 Disallow: /wp-json/elementskit/
 Disallow: /wp-admin/
 Disallow: /wp-content/
-# Note: /front_page/ is NOT blocked - it redirects to homepage
+# IMPORTANT: /front_page/ is NOT blocked in robots.txt because it redirects to homepage
+# All /front_page/ URLs redirect to https://www.stratezik.com/ via 301 redirect
+# This ensures Google understands the canonical homepage is https://www.stratezik.com/
 
 # Disallow old blog post paths
 Disallow: /2025/
