@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, MapPin, Users, Target } from 'lucide-react';
 
 const CareerPage: React.FC = () => {
+  useEffect(() => {
+    // Set unique page title and meta description for /careers
+    const prevTitle = document.title;
+    document.title = 'Careers at Stratezik | Join Our Digital Marketing Team in Toronto';
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const prevDesc = metaDesc?.getAttribute('content') || '';
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Join Stratezik Digital in Toronto. We are hiring a Business Development Representative. Work with a team of ex-Google, McCann & Hootsuite marketers. Apply now.');
+    }
+
+    return () => {
+      document.title = prevTitle;
+      if (metaDesc) metaDesc.setAttribute('content', prevDesc);
+    };
+  }, []);
+
   const scrollToApply = () => {
     const applySection = document.getElementById('how-to-apply');
     if (applySection) {

@@ -7,6 +7,19 @@ Disallow: /wp-admin/
 # Block author archives
 Disallow: /author/
 
+# Block WordPress auto-sitemaps (we use our own sitemap.xml)
+Disallow: /wp-sitemap.xml
+Disallow: /wp-sitemap-posts-page-1.xml
+Disallow: /wp-sitemap-posts-post-1.xml
+Disallow: /wp-sitemap-users-1.xml
+Disallow: /wp-sitemap-taxonomies-category-1.xml
+
+# Block WordPress default content
+Disallow: /hello-world/
+Disallow: /sample-page/
+Disallow: /category/
+Disallow: /feed/
+
 # Block date archives
 Disallow: /2020/
 Disallow: /2021/

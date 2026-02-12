@@ -1,6 +1,76 @@
 {
   "redirects": [
     {
+      "source": "/wp-sitemap.xml",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap-posts-page-1.xml",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap-posts-post-1.xml",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap-users-1.xml",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap-taxonomies-category-1.xml",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap:path*",
+      "destination": "https://www.stratezik.com/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/sample-page/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/sample-page",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/category/uncategorized/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/feed/",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
       "source": "/front_page/",
       "destination": "https://www.stratezik.com/",
       "permanent": true
@@ -62,6 +132,11 @@
     },
     {
       "source": "/wp-content/:path*",
+      "destination": "https://www.stratezik.com/",
+      "permanent": true
+    },
+    {
+      "source": "/2026/:path*",
       "destination": "https://www.stratezik.com/",
       "permanent": true
     },
@@ -232,6 +307,42 @@
     },
     {
       "source": "/author/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/front_page/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/wp-sitemap(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/feed/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/category/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
