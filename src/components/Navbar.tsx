@@ -42,9 +42,11 @@ const Navbar = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - links to home for internal linking & brand visibility */}
           <div className="flex items-center gap-3">
-            <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Logo" className="h-16 w-auto" />
+            <Link to="/" className="focus:outline-none" aria-label="Stratezik digital marketing - Home">
+              <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Digital Marketing Canada" className="h-16 w-auto" />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}

@@ -1,28 +1,19 @@
 User-agent: *
 Allow: /
 
-# Disallow old WordPress paths - Explicit blocking
-Disallow: /author/
-Disallow: /author/biplab/
-Disallow: /wp-json/
-Disallow: /wp-json/elementskit/
+# Block WordPress admin
 Disallow: /wp-admin/
-Disallow: /wp-content/
-# IMPORTANT: /front_page/ is NOT blocked in robots.txt because it redirects to homepage
-# All /front_page/ URLs redirect to https://www.stratezik.com/ via 301 redirect
-# This ensures Google understands the canonical homepage is https://www.stratezik.com/
 
-# Disallow old blog post paths
-Disallow: /2025/
-Disallow: /2024/
-Disallow: /2023/
-Disallow: /2022/
-Disallow: /2021/
+# Block author archives
+Disallow: /author/
+
+# Block date archives
 Disallow: /2020/
+Disallow: /2021/
+Disallow: /2022/
+Disallow: /2023/
+Disallow: /2024/
+Disallow: /2025/
+Disallow: /2026/
 
-# Allow only main pages
-Allow: /
-Allow: /careers
-
-# Sitemap location
 Sitemap: https://www.stratezik.com/sitemap.xml

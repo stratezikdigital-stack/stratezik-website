@@ -46,8 +46,7 @@ const HeroSection = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0"
             >
-              Think several moves ahead. Every campaign planned with chess master precision. 
-              We help businesses achieve checkmate in the digital marketplace.
+              Stratezik is a digital marketing agency in Canada. We help Toronto businesses grow with SEO, PPC, and strategy. Think several moves ahead—every campaign planned with chess master precision. We help businesses achieve checkmate in the digital marketplace.
             </motion.p>
 
             <motion.div
