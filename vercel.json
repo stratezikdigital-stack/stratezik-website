@@ -314,6 +314,15 @@
       ]
     },
     {
+      "source": "/google-ads-dash/insectica/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
+        }
+      ]
+    },
+    {
       "source": "/author/(.*)",
       "headers": [
         {
