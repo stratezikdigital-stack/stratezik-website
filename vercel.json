@@ -295,6 +295,10 @@
       "destination": "https://insectica-google-ads-tool-245525676841.northamerica-northeast2.run.app/google-ads-dash/insectica"
     },
     {
+      "source": "/google-ads-dash/insectica/",
+      "destination": "https://insectica-google-ads-tool-245525676841.northamerica-northeast2.run.app/google-ads-dash/insectica/"
+    },
+    {
       "source": "/google-ads-dash/insectica/:path*",
       "destination": "https://insectica-google-ads-tool-245525676841.northamerica-northeast2.run.app/google-ads-dash/insectica/:path*"
     },
@@ -310,6 +314,24 @@
         {
           "key": "X-Robots-Tag",
           "value": "index, follow"
+        }
+      ]
+    },
+    {
+      "source": "/google-ads-dash/insectica",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
+        }
+      ]
+    },
+    {
+      "source": "/google-ads-dash/insectica/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
         }
       ]
     },
