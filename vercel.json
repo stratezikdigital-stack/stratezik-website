@@ -291,6 +291,14 @@
   ],
   "rewrites": [
     {
+      "source": "/google-ads-dash/insectica",
+      "destination": "https://insectica-google-ads-tool-245525676841.northamerica-northeast2.run.app/google-ads-dash/insectica"
+    },
+    {
+      "source": "/google-ads-dash/insectica/:path*",
+      "destination": "https://insectica-google-ads-tool-245525676841.northamerica-northeast2.run.app/google-ads-dash/insectica/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
