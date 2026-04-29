@@ -49,9 +49,13 @@ function rankZ(rank: number): number {
  * continuous shot where "your" piece is always on stage to the right.
  */
 export const CAMERA_KEYS: CameraKey[] = [
-  // Hero — wide elevated shot, board fills right half of frame
-  { t: 0.00, pos: [-4.6, 4.8, 5.6], target: [0, 0.2, 0], fov: 36 },
-  { t: 0.12, pos: [-4.4, 4.4, 5.4], target: [0, 0.2, rankZ(3.0)], fov: 36 },
+  // Hero pinned beat — camera dollies in from a wide cinematic vista
+  // (t=0, page-top) to the settled hero pose (t=0.06, halfway through
+  // the hero pin). FOV widens slightly on the way in.
+  { t: 0.00, pos: [-7.4, 7.6, 8.6], target: [0, 0.4, 0], fov: 28 },
+  { t: 0.06, pos: [-4.6, 4.8, 5.6], target: [0, 0.2, 0], fov: 36 },
+  // Hold the settled pose for the rest of the hero pin
+  { t: 0.14, pos: [-4.4, 4.4, 5.4], target: [0, 0.2, rankZ(3.0)], fov: 36 },
 
   // Services — closer & lower, walking with the focal pawn
   { t: 0.28, pos: [-4.0, 2.2, 4.0], target: [0, 0.5, rankZ(3.8)], fov: 40 },
@@ -62,11 +66,16 @@ export const CAMERA_KEYS: CameraKey[] = [
 
   // Portfolio — camera now on +X (other side), looking back. Promotion
   // square (rank 8, -Z) is on the right of frame.
-  { t: 0.74, pos: [3.0, 3.4, 3.6], target: [0, 0.6, rankZ(6.6)], fov: 36 },
+  { t: 0.72, pos: [3.0, 3.4, 3.6], target: [0, 0.6, rankZ(6.6)], fov: 36 },
 
-  // Contact — dramatic close-up at the promotion square
-  { t: 0.92, pos: [3.4, 1.6, 1.0], target: [0, 0.9, rankZ(7.8)], fov: 42 },
-  { t: 1.00, pos: [3.0, 1.8, 1.2], target: [0, 1.0, rankZ(7.8)], fov: 40 },
+  // Contact pinned beat — camera slides toward the promotion square
+  // through the pin, climaxing with a tight dramatic close-up.
+  // Contact section ≈ 180vh / total ≈ 23% of progress (0.77..1.00).
+  { t: 0.78, pos: [3.4, 2.6, 2.6], target: [0, 0.7, rankZ(7.2)], fov: 36 },
+  { t: 0.88, pos: [3.4, 1.8, 1.6], target: [0, 0.8, rankZ(7.6)], fov: 38 },
+  // Dramatic close-up — camera tight on rank-8 promotion square
+  { t: 0.95, pos: [3.0, 1.4, 0.8], target: [0, 1.0, rankZ(7.9)], fov: 44 },
+  { t: 1.00, pos: [2.6, 1.5, 0.6], target: [0, 1.1, rankZ(7.9)], fov: 42 },
 ]
 
 const _vA = new THREE.Vector3()

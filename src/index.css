@@ -13,13 +13,16 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Lenis owns smooth scrolling now. */
+    scroll-behavior: auto;
   }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
     color: #0f172a;
-    background-color: #fdfaf3;
+    /* Match the WorldScene's clear color so there's no flash before
+       the canvas mounts after idle. */
+    background-color: #f7f4ee;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }

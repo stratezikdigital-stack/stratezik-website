@@ -65,8 +65,19 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="py-24 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="relative overflow-hidden lg:min-h-[180vh]"
+    >
+      {/* Sticky inner container — on lg+ the form + HUD stay pinned for one
+          viewport while the camera dollies in to the promotion square and
+          the pawn promotes to a queen in the persistent canvas behind.
+          On mobile we let everything scroll naturally so the form stays
+          reachable, while the camera animation still plays from global
+          scroll progress. */}
+      <div className="lg:sticky lg:top-0 w-full lg:min-h-screen flex items-center py-24">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -211,17 +222,39 @@ export default function ContactSection() {
             {/* HUD overlay — narrates the game state. The actual 3D promotion
                 + opposing king resign animation is rendered by the global
                 world canvas behind the page. */}
-            <div className="relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md shadow-xl px-5 py-4 flex items-center gap-3">
-              <span className="text-3xl text-amber-500">{isSubmitted ? '\u2655' : '\u265A'}</span>
+            <motion.div
+              animate={isSubmitted
+                ? { scale: [1, 1.04, 1], boxShadow: [
+                    '0 10px 30px rgba(0,0,0,0.10)',
+                    '0 18px 50px rgba(220, 38, 38, 0.35)',
+                    '0 10px 30px rgba(0,0,0,0.10)',
+                  ] }
+                : { scale: 1 }}
+              transition={{ duration: 1.4, ease: 'easeOut' }}
+              className={`relative rounded-2xl border backdrop-blur-md shadow-xl px-5 py-4 flex items-center gap-3 transition-colors duration-700 ${
+                isSubmitted
+                  ? 'border-amber-300/70 bg-gradient-to-r from-amber-50/95 via-white/85 to-red-50/95'
+                  : 'border-white/60 bg-white/70'
+              }`}
+            >
+              <motion.span
+                animate={isSubmitted ? { rotate: [0, -8, 8, 0], scale: [1, 1.25, 1] } : {}}
+                transition={{ duration: 1.0, ease: 'easeOut' }}
+                className={`text-3xl ${isSubmitted ? 'text-amber-500 drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]' : 'text-amber-500'}`}
+              >
+                {isSubmitted ? '\u2655' : '\u265A'}
+              </motion.span>
               <div>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                  {isSubmitted ? 'Game state' : 'Your move'}
+                <div className={`text-[11px] uppercase tracking-[0.2em] ${
+                  isSubmitted ? 'text-red-700' : 'text-slate-500'
+                }`}>
+                  {isSubmitted ? 'Checkmate' : 'Your move'}
                 </div>
                 <div className="text-base font-semibold text-slate-900">
-                  {isSubmitted ? 'Checkmate — they resigned' : 'The board awaits your strategy'}
+                  {isSubmitted ? 'They resigned. Welcome to the winning side.' : 'The board awaits your strategy'}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             <div className="border border-white/60 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl">
               <div className="p-6">
@@ -288,6 +321,7 @@ export default function ContactSection() {
             </div>
           </motion.div>
         </div>
+      </div>
       </div>
     </section>
   )

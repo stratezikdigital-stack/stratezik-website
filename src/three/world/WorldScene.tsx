@@ -185,18 +185,21 @@ function PromotedQueen() {
 function OpponentKing() {
   const ref = useRef<THREE.Group>(null)
 
-  useFrame((_, dt) => {
+  useFrame((state, dt) => {
     if (!ref.current) return
     const { progress, resigned } = useWorldStore.getState()
     const target = opponentKingAt(progress, resigned).tilt
     ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.z, target, 3, dt)
-    if (resigned) {
-      ref.current.position.x = fileToX(5) + 0.4
-      ref.current.position.y = 0.04
-    } else {
-      ref.current.position.x = fileToX(5)
-      ref.current.position.y = 0.06
-    }
+
+    // Anticipation tremor — as the visitor closes in, the king's base
+    // shudders almost imperceptibly. Stops once it has actually toppled.
+    const wobble = Math.max(0, (progress - 0.82) / 0.18)
+    const tremor = resigned ? 0 : Math.sin(state.clock.elapsedTime * 14) * 0.004 * wobble * wobble
+
+    const targetX = resigned ? fileToX(5) + 0.4 : fileToX(5) + tremor
+    const targetY = resigned ? 0.04 : 0.06
+    ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, targetX, 4, dt)
+    ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, targetY, 4, dt)
   })
 
   return (
@@ -261,10 +264,26 @@ function ScrollOrchestrator() {
   )
 }
 
-export function WorldScene() {
-  const reduced = useReducedMotion()
-  const board = (
-    <group>
+/**
+ * Wraps the board + armies in a group whose scale + Y position animate
+ * during the hero pinned beat (progress 0 → 0.04). Visually: the board
+ * "lifts into place" while the camera dollies in.
+ */
+function StagedWorld() {
+  const ref = useRef<THREE.Group>(null)
+
+  useFrame(() => {
+    if (!ref.current) return
+    const { progress } = useWorldStore.getState()
+    // Smoothstep 0 → 1 over progress 0..0.04 (~first 30vh of hero pin)
+    const t = Math.max(0, Math.min(1, progress / 0.04))
+    const eased = t * t * (3 - 2 * t)
+    ref.current.scale.setScalar(0.92 + eased * 0.08)
+    ref.current.position.y = -0.12 * (1 - eased)
+  })
+
+  return (
+    <group ref={ref}>
       <Chessboard size={BOARD_SIZE} />
       <StaticArmies />
       <FocalPawn />
@@ -273,16 +292,20 @@ export function WorldScene() {
       <OpponentKing />
     </group>
   )
+}
+
+export function WorldScene() {
+  const reduced = useReducedMotion()
 
   return (
     <>
       <color attach="background" args={['#f7f4ee']} />
       <ScrollOrchestrator />
       {reduced ? (
-        board
+        <StagedWorld />
       ) : (
         <Float speed={0.6} floatIntensity={0.08} rotationIntensity={0.02}>
-          {board}
+          <StagedWorld />
         </Float>
       )}
     </>

@@ -90,8 +90,8 @@ export function pawnAt(progress: number): PawnState {
   // Subtle side-to-side wobble as it advances (every rank steps a little)
   const file = 4.5 + Math.sin(progress * Math.PI * 2.5) * 0.18
   const bob = Math.sin(progress * Math.PI * 6) * 0.04
-  // Fade out right at promotion (last 5% of journey)
-  const alpha = 1 - smoothstep(range(progress, 0.93, 0.99))
+  // Fade out cleanly right at the promotion moment (last sliver of journey)
+  const alpha = 1 - smoothstep(range(progress, 0.93, 0.97))
   return {
     position: [fileX(file), 0.06 + bob, rankZ(rank)],
     bob,
@@ -148,10 +148,12 @@ export function servicePieceAt(progress: number, schedule: ServiceSchedule, pawn
 
 /** Red queen rises out of the promotion square at the very end. */
 export function promotedQueenAt(progress: number, pawnPos: [number, number, number]): PromotedQueenState {
-  const t = range(progress, 0.92, 1.0)
+  // Queen begins materializing as the pawn finishes fading and rises
+  // dramatically above the board (~0.6 world units) by progress 1.0.
+  const t = range(progress, 0.94, 1.0)
   const alpha = smoothstep(t)
-  const lift = smoothstep(t) * 0.4
-  const spin = t * Math.PI * 0.8
+  const lift = smoothstep(t) * 0.65
+  const spin = t * Math.PI * 1.2
   void pawnPos
   return { alpha, lift, spin }
 }
@@ -161,9 +163,10 @@ export function opponentKingAt(progress: number, resigned: boolean): OpponentKin
   if (resigned) {
     return { tilt: Math.PI / 2 - 0.05 }
   }
-  // Slight wobble as visitor closes in
-  const wobble = range(progress, 0.85, 1.0)
-  return { tilt: wobble * 0.18 }
+  // Wobble grows in intensity as the visitor's pawn closes the distance —
+  // crescendo through the contact pin into the promotion moment.
+  const wobble = smoothstep(range(progress, 0.82, 1.0))
+  return { tilt: wobble * 0.32 }
 }
 
 /** Atmosphere lerps from morning ivory (hero) to dusk obsidian (contact). */

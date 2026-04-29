@@ -12,12 +12,14 @@ const HeroSection = () => {
     <section
       id="home"
       ref={ref}
-      className="relative min-h-[180vh] flex items-stretch"
+      className="relative flex items-stretch min-h-[calc(100vh-9rem)] lg:min-h-[180vh]"
       aria-label="Hero"
     >
-      {/* Sticky inner container — copy stays pinned for one viewport while the
-          global 3D world plays the intro beat behind it. */}
-      <div className="sticky top-0 w-full h-screen flex items-center">
+      {/* Sticky inner container — on lg+ the copy stays pinned for one
+          viewport while the global 3D world plays the intro beat behind it.
+          On mobile we use natural flow so users can read + scroll without
+          a tall blank section. */}
+      <div className="lg:sticky lg:top-0 w-full lg:h-screen flex items-center">
         {/* Soft horizontal vignette — keeps the headline area legible without
             washing out the 3D world. */}
         <div

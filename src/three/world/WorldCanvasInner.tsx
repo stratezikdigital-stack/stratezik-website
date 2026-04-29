@@ -5,9 +5,10 @@ import { WorldScene } from './WorldScene'
 
 interface WorldCanvasInnerProps {
   mobile: boolean
+  reduced: boolean
 }
 
-export default function WorldCanvasInner({ mobile }: WorldCanvasInnerProps) {
+export default function WorldCanvasInner({ mobile, reduced }: WorldCanvasInnerProps) {
   const [tabHidden, setTabHidden] = useState(false)
   useEffect(() => {
     const onVis = () => setTabHidden(document.hidden)
@@ -15,13 +16,23 @@ export default function WorldCanvasInner({ mobile }: WorldCanvasInnerProps) {
     return () => document.removeEventListener('visibilitychange', onVis)
   }, [])
 
+  // Render quality knob: mobile and reduced-motion both fall back to a
+  // calmer, cheaper render path. Everyone still gets the scene; just less
+  // of it on lower-power / quieter devices.
+  const lite = mobile || reduced
+
   return (
     <Canvas
-      camera={{ position: [-4.6, 4.8, 5.6], fov: 36 }}
-      dpr={mobile ? [1, 1.5] : [1, 2]}
-      shadows={!mobile}
+      camera={{ position: [-7.4, 7.6, 8.6], fov: 28 }}
+      dpr={lite ? [1, 1.5] : [1, 2]}
+      shadows={!lite}
       frameloop={tabHidden ? 'demand' : 'always'}
-      gl={{ antialias: true, powerPreference: 'high-performance', alpha: false, preserveDrawingBuffer: false }}
+      gl={{
+        antialias: !mobile,
+        powerPreference: 'high-performance',
+        alpha: false,
+        preserveDrawingBuffer: false,
+      }}
       onCreated={({ gl }) => {
         const canvas = gl.domElement
         canvas.addEventListener('webglcontextlost', (e) => {
@@ -36,8 +47,14 @@ export default function WorldCanvasInner({ mobile }: WorldCanvasInnerProps) {
     >
       <Suspense fallback={null}>
         <WorldScene />
-        {!mobile && <Environment preset="city" />}
-        <ContactShadows position={[0, -0.04, 0]} opacity={mobile ? 0.4 : 0.55} scale={10} blur={2.6} far={4} />
+        {!lite && <Environment preset="city" />}
+        <ContactShadows
+          position={[0, -0.04, 0]}
+          opacity={lite ? 0.35 : 0.55}
+          scale={10}
+          blur={2.6}
+          far={4}
+        />
       </Suspense>
     </Canvas>
   )

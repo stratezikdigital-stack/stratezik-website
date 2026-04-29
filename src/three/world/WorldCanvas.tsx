@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { useIsMobile } from '../hooks/useIsMobile'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const CanvasInner = lazy(() => import('./WorldCanvasInner'))
 
@@ -14,6 +15,7 @@ const CanvasInner = lazy(() => import('./WorldCanvasInner'))
  */
 export function WorldCanvas() {
   const mobile = useIsMobile()
+  const reduced = useReducedMotion()
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export function WorldCanvas() {
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       {ready ? (
         <Suspense fallback={null}>
-          <CanvasInner mobile={mobile} />
+          <CanvasInner mobile={mobile} reduced={reduced} />
         </Suspense>
       ) : null}
     </div>
