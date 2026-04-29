@@ -1,115 +1,137 @@
+import { Suspense, lazy } from 'react'
 import { motion } from 'framer-motion'
-import { Target, TrendingUp, Trophy, BarChart3 } from 'lucide-react'
+
+const MoveSequence = lazy(() => import('../three/scenes/MoveSequence'))
+
+interface Step {
+  step: 1 | 2 | 3 | 4
+  label: string
+  title: string
+  description: string
+}
+
+const STEPS: Step[] = [
+  {
+    step: 1,
+    label: 'Opening',
+    title: 'Strategic Analysis',
+    description:
+      'We open the game by analyzing your market position, competitors, and opportunities to develop a winning strategy.',
+  },
+  {
+    step: 2,
+    label: 'Middle Game',
+    title: 'Goal Setting',
+    description:
+      'Define clear objectives and KPIs that align with your business vision and translate into decisive moves.',
+  },
+  {
+    step: 3,
+    label: 'End Game',
+    title: 'Execution',
+    description:
+      'Implement strategic campaigns with precision, monitoring performance and optimizing every move for results.',
+  },
+  {
+    step: 4,
+    label: 'Checkmate',
+    title: 'Victory',
+    description:
+      'Achieve checkmate with measurable results, increased ROI, and sustainable, compounding growth.',
+  },
+]
 
 const StrategyFlow = () => {
-  const steps = [
-    {
-      icon: <BarChart3 className="h-8 w-8" />,
-      title: "Strategic Analysis",
-      description: "We analyze your market position, competitors, and opportunities to develop a winning strategy.",
-      number: "01"
-    },
-    {
-      icon: <Target className="h-8 w-8" />,
-      title: "Goal Setting",
-      description: "Define clear objectives and KPIs that align with your business vision and market opportunities.",
-      number: "02"
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8" />,
-      title: "Execution",
-      description: "Implement strategic campaigns with precision, monitoring performance and optimizing for results.",
-      number: "03"
-    },
-    {
-      icon: <Trophy className="h-8 w-8" />,
-      title: "Victory",
-      description: "Achieve checkmate with measurable results, increased ROI, and sustainable growth.",
-      number: "04"
-    }
-  ]
-
   return (
-    <section className="py-24 bg-white">
+    <section className="relative py-24 bg-white overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"
+      />
+
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="text-4xl text-red-600">♝</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900">
-              Our Strategic Process
-            </h2>
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700 backdrop-blur">
+            <span className="text-red-600">&#9821;</span>
+            Strategic process — Opening to Checkmate
           </div>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Every successful campaign follows our proven strategic framework. Think like a chess master, act like a champion.
+          <h2
+            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight"
+            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
+          >
+            Every campaign is a <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">game</span> we plan to win
+          </h2>
+          <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+            Think like a chess master, act like a champion. Each phase of our process plays a deliberate
+            move on the board.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
+        <div className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Connector line */}
+          <div
+            aria-hidden
+            className="hidden lg:block pointer-events-none absolute top-[7.5rem] left-[10%] right-[10%] h-px bg-gradient-to-r from-red-200 via-slate-300 to-amber-200"
+          />
+
+          {STEPS.map((s, i) => (
             <motion.div
-              key={index}
+              key={s.step}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: i * 0.12 }}
               viewport={{ once: true }}
-              className="relative text-center group"
+              className="relative text-center"
             >
-              {/* Connection Line */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-slate-200 z-0"></div>
-              )}
-              
-              <div className="relative z-10 bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6 border-4 border-red-100 group-hover:border-red-600 transition-colors duration-300">
-                <div className="bg-red-50 rounded-full w-12 h-12 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
-                  {step.icon}
-                </div>
+              <div className="relative mx-auto h-44 w-44 sm:h-48 sm:w-48 mb-2">
+                <Suspense
+                  fallback={
+                    <div className="h-full w-full flex items-center justify-center text-3xl text-red-600">
+                      {s.step}
+                    </div>
+                  }
+                >
+                  <MoveSequence step={s.step} />
+                </Suspense>
+
+                <span className="absolute -top-2 right-2 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white text-sm font-bold shadow-md">
+                  0{s.step}
+                </span>
               </div>
-              
-              <div className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-                {step.number}
+
+              <div className="text-[11px] tracking-[0.22em] uppercase text-red-600 font-semibold">
+                {s.label}
               </div>
-              
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                {step.title}
-              </h3>
-              
-              <p className="text-slate-600">
-                {step.description}
-              </p>
+              <h3 className="mt-1 text-xl font-semibold text-slate-900">{s.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 max-w-xs mx-auto leading-relaxed">{s.description}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Process Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-slate-200"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-16 border-t border-slate-200"
         >
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">500+</div>
-            <div className="text-slate-600">Strategic Wins</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">98%</div>
-            <div className="text-slate-600">Success Rate</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">$10M+</div>
-            <div className="text-slate-600">Revenue Generated</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">24/7</div>
-            <div className="text-slate-600">Strategic Support</div>
-          </div>
+          {[
+            { v: '500+', l: 'Strategic Wins' },
+            { v: '98%', l: 'Success Rate' },
+            { v: '$10M+', l: 'Revenue Generated' },
+            { v: '24/7', l: 'Strategic Support' },
+          ].map((s) => (
+            <div key={s.l} className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">{s.v}</div>
+              <div className="text-slate-600">{s.l}</div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

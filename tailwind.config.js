@@ -13,6 +13,15 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Fraunces', 'Inter', 'serif'],
+      },
+      gridTemplateColumns: {
+        16: 'repeat(16, minmax(0, 1fr))',
+      },
+      gridTemplateRows: {
+        4: 'repeat(4, minmax(0, 1fr))',
+        8: 'repeat(8, minmax(0, 1fr))',
+        16: 'repeat(16, minmax(0, 1fr))',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

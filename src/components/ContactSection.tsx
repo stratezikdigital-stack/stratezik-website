@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
 import { scrollToContactForm } from '../utils/navigation'
+
+const ContactKingScene = lazy(() => import('../three/scenes/ContactKingScene'))
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -208,6 +210,23 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="space-y-6"
           >
+            {/* 3D scene — opponent king resigns when the form is submitted */}
+            <div className="relative rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 shadow-xl overflow-hidden">
+              <Suspense
+                fallback={
+                  <div className="aspect-[16/10] flex items-center justify-center text-6xl text-red-600">
+                    &#9818;
+                  </div>
+                }
+              >
+                <ContactKingScene resigning={isSubmitted} />
+              </Suspense>
+              <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-slate-900/85 backdrop-blur px-3 py-1 text-white text-[11px] uppercase tracking-[0.2em] shadow">
+                <span className="text-amber-300">{isSubmitted ? '\u2655' : '\u265A'}</span>
+                {isSubmitted ? 'Checkmate — they resigned' : 'Your move'}
+              </div>
+            </div>
+
             <div className="border-2 border-slate-200 shadow-xl rounded-lg">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
