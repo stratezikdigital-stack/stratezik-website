@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
+import { scrollToContactSection } from '../utils/navigation'
 
 const HeroSection = () => {
   return (
@@ -40,14 +41,22 @@ const HeroSection = () => {
               </div>
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0"
+              className="text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 space-y-4"
             >
-              Stratezik is a digital marketing agency in Canada. We help Toronto businesses grow with SEO, PPC, and strategy. Think several moves ahead—every campaign planned with chess master precision. We help businesses achieve checkmate in the digital marketplace.
-            </motion.p>
+              <p>
+                Stratezik is a full-service digital marketing and growth agency based in Toronto, Canada.
+              </p>
+              <p>
+                We help small and mid-sized Toronto businesses accelerate growth through integrated strategies that combine SEO, PPC, Social Media Marketing, and Growth Marketing.
+              </p>
+              <p>
+                Think several moves ahead — every campaign is planned with chess-master precision. From data-driven content and targeted social campaigns to high-ROI paid advertising and conversion-focused growth funnels, we orchestrate every element, so your business achieves checkmate in the digital marketplace.
+              </p>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -55,8 +64,12 @@ const HeroSection = () => {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
-              <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center group transition-colors">
-                Get Your Free 1-Hour Consultation
+              <button
+                type="button"
+                onClick={scrollToContactSection}
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center group transition-colors"
+              >
+                Book 1 hr consultation
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>

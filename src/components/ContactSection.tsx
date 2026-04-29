@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
+import { scrollToContactForm } from '../utils/navigation'
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -87,6 +88,7 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <motion.div
+            id="contact-form"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -231,7 +233,9 @@ export default function ContactSection() {
                     <div>
                       <h4 className="font-semibold text-slate-900">Phone</h4>
                       <p className="text-slate-600">
-                        <a href="tel:+16479546557" className="hover:text-red-600 transition-colors">+1 (647) 954-6557</a>
+                        <a href="tel:+14375254772" className="hover:text-red-600 transition-colors">
+                          437-525-4772
+                        </a>
                       </p>
                     </div>
                   </div>
@@ -258,7 +262,11 @@ export default function ContactSection() {
                   Book a 30-minute strategy session to discuss your marketing goals
                   and see how we can help you achieve checkmate.
                 </p>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm">
+                <button
+                  type="button"
+                  onClick={scrollToContactForm}
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm"
+                >
                   Schedule Call
                 </button>
               </div>

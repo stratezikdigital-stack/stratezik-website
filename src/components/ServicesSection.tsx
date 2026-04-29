@@ -1,44 +1,53 @@
 import { motion } from 'framer-motion'
-import { Target, BarChart3, Users, Zap, Shield, TrendingUp } from 'lucide-react'
+import { Target, BarChart3, Users, Zap, Megaphone, TrendingUp } from 'lucide-react'
+import { scrollToContactSection } from '../utils/navigation'
 
 const ServicesSection = () => {
   const services = [
     {
       icon: <Target className="h-8 w-8" />,
-      title: "Strategic Planning",
-      description: "Data-driven strategies that think several moves ahead, ensuring your business achieves checkmate in the marketplace.",
-      features: ["Market Analysis", "Competitive Research", "Goal Setting", "ROI Forecasting"]
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8" />,
-      title: "Analytics & Data",
-      description: "Transform your data into actionable insights with advanced analytics and strategic reporting.",
-      features: ["Performance Tracking", "Conversion Optimization", "A/B Testing", "Real-time Reporting"]
+      title: 'Strategic Planning',
+      description:
+        'Data-driven strategies that think several moves ahead, ensuring your business achieves checkmate in the marketplace.',
+      features: ['Market Analysis', 'Competitive Research', 'Goal Setting', 'ROI Forecasting'],
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Brand Strategy",
-      description: "Build a powerful brand presence that positions you as the king in your industry.",
-      features: ["Brand Identity", "Messaging Strategy", "Visual Design", "Brand Guidelines"]
+      title: 'Brand Strategy',
+      description: 'Build a powerful brand presence that positions you as the king in your industry.',
+      features: ['Brand Identity', 'Messaging Strategy', 'Visual Design', 'Brand Guidelines'],
+    },
+    {
+      icon: <Megaphone className="h-8 w-8" />,
+      title: 'Paid Search & Social Media Ads',
+      description:
+        'Data-driven search, display and social media campaigns that deliver maximum ROI and qualified leads.',
+      features: [
+        'High-performance Google Ads',
+        'Google Business Profile (GBP) and Local SEO',
+        'Remarketing and retargeting campaigns',
+        'Ad campaigns on LinkedIn, Instagram, Facebook, TikTok, and other platforms',
+        'Video advertising on any platforms',
+      ],
     },
     {
       icon: <Zap className="h-8 w-8" />,
-      title: "Creative Campaigns",
-      description: "Innovative campaigns that capture attention and drive results with chess master precision.",
-      features: ["Content Creation", "Social Media", "Email Marketing", "PPC Campaigns"]
-    },
-    {
-      icon: <Shield className="h-8 w-8" />,
-      title: "Digital Security",
-      description: "Protect your digital assets with enterprise-grade security and compliance solutions.",
-      features: ["Security Audits", "Data Protection", "Compliance", "Risk Management"]
+      title: 'Creative Campaigns',
+      description: 'Innovative campaigns that capture attention and drive results with chess master precision.',
+      features: ['Content Creation', 'Social Media', 'Email Marketing', 'PPC Campaigns'],
     },
     {
       icon: <TrendingUp className="h-8 w-8" />,
-      title: "Growth Optimization",
-      description: "Scalable growth strategies that maximize your ROI and market position.",
-      features: ["Conversion Optimization", "Lead Generation", "Customer Retention", "Market Expansion"]
-    }
+      title: 'Growth Optimization',
+      description: 'Scalable growth strategies that maximize your ROI and market position.',
+      features: ['Conversion Optimization', 'Lead Generation', 'Customer Retention', 'Market Expansion'],
+    },
+    {
+      icon: <BarChart3 className="h-8 w-8" />,
+      title: 'Analytics & Data',
+      description: 'Transform your data into actionable insights with advanced analytics and strategic reporting.',
+      features: ['Performance Tracking', 'Conversion Optimization', 'A/B Testing', 'Real-time Reporting'],
+    },
   ]
 
   return (
@@ -53,9 +62,7 @@ const ServicesSection = () => {
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="text-4xl text-red-600">♛</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900">
-              Our Strategic Services
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900">Our Strategic Services</h2>
           </div>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Every move calculated, every strategy planned. We help businesses achieve checkmate in the digital marketplace.
@@ -65,7 +72,7 @@ const ServicesSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
-              key={index}
+              key={service.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -75,32 +82,31 @@ const ServicesSection = () => {
               <div className="bg-red-50 rounded-full w-16 h-16 flex items-center justify-center mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
                 {service.icon}
               </div>
-              
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                {service.title}
-              </h3>
-              
-              <p className="text-slate-600 mb-4">
-                {service.description}
-              </p>
-              
+
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">{service.title}</h3>
+
+              <p className="text-slate-600 mb-4">{service.description}</p>
+
               <ul className="space-y-2">
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center text-sm text-slate-600">
-                    <div className="w-2 h-2 bg-red-600 rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-red-600 rounded-full mr-3 shrink-0" />
                     {feature}
                   </li>
                 ))}
               </ul>
-              
-              <button className="mt-6 text-red-600 font-semibold hover:text-red-700 transition-colors duration-200">
+
+              <button
+                type="button"
+                onClick={scrollToContactSection}
+                className="mt-6 text-red-600 font-semibold hover:text-red-700 transition-colors duration-200 text-left w-full"
+              >
                 Learn Strategy →
               </button>
             </motion.div>
           ))}
         </div>
 
-        {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,14 +116,16 @@ const ServicesSection = () => {
         >
           <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-2xl p-8 text-white">
             <div className="text-4xl mb-4">♚</div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to Make Your Strategic Move?
-            </h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to Make Your Strategic Move?</h3>
             <p className="text-lg mb-6 opacity-90">
-              Let's discuss how our strategic services can help you achieve checkmate.
+              Let&apos;s discuss how our strategic services can help you achieve checkmate.
             </p>
-            <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors duration-200">
-              Get Your Free 1-Hour Consultation
+            <button
+              type="button"
+              onClick={scrollToContactSection}
+              className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors duration-200"
+            >
+              Book 1 hr consultation
             </button>
           </div>
         </motion.div>
