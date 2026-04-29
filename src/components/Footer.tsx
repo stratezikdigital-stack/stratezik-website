@@ -26,7 +26,6 @@ const Footer = () => {
     ],
     company: [
       { name: 'About Stratezik', href: `${baseUrl}/#about` },
-      { name: 'Team', href: `${baseUrl}/#team` },
       { name: 'Careers', href: '/careers' },
       { name: 'Contact', href: `${baseUrl}/#contact` }
     ],

@@ -5,7 +5,6 @@ import HeroSection from './components/HeroSection'
 import ServicesSection from './components/ServicesSection'
 import StrategyFlow from './components/StrategyFlow'
 import PortfolioSection from './components/PortfolioSection'
-import TeamSection from './components/TeamSection'
 import ContactSection from './components/ContactSection'
 import CareerPage from './components/CareerPage'
 import Footer from './components/Footer'
@@ -48,7 +47,6 @@ function App() {
                 <ServicesSection />
                 <StrategyFlow />
                 <PortfolioSection />
-                <TeamSection />
                 <ContactSection />
               </>
             } />
