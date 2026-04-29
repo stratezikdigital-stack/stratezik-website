@@ -1,12 +1,10 @@
-import { Suspense, lazy, useState } from 'react'
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { scrollToContactSection } from '../utils/navigation'
-import type { PieceName } from '../three/pieces'
-
-const ServicePieceCanvas = lazy(() => import('../three/scenes/ServicePieceCanvas'))
+import { useSection } from '../three/world/useSection'
 
 interface Service {
-  piece: PieceName
+  glyph: string
   title: string
   description: string
   features: string[]
@@ -14,20 +12,20 @@ interface Service {
 
 const SERVICES: Service[] = [
   {
-    piece: 'king',
+    glyph: '\u265A',
     title: 'Strategic Planning',
     description:
       'Data-driven strategies that think several moves ahead, ensuring your business achieves checkmate in the marketplace.',
     features: ['Market Analysis', 'Competitive Research', 'Goal Setting', 'ROI Forecasting'],
   },
   {
-    piece: 'queen',
+    glyph: '\u265B',
     title: 'Brand Strategy',
     description: 'Build a powerful brand presence that positions you as the king in your industry.',
     features: ['Brand Identity', 'Messaging Strategy', 'Visual Design', 'Brand Guidelines'],
   },
   {
-    piece: 'knight',
+    glyph: '\u265E',
     title: 'Paid Search & Social Media Ads',
     description:
       'Data-driven search, display and social media campaigns that deliver maximum ROI and qualified leads.',
@@ -40,19 +38,19 @@ const SERVICES: Service[] = [
     ],
   },
   {
-    piece: 'bishop',
+    glyph: '\u265D',
     title: 'Creative Campaigns',
     description: 'Innovative campaigns that capture attention and drive results with chess master precision.',
     features: ['Content Creation', 'Social Media', 'Email Marketing', 'PPC Campaigns'],
   },
   {
-    piece: 'rook',
+    glyph: '\u265C',
     title: 'Growth Optimization',
     description: 'Scalable growth strategies that maximize your ROI and market position.',
     features: ['Conversion Optimization', 'Lead Generation', 'Customer Retention', 'Market Expansion'],
   },
   {
-    piece: 'pawn',
+    glyph: '\u265F',
     title: 'Analytics & Data',
     description: 'Transform your data into actionable insights with advanced analytics and strategic reporting.',
     features: ['Performance Tracking', 'Conversion Optimization', 'A/B Testing', 'Real-time Reporting'],
@@ -60,36 +58,19 @@ const SERVICES: Service[] = [
 ]
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
-  const [hover, setHover] = useState(false)
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
+      transition={{ duration: 0.6, delay: index * 0.06 }}
       viewport={{ once: true, margin: '-50px' }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onFocus={() => setHover(true)}
-      onBlur={() => setHover(false)}
-      className="group relative rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_-15px_rgba(15,23,42,0.18)] hover:shadow-[0_24px_60px_-25px_rgba(220,38,38,0.35)] hover:border-red-200 hover:-translate-y-1 transition-all duration-300"
+      className="group relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md p-6 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.35)] hover:shadow-[0_30px_70px_-30px_rgba(220,38,38,0.4)] hover:border-red-200 hover:-translate-y-1 transition-all duration-300"
     >
       <div
         aria-hidden
         className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-gradient-to-r from-red-500/0 via-red-500/60 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity"
       />
-
-      <div className="relative h-28 w-28 -mt-4 mb-3">
-        <Suspense
-          fallback={
-            <div className="h-full w-full flex items-center justify-center text-4xl text-red-600">
-              &#9818;
-            </div>
-          }
-        >
-          <ServicePieceCanvas piece={service.piece} active={hover} />
-        </Suspense>
-      </div>
+      <div className="text-4xl text-red-600 mb-3 leading-none">{service.glyph}</div>
 
       <h3 className="text-xl font-semibold text-slate-900 mb-2">{service.title}</h3>
       <p className="text-slate-600 mb-4 text-sm leading-relaxed">{service.description}</p>
@@ -116,22 +97,15 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 }
 
 const ServicesSection = () => {
-  return (
-    <section id="services" className="relative py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-      >
-        <div className="grid grid-cols-16 grid-rows-16 h-full w-full">
-          {Array.from({ length: 256 }).map((_, i) => (
-            <div
-              key={i}
-              className={(Math.floor(i / 16) + i) % 2 === 0 ? 'bg-slate-900' : 'bg-transparent'}
-            />
-          ))}
-        </div>
-      </div>
+  const ref = useRef<HTMLElement>(null)
+  useSection('services', ref)
 
+  return (
+    <section
+      id="services"
+      ref={ref}
+      className="relative py-24"
+    >
       <div className="relative max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -140,7 +114,7 @@ const ServicesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700 backdrop-blur">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 backdrop-blur px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700">
             <span className="text-red-600">&#9819;</span>
             The board, the pieces, the play
           </div>
@@ -150,8 +124,8 @@ const ServicesSection = () => {
           >
             Our <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">strategic</span> services
           </h2>
-          <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-            Each service is a piece on the board. Hover any of them to see the move it makes for your business.
+          <p className="mt-4 text-lg text-slate-700 max-w-2xl mx-auto bg-white/60 backdrop-blur rounded-xl px-4 py-2 inline-block">
+            Each service is a piece on the board. Watch the pawn promote as you scroll.
           </p>
         </motion.div>
 
@@ -168,14 +142,7 @@ const ServicesSection = () => {
           viewport={{ once: true }}
           className="mt-16"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-red-900/80 p-8 sm:p-10 text-white shadow-2xl">
-            <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
-              <div className="grid grid-cols-12 grid-rows-4 h-full w-full">
-                {Array.from({ length: 48 }).map((_, i) => (
-                  <div key={i} className={(Math.floor(i / 12) + i) % 2 === 0 ? 'bg-white' : 'bg-transparent'} />
-                ))}
-              </div>
-            </div>
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-red-900/85 backdrop-blur p-8 sm:p-10 text-white shadow-2xl">
             <div className="relative grid sm:grid-cols-[1fr_auto] items-center gap-6">
               <div>
                 <div className="text-3xl mb-2">&#9818;</div>

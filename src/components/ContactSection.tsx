@@ -1,11 +1,15 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
 import { scrollToContactForm } from '../utils/navigation'
-
-const ContactKingScene = lazy(() => import('../three/scenes/ContactKingScene'))
+import { useSection } from '../three/world/useSection'
+import { useWorldStore } from '../three/world/store'
 
 export default function ContactSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  useSection('contact', sectionRef)
+  const setResigned = useWorldStore((s) => s.setResigned)
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,6 +18,12 @@ export default function ContactSection() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+
+  // Mirror submission state into the world store so the global opposing king
+  // topples in the persistent canvas when the user submits.
+  useEffect(() => {
+    setResigned(isSubmitted)
+  }, [isSubmitted, setResigned])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -55,21 +65,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-white relative overflow-hidden">
-      {/* Chess board background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="grid grid-cols-8 h-full">
-          {Array.from({ length: 64 }).map((_, i) => (
-            <div
-              key={i}
-              className={`${
-                (Math.floor(i / 8) + i) % 2 === 0 ? 'bg-slate-800' : 'bg-white'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
+    <section id="contact" ref={sectionRef} className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           className="text-center mb-16"
@@ -78,12 +74,14 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl font-bold text-slate-900 mb-6">
-            Ready to Make Your <span className="text-red-600">Move?</span>
+          <h2
+            className="font-display text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight"
+            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
+          >
+            Ready to make your <span className="bg-gradient-to-br from-red-400 to-amber-300 bg-clip-text text-transparent">move</span>?
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Let's discuss your digital marketing strategy.
-            Every great campaign starts with a conversation.
+          <p className="text-lg text-white/80 max-w-3xl mx-auto bg-slate-900/50 backdrop-blur rounded-xl px-4 py-2 inline-block">
+            Submit your details to deliver checkmate. The opposing king will visibly resign.
           </p>
         </motion.div>
 
@@ -96,7 +94,7 @@ export default function ContactSection() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="border-2 border-slate-200 shadow-xl rounded-lg">
+            <div className="border border-white/60 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl">
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-3xl text-red-600">♛</div>
@@ -210,24 +208,22 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            {/* 3D scene — opponent king resigns when the form is submitted */}
-            <div className="relative rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 shadow-xl overflow-hidden">
-              <Suspense
-                fallback={
-                  <div className="aspect-[16/10] flex items-center justify-center text-6xl text-red-600">
-                    &#9818;
-                  </div>
-                }
-              >
-                <ContactKingScene resigning={isSubmitted} />
-              </Suspense>
-              <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-slate-900/85 backdrop-blur px-3 py-1 text-white text-[11px] uppercase tracking-[0.2em] shadow">
-                <span className="text-amber-300">{isSubmitted ? '\u2655' : '\u265A'}</span>
-                {isSubmitted ? 'Checkmate — they resigned' : 'Your move'}
+            {/* HUD overlay — narrates the game state. The actual 3D promotion
+                + opposing king resign animation is rendered by the global
+                world canvas behind the page. */}
+            <div className="relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md shadow-xl px-5 py-4 flex items-center gap-3">
+              <span className="text-3xl text-amber-500">{isSubmitted ? '\u2655' : '\u265A'}</span>
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                  {isSubmitted ? 'Game state' : 'Your move'}
+                </div>
+                <div className="text-base font-semibold text-slate-900">
+                  {isSubmitted ? 'Checkmate — they resigned' : 'The board awaits your strategy'}
+                </div>
               </div>
             </div>
 
-            <div className="border-2 border-slate-200 shadow-xl rounded-lg">
+            <div className="border border-white/60 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="text-2xl text-slate-800">♜</div>
@@ -271,7 +267,7 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 shadow-xl rounded-lg">
+            <div className="bg-gradient-to-br from-red-50/95 to-red-100/95 backdrop-blur-md border border-red-200/80 shadow-xl rounded-2xl">
               <div className="p-5 text-center">
                 <div className="text-3xl text-red-600 mb-3">♚</div>
                 <h3 className="text-lg font-bold text-slate-900 mb-3">

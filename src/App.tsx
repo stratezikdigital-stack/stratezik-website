@@ -9,6 +9,8 @@ import ContactSection from './components/ContactSection'
 import CareerPage from './components/CareerPage'
 import Footer from './components/Footer'
 import { useCanonical } from './utils/canonical'
+import { SmoothScroll } from './three/world/SmoothScroll'
+import { WorldCanvas } from './three/world/WorldCanvas'
 
 function CanonicalManager() {
   useCanonical()
@@ -36,25 +38,32 @@ function App() {
   return (
     <Router>
       <CanonicalManager />
-      <ScrollToHash />
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <Navbar />
-        <main className="pt-36">
-          <Routes>
-            <Route path="/" element={
-              <>
-                <HeroSection />
-                <ServicesSection />
-                <StrategyFlow />
-                <PortfolioSection />
-                <ContactSection />
-              </>
-            } />
-            <Route path="/careers" element={<CareerPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <SmoothScroll>
+        <ScrollToHash />
+        {/* Persistent 3D world living behind the entire page. */}
+        <WorldCanvas />
+        <div className="relative z-10 min-h-screen">
+          <Navbar />
+          <main className="pt-36">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <HeroSection />
+                    <ServicesSection />
+                    <StrategyFlow />
+                    <PortfolioSection />
+                    <ContactSection />
+                  </>
+                }
+              />
+              <Route path="/careers" element={<CareerPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </SmoothScroll>
     </Router>
   )
 }

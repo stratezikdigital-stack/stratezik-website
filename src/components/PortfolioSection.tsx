@@ -1,6 +1,8 @@
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, ArrowRight } from 'lucide-react'
 import { TiltCard } from '../three/scenes/TiltCard'
+import { useSection } from '../three/world/useSection'
 
 interface Project {
   title: string
@@ -83,8 +85,11 @@ const PROJECTS: Project[] = [
 ]
 
 const PortfolioSection = () => {
+  const ref = useRef<HTMLElement>(null)
+  useSection('portfolio', ref)
+
   return (
-    <section id="portfolio" className="relative py-24 bg-slate-50 overflow-hidden">
+    <section id="portfolio" ref={ref} className="relative py-24 overflow-hidden">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-40 right-0 h-[420px] w-[420px] rounded-full bg-amber-300/15 blur-3xl"
