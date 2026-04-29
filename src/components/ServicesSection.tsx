@@ -3,96 +3,306 @@ import { motion } from 'framer-motion'
 import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
-interface Service {
-  glyph: string
-  title: string
-  description: string
-  features: string[]
+/**
+ * Plan D — Services as openings.
+ *
+ * Each Stratezik service is reframed as a famous chess opening, paired
+ * with a small SVG diagram showing that opening's first three moves.
+ * Cards are editorial: hairline rules, tabular notation, no gradient
+ * candy. Hover lifts the card slightly and reveals an accent rule.
+ */
+
+interface Opening {
+  number: string
+  /** The chess-opening codename (left/large) */
+  opening: string
+  /** ECO code (e.g. C60). Tiny editorial detail. */
+  eco: string
+  /** What it actually means at Stratezik */
+  service: string
+  /** First three moves of the opening, in algebraic notation */
+  moves: [string, string, string]
+  /** Editorial blurb */
+  thesis: string
+  /** Tactical bullets */
+  tactics: string[]
+  /** SVG diagram path d's — coordinates on a 8x8 grid (0..7) */
+  arrows: { from: [number, number]; to: [number, number]; color: 'white' | 'black' }[]
 }
 
-const SERVICES: Service[] = [
+const OPENINGS: Opening[] = [
   {
-    glyph: '\u265A',
-    title: 'Strategic Planning',
-    description:
-      'Data-driven strategies that think several moves ahead, ensuring your business achieves checkmate in the marketplace.',
-    features: ['Market Analysis', 'Competitive Research', 'Goal Setting', 'ROI Forecasting'],
-  },
-  {
-    glyph: '\u265B',
-    title: 'Brand Strategy',
-    description: 'Build a powerful brand presence that positions you as the king in your industry.',
-    features: ['Brand Identity', 'Messaging Strategy', 'Visual Design', 'Brand Guidelines'],
-  },
-  {
-    glyph: '\u265E',
-    title: 'Paid Search & Social Media Ads',
-    description:
-      'Data-driven search, display and social media campaigns that deliver maximum ROI and qualified leads.',
-    features: [
+    number: '01',
+    opening: "King's Gambit",
+    eco: 'C30',
+    service: 'Paid Search & Social Ads',
+    moves: ['1. e4 e5', '2. f4 exf4', '3. Nf3 g5'],
+    thesis:
+      'Sacrifice a pawn early to seize the centre and the initiative. In paid media: a bold opening bid that buys position your competitors can\u2019t recover from.',
+    tactics: [
       'High-performance Google Ads',
-      'Google Business Profile (GBP) and Local SEO',
-      'Remarketing and retargeting campaigns',
-      'Ad campaigns on LinkedIn, Instagram, Facebook, TikTok, and other platforms',
-      'Video advertising on any platforms',
+      'Programmatic + retargeting',
+      'Meta, LinkedIn, TikTok, YouTube',
+      'Local + GBP dominance',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [4, 6], to: [4, 4], color: 'black' },
+      { from: [5, 1], to: [5, 3], color: 'white' },
     ],
   },
   {
-    glyph: '\u265D',
-    title: 'Creative Campaigns',
-    description: 'Innovative campaigns that capture attention and drive results with chess master precision.',
-    features: ['Content Creation', 'Social Media', 'Email Marketing', 'PPC Campaigns'],
+    number: '02',
+    opening: 'Sicilian Defense',
+    eco: 'B20',
+    service: 'SEO & Organic Growth',
+    moves: ['1. e4 c5', '2. Nf3 d6', '3. d4 cxd4'],
+    thesis:
+      'The most-studied counter in modern chess. Asymmetric, patient, ruthlessly long-term. SEO\u2019s exact temperament \u2014 you don\u2019t buy attention, you compound it.',
+    tactics: [
+      'Technical SEO + site architecture',
+      'Topical authority clusters',
+      'Programmatic content engines',
+      'E-E-A-T + link strategy',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [2, 6], to: [2, 4], color: 'black' },
+      { from: [6, 0], to: [5, 2], color: 'white' },
+    ],
   },
   {
-    glyph: '\u265C',
-    title: 'Growth Optimization',
-    description: 'Scalable growth strategies that maximize your ROI and market position.',
-    features: ['Conversion Optimization', 'Lead Generation', 'Customer Retention', 'Market Expansion'],
+    number: '03',
+    opening: 'Italian Game',
+    eco: 'C50',
+    service: 'Social Strategy & Content',
+    moves: ['1. e4 e5', '2. Nf3 Nc6', '3. Bc4 Bc5'],
+    thesis:
+      'Develops pieces toward the most provocative square \u2014 right next to the opponent\u2019s king. Social done right: every post is positional, none of it is filler.',
+    tactics: [
+      'Editorial calendars + creative direction',
+      'Short-form video systems',
+      'Community + influencer programs',
+      'Always-on reporting cadence',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [6, 0], to: [5, 2], color: 'white' },
+      { from: [5, 0], to: [2, 3], color: 'white' },
+    ],
   },
   {
-    glyph: '\u265F',
-    title: 'Analytics & Data',
-    description: 'Transform your data into actionable insights with advanced analytics and strategic reporting.',
-    features: ['Performance Tracking', 'Conversion Optimization', 'A/B Testing', 'Real-time Reporting'],
+    number: '04',
+    opening: "Queen's Gambit",
+    eco: 'D06',
+    service: 'Brand Strategy & Identity',
+    moves: ['1. d4 d5', '2. c4 e6', '3. Nc3 Nf6'],
+    thesis:
+      'Offer a flank pawn to dominate the centre. The premium brand play: trade short-term volume for long-term positioning that no challenger can dislodge.',
+    tactics: [
+      'Brand architecture + naming',
+      'Visual identity systems',
+      'Messaging frameworks',
+      'Brand books + governance',
+    ],
+    arrows: [
+      { from: [3, 1], to: [3, 3], color: 'white' },
+      { from: [2, 1], to: [2, 3], color: 'white' },
+      { from: [3, 6], to: [3, 4], color: 'black' },
+    ],
+  },
+  {
+    number: '05',
+    opening: 'English Opening',
+    eco: 'A10',
+    service: 'Conversion & Growth',
+    moves: ['1. c4 e5', '2. Nc3 Nf6', '3. Nf3 Nc6'],
+    thesis:
+      'Flexible, hyper-modern, transposable. Conversion engineering at its best: every funnel adapts to the visitor, no scripted opening required.',
+    tactics: [
+      'CRO + landing-page systems',
+      'Lead-gen + nurture flows',
+      'Lifecycle + retention',
+      'Pricing & offer testing',
+    ],
+    arrows: [
+      { from: [2, 1], to: [2, 3], color: 'white' },
+      { from: [4, 6], to: [4, 4], color: 'black' },
+      { from: [1, 0], to: [2, 2], color: 'white' },
+    ],
+  },
+  {
+    number: '06',
+    opening: "Reti Opening",
+    eco: 'A04',
+    service: 'Analytics & Data',
+    moves: ['1. Nf3 d5', '2. c4 d4', '3. b4 \u2026'],
+    thesis:
+      'Win without revealing your plan. Modern analytics: the answer doesn\u2019t come from the dashboard \u2014 it comes from the question we frame two layers above it.',
+    tactics: [
+      'Measurement architecture',
+      'GA4 + server-side tagging',
+      'Attribution + MMM',
+      'Executive reporting',
+    ],
+    arrows: [
+      { from: [6, 0], to: [5, 2], color: 'white' },
+      { from: [3, 6], to: [3, 4], color: 'black' },
+      { from: [2, 1], to: [2, 3], color: 'white' },
+    ],
   },
 ]
 
-function ServiceCard({ service, index }: { service: Service; index: number }) {
+/**
+ * Tiny SVG mini-board with arrowed move overlay.
+ * 8x8, coordinates 0..7 (file, rank).
+ */
+function MiniBoard({ arrows }: { arrows: Opening['arrows'] }) {
+  const tile = 12
+  const board = []
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const dark = (f + r) % 2 === 1
+      board.push(
+        <rect
+          key={`${f}-${r}`}
+          x={f * tile}
+          y={(7 - r) * tile}
+          width={tile}
+          height={tile}
+          fill={dark ? '#2a2722' : '#e6dfcf'}
+        />,
+      )
+    }
+  }
+
   return (
-    <motion.div
+    <svg
+      viewBox={`0 0 ${tile * 8} ${tile * 8}`}
+      className="w-full h-full"
+      role="img"
+      aria-label="Opening diagram"
+    >
+      <defs>
+        <marker
+          id="white-head"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="5"
+          markerHeight="5"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f4ede1" />
+        </marker>
+        <marker
+          id="black-head"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="5"
+          markerHeight="5"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a1f1f" />
+        </marker>
+      </defs>
+      {board}
+      <rect x={0} y={0} width={tile * 8} height={tile * 8} fill="none" stroke="#0d0c0a" strokeWidth={1} />
+      {arrows.map((a, i) => {
+        const x1 = a.from[0] * tile + tile / 2
+        const y1 = (7 - a.from[1]) * tile + tile / 2
+        const x2 = a.to[0] * tile + tile / 2
+        const y2 = (7 - a.to[1]) * tile + tile / 2
+        const stroke = a.color === 'white' ? '#f4ede1' : '#7a1f1f'
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke={stroke}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            markerEnd={a.color === 'white' ? 'url(#white-head)' : 'url(#black-head)'}
+            opacity={0.95}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
+function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
+  return (
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.06 }}
-      viewport={{ once: true, margin: '-50px' }}
-      className="group relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md p-6 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.35)] hover:shadow-[0_30px_70px_-30px_rgba(220,38,38,0.4)] hover:border-red-200 hover:-translate-y-1 transition-all duration-300"
+      transition={{ duration: 0.7, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-80px' }}
+      data-cursor="glyph"
+      data-cursor-glyph={'\u265F'}
+      className="group relative bg-cream-50 border border-ink/10 hover:border-ink/30 transition-all duration-700 lift"
     >
+      {/* Top hairline accent — appears on hover */}
       <div
         aria-hidden
-        className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-gradient-to-r from-red-500/0 via-red-500/60 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-0 top-0 h-px bg-oxblood transition-all duration-700 ease-out group-hover:w-full"
+        style={{ width: '0%' }}
       />
-      <div className="text-4xl text-red-600 mb-3 leading-none">{service.glyph}</div>
 
-      <h3 className="text-xl font-semibold text-slate-900 mb-2">{service.title}</h3>
-      <p className="text-slate-600 mb-4 text-sm leading-relaxed">{service.description}</p>
+      <div className="grid grid-cols-12 gap-4 p-7 md:p-8">
+        {/* Number + ECO */}
+        <div className="col-span-3 md:col-span-2 flex flex-col font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+          <span className="text-ink-700">{opening.number}</span>
+          <span className="mt-2">{opening.eco}</span>
+        </div>
 
-      <ul className="space-y-1.5">
-        {service.features.map((feature) => (
-          <li key={feature} className="flex items-start text-sm text-slate-600">
-            <span className="mt-2 mr-2.5 inline-block h-1.5 w-1.5 rounded-full bg-red-600 shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
+        {/* Title block */}
+        <div className="col-span-9 md:col-span-7">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+            {opening.service}
+          </div>
+          <h3 className="mt-1 font-display text-display-3 text-ink leading-[1] tracking-[-0.025em]">
+            {opening.opening}
+          </h3>
+        </div>
 
-      <button
-        type="button"
-        onClick={scrollToContactSection}
-        className="mt-5 inline-flex items-center gap-1 text-red-600 font-semibold text-sm hover:text-red-700 transition-colors"
-      >
-        Learn Strategy
-        <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-      </button>
-    </motion.div>
+        {/* Mini board */}
+        <div className="col-span-3 md:col-span-3 flex items-center justify-end">
+          <div className="w-20 md:w-24 aspect-square">
+            <MiniBoard arrows={opening.arrows} />
+          </div>
+        </div>
+      </div>
+
+      <div className="hairline mx-7 md:mx-8" />
+
+      <div className="grid grid-cols-12 gap-4 p-7 md:p-8 pt-6">
+        {/* Move list */}
+        <div className="col-span-12 md:col-span-4 font-mono text-[12px] text-ink-700 tabular-nums leading-7">
+          {opening.moves.map((m) => (
+            <div key={m} className="whitespace-nowrap">{m}</div>
+          ))}
+        </div>
+
+        {/* Thesis + tactics */}
+        <div className="col-span-12 md:col-span-8">
+          <p className="lead text-[1.05rem] sm:text-[1.15rem] mb-5 leading-snug">
+            {opening.thesis}
+          </p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+            {opening.tactics.map((t) => (
+              <li key={t} className="flex items-baseline gap-2 text-sm text-ink-700">
+                <span className="font-mono text-[10px] text-oxblood">&#9670;</span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </motion.article>
   )
 }
 
@@ -101,66 +311,73 @@ const ServicesSection = () => {
   useSection('services', ref)
 
   return (
-    <section
-      id="services"
-      ref={ref}
-      className="relative py-24"
-    >
-      <div className="relative max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+    <section id="services" ref={ref} className="relative py-24 md:py-32">
+      <div className="container-custom px-6 md:px-12">
+        {/* Section heading row — editorial */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 backdrop-blur px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700">
-            <span className="text-red-600">&#9819;</span>
-            The board, the pieces, the play
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 02 &mdash; Repertoire
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Six openings &middot; one repertoire
+            </div>
           </div>
-          <h2
-            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight"
-            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-          >
-            Our <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">strategic</span> services
-          </h2>
-          <p className="mt-4 text-lg text-slate-700 max-w-2xl mx-auto bg-white/60 backdrop-blur rounded-xl px-4 py-2 inline-block">
-            Each service is a piece on the board. Watch the pawn promote as you scroll.
-          </p>
-        </motion.div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              We don&rsquo;t run campaigns.
+              <br />
+              <span className="italic font-light text-oxblood">We run gambits.</span>
+            </h2>
+            <p className="lead mt-8 max-w-3xl">
+              Every Stratezik engagement is built on a documented opening &mdash; a sequence of moves
+              we&rsquo;ve studied, refined, and won with. Pick the opening that suits your position,
+              or let us prepare a tailored line.
+            </p>
+          </div>
+        </motion.header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} />
+        {/* Opening cards grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-ink/10">
+          {OPENINGS.map((o, i) => (
+            <OpeningCard key={o.opening} opening={o} index={i} />
           ))}
         </div>
 
+        {/* Bottom CTA strip — editorial CTA, no gradient */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mt-16"
+          className="mt-20 md:mt-28 grid grid-cols-12 gap-4"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-red-900/85 backdrop-blur p-8 sm:p-10 text-white shadow-2xl">
-            <div className="relative grid sm:grid-cols-[1fr_auto] items-center gap-6">
-              <div>
-                <div className="text-3xl mb-2">&#9818;</div>
-                <h3 className="text-2xl md:text-3xl font-bold leading-tight">
-                  Ready to make your strategic move?
-                </h3>
-                <p className="text-white/80 mt-2 max-w-xl">
-                  Let&apos;s discuss how our strategic services can help you achieve checkmate.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={scrollToContactSection}
-                className="inline-flex items-center justify-center bg-white text-red-700 px-6 py-3 rounded-xl font-semibold hover:bg-slate-100 transition-colors whitespace-nowrap"
-              >
-                Book 1 hr consultation
-              </button>
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Choose your line
             </div>
+          </div>
+          <div className="col-span-12 md:col-span-9 hairline pt-8">
+            <h3 className="font-display text-display-3 text-ink max-w-3xl tracking-[-0.025em] leading-[1.02]">
+              Or let us prepare a tailored opening for your market.
+            </h3>
+            <button
+              type="button"
+              onClick={scrollToContactSection}
+              data-cursor="cta"
+              data-cursor-text="Open"
+              className="mt-8 inline-flex items-center gap-3 bg-ink text-cream px-8 py-4 font-medium hover:bg-oxblood transition-colors"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">/03</span>
+              Book the consultation
+              <span aria-hidden className="font-mono">&rarr;</span>
+            </button>
           </div>
         </motion.div>
       </div>

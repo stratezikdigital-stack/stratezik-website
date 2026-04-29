@@ -1,86 +1,99 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, ArrowRight } from 'lucide-react'
-import { TiltCard } from '../three/scenes/TiltCard'
 import { useSection } from '../three/world/useSection'
 
-interface Project {
-  title: string
+interface MatchRecord {
+  num: string
+  /** Headline framed as the opponent we beat */
+  opponent: string
+  /** Discipline */
   category: string
+  /** Game story — short editorial */
   description: string
-  image: string
-  technologies: string[]
-  results: string
-  /** Chess notation for the move that won this case. */
+  /** The winning move in algebraic notation */
   notation: string
   /** Glyph for the piece that delivered the move. */
   glyph: string
+  /** Headline result */
+  result: string
+  /** Opening played */
+  opening: string
+  /** Match length */
+  moves: string
 }
 
-const PROJECTS: Project[] = [
+const MATCHES: MatchRecord[] = [
   {
-    title: 'E-Commerce Checkmate',
-    category: 'Digital Marketing',
+    num: '#047',
+    opponent: 'vs Fragmented CPC Market',
+    category: 'Paid Media',
     description:
-      'Strategic e-commerce campaign that achieved 300% increase in sales and market dominance.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop',
-    technologies: ['Google Ads', 'Facebook Ads', 'SEO', 'Analytics'],
-    results: '300% increase in sales',
-    notation: 'Kxe4#',
-    glyph: '\u265A',
-  },
-  {
-    title: 'Brand Strategy Victory',
-    category: 'Brand Strategy',
-    description: 'Complete brand transformation that positioned the client as the industry king.',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=300&fit=crop',
-    technologies: ['Brand Identity', 'Messaging', 'Visual Design', 'Positioning'],
-    results: 'Market leadership achieved',
-    notation: 'Qg7+',
-    glyph: '\u265B',
-  },
-  {
-    title: 'Data Analytics Mastery',
-    category: 'Analytics & Data',
-    description:
-      'Advanced analytics implementation that provided strategic insights and optimization.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop',
-    technologies: ['Google Analytics', 'Data Studio', 'A/B Testing', 'ROI Tracking'],
-    results: '40% improvement in decisions',
-    notation: 'Re8',
-    glyph: '\u265C',
-  },
-  {
-    title: 'Social Media Domination',
-    category: 'Social Media',
-    description:
-      'Comprehensive social media strategy that captured the market and drove engagement.',
-    image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=500&h=300&fit=crop',
-    technologies: ['Instagram', 'LinkedIn', 'Content Strategy', 'Community Management'],
-    results: '500% engagement increase',
+      'Opponent had been bidding on every long-tail keyword without a unifying narrative. We consolidated 240 ad groups into 18 strategic clusters, each anchored by a deliberate creative thesis.',
     notation: 'Bxh7+',
     glyph: '\u265D',
+    result: '+312% CTR &middot; 90 days',
+    opening: "King's Gambit",
+    moves: '1\u201347',
   },
   {
-    title: 'Lead Generation Success',
-    category: 'Lead Generation',
+    num: '#039',
+    opponent: 'vs Stalled Organic Growth',
+    category: 'SEO & Content',
     description:
-      'Strategic lead generation campaign that filled the sales pipeline with qualified prospects.',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop',
-    technologies: ['PPC', 'Landing Pages', 'CRM', 'Automation'],
-    results: '200% more qualified leads',
+      'Twelve months of SEO work, no compounding return. We rebuilt topical authority from a hub-and-spoke model and rewrote the technical foundation. Recovered position in nine weeks.',
+    notation: 'Re8',
+    glyph: '\u265C',
+    result: '+184% organic sessions &middot; 9 weeks',
+    opening: 'Sicilian Defense',
+    moves: '1\u201339',
+  },
+  {
+    num: '#031',
+    opponent: 'vs Generic Brand Identity',
+    category: 'Brand Strategy',
+    description:
+      'Visual sameness was costing them deals against challengers. We rebuilt the wordmark, voice, and visual system around a single ownable position and gave sales a story to lead with.',
+    notation: 'Qg7+',
+    glyph: '\u265B',
+    result: 'Win-rate +28pts',
+    opening: "Queen's Gambit",
+    moves: '1\u201331',
+  },
+  {
+    num: '#024',
+    opponent: 'vs Misattributed Spend',
+    category: 'Analytics',
+    description:
+      'Reporting attributed 70% of revenue to last-click. We rebuilt measurement on server-side tagging and incrementality testing. Reallocated $1.4M to verifiably profitable channels.',
     notation: 'Nf6',
     glyph: '\u265E',
+    result: '$1.4M reallocated &middot; ROAS +2.4x',
+    opening: 'English Opening',
+    moves: '1\u201324',
   },
   {
-    title: 'Conversion Optimization',
-    category: 'Conversion Optimization',
-    description: 'Data-driven optimization that maximized conversion rates and revenue growth.',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&h=300&fit=crop',
-    technologies: ['A/B Testing', 'UX Design', 'Analytics', 'CRO'],
-    results: '150% conversion increase',
+    num: '#018',
+    opponent: 'vs Low-Converting Funnel',
+    category: 'Conversion',
+    description:
+      'Traffic was healthy. Conversion was bleeding. We re-architected the offer ladder, rewrote three landing pages, and instrumented systematic A/B testing.',
     notation: 'e4-e5',
     glyph: '\u265F',
+    result: '+150% conversion rate',
+    opening: 'Reti Opening',
+    moves: '1\u201318',
+  },
+  {
+    num: '#012',
+    opponent: 'vs Quiet Social Presence',
+    category: 'Social',
+    description:
+      'Audience was there but unconvinced. We installed an editorial cadence and a weekly creative review. Engagement compounded; community built itself.',
+    notation: 'Kxe4',
+    glyph: '\u265A',
+    result: '+500% engagement &middot; 6 months',
+    opening: 'Italian Game',
+    moves: '1\u201312',
   },
 ]
 
@@ -89,132 +102,98 @@ const PortfolioSection = () => {
   useSection('portfolio', ref)
 
   return (
-    <section id="portfolio" ref={ref} className="relative py-24 overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 right-0 h-[420px] w-[420px] rounded-full bg-amber-300/15 blur-3xl"
-      />
-
-      <div className="max-w-7xl mx-auto px-6 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+    <section id="portfolio" ref={ref} className="relative py-24 md:py-32">
+      <div className="container-custom px-6 md:px-12">
+        {/* Editorial header */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700 backdrop-blur">
-            <span className="text-red-600">&#9820;</span>
-            Strategic victories
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 04 &mdash; Match record
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Selected wins
+            </div>
           </div>
-          <h2
-            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight"
-            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-          >
-            Recent <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">checkmates</span>
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-            Each victory below was a calculated move. Hover any card to feel the position.
-          </p>
-        </motion.div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              Six games.
+              <br />
+              <span className="italic font-light text-oxblood">Six wins.</span>
+            </h2>
+            <p className="lead mt-8 max-w-3xl">
+              We treat every engagement like a tournament match. Each card below is a record of a
+              specific position, the opening we chose, and the move that decided it.
+            </p>
+          </div>
+        </motion.header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROJECTS.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 30 }}
+        {/* Match list — editorial table */}
+        <div className="border-t border-ink/15">
+          {MATCHES.map((m, i) => (
+            <motion.article
+              key={m.num}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.08 }}
-              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: i * 0.04 }}
+              viewport={{ once: true, margin: '-80px' }}
+              data-cursor="cta"
+              data-cursor-text="Read"
+              className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer"
             >
-              <TiltCard className="rounded-2xl">
-                <div className="rounded-2xl bg-white shadow-[0_18px_40px_-20px_rgba(15,23,42,0.25)] overflow-hidden border border-slate-200 group">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    {/* Notation badge — looks like a chess clock */}
-                    <div className="absolute top-3 left-3 rounded-md border border-white/20 bg-slate-900/85 backdrop-blur px-2.5 py-1 shadow-lg flex items-center gap-1.5">
-                      <span className="text-amber-300 text-base leading-none">{project.glyph}</span>
-                      <span className="text-white text-xs font-mono tracking-wide">{project.notation}</span>
-                    </div>
+              {/* Game number */}
+              <div className="col-span-3 md:col-span-1 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 pt-2">
+                Game
+                <div className="text-ink mt-0.5 tabular-nums">{m.num}</div>
+              </div>
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/0 to-transparent" />
+              {/* Opponent + category */}
+              <div className="col-span-9 md:col-span-5">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+                  {m.category} &middot; {m.opening}
+                </div>
+                <h3 className="mt-1 font-display text-2xl md:text-3xl lg:text-4xl text-ink leading-[1.05] tracking-[-0.025em] group-hover:translate-x-1 transition-transform duration-700">
+                  {m.opponent}
+                </h3>
+                <p className="mt-3 text-ink-700 text-sm sm:text-base leading-relaxed max-w-2xl">
+                  {m.description}
+                </p>
+              </div>
 
-                    <div className="absolute inset-0 flex items-end justify-between p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="rounded-full bg-white/90 text-slate-900 text-xs font-semibold px-2.5 py-1">
-                        {project.category}
-                      </span>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1 rounded-full bg-white text-slate-900 px-3 py-1 text-xs font-semibold hover:bg-slate-100 transition-colors"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        View Victory
-                      </button>
-                    </div>
+              {/* Result */}
+              <div className="col-span-12 md:col-span-3 flex flex-col justify-between">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+                  Result
+                </div>
+                <div
+                  className="mt-2 font-display text-lg text-ink leading-tight"
+                  dangerouslySetInnerHTML={{ __html: m.result }}
+                />
+                <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                  Moves {m.moves}
+                </div>
+              </div>
+
+              {/* Winning move + glyph */}
+              <div className="col-span-12 md:col-span-3 flex items-start justify-end">
+                <div className="text-right">
+                  <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+                    Winning move
                   </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-red-600 font-semibold uppercase tracking-[0.15em]">
-                        {project.category}
-                      </span>
-                      <span className="text-xs text-emerald-600 font-semibold">
-                        {project.results}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{project.title}</h3>
-                    <p className="text-sm text-slate-600 mb-4 leading-relaxed">{project.description}</p>
-
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-xs rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    <button
-                      type="button"
-                      className="text-red-600 font-semibold hover:text-red-700 transition-colors text-sm flex items-center gap-1.5"
-                    >
-                      Case Study
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
+                  <div className="mt-1 inline-flex items-baseline gap-2">
+                    <span className="text-3xl text-oxblood leading-none">{m.glyph}</span>
+                    <span className="font-mono text-xl text-ink tabular-nums">{m.notation}</span>
                   </div>
                 </div>
-              </TiltCard>
-            </motion.div>
+              </div>
+            </motion.article>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-slate-200"
-        >
-          {[
-            { v: '150+', l: 'Strategic Victories' },
-            { v: '98%', l: 'Client Satisfaction' },
-            { v: '$5M+', l: 'Revenue Generated' },
-            { v: '24/7', l: 'Strategic Support' },
-          ].map((s) => (
-            <div key={s.l} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">{s.v}</div>
-              <div className="text-slate-600">{s.l}</div>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   )

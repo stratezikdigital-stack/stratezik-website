@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
@@ -11,6 +11,10 @@ import Footer from './components/Footer'
 import { useCanonical } from './utils/canonical'
 import { SmoothScroll } from './three/world/SmoothScroll'
 import { WorldCanvas } from './three/world/WorldCanvas'
+import { Loader } from './components/Loader'
+import { CustomCursor } from './components/CustomCursor'
+import { MoveCounterHUD } from './components/MoveCounterHUD'
+import { NotationMarquee } from './components/NotationMarquee'
 
 function CanonicalManager() {
   useCanonical()
@@ -35,13 +39,21 @@ function ScrollToHash() {
 }
 
 function App() {
+  const [loaded, setLoaded] = useState(false)
+
   return (
     <Router>
       <CanonicalManager />
+      {/* Plan D — cinematic intro loader */}
+      <Loader onDone={() => setLoaded(true)} />
+      {/* Custom cursor lives outside SmoothScroll so it tracks viewport pixels */}
+      <CustomCursor />
       <SmoothScroll>
         <ScrollToHash />
         {/* Persistent 3D world living behind the entire page. */}
         <WorldCanvas />
+        {/* Now-playing HUD — appears after loader exits */}
+        {loaded ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
           <Navbar />
           <main className="pt-36">
@@ -51,7 +63,9 @@ function App() {
                 element={
                   <>
                     <HeroSection />
+                    <NotationMarquee variant="dark" lines={['1.\u00a0e4 e5', '2.\u00a0Nf3 Nc6', '3.\u00a0Bb5 a6', '\u2014 The Spanish Game', '\u2014 We open with strategy', '\u2014 Stratezik']} />
                     <ServicesSection />
+                    <NotationMarquee variant="light" lines={['Pattern recognition', 'Tempo over force', 'Position over pieces', 'The endgame begins on move one', 'Stratezik']} />
                     <StrategyFlow />
                     <PortfolioSection />
                     <ContactSection />

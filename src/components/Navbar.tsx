@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Menu, X, Phone, Mail, Calendar } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { scrollToContactSection } from '../utils/navigation'
 
@@ -7,25 +7,32 @@ const PHONE_DISPLAY = '437-525-4772'
 const PHONE_TEL = '+14375254772'
 const EMAIL = 'dave@stratezik.com'
 
+/**
+ * Plan D — Editorial navbar (Champion's Hall).
+ *
+ * Two thin rails:
+ *  • Top rail (hairline-divided): contact info as monospace notation
+ *  • Bottom rail: tiny editorial wordmark, monospace nav, ink-on-cream
+ *    consultation button.
+ *
+ * Quiet, considered, magazine-masthead vibe.
+ */
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 30)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const navItems = [
-    { name: 'Home', href: '#home', isHome: true },
-    { name: 'Services', href: '#services', isHome: false },
-    { name: 'Portfolio', href: '#portfolio', isHome: false },
-    { name: 'About', href: '#about', isHome: false },
-    { name: 'Contact', href: '#contact', isHome: false },
+    { name: 'Openings', label: '02', href: '#services' },
+    { name: 'Strategy', label: '03', href: '#strategy' },
+    { name: 'Record', label: '04', href: '#portfolio' },
+    { name: 'Move', label: '05', href: '#contact' },
   ]
 
   const goHash = (hash: string) => {
@@ -40,98 +47,102 @@ const Navbar = () => {
     }
   }
 
-  const handleNavClick = (item: (typeof navItems)[0]) => {
-    if (item.isHome) {
-      setIsOpen(false)
-      if (location.pathname !== '/') {
-        window.location.href = '/'
-        return
-      }
-      document.querySelector('#home')?.scrollIntoView({ behavior: 'smooth' })
-      return
-    }
-    goHash(item.href)
-  }
-
   const onBookConsultation = () => {
     setIsOpen(false)
     scrollToContactSection()
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm">
-      {/* Top contact rail — phone, email, and CTA in one cohesive strip */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white/95 border-b border-red-900/25">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 sm:gap-3 py-2 text-[11px] sm:text-sm">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 font-medium tracking-tight hover:bg-white/20 transition-colors"
-              aria-label={`Call ${PHONE_DISPLAY}`}
-            >
-              <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-400 shrink-0" aria-hidden />
-              <span>{PHONE_DISPLAY}</span>
-            </a>
-            <a
-              href={`mailto:${EMAIL}?subject=Book%201%20hour%20consultation`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 font-medium tracking-tight hover:bg-white/20 transition-colors max-w-[200px] sm:max-w-none truncate sm:overflow-visible sm:whitespace-normal"
-              aria-label={`Email ${EMAIL}`}
-            >
-              <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-400 shrink-0" aria-hidden />
-              <span className="truncate">{EMAIL}</span>
-            </a>
-            <span className="hidden sm:inline h-4 w-px bg-white/25" aria-hidden />
-            <button
-              type="button"
-              onClick={onBookConsultation}
-              className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 sm:px-4 py-1 font-semibold text-white shadow-md shadow-red-900/40 hover:bg-red-500 transition-colors"
-            >
-              <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" aria-hidden />
-              Book 1 hr consultation
-            </button>
+    <header className="fixed top-0 left-0 right-0 z-50 flex flex-col">
+      {/* Top notation rail */}
+      <div className="bg-ink text-cream/80">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
+          <div className="flex items-center justify-between gap-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em]">
+            <span className="hidden sm:inline">Game #2026 &mdash; in&nbsp;progress</span>
+            <span className="sm:hidden">Stratezik</span>
+            <div className="flex items-center gap-3 sm:gap-5">
+              <a
+                href={`tel:${PHONE_TEL}`}
+                data-cursor="cta"
+                data-cursor-text="Call"
+                className="hover:text-cream transition-colors hidden sm:inline"
+              >
+                {PHONE_DISPLAY}
+              </a>
+              <a
+                href={`mailto:${EMAIL}?subject=Book%201%20hour%20consultation`}
+                data-cursor="cta"
+                data-cursor-text="Mail"
+                className="hover:text-cream transition-colors truncate max-w-[180px] sm:max-w-none"
+              >
+                {EMAIL}
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Main bar */}
       <nav
-        className={`transition-all duration-300 ${
-          isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200' : 'bg-white/90 backdrop-blur-sm border-b border-slate-200/60'
+        className={`transition-all duration-500 border-b border-ink/10 ${
+          isScrolled ? 'bg-cream/92 backdrop-blur-md' : 'bg-cream/82 backdrop-blur-sm'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 py-3">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 min-w-0">
-              <Link to="/" className="focus:outline-none shrink-0" aria-label="Stratezik digital marketing - Home">
-                <img src="/stratezik logo/vertical logo (1).png" alt="Stratezik Digital Marketing Canada" className="h-14 sm:h-16 w-auto" />
-              </Link>
-            </div>
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
+          <div className="flex items-center justify-between gap-4 py-3">
+            {/* Wordmark */}
+            <Link
+              to="/"
+              data-cursor="cta"
+              data-cursor-text="Home"
+              className="flex items-baseline gap-2 group"
+              aria-label="Stratezik — Home"
+            >
+              <span className="font-display text-2xl md:text-3xl text-ink tracking-[-0.03em] leading-none">
+                Stratezik
+              </span>
+              <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                / Toronto
+              </span>
+            </Link>
 
-            <div className="hidden md:flex items-center gap-8">
+            {/* Center nav */}
+            <div className="hidden md:flex items-center gap-7">
               {navItems.map((item) => (
                 <button
                   key={item.name}
                   type="button"
-                  onClick={() => handleNavClick(item)}
-                  className="text-slate-600 hover:text-red-600 transition-colors font-medium"
+                  onClick={() => goHash(item.href)}
+                  data-cursor="cta"
+                  data-cursor-text={item.label}
+                  className="group inline-flex items-baseline gap-1.5 text-ink-700 hover:text-ink transition-colors"
                 >
-                  {item.name}
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300 group-hover:text-oxblood transition-colors">
+                    /{item.label}
+                  </span>
+                  <span className="font-display text-[1.05rem] tracking-tight">{item.name}</span>
                 </button>
               ))}
               <Link
                 to="/careers"
-                className="text-slate-600 hover:text-red-600 transition-colors font-medium"
+                data-cursor="cta"
+                data-cursor-text="Read"
+                className="font-display text-[1.05rem] tracking-tight text-ink-700 hover:text-ink transition-colors"
               >
                 Careers
               </Link>
             </div>
 
+            {/* CTA */}
             <div className="hidden md:flex items-center shrink-0">
               <button
                 type="button"
                 onClick={onBookConsultation}
-                className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors whitespace-nowrap"
+                data-cursor="cta"
+                data-cursor-text="Open"
+                className="bg-ink text-cream px-5 py-2.5 font-medium text-sm tracking-wide hover:bg-oxblood transition-colors"
               >
-                Book 1 hr consultation
+                Book consultation
               </button>
             </div>
 
@@ -139,31 +150,34 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-slate-600 hover:text-red-600 focus:outline-none focus:text-red-600 p-1"
+                className="text-ink hover:text-oxblood focus:outline-none p-1"
                 aria-expanded={isOpen}
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                {isOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
           </div>
 
           {isOpen && (
-            <div className="md:hidden border-t border-slate-100 mt-3 pt-3 pb-2">
+            <div className="md:hidden border-t border-ink/10 pt-3 pb-4">
               <div className="space-y-1">
                 {navItems.map((item) => (
                   <button
                     key={item.name}
                     type="button"
-                    onClick={() => handleNavClick(item)}
-                    className="text-slate-600 hover:text-red-600 block px-3 py-2 text-base font-medium transition-colors duration-200 w-full text-left rounded-lg hover:bg-slate-50"
+                    onClick={() => goHash(item.href)}
+                    className="flex items-baseline gap-2 text-ink-700 hover:text-oxblood block px-2 py-2 font-display text-lg w-full text-left"
                   >
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300">
+                      /{item.label}
+                    </span>
                     {item.name}
                   </button>
                 ))}
                 <Link
                   to="/careers"
-                  className="text-slate-600 hover:text-red-600 block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg hover:bg-slate-50"
+                  className="block px-2 py-2 font-display text-lg text-ink-700 hover:text-oxblood"
                   onClick={() => setIsOpen(false)}
                 >
                   Careers
@@ -172,9 +186,9 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={onBookConsultation}
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full"
+                    className="bg-ink text-cream px-5 py-3 font-medium w-full hover:bg-oxblood transition-colors"
                   >
-                    Book 1 hr consultation
+                    Book consultation
                   </button>
                 </div>
               </div>
