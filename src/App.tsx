@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
@@ -11,6 +11,10 @@ import Footer from './components/Footer'
 import { useCanonical } from './utils/canonical'
 import { SmoothScroll } from './three/world/SmoothScroll'
 import { WorldCanvas } from './three/world/WorldCanvas'
+import { Loader } from './components/Loader'
+import { CustomCursor } from './components/CustomCursor'
+import { MoveCounterHUD } from './components/MoveCounterHUD'
+import { NotationMarquee } from './components/NotationMarquee'
 
 function CanonicalManager() {
   useCanonical()
@@ -35,13 +39,21 @@ function ScrollToHash() {
 }
 
 function App() {
+  const [loaded, setLoaded] = useState(false)
+
   return (
     <Router>
       <CanonicalManager />
+      {/* Plan D — cinematic intro loader */}
+      <Loader onDone={() => setLoaded(true)} />
+      {/* Custom cursor lives outside SmoothScroll so it tracks viewport pixels */}
+      <CustomCursor />
       <SmoothScroll>
         <ScrollToHash />
         {/* Persistent 3D world living behind the entire page. */}
         <WorldCanvas />
+        {/* Now-playing HUD — appears after loader exits */}
+        {loaded ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
           <Navbar />
           <main className="pt-36">
@@ -51,7 +63,27 @@ function App() {
                 element={
                   <>
                     <HeroSection />
+                    <NotationMarquee
+                      variant="dark"
+                      lines={[
+                        'Toronto digital marketing & growth',
+                        'SEO · PPC · social · conversion · analytics',
+                        'Integrated plans · fewer silos · clearer KPIs',
+                        'SMB & startup budgets · enterprise discipline',
+                        'Stratezik · measurable demand',
+                      ]}
+                    />
                     <ServicesSection />
+                    <NotationMarquee
+                      variant="light"
+                      lines={[
+                        'Audience insight before media spend',
+                        'Creative & landing pages built to convert',
+                        'Attribution you can defend in the boardroom',
+                        'Weekly rhythm · monthly reviews · quarterly bets',
+                        'Stratezik',
+                      ]}
+                    />
                     <StrategyFlow />
                     <PortfolioSection />
                     <ContactSection />

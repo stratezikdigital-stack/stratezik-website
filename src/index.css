@@ -2,64 +2,163 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Plan D — Champion's Hall design tokens.
+   Editorial palette: ink black on cream, oxblood + champagne gold accents. */
 :root {
-  --s-red: #dc2626;
-  --s-red-deep: #991b1b;
-  --s-board-light: #ece6dc;
-  --s-board-dark: #1c1f26;
-  --s-marble: #f5f1e8;
-  --s-graphite: #1e293b;
+  --ink: #0d0c0a;
+  --ink-700: #2a2722;
+  --ink-500: #5a554b;
+  --ink-300: #a89f8e;
+  --cream: #f4ede1;
+  --cream-50: #faf6ec;
+  --cream-200: #ece2cf;
+  --oxblood: #7a1f1f;
+  --oxblood-400: #a93232;
+  --gold: #c9a961;
+  --gold-400: #d6b876;
 }
 
 @layer base {
   html {
-    /* Lenis owns smooth scrolling now. */
     scroll-behavior: auto;
+    background-color: var(--cream);
+    /* Stop the page from rubber-banding past the cream background on
+       iOS / over-scroll on trackpads — keeps the chess world visually
+       boundaried. Invisible on regular interactions. */
+    overscroll-behavior-y: none;
+    /* Honour iOS safe-area cutouts for notch / Dynamic Island. */
+    -webkit-tap-highlight-color: rgba(122, 31, 31, 0.18);
   }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    color: #0f172a;
-    /* Match the WorldScene's clear color so there's no flash before
-       the canvas mounts after idle. */
-    background-color: #f7f4ee;
+    color: var(--ink);
+    background-color: var(--cream);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Tabular figures for chess notation feel everywhere */
+    font-feature-settings: 'ss01', 'ss02', 'cv11';
+    overscroll-behavior-y: none;
+  }
+
+  /* Inline links inside long-form copy (case-study modal, etc.) get
+     consistent underline-on-hover affordance — invisible until hovered. */
+  a {
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.18em;
+  }
+
+  /* Honour reduced-motion for any CSS-driven animation we forget to gate. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* On lg+ we hide the system cursor and draw our own. Mobile keeps native. */
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
+      cursor: none !important;
+    }
   }
 
   ::selection {
-    background-color: rgba(220, 38, 38, 0.18);
-    color: #0f172a;
+    background-color: rgba(122, 31, 31, 0.22);
+    color: var(--ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', 'Times New Roman', serif;
+    font-feature-settings: 'opsz' on, 'ss01';
+    letter-spacing: -0.025em;
+    color: var(--ink);
   }
 }
 
 @layer components {
+  /* Editorial label — small uppercase notation marker like '/ 01 — Opening' */
+  .editorial-label {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500;
+  }
+
+  /* Pull-quote / display body */
+  .lead {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 1.6vw, 1.625rem);
+    line-height: 1.45;
+    letter-spacing: -0.012em;
+    color: var(--ink-700);
+  }
+
+  /* Hairline rule */
+  .hairline {
+    border-top: 1px solid rgba(13, 12, 10, 0.16);
+  }
+
   .btn-primary {
-    @apply bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200;
+    @apply inline-flex items-center gap-2 bg-ink text-cream px-7 py-3 font-medium tracking-wide rounded-none transition-colors duration-200 hover:bg-oxblood;
   }
 
   .btn-secondary {
-    @apply bg-white text-red-600 border-2 border-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-red-600 hover:text-white transition-colors duration-200;
+    @apply inline-flex items-center gap-2 bg-transparent text-ink border border-ink px-7 py-3 font-medium tracking-wide rounded-none transition-colors duration-200 hover:bg-ink hover:text-cream;
   }
 
   .section-padding {
-    @apply py-16 px-4 sm:px-6 lg:px-8;
+    @apply py-24 px-4 sm:px-6 lg:px-8;
   }
 
   .container-custom {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-[1440px] mx-auto;
   }
 
-  /* Glassmorphism panel */
-  .glass {
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+  /* Editorial grid — 12 col with optional gutters */
+  .grid-editorial {
+    @apply grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-10;
+  }
+
+  /* Soft glass that respects the cream backdrop */
+  .glass-cream {
+    background: rgba(244, 237, 225, 0.78);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(13, 12, 10, 0.08);
+  }
+
+  /* Marquee track */
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 38s linear infinite;
+    will-change: transform;
+  }
+
+  /* Magnetic / hover-lift utility — subtle lift on hover */
+  .lift {
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Editorial body for long-form sections */
+  .prose-editorial {
+    @apply text-ink-700 text-base sm:text-lg leading-relaxed;
+  }
+  .prose-editorial p + p {
+    @apply mt-5;
   }
 }
 
-/* Respect users who prefer less motion: kill our drifty hero / continuous animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

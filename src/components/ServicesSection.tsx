@@ -3,96 +3,279 @@ import { motion } from 'framer-motion'
 import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
-interface Service {
-  glyph: string
-  title: string
-  description: string
-  features: string[]
+/**
+ * Plan D — Services grid.
+ *
+ * Six discipline cards with abstract lane diagrams. Copy stays channel-native
+ * so visitors immediately map tiles to acquisition work.
+ */
+
+interface Opening {
+  number: string
+  /** The actual service we sell (large, dominant headline). */
+  service: string
+  /** Short discipline lane label (mono accent). */
+  opening: string
+  /** Editorial blurb */
+  thesis: string
+  /** Tactical bullets */
+  tactics: string[]
+  /** SVG diagram path d's — coordinates on a 8x8 grid (0..7) */
+  arrows: { from: [number, number]; to: [number, number]; color: 'white' | 'black' }[]
 }
 
-const SERVICES: Service[] = [
+const OPENINGS: Opening[] = [
   {
-    glyph: '\u265A',
-    title: 'Strategic Planning',
-    description:
-      'Data-driven strategies that think several moves ahead, ensuring your business achieves checkmate in the marketplace.',
-    features: ['Market Analysis', 'Competitive Research', 'Goal Setting', 'ROI Forecasting'],
-  },
-  {
-    glyph: '\u265B',
-    title: 'Brand Strategy',
-    description: 'Build a powerful brand presence that positions you as the king in your industry.',
-    features: ['Brand Identity', 'Messaging Strategy', 'Visual Design', 'Brand Guidelines'],
-  },
-  {
-    glyph: '\u265E',
-    title: 'Paid Search & Social Media Ads',
-    description:
-      'Data-driven search, display and social media campaigns that deliver maximum ROI and qualified leads.',
-    features: [
+    number: '01',
+    service: 'Paid Search & Social Ads',
+    opening: 'Paid acquisition',
+    thesis:
+      'Structured accounts beat guesswork: tight geo/device splits, conversion-grade creative velocity, disciplined negatives, and pacing tuned to margin\u2014not vanity reach.',
+    tactics: [
       'High-performance Google Ads',
-      'Google Business Profile (GBP) and Local SEO',
-      'Remarketing and retargeting campaigns',
-      'Ad campaigns on LinkedIn, Instagram, Facebook, TikTok, and other platforms',
-      'Video advertising on any platforms',
+      'Programmatic + retargeting',
+      'Meta, LinkedIn, TikTok, YouTube',
+      'Local + Google Business Profile',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [4, 6], to: [4, 4], color: 'black' },
+      { from: [5, 1], to: [5, 3], color: 'white' },
     ],
   },
   {
-    glyph: '\u265D',
-    title: 'Creative Campaigns',
-    description: 'Innovative campaigns that capture attention and drive results with chess master precision.',
-    features: ['Content Creation', 'Social Media', 'Email Marketing', 'PPC Campaigns'],
+    number: '02',
+    service: 'SEO & Organic Growth',
+    opening: 'Organic growth',
+    thesis:
+      'Search compounds when technical foundations, topical authority, helpful content, and earned links align\u2014patient capital that keeps yielding once rankings stabilize.',
+    tactics: [
+      'Technical SEO + site architecture',
+      'Topical authority clusters',
+      'Programmatic content engines',
+      'E-E-A-T + link strategy',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [2, 6], to: [2, 4], color: 'black' },
+      { from: [6, 0], to: [5, 2], color: 'white' },
+    ],
   },
   {
-    glyph: '\u265C',
-    title: 'Growth Optimization',
-    description: 'Scalable growth strategies that maximize your ROI and market position.',
-    features: ['Conversion Optimization', 'Lead Generation', 'Customer Retention', 'Market Expansion'],
+    number: '03',
+    service: 'Social Strategy & Content',
+    opening: 'Social & content',
+    thesis:
+      'Channels grow when editorial calendars, formats, and hooks ladder to revenue narratives\u2014always-on reporting keeps creative accountable to pipeline, not likes.',
+    tactics: [
+      'Editorial calendars + creative direction',
+      'Short-form video systems',
+      'Community + influencer programs',
+      'Always-on reporting cadence',
+    ],
+    arrows: [
+      { from: [4, 1], to: [4, 3], color: 'white' },
+      { from: [6, 0], to: [5, 2], color: 'white' },
+      { from: [5, 0], to: [2, 3], color: 'white' },
+    ],
   },
   {
-    glyph: '\u265F',
-    title: 'Analytics & Data',
-    description: 'Transform your data into actionable insights with advanced analytics and strategic reporting.',
-    features: ['Performance Tracking', 'Conversion Optimization', 'A/B Testing', 'Real-time Reporting'],
+    number: '04',
+    service: 'Brand Strategy & Identity',
+    opening: 'Brand platform',
+    thesis:
+      'Premium positioning trades noisy short-term volume for durable recall\u2014architecture, naming, visual systems, and messaging your sales team can repeat without translating.',
+    tactics: [
+      'Brand architecture + naming',
+      'Visual identity systems',
+      'Messaging frameworks',
+      'Brand books + governance',
+    ],
+    arrows: [
+      { from: [3, 1], to: [3, 3], color: 'white' },
+      { from: [2, 1], to: [2, 3], color: 'white' },
+      { from: [3, 6], to: [3, 4], color: 'black' },
+    ],
+  },
+  {
+    number: '05',
+    service: 'Conversion & Growth',
+    opening: 'Conversion systems',
+    thesis:
+      'Lifecycle revenue comes from deliberate experimentation\u2014landing tests, offers, nurture arcs, and retention hooks instrumented so winners scale with governance.',
+    tactics: [
+      'CRO + landing-page systems',
+      'Lead-gen + nurture flows',
+      'Lifecycle + retention',
+      'Pricing & offer testing',
+    ],
+    arrows: [
+      { from: [2, 1], to: [2, 3], color: 'white' },
+      { from: [4, 6], to: [4, 4], color: 'black' },
+      { from: [1, 0], to: [2, 2], color: 'white' },
+    ],
+  },
+  {
+    number: '06',
+    service: 'Analytics & Data',
+    opening: 'Measurement stack',
+    thesis:
+      'Dashboards only help when definitions match finance\u2014clean events, honest attribution narratives, executive summaries, and alerting before anomalies become crises.',
+    tactics: [
+      'Measurement architecture',
+      'GA4 + server-side tagging',
+      'Attribution + MMM',
+      'Executive reporting',
+    ],
+    arrows: [
+      { from: [6, 0], to: [5, 2], color: 'white' },
+      { from: [3, 6], to: [3, 4], color: 'black' },
+      { from: [2, 1], to: [2, 3], color: 'white' },
+    ],
   },
 ]
 
-function ServiceCard({ service, index }: { service: Service; index: number }) {
+/**
+ * Tiny SVG mini-board with arrowed move overlay.
+ * 8x8, coordinates 0..7 (file, rank).
+ */
+function MiniBoard({ arrows }: { arrows: Opening['arrows'] }) {
+  const tile = 12
+  const board = []
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const dark = (f + r) % 2 === 1
+      board.push(
+        <rect
+          key={`${f}-${r}`}
+          x={f * tile}
+          y={(7 - r) * tile}
+          width={tile}
+          height={tile}
+          fill={dark ? '#2a2722' : '#e6dfcf'}
+        />,
+      )
+    }
+  }
+
   return (
-    <motion.div
+    <svg
+      viewBox={`0 0 ${tile * 8} ${tile * 8}`}
+      className="w-full h-full"
+      role="img"
+      aria-label="Service lane diagram"
+    >
+      <defs>
+        <marker
+          id="white-head"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="5"
+          markerHeight="5"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f4ede1" />
+        </marker>
+        <marker
+          id="black-head"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="5"
+          markerHeight="5"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a1f1f" />
+        </marker>
+      </defs>
+      {board}
+      <rect x={0} y={0} width={tile * 8} height={tile * 8} fill="none" stroke="#0d0c0a" strokeWidth={1} />
+      {arrows.map((a, i) => {
+        const x1 = a.from[0] * tile + tile / 2
+        const y1 = (7 - a.from[1]) * tile + tile / 2
+        const x2 = a.to[0] * tile + tile / 2
+        const y2 = (7 - a.to[1]) * tile + tile / 2
+        const stroke = a.color === 'white' ? '#f4ede1' : '#7a1f1f'
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke={stroke}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            markerEnd={a.color === 'white' ? 'url(#white-head)' : 'url(#black-head)'}
+            opacity={0.95}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
+function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
+  return (
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.06 }}
-      viewport={{ once: true, margin: '-50px' }}
-      className="group relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md p-6 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.35)] hover:shadow-[0_30px_70px_-30px_rgba(220,38,38,0.4)] hover:border-red-200 hover:-translate-y-1 transition-all duration-300"
+      transition={{ duration: 0.7, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-80px' }}
+      data-cursor="glyph"
+      data-cursor-glyph={'\u265F'}
+      className="group relative bg-cream-50 border border-ink/10 hover:border-ink/30 transition-all duration-700 lift"
     >
+      {/* Top hairline accent — appears on hover */}
       <div
         aria-hidden
-        className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-gradient-to-r from-red-500/0 via-red-500/60 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-0 top-0 h-px bg-oxblood transition-all duration-700 ease-out group-hover:w-full"
+        style={{ width: '0%' }}
       />
-      <div className="text-4xl text-red-600 mb-3 leading-none">{service.glyph}</div>
 
-      <h3 className="text-xl font-semibold text-slate-900 mb-2">{service.title}</h3>
-      <p className="text-slate-600 mb-4 text-sm leading-relaxed">{service.description}</p>
+      <div className="grid grid-cols-12 gap-4 p-7 md:p-8">
+        {/* Number */}
+        <div className="col-span-2 md:col-span-1">
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
+            {opening.number}
+          </span>
+        </div>
 
-      <ul className="space-y-1.5">
-        {service.features.map((feature) => (
-          <li key={feature} className="flex items-start text-sm text-slate-600">
-            <span className="mt-2 mr-2.5 inline-block h-1.5 w-1.5 rounded-full bg-red-600 shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
+        {/* Title block — service name is the headline, opening is a tiny accent */}
+        <div className="col-span-10 md:col-span-8">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+            Lane &middot; {opening.opening}
+          </div>
+          <h3 className="mt-2 font-display text-display-3 text-ink leading-[1.02] tracking-[-0.025em]">
+            {opening.service}
+          </h3>
+        </div>
 
-      <button
-        type="button"
-        onClick={scrollToContactSection}
-        className="mt-5 inline-flex items-center gap-1 text-red-600 font-semibold text-sm hover:text-red-700 transition-colors"
-      >
-        Learn Strategy
-        <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-      </button>
-    </motion.div>
+        {/* Mini board — small visual accent */}
+        <div className="col-span-12 md:col-span-3 flex items-start justify-end">
+          <div className="w-16 md:w-20 aspect-square opacity-80">
+            <MiniBoard arrows={opening.arrows} />
+          </div>
+        </div>
+      </div>
+
+      <div className="hairline mx-7 md:mx-8" />
+
+      <div className="p-7 md:p-8 pt-6">
+        <p className="lead text-[1.05rem] sm:text-[1.15rem] mb-5 leading-snug max-w-3xl">
+          {opening.thesis}
+        </p>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+          {opening.tactics.map((t) => (
+            <li key={t} className="flex items-baseline gap-2 text-sm text-ink-700">
+              <span className="font-mono text-[10px] text-oxblood">&#9670;</span>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </motion.article>
   )
 }
 
@@ -101,124 +284,174 @@ const ServicesSection = () => {
   useSection('services', ref)
 
   return (
-    <section
-      id="services"
-      ref={ref}
-      className="relative py-24"
-    >
-      <div className="relative max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+    <section id="services" ref={ref} className="relative py-24 md:py-32 bg-cream">
+      <div className="container-custom px-6 md:px-12">
+        {/* Section heading row — editorial */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 backdrop-blur px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700">
-            <span className="text-red-600">&#9819;</span>
-            The board, the pieces, the play
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 02 &mdash; Services
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Six disciplines &middot; one playbook
+            </div>
           </div>
-          <h2
-            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight"
-            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-          >
-            Our <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">strategic</span> services
-          </h2>
-          <p className="mt-4 text-lg text-slate-700 max-w-2xl mx-auto bg-white/60 backdrop-blur rounded-xl px-4 py-2 inline-block">
-            Each service is a piece on the board. Watch the pawn promote as you scroll.
-          </p>
-        </motion.div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              We ship integrated programs,
+              <br />
+              <span className="italic font-light text-oxblood">not random tactics.</span>
+            </h2>
+            <p className="lead mt-8 max-w-3xl">
+              Every engagement ties channels to revenue-facing KPIs &mdash; paid, organic, creative,
+              analytics, and tooling share one roadmap instead of competing narratives.
+            </p>
+          </div>
+        </motion.header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} />
+        {/* Opening cards grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-ink/10">
+          {OPENINGS.map((o, i) => (
+            <OpeningCard key={o.opening} opening={o} index={i} />
           ))}
         </div>
 
-        {/* Full-width flagship: AI agents & bespoke tools */}
-        <motion.article
-          initial={{ opacity: 0, y: 28 }}
+        {/* Seventh discipline masthead — same grid pattern as opening services */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65 }}
-          viewport={{ once: true, margin: '-40px' }}
-          className="mt-10 lg:mt-14 rounded-2xl border border-slate-900/70 bg-gradient-to-br from-slate-900 via-slate-800 to-red-950/90 p-8 sm:p-10 text-white shadow-[0_30px_80px_-35px_rgba(15,23,42,0.55)] lg:grid lg:grid-cols-12 lg:gap-10"
-          aria-labelledby="ai-services-heading"
-        >
-          <div className="lg:col-span-5 mb-8 lg:mb-0">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-200/90 mb-4">
-              <span>&#9819;</span>
-              AI &amp; automation
-            </div>
-            <h3
-              id="ai-services-heading"
-              className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight"
-              style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-            >
-              AI agents, apps &amp;{' '}
-              <span className="bg-gradient-to-r from-red-400 to-amber-300 bg-clip-text text-transparent">
-                workflow tools
-              </span>
-            </h3>
-            <p className="mt-4 text-white/80 text-[15px] sm:text-base leading-relaxed">
-              Ship customer-facing configurators and micro-apps, train conversational agents on your funnel and
-              brand guardrails, and wire internal dashboards so Ads, CRM, analytics, and your team stay aligned.
-              Fewer spreadsheets, sharper decisions hyper-performing teams deserve.
-            </p>
-          </div>
-          <div className="lg:col-span-7 lg:border-l lg:border-white/15 lg:pl-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200/85 mb-4">
-              What we build
-            </p>
-            <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-[15px] text-white/85">
-              {[
-                'Conversational & task agents grounded in approved knowledge',
-                'Customer-facing calculators, scorecards, onboarding flows',
-                'Ops dashboards, alerts & QA pipelines across martech stacks',
-                'Automation bridges covering leads, creatives, tagging, GBP',
-              ].map((t) => (
-                <li key={t} className="flex gap-2 items-start">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0" />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={scrollToContactSection}
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white text-red-700 px-5 py-2.5 font-semibold text-sm hover:bg-slate-100 transition-colors"
-            >
-              Talk AI &amp; tools
-              <span aria-hidden>&rarr;</span>
-            </button>
-          </div>
-        </motion.article>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
-          className="mt-16"
+          className="grid grid-cols-12 gap-4 mt-24 md:mt-32 mb-10 md:mb-14"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-red-900/85 backdrop-blur p-8 sm:p-10 text-white shadow-2xl">
-            <div className="relative grid sm:grid-cols-[1fr_auto] items-center gap-6">
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 07 &mdash; Seventh discipline
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              AI agents &middot; custom apps &middot; integrations
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              AI agent &amp; tool creation for clients
+            </h2>
+            <p className="lead mt-6 max-w-3xl">
+              We design, build, and maintain customer-facing apps and internal tools backed by AI where
+              it actually helps:&nbsp;research, drafting, routing, QA, reporting, and first-line customer
+              questions. Agents and workflows connect to your ad accounts, CRM, analytics suite, Google
+              Business Profile, and other systems you already use so your marketing and sales teams move
+              faster without broken handoffs or mystery automation.
+            </p>
+          </div>
+        </motion.header>
+
+        {/* Flagship: full-width band (two OpeningCard columns) */}
+        <motion.article
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: '-60px' }}
+          data-cursor="glyph"
+          data-cursor-glyph={'\u265B'}
+          className="relative bg-ink text-cream border border-ink/10 overflow-hidden lift"
+          aria-labelledby="ai-band-title"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                'linear-gradient(#f4ede1 1px, transparent 1px), linear-gradient(90deg, #f4ede1 1px, transparent 1px)',
+              backgroundSize: '48px 48px',
+            }}
+          />
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 p-8 md:p-12 lg:p-14">
+            <div className="lg:col-span-5 flex flex-col justify-between gap-10">
               <div>
-                <div className="text-3xl mb-2">&#9818;</div>
-                <h3 className="text-2xl md:text-3xl font-bold leading-tight">
-                  Ready to make your strategic move?
+                <h3
+                  id="ai-band-title"
+                  className="font-display text-[clamp(1.65rem,3.2vw,2.35rem)] leading-[1.05] tracking-[-0.03em]"
+                >
+                  What we build together
                 </h3>
-                <p className="text-white/80 mt-2 max-w-xl">
-                  Let&apos;s discuss how our strategic services can help you achieve checkmate.
+                <p className="mt-5 text-cream/85 text-base md:text-[1.05rem] leading-relaxed max-w-lg">
+                  Custom tools and assistants are scoped against your funnel, approvals, privacy rules,
+                  and measurement plan. Typical deliverables combine a working product or agent, prompts
+                  and playbooks people can repeat, APIs or secure data connections where needed, and a
+                  short training pass so adoption sticks past launch week.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={scrollToContactSection}
-                className="inline-flex items-center justify-center bg-white text-red-700 px-6 py-3 rounded-xl font-semibold hover:bg-slate-100 transition-colors whitespace-nowrap"
+                data-cursor="cta"
+                data-cursor-text="Brief"
+                className="inline-flex self-start items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors duration-300"
               >
-                Book 1 hr consultation
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">
+                  Discuss a build
+                </span>
+                <span aria-hidden className="font-mono">&rarr;</span>
               </button>
             </div>
+            <div className="lg:col-span-7 border-t lg:border-t-0 lg:border-l border-cream/15 lg:pl-12 pt-8 lg:pt-0 space-y-5">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
+                Examples of scoped work
+              </p>
+              <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-4">
+                {[
+                  'Chat and voice-style agents wired to CRM, ticketing, knowledge bases',
+                  'Customer calculators, onboarding wizards, and quote flows on your site',
+                  'Internal dashboards: pacing, creatives, anomalies, SLA alerts across channels',
+                  'Ops automation: ingest lead data, tag, escalate, annotate, reopen closed loops',
+                  'Prompt packs, escalation rules, auditing, reviewer roles, and veto paths',
+                  'Rollout checklist, stakeholder training, and a 30-day hardening window',
+                ].map((line) => (
+                  <li key={line} className="flex items-baseline gap-2.5 text-sm text-cream/90 leading-snug">
+                    <span className="font-mono text-[10px] text-oxblood-400 shrink-0">◇</span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </motion.article>
+
+        {/* Bottom CTA strip — editorial CTA, no gradient */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="mt-20 md:mt-28 grid grid-cols-12 gap-4"
+        >
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Choose your line
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-9 hairline pt-8">
+            <h3 className="font-display text-display-3 text-ink max-w-3xl tracking-[-0.025em] leading-[1.02]">
+              Or let us prepare a tailored opening for your market.
+            </h3>
+            <button
+              type="button"
+              onClick={scrollToContactSection}
+              data-cursor="cta"
+              data-cursor-text="Open"
+              className="mt-8 inline-flex items-center gap-3 bg-ink text-cream px-8 py-4 font-medium hover:bg-oxblood transition-colors"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">/03</span>
+              Book the consultation
+              <span aria-hidden className="font-mono">&rarr;</span>
+            </button>
           </div>
         </motion.div>
       </div>

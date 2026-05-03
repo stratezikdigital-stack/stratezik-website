@@ -299,7 +299,7 @@ export function WorldScene() {
 
   return (
     <>
-      <color attach="background" args={['#f7f4ee']} />
+      <color attach="background" args={['#f4ede1']} />
       <ScrollOrchestrator />
       {reduced ? (
         <StagedWorld />

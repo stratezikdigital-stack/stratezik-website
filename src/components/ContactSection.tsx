@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
-import { scrollToContactForm } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
+/**
+ * Plan D — Contact / consultation section.
+ *
+ * Split layout: form + dark ledger with studio coordinates.
+ */
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null)
   useSection('contact', sectionRef)
@@ -14,50 +17,38 @@ export default function ContactSection() {
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  // Mirror submission state into the world store so the global opposing king
-  // topples in the persistent canvas when the user submits.
   useEffect(() => {
     setResigned(isSubmitted)
   }, [isSubmitted, setResigned])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
     try {
-      // Use GET request with query parameters to bypass CORS issues
       const params = new URLSearchParams({
         name: formData.name,
         email: formData.email,
         company: formData.company,
         message: formData.message,
-        source: 'stratezik.com'
+        source: 'stratezik.com',
       })
-      
-      await fetch(`https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec?${params}`, {
-        method: 'GET',
-        mode: 'no-cors'
-      })
-      
-      // Since we're using no-cors, we can't check the response
-      // But if we get here without an error, assume it worked
+      await fetch(
+        `https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec?${params}`,
+        { method: 'GET', mode: 'no-cors' },
+      )
       setIsSubmitted(true)
       setFormData({ name: '', email: '', company: '', message: '' })
-      
-    } catch (error) {
-      console.error('Form submission error:', error)
+    } catch (err) {
+      console.error('Form submission error:', err)
       alert('Sorry, there was an error submitting your form. Please try again or contact us directly.')
     } finally {
       setIsSubmitting(false)
@@ -68,261 +59,314 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative overflow-hidden lg:min-h-[180vh]"
+      className="relative overflow-hidden lg:min-h-[180vh] bg-cream"
     >
-      {/* Sticky inner container — on lg+ the form + HUD stay pinned for one
-          viewport while the camera dollies in to the promotion square and
-          the pawn promotes to a queen in the persistent canvas behind.
-          On mobile we let everything scroll naturally so the form stays
-          reachable, while the camera animation still plays from global
-          scroll progress. */}
       <div className="lg:sticky lg:top-0 w-full lg:min-h-screen flex items-center py-24">
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h2
-            className="font-display text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight"
-            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-          >
-            Ready to make your <span className="bg-gradient-to-br from-red-400 to-amber-300 bg-clip-text text-transparent">move</span>?
-          </h2>
-          <p className="text-lg text-white/80 max-w-3xl mx-auto bg-slate-900/50 backdrop-blur rounded-xl px-4 py-2 inline-block">
-            Submit your details to deliver checkmate. The opposing king will visibly resign.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <motion.div
-            id="contact-form"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+        <div className="container-custom px-6 md:px-12 relative z-10 w-full">
+          {/* Editorial header */}
+          <motion.header
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            className="grid grid-cols-12 gap-4 mb-14"
           >
-            <div className="border border-white/60 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl">
-              <div className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-3xl text-red-600">♛</div>
-                  <h3 className="text-2xl font-bold text-slate-900">
-                    Start Your Strategy Session
-                  </h3>
-                </div>
-
-                {isSubmitted ? (
-                  <div className="text-center py-8">
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h4 className="text-xl font-bold text-slate-900 mb-2">
-                      Message Sent Successfully!
-                    </h4>
-                    <p className="text-slate-600">
-                      We'll get back to you within 24 hours to discuss your strategy.
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
-                          Full Name
-                        </label>
-                        <input
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-colors duration-200"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                          Email Address
-                        </label>
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-colors duration-200"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-slate-700 mb-2">
-                        Company Name
-                      </label>
-                      <input
-                        id="company"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-colors duration-200"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
-                        Tell us about your project
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        rows={4}
-                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-colors duration-200"
-                        placeholder="What are your marketing goals? What challenges are you facing?"
-                      />
-                    </div>
-                    
-                    <button
-                      type="submit"
-                      className="w-full bg-red-600 hover:bg-red-700 text-white py-6 text-lg font-semibold rounded-lg transition-colors disabled:opacity-50"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <motion.div
-                            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2 inline-block"
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4 mr-2 inline-block" />
-                          Send Message
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
+            <div className="col-span-12 md:col-span-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 05 &mdash; Contact
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Reply within one business day &middot; book a 30-minute call
               </div>
             </div>
-          </motion.div>
+            <div className="col-span-12 md:col-span-9">
+              <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+                Start the conversation.
+              </h2>
+              <p className="lead mt-6 max-w-2xl">
+                Share goals, timelines, and constraints. We&rsquo;ll reply within one business day and,
+                if there&rsquo;s a fit, book a focused 30-minute call—no obligation.
+              </p>
+            </div>
+          </motion.header>
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            {/* HUD overlay — narrates the game state. The actual 3D promotion
-                + opposing king resign animation is rendered by the global
-                world canvas behind the page. */}
+          <div className="grid grid-cols-12 gap-px bg-ink/15">
+            {/* Form panel */}
             <motion.div
-              animate={isSubmitted
-                ? { scale: [1, 1.04, 1], boxShadow: [
-                    '0 10px 30px rgba(0,0,0,0.10)',
-                    '0 18px 50px rgba(220, 38, 38, 0.35)',
-                    '0 10px 30px rgba(0,0,0,0.10)',
-                  ] }
-                : { scale: 1 }}
-              transition={{ duration: 1.4, ease: 'easeOut' }}
-              className={`relative rounded-2xl border backdrop-blur-md shadow-xl px-5 py-4 flex items-center gap-3 transition-colors duration-700 ${
-                isSubmitted
-                  ? 'border-amber-300/70 bg-gradient-to-r from-amber-50/95 via-white/85 to-red-50/95'
-                  : 'border-white/60 bg-white/70'
-              }`}
+              id="contact-form"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+              className="col-span-12 lg:col-span-7 bg-cream-50 p-7 md:p-10"
             >
-              <motion.span
-                animate={isSubmitted ? { rotate: [0, -8, 8, 0], scale: [1, 1.25, 1] } : {}}
-                transition={{ duration: 1.0, ease: 'easeOut' }}
-                className={`text-3xl ${isSubmitted ? 'text-amber-500 drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]' : 'text-amber-500'}`}
-              >
-                {isSubmitted ? '\u2655' : '\u265A'}
-              </motion.span>
-              <div>
-                <div className={`text-[11px] uppercase tracking-[0.2em] ${
-                  isSubmitted ? 'text-red-700' : 'text-slate-500'
-                }`}>
-                  {isSubmitted ? 'Checkmate' : 'Your move'}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+                    Next step
+                  </div>
+                  <h3 className="font-display text-2xl md:text-3xl text-ink mt-1 tracking-[-0.025em]">
+                    Start the consultation
+                  </h3>
                 </div>
-                <div className="text-base font-semibold text-slate-900">
-                  {isSubmitted ? 'They resigned. Welcome to the winning side.' : 'The board awaits your strategy'}
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
+                  / 30&nbsp;min
                 </div>
               </div>
+
+              {isSubmitted ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  className="py-12"
+                >
+                  <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+                    Message received
+                  </div>
+                  <h4 className="mt-2 font-display text-3xl md:text-4xl text-ink leading-[1.05]">
+                    Thanks—we&rsquo;ll be in touch.
+                  </h4>
+                  <p className="lead mt-4 max-w-md">
+                    Expect a reply within one business day with next steps. If there&rsquo;s a fit,
+                    we&rsquo;ll propose three scoped directions you can compare quickly.
+                  </p>
+                  <div className="hairline mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
+                    Reference &middot; consultation queue
+                  </div>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <Field
+                      id="name"
+                      name="name"
+                      label="Full name"
+                      moveNumber="01"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <Field
+                      id="email"
+                      name="email"
+                      type="email"
+                      label="Email address"
+                      moveNumber="02"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <Field
+                    id="company"
+                    name="company"
+                    label="Company"
+                    moveNumber="03"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                  />
+
+                  <Field
+                    id="message"
+                    name="message"
+                    label="What should we know?"
+                    moveNumber="04"
+                    multiline
+                    placeholder="Goals, budget band, channels you’ve tried, timelines, blockers—anything that helps us prepare."
+                    value={formData.message}
+                    onChange={handleInputChange}
+                  />
+
+                  <button
+                    type="submit"
+                    data-cursor="cta"
+                    data-cursor-text="Send"
+                    disabled={isSubmitting}
+                    className="w-full mt-2 inline-flex items-center justify-center gap-3 bg-ink text-cream py-5 font-medium tracking-wide hover:bg-oxblood transition-colors disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <motion.span
+                          aria-hidden
+                          className="inline-block w-3 h-3 border border-cream/30 border-t-cream rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        />
+                        <span>Sending&hellip;</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">
+                          Send
+                        </span>
+                        <span>Send message</span>
+                        <span aria-hidden className="font-mono">&rarr;</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
             </motion.div>
 
-            <div className="border border-white/60 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl">
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="text-2xl text-slate-800">♜</div>
-                  <h3 className="text-xl font-bold text-slate-900">
-                    Get in Touch
-                  </h3>
+            {/* Ledger / contact panel */}
+            <motion.aside
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05 }}
+              viewport={{ once: true }}
+              className="col-span-12 lg:col-span-5 bg-ink text-cream p-7 md:p-10"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
+                  Status
                 </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-red-600 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Email</h4>
-                      <p className="text-slate-600">
-                        <a href="mailto:dave@stratezik.com" className="hover:text-red-600 transition-colors">dave@stratezik.com</a>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-red-600 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Phone</h4>
-                      <p className="text-slate-600">
-                        <a href="tel:+14375254772" className="hover:text-red-600 transition-colors">
-                          437-525-4772
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-red-600 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Office</h4>
-                      <p className="text-slate-600">2466 Eglinton Ave E</p>
-                      <p className="text-slate-600">Toronto, ON, Canada</p>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
+                  <span
+                    className={`inline-block w-1.5 h-1.5 rounded-full ${
+                      isSubmitted ? 'bg-gold' : 'bg-oxblood-400 animate-pulse'
+                    }`}
+                  />
+                  {isSubmitted ? 'Queued' : 'Accepting briefs'}
                 </div>
               </div>
-            </div>
 
-            <div className="bg-gradient-to-br from-red-50/95 to-red-100/95 backdrop-blur-md border border-red-200/80 shadow-xl rounded-2xl">
-              <div className="p-5 text-center">
-                <div className="text-3xl text-red-600 mb-3">♚</div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">
-                  Free Strategy Consultation
-                </h3>
-                <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-                  Book a 30-minute strategy session to discuss your marketing goals
-                  and see how we can help you achieve checkmate.
-                </p>
-                <button
-                  type="button"
-                  onClick={scrollToContactForm}
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm"
-                >
-                  Schedule Call
-                </button>
+              <div className="font-display text-display-3 leading-[1.0] tracking-[-0.025em]">
+                {isSubmitted ? (
+                  <>
+                    Welcome aboard.
+                    <br />
+                    <span className="italic font-light text-gold">We&rsquo;ll follow up shortly.</span>
+                  </>
+                ) : (
+                  <>
+                    Tell us what you&rsquo;re building.
+                    <br />
+                    <span className="italic font-light text-gold/90">We read every brief.</span>
+                  </>
+                )}
               </div>
-            </div>
-          </motion.div>
+
+              <div className="hairline border-cream/15 mt-8 pt-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-6">
+                <Ledger label="Email" value="dave@stratezik.com" href="mailto:dave@stratezik.com" />
+                <Ledger label="Phone" value="437.525.4772" href="tel:+14375254772" />
+                <Ledger
+                  label="Office"
+                  value={'2466 Eglinton Ave E\nToronto, ON, Canada'}
+                  href="https://maps.google.com/?q=2466+Eglinton+Ave+E,+Toronto"
+                />
+                <Ledger label="Hours" value={'Mon\u2013Fri \u00b7 09\u201318 ET'} />
+              </div>
+
+              <div className="hairline border-cream/15 mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7">
+                <div>Step 1 &mdash; Send your brief</div>
+                <div>Step 2 &mdash; We respond within 24h</div>
+                <div>Step 3 &mdash; Schedule the strategy call</div>
+                <div className="text-gold mt-1">Step 4 &mdash; Three proposals, one decision</div>
+              </div>
+            </motion.aside>
+          </div>
         </div>
       </div>
-      </div>
     </section>
+  )
+}
+
+interface FieldProps {
+  id: string
+  name: string
+  label: string
+  moveNumber: string
+  type?: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  required?: boolean
+  multiline?: boolean
+  placeholder?: string
+}
+
+function Field({
+  id,
+  name,
+  label,
+  moveNumber,
+  type = 'text',
+  value,
+  onChange,
+  required,
+  multiline,
+  placeholder,
+}: FieldProps) {
+  return (
+    <label htmlFor={id} className="block group">
+      <div className="flex items-baseline justify-between mb-2">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+          {label}
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300 tabular-nums">
+          /{moveNumber}
+        </span>
+      </div>
+      {multiline ? (
+        <textarea
+          id={id}
+          name={name}
+          rows={4}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
+          className="w-full bg-transparent border-0 border-b border-ink/30 focus:border-ink focus:outline-none focus:ring-0 px-0 py-3 text-ink resize-none transition-colors placeholder:text-ink-300"
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
+          className="w-full bg-transparent border-0 border-b border-ink/30 focus:border-ink focus:outline-none focus:ring-0 px-0 py-3 text-ink transition-colors placeholder:text-ink-300"
+        />
+      )}
+    </label>
+  )
+}
+
+interface LedgerProps {
+  label: string
+  value: string
+  href?: string
+}
+
+function Ledger({ label, value, href }: LedgerProps) {
+  const lines = value.split('\n')
+  const content = (
+    <>
+      <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/55 mb-1">
+        {label}
+      </div>
+      <div className="font-display text-base text-cream">
+        {lines.map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
+      </div>
+    </>
+  )
+  return href ? (
+    <a
+      href={href}
+      target={/^https?:\/\//.test(href) ? '_blank' : undefined}
+      rel={/^https?:\/\//.test(href) ? 'noopener noreferrer' : undefined}
+      data-cursor="cta"
+      data-cursor-text="Open"
+      className="block hover:text-gold transition-colors"
+    >
+      {content}
+    </a>
+  ) : (
+    <div>{content}</div>
   )
 }

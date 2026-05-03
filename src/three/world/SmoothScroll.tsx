@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from 'react'
 import Lenis from 'lenis'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWorldStore } from './store'
+import { setLenis } from './lenisRef'
 
 interface SmoothScrollProps {
   children: ReactNode
@@ -43,6 +44,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       setProgress(e.progress, e.scroll, e.limit)
     })
 
+    setLenis(lenis)
+
     let rafId = 0
     function raf(time: number) {
       lenis.raf(time)
@@ -56,6 +59,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     return () => {
       cancelAnimationFrame(rafId)
       window.removeEventListener('resize', onResize)
+      setLenis(null)
       lenis.destroy()
     }
   }, [reduced, setProgress])

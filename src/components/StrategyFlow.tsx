@@ -3,8 +3,9 @@ import { motion } from 'framer-motion'
 import { useSection } from '../three/world/useSection'
 
 interface Step {
-  step: 1 | 2 | 3 | 4
-  glyph: string
+  step: number
+  numeral: string
+  phaseStrip: string
   label: string
   title: string
   description: string
@@ -13,35 +14,39 @@ interface Step {
 const STEPS: Step[] = [
   {
     step: 1,
-    glyph: '\u265E',
-    label: 'Opening',
-    title: 'Strategic Analysis',
+    numeral: 'I',
+    phaseStrip: 'Discovery · weeks 1\u20132',
+    label: 'Audit & clarity',
+    title: 'Understand demand, gaps, and constraints.',
     description:
-      'We open the game by analyzing your market position, competitors, and opportunities to develop a winning strategy.',
+      'We review audiences, competitors, tracking, creative, funnels, and economics before spend ramps\u2014so budgets fight for verified opportunities, not guesses.',
   },
   {
     step: 2,
-    glyph: '\u265D',
-    label: 'Middle Game',
-    title: 'Goal Setting',
+    numeral: 'II',
+    phaseStrip: 'Planning · scope lock',
+    label: 'Roadmap & priorities',
+    title: 'Agree on the playbook and KPIs.',
     description:
-      'Define clear objectives and KPIs that align with your business vision and translate into decisive moves.',
+      'You get a prioritized roadmap with channel roles, budgets, milestones, and explicit trade-offs. Leadership signs scope once; execution stays aligned.',
   },
   {
     step: 3,
-    glyph: '\u265B',
-    label: 'End Game',
-    title: 'Execution',
+    numeral: 'III',
+    phaseStrip: 'Execution · always-on',
+    label: 'Ship, learn, tune',
+    title: 'Run campaigns with a weekly operating rhythm.',
     description:
-      'Implement strategic campaigns with precision, monitoring performance and optimizing every move for results.',
+      'Structured reporting, creative iterations, search-query hygiene, and landing-page tests\u2014issues surfaced fast and resolved inside the same sprint cadence.',
   },
   {
     step: 4,
-    glyph: '\u265A',
-    label: 'Checkmate',
-    title: 'Victory',
+    numeral: 'IV',
+    phaseStrip: 'Scale · compound',
+    label: 'Optimize & expand',
+    title: 'Reinvest what proves out.',
     description:
-      'Achieve checkmate with measurable results, increased ROI, and sustainable, compounding growth.',
+      'Double down on compliant CPA/CPL, strengthen organic authority, tighten attribution narratives for finance, and document repeatable motions your team can own.',
   },
 ]
 
@@ -50,78 +55,87 @@ const StrategyFlow = () => {
   useSection('flow', ref)
 
   return (
-    <section ref={ref} className="relative py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+    <section ref={ref} id="strategy" className="relative py-24 md:py-32 bg-cream">
+      <div className="container-custom px-6 md:px-12">
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 backdrop-blur px-3 py-1 mb-5 text-xs font-medium uppercase tracking-[0.18em] text-slate-700">
-            <span className="text-red-600">&#9821;</span>
-            Strategic process — Opening to Checkmate
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 03 &mdash; How we work
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Four phases &middot; one accountable roadmap
+            </div>
           </div>
-          <h2
-            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight"
-            style={{ fontFamily: '"Fraunces", "Inter", serif' }}
-          >
-            Every campaign is a <span className="bg-gradient-to-br from-red-600 to-amber-500 bg-clip-text text-transparent">game</span> we plan to win
-          </h2>
-          <p className="mt-4 text-lg text-slate-700 max-w-3xl mx-auto bg-white/60 backdrop-blur rounded-xl px-4 py-2 inline-block">
-            Think like a chess master, act like a champion. Each phase plays a deliberate move.
-          </p>
-        </motion.div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              From audit to scale,
+              <br />
+              <span className="italic font-light text-oxblood">without losing the thread.</span>
+            </h2>
+          </div>
+        </motion.header>
 
-        <div className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div
-            aria-hidden
-            className="hidden lg:block pointer-events-none absolute top-[5.5rem] left-[10%] right-[10%] h-px bg-gradient-to-r from-red-200 via-slate-300 to-amber-200"
-          />
-
+        {/* Phases — vertical editorial list with hairline rules */}
+        <div className="border-t border-ink/15">
           {STEPS.map((s, i) => (
             <motion.div
               key={s.step}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="relative rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md p-6 text-center shadow-[0_20px_50px_-25px_rgba(15,23,42,0.3)]"
+              transition={{ duration: 0.7, delay: i * 0.05 }}
+              viewport={{ once: true, margin: '-80px' }}
+              className="grid grid-cols-12 gap-4 py-10 md:py-14 border-b border-ink/15 group"
             >
-              <span className="absolute -top-3 right-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white text-sm font-bold shadow-md">
-                0{s.step}
-              </span>
-
-              <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-4xl text-red-600 mb-4 shadow-inner">
-                {s.glyph}
+              <div className="col-span-2 md:col-span-1 font-display text-3xl md:text-5xl text-ink-300 group-hover:text-oxblood transition-colors duration-700">
+                {s.numeral}
               </div>
-
-              <div className="text-[11px] tracking-[0.22em] uppercase text-red-600 font-semibold">
-                {s.label}
+              <div className="col-span-10 md:col-span-3 flex flex-col justify-between">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+                  {s.phaseStrip}
+                </div>
+                <div className="mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+                  Phase &middot; {s.label}
+                </div>
               </div>
-              <h3 className="mt-1 text-xl font-semibold text-slate-900">{s.title}</h3>
-              <p className="mt-2 text-sm text-slate-600 leading-relaxed">{s.description}</p>
+              <div className="col-span-12 md:col-span-8 max-w-3xl">
+                <h3 className="font-display text-display-3 text-ink leading-[1.04] tracking-[-0.025em] group-hover:translate-x-1 transition-transform duration-700">
+                  {s.title}
+                </h3>
+                <p className="lead mt-4 text-[1.05rem] sm:text-[1.15rem]">
+                  {s.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
 
+        {/* Index strip — running results */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-16 border-t border-slate-200/70"
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/15"
         >
           {[
-            { v: '500+', l: 'Strategic Wins' },
-            { v: '98%', l: 'Success Rate' },
-            { v: '$10M+', l: 'Revenue Generated' },
-            { v: '24/7', l: 'Strategic Support' },
+            { k: 'Strategic wins', v: '500+' },
+            { k: 'Success rate', v: '98%' },
+            { k: 'Revenue generated', v: '$10M+' },
+            { k: 'Strategic support', v: '24/7' },
           ].map((s) => (
-            <div key={s.l} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">{s.v}</div>
-              <div className="text-slate-700">{s.l}</div>
+            <div key={s.k} className="bg-cream pt-5 pr-4 pb-3 pl-1">
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                {s.k}
+              </div>
+              <div className="font-display text-3xl md:text-5xl text-ink mt-1 tabular-nums leading-[1]">
+                {s.v}
+              </div>
             </div>
           ))}
         </motion.div>
