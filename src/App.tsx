@@ -7,6 +7,8 @@ import StrategyFlow from './components/StrategyFlow'
 import PortfolioSection from './components/PortfolioSection'
 import ContactSection from './components/ContactSection'
 import CareerPage from './components/CareerPage'
+import BlogPage from './components/BlogPage'
+import BlogPostPage from './components/BlogPostPage'
 import Footer from './components/Footer'
 import { useCanonical } from './utils/canonical'
 import { SmoothScroll } from './three/world/SmoothScroll'
@@ -91,6 +93,8 @@ function App() {
                 }
               />
               <Route path="/careers" element={<CareerPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
             </Routes>
           </main>
           <Footer />

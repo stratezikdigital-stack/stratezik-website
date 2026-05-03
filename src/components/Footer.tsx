@@ -48,6 +48,7 @@ const Footer = () => {
       label: 'II.\u00a0Studio',
       links: [
         { name: 'About', href: `${baseUrl}/#about` },
+        { name: 'Blog', href: '/blog' },
         { name: 'Careers', href: '/careers' },
         { name: 'Capstone work', href: `${baseUrl}/#portfolio` },
       ],
@@ -166,7 +167,13 @@ const Footer = () => {
           <span className="mx-3 text-cream/25">&middot;</span>
           <span>Contact</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span className="text-cream">Careers</span>
+          <Link to="/blog" className="hover:text-cream transition-colors">
+            Blog
+          </Link>
+          <span className="mx-3 text-cream/25">&middot;</span>
+          <Link to="/careers" className="hover:text-cream transition-colors">
+            Careers
+          </Link>
         </div>
 
         <div className="mt-10 hairline border-cream/15 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">

@@ -143,6 +143,14 @@ const Navbar = () => {
                 </button>
               ))}
               <Link
+                to="/blog"
+                data-cursor="cta"
+                data-cursor-text="Read"
+                className="font-display text-[1.05rem] tracking-tight text-ink-700 hover:text-ink transition-colors"
+              >
+                Blog
+              </Link>
+              <Link
                 to="/careers"
                 data-cursor="cta"
                 data-cursor-text="Read"
@@ -194,6 +202,13 @@ const Navbar = () => {
                     {item.name}
                   </button>
                 ))}
+                <Link
+                  to="/blog"
+                  className="block px-2 py-2 font-display text-lg text-ink-700 hover:text-oxblood"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Blog
+                </Link>
                 <Link
                   to="/careers"
                   className="block px-2 py-2 font-display text-lg text-ink-700 hover:text-oxblood"
