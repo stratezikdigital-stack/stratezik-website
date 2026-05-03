@@ -55,25 +55,32 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col">
       {/* Top notation rail */}
-      <div className="bg-ink text-cream/80">
+      <div className="bg-ink text-cream/85">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
-          <div className="flex items-center justify-between gap-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em]">
-            <span className="hidden sm:inline">Game #2026 &mdash; in&nbsp;progress</span>
-            <span className="sm:hidden">Stratezik</span>
-            <div className="flex items-center gap-3 sm:gap-5">
+          <div className="flex items-center justify-between gap-3 py-2 font-mono text-[12px] sm:text-[13px] tracking-[0.12em]">
+            <span className="hidden md:inline uppercase tracking-[0.22em] text-[11px] text-cream/55">
+              Game #2026 &mdash; in&nbsp;progress
+            </span>
+            <span className="md:hidden uppercase tracking-[0.22em] text-[11px] text-cream/55">
+              Stratezik &mdash; Toronto
+            </span>
+            <div className="flex items-center gap-4 sm:gap-6">
               <a
                 href={`tel:${PHONE_TEL}`}
                 data-cursor="cta"
                 data-cursor-text="Call"
-                className="hover:text-cream transition-colors hidden sm:inline"
+                className="hover:text-cream transition-colors tabular-nums"
+                aria-label={`Call ${PHONE_DISPLAY}`}
               >
                 {PHONE_DISPLAY}
               </a>
+              <span aria-hidden className="text-cream/30">|</span>
               <a
                 href={`mailto:${EMAIL}?subject=Book%201%20hour%20consultation`}
                 data-cursor="cta"
                 data-cursor-text="Mail"
-                className="hover:text-cream transition-colors truncate max-w-[180px] sm:max-w-none"
+                className="hover:text-cream transition-colors truncate max-w-[200px] sm:max-w-none"
+                aria-label={`Email ${EMAIL}`}
               >
                 {EMAIL}
               </a>

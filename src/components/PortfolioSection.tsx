@@ -1,108 +1,22 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useSection } from '../three/world/useSection'
+import { MATCHES, type CaseStudyMode } from '../data/caseStudies'
+import CaseStudyModal from './CaseStudyModal'
 
-interface MatchRecord {
+interface OpenCase {
   num: string
-  /** Headline framed as the opponent we beat */
-  opponent: string
-  /** Discipline */
-  category: string
-  /** Game story — short editorial */
-  description: string
-  /** The winning move in algebraic notation */
-  notation: string
-  /** Glyph for the piece that delivered the move. */
-  glyph: string
-  /** Headline result */
-  result: string
-  /** Opening played */
-  opening: string
-  /** Match length */
-  moves: string
+  mode: CaseStudyMode
 }
-
-const MATCHES: MatchRecord[] = [
-  {
-    num: '#047',
-    opponent: 'vs Fragmented CPC Market',
-    category: 'Paid Media',
-    description:
-      'Opponent had been bidding on every long-tail keyword without a unifying narrative. We consolidated 240 ad groups into 18 strategic clusters, each anchored by a deliberate creative thesis.',
-    notation: 'Bxh7+',
-    glyph: '\u265D',
-    result: '+312% CTR &middot; 90 days',
-    opening: "King's Gambit",
-    moves: '1\u201347',
-  },
-  {
-    num: '#039',
-    opponent: 'vs Stalled Organic Growth',
-    category: 'SEO & Content',
-    description:
-      'Twelve months of SEO work, no compounding return. We rebuilt topical authority from a hub-and-spoke model and rewrote the technical foundation. Recovered position in nine weeks.',
-    notation: 'Re8',
-    glyph: '\u265C',
-    result: '+184% organic sessions &middot; 9 weeks',
-    opening: 'Sicilian Defense',
-    moves: '1\u201339',
-  },
-  {
-    num: '#031',
-    opponent: 'vs Generic Brand Identity',
-    category: 'Brand Strategy',
-    description:
-      'Visual sameness was costing them deals against challengers. We rebuilt the wordmark, voice, and visual system around a single ownable position and gave sales a story to lead with.',
-    notation: 'Qg7+',
-    glyph: '\u265B',
-    result: 'Win-rate +28pts',
-    opening: "Queen's Gambit",
-    moves: '1\u201331',
-  },
-  {
-    num: '#024',
-    opponent: 'vs Misattributed Spend',
-    category: 'Analytics',
-    description:
-      'Reporting attributed 70% of revenue to last-click. We rebuilt measurement on server-side tagging and incrementality testing. Reallocated $1.4M to verifiably profitable channels.',
-    notation: 'Nf6',
-    glyph: '\u265E',
-    result: '$1.4M reallocated &middot; ROAS +2.4x',
-    opening: 'English Opening',
-    moves: '1\u201324',
-  },
-  {
-    num: '#018',
-    opponent: 'vs Low-Converting Funnel',
-    category: 'Conversion',
-    description:
-      'Traffic was healthy. Conversion was bleeding. We re-architected the offer ladder, rewrote three landing pages, and instrumented systematic A/B testing.',
-    notation: 'e4-e5',
-    glyph: '\u265F',
-    result: '+150% conversion rate',
-    opening: 'Reti Opening',
-    moves: '1\u201318',
-  },
-  {
-    num: '#012',
-    opponent: 'vs Quiet Social Presence',
-    category: 'Social',
-    description:
-      'Audience was there but unconvinced. We installed an editorial cadence and a weekly creative review. Engagement compounded; community built itself.',
-    notation: 'Kxe4',
-    glyph: '\u265A',
-    result: '+500% engagement &middot; 6 months',
-    opening: 'Italian Game',
-    moves: '1\u201312',
-  },
-]
 
 const PortfolioSection = () => {
   const ref = useRef<HTMLElement>(null)
   useSection('portfolio', ref)
 
+  const [openCase, setOpenCase] = useState<OpenCase | null>(null)
+
   return (
-    <section id="portfolio" ref={ref} className="relative py-24 md:py-32">
+    <section id="portfolio" ref={ref} className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         {/* Editorial header */}
         <motion.header
@@ -122,13 +36,13 @@ const PortfolioSection = () => {
           </div>
           <div className="col-span-12 md:col-span-9">
             <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
-              Six games.
+              Four games.
               <br />
-              <span className="italic font-light text-oxblood">Six wins.</span>
+              <span className="italic font-light text-oxblood">Four wins.</span>
             </h2>
             <p className="lead mt-8 max-w-3xl">
-              We treat every engagement like a tournament match. Each card below is a record of a
-              specific position, the opening we chose, and the move that decided it.
+              Each card below is a record of a real engagement &mdash; the position we walked into,
+              the move that decided it, and the outcome. Click any case to read the full story.
             </p>
           </div>
         </motion.header>
@@ -144,57 +58,74 @@ const PortfolioSection = () => {
               viewport={{ once: true, margin: '-80px' }}
               data-cursor="cta"
               data-cursor-text="Read"
-              className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer"
+              onClick={() => setOpenCase({ num: m.num, mode: m.mode })}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setOpenCase({ num: m.num, mode: m.mode })
+                }
+              }}
+              className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-oxblood"
             >
-              {/* Game number */}
+              {/* Case number */}
               <div className="col-span-3 md:col-span-1 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 pt-2">
-                Game
+                Case
                 <div className="text-ink mt-0.5 tabular-nums">{m.num}</div>
               </div>
 
-              {/* Opponent + category */}
-              <div className="col-span-9 md:col-span-5">
-                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
-                  {m.category} &middot; {m.opening}
+              {/* Headline + category + body */}
+              <div className="col-span-9 md:col-span-6">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood flex items-center gap-2">
+                  <span>{m.category}</span>
+                  {m.mode === 'anonymized' && (
+                    <>
+                      <span className="text-ink/30">&middot;</span>
+                      <span className="text-ink-500">Confidential</span>
+                    </>
+                  )}
                 </div>
                 <h3 className="mt-1 font-display text-2xl md:text-3xl lg:text-4xl text-ink leading-[1.05] tracking-[-0.025em] group-hover:translate-x-1 transition-transform duration-700">
-                  {m.opponent}
+                  {m.headline}
                 </h3>
                 <p className="mt-3 text-ink-700 text-sm sm:text-base leading-relaxed max-w-2xl">
                   {m.description}
                 </p>
+                <div className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 group-hover:text-oxblood transition-colors duration-300">
+                  <span>Explore more</span>
+                  <span aria-hidden="true" className="transform group-hover:translate-x-1 transition-transform duration-300">
+                    {'\u2192'}
+                  </span>
+                </div>
               </div>
 
-              {/* Result */}
-              <div className="col-span-12 md:col-span-3 flex flex-col justify-between">
+              {/* Result — leads with the actual outcome */}
+              <div className="col-span-12 md:col-span-5 flex flex-col items-start md:items-end md:text-right">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
                   Result
                 </div>
                 <div
-                  className="mt-2 font-display text-lg text-ink leading-tight"
+                  className="mt-2 font-display text-2xl md:text-3xl text-ink leading-[1.05]"
                   dangerouslySetInnerHTML={{ __html: m.result }}
                 />
-                <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                  Moves {m.moves}
-                </div>
-              </div>
-
-              {/* Winning move + glyph */}
-              <div className="col-span-12 md:col-span-3 flex items-start justify-end">
-                <div className="text-right">
-                  <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-                    Winning move
-                  </div>
-                  <div className="mt-1 inline-flex items-baseline gap-2">
-                    <span className="text-3xl text-oxblood leading-none">{m.glyph}</span>
-                    <span className="font-mono text-xl text-ink tabular-nums">{m.notation}</span>
-                  </div>
+                <div className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300">
+                  <span className="text-oxblood text-base leading-none">{m.glyph}</span>
+                  <span>{m.opening}</span>
                 </div>
               </div>
             </motion.article>
           ))}
         </div>
       </div>
+
+      {/* Case study deep-dive modal */}
+      <CaseStudyModal
+        open={openCase !== null}
+        mode={openCase?.mode ?? 'named'}
+        matchNum={openCase?.num ?? ''}
+        onClose={() => setOpenCase(null)}
+      />
     </section>
   )
 }

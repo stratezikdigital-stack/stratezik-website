@@ -56,7 +56,7 @@ const StrategyFlow = () => {
   useSection('flow', ref)
 
   return (
-    <section ref={ref} id="strategy" className="relative py-24 md:py-32">
+    <section ref={ref} id="strategy" className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         <motion.header
           initial={{ opacity: 0, y: 16 }}

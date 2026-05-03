@@ -114,29 +114,33 @@ const HeroSection = () => {
           <div className="md:col-span-3 lg:col-span-5 hidden md:block" aria-hidden />
         </div>
 
-        {/* Hairline-divided index strip — magazine cover vibe */}
+        {/* Hairline-divided index strip — magazine cover vibe.
+            Sits inside its own cream band so the 3D world doesn't bleed
+            dark pieces through the editorial type. */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.8 }}
-          className="relative z-10 hairline mx-6 md:mx-12 mb-6"
+          className="relative z-10 bg-cream"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/15">
-            {[
-              { k: 'Strategic victories', v: '150+' },
-              { k: 'Client satisfaction', v: '98%' },
-              { k: 'Revenue generated', v: '$5M+' },
-              { k: 'Toronto, Canada', v: 'EST. 2018' },
-            ].map((s) => (
-              <div key={s.k} className="bg-cream pt-4 pr-4 pb-2 pl-1">
-                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                  {s.k}
+          <div className="hairline mx-6 md:mx-12 mb-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/15">
+              {[
+                { k: 'Strategic victories', v: '150+' },
+                { k: 'Client satisfaction', v: '98%' },
+                { k: 'Revenue generated', v: '$5M+' },
+                { k: 'Toronto, Canada', v: 'EST. 2018' },
+              ].map((s) => (
+                <div key={s.k} className="bg-cream pt-4 pr-4 pb-4 pl-1">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                    {s.k}
+                  </div>
+                  <div className="font-display text-2xl md:text-3xl text-ink mt-1 tabular-nums">
+                    {s.v}
+                  </div>
                 </div>
-                <div className="font-display text-2xl md:text-3xl text-ink mt-1 tabular-nums">
-                  {s.v}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

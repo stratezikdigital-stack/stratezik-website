@@ -5,16 +5,19 @@ import { useWorldStore } from '../three/world/store'
 /**
  * Plan D — Now-playing HUD.
  *
- * Top-left fixed overlay. Mirrors the visitor's progress through the
- * page-as-game: section name + move number tick up as you scroll.
- * Hidden on small screens (clutters the editorial hero on mobile).
+ * Bottom-left compact strip. Mirrors the visitor's progress through the
+ * page-as-game: section name + percentage tick up as you scroll.
+ *
+ * Hidden while the visitor is still in the hero (the hero already shows
+ * its own "/ 01 — Opening" marker; redundant + collides with hero copy).
+ * Hidden on small screens (clutters mobile layouts).
  */
 const MOVES = [
-  { name: 'hero',      label: 'Opening',    move: '1.\u00a0e4',     stage: 'I.\u00a0Opening' },
-  { name: 'services',  label: 'Development',move: '2.\u00a0Nf3',    stage: 'II.\u00a0Development' },
-  { name: 'flow',      label: 'Strategy',   move: '12.\u00a0\u2658d5', stage: 'III.\u00a0Middle\u00a0game' },
-  { name: 'portfolio', label: 'Tactics',    move: '24.\u00a0\u2655xh7', stage: 'IV.\u00a0Tactics' },
-  { name: 'contact',   label: 'Endgame',    move: '47.\u00a0\u2654g8#', stage: 'V.\u00a0Checkmate' },
+  { name: 'hero',      stage: 'Opening' },
+  { name: 'services',  stage: 'Repertoire' },
+  { name: 'flow',      stage: 'Strategy' },
+  { name: 'portfolio', stage: 'Match record' },
+  { name: 'contact',   stage: 'Endgame' },
 ] as const
 
 export function MoveCounterHUD() {
@@ -27,59 +30,56 @@ export function MoveCounterHUD() {
     return () => window.clearTimeout(t)
   }, [])
 
+  // Skip the hero — the section already advertises "/ 01 Opening" in its
+  // top notation row, and the HUD would just overlap the headline.
+  if (current === 'hero') return null
+
   const idx = MOVES.findIndex((m) => m.name === current)
-  const move = idx >= 0 ? MOVES[idx] : MOVES[0]
+  const move = idx >= 0 ? MOVES[idx] : MOVES[1]
+  const total = MOVES.length - 1
+  const ordinal = idx >= 1 ? idx : 1
 
   return (
     <AnimatePresence>
       {appeared ? (
         <motion.aside
-          key={`hud`}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="hidden lg:flex pointer-events-none fixed top-32 left-6 z-30 items-stretch gap-4 select-none"
+          key="hud"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="hidden lg:flex pointer-events-none fixed bottom-6 left-6 z-30 items-center gap-3 select-none bg-cream/92 backdrop-blur-md border border-ink/15 px-4 py-2.5 shadow-lg"
           aria-label="Game progress"
         >
-          {/* Vertical hairline */}
-          <div className="w-px bg-ink/25" />
-
-          <div className="flex flex-col gap-3 min-w-[160px]">
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-oxblood animate-pulse" />
-              <span>Now playing</span>
-            </div>
-
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-oxblood animate-pulse" />
+          <div className="flex items-center gap-2 min-w-[180px]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
+              {ordinal}/{total}
+            </span>
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.span
                 key={move.name}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="font-display text-2xl text-ink leading-none tracking-tight"
+                initial={{ opacity: 0, x: 4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -4 }}
+                transition={{ duration: 0.3 }}
+                className="font-display text-[15px] text-ink leading-none tracking-tight"
               >
                 {move.stage}
-              </motion.div>
+              </motion.span>
             </AnimatePresence>
-
-            <div className="font-mono text-[12px] text-ink-700 tabular-nums">
-              {move.move}
-            </div>
-
-            {/* Progress hairline */}
-            <div className="relative h-px w-40 bg-ink/15 mt-2">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-ink"
-                animate={{ width: `${Math.round(progress * 100)}%` }}
-                transition={{ ease: 'linear', duration: 0.1 }}
-              />
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
-              {Math.round(progress * 100).toString().padStart(3, '0')}% complete
-            </div>
           </div>
+
+          <div className="relative h-px w-24 bg-ink/15 ml-1">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-ink"
+              animate={{ width: `${Math.round(progress * 100)}%` }}
+              transition={{ ease: 'linear', duration: 0.1 }}
+            />
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500 tabular-nums w-9 text-right">
+            {Math.round(progress * 100).toString().padStart(2, '0')}%
+          </span>
         </motion.aside>
       ) : null}
     </AnimatePresence>

@@ -14,14 +14,10 @@ import { useSection } from '../three/world/useSection'
 
 interface Opening {
   number: string
-  /** The chess-opening codename (left/large) */
-  opening: string
-  /** ECO code (e.g. C60). Tiny editorial detail. */
-  eco: string
-  /** What it actually means at Stratezik */
+  /** The actual service we sell (large, dominant headline). */
   service: string
-  /** First three moves of the opening, in algebraic notation */
-  moves: [string, string, string]
+  /** Chess-opening accent — small label only. */
+  opening: string
   /** Editorial blurb */
   thesis: string
   /** Tactical bullets */
@@ -33,10 +29,8 @@ interface Opening {
 const OPENINGS: Opening[] = [
   {
     number: '01',
-    opening: "King's Gambit",
-    eco: 'C30',
     service: 'Paid Search & Social Ads',
-    moves: ['1. e4 e5', '2. f4 exf4', '3. Nf3 g5'],
+    opening: "King's Gambit",
     thesis:
       'Sacrifice a pawn early to seize the centre and the initiative. In paid media: a bold opening bid that buys position your competitors can\u2019t recover from.',
     tactics: [
@@ -53,10 +47,8 @@ const OPENINGS: Opening[] = [
   },
   {
     number: '02',
-    opening: 'Sicilian Defense',
-    eco: 'B20',
     service: 'SEO & Organic Growth',
-    moves: ['1. e4 c5', '2. Nf3 d6', '3. d4 cxd4'],
+    opening: 'Sicilian Defense',
     thesis:
       'The most-studied counter in modern chess. Asymmetric, patient, ruthlessly long-term. SEO\u2019s exact temperament \u2014 you don\u2019t buy attention, you compound it.',
     tactics: [
@@ -73,10 +65,8 @@ const OPENINGS: Opening[] = [
   },
   {
     number: '03',
-    opening: 'Italian Game',
-    eco: 'C50',
     service: 'Social Strategy & Content',
-    moves: ['1. e4 e5', '2. Nf3 Nc6', '3. Bc4 Bc5'],
+    opening: 'Italian Game',
     thesis:
       'Develops pieces toward the most provocative square \u2014 right next to the opponent\u2019s king. Social done right: every post is positional, none of it is filler.',
     tactics: [
@@ -93,10 +83,8 @@ const OPENINGS: Opening[] = [
   },
   {
     number: '04',
-    opening: "Queen's Gambit",
-    eco: 'D06',
     service: 'Brand Strategy & Identity',
-    moves: ['1. d4 d5', '2. c4 e6', '3. Nc3 Nf6'],
+    opening: "Queen's Gambit",
     thesis:
       'Offer a flank pawn to dominate the centre. The premium brand play: trade short-term volume for long-term positioning that no challenger can dislodge.',
     tactics: [
@@ -113,10 +101,8 @@ const OPENINGS: Opening[] = [
   },
   {
     number: '05',
-    opening: 'English Opening',
-    eco: 'A10',
     service: 'Conversion & Growth',
-    moves: ['1. c4 e5', '2. Nc3 Nf6', '3. Nf3 Nc6'],
+    opening: 'English Opening',
     thesis:
       'Flexible, hyper-modern, transposable. Conversion engineering at its best: every funnel adapts to the visitor, no scripted opening required.',
     tactics: [
@@ -133,10 +119,8 @@ const OPENINGS: Opening[] = [
   },
   {
     number: '06',
-    opening: "Reti Opening",
-    eco: 'A04',
     service: 'Analytics & Data',
-    moves: ['1. Nf3 d5', '2. c4 d4', '3. b4 \u2026'],
+    opening: "Reti Opening",
     thesis:
       'Win without revealing your plan. Modern analytics: the answer doesn\u2019t come from the dashboard \u2014 it comes from the question we frame two layers above it.',
     tactics: [
@@ -253,25 +237,26 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
       />
 
       <div className="grid grid-cols-12 gap-4 p-7 md:p-8">
-        {/* Number + ECO */}
-        <div className="col-span-3 md:col-span-2 flex flex-col font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-          <span className="text-ink-700">{opening.number}</span>
-          <span className="mt-2">{opening.eco}</span>
+        {/* Number */}
+        <div className="col-span-2 md:col-span-1">
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
+            {opening.number}
+          </span>
         </div>
 
-        {/* Title block */}
-        <div className="col-span-9 md:col-span-7">
+        {/* Title block — service name is the headline, opening is a tiny accent */}
+        <div className="col-span-10 md:col-span-8">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
-            {opening.service}
+            Plays the {opening.opening}
           </div>
-          <h3 className="mt-1 font-display text-display-3 text-ink leading-[1] tracking-[-0.025em]">
-            {opening.opening}
+          <h3 className="mt-2 font-display text-display-3 text-ink leading-[1.02] tracking-[-0.025em]">
+            {opening.service}
           </h3>
         </div>
 
-        {/* Mini board */}
-        <div className="col-span-3 md:col-span-3 flex items-center justify-end">
-          <div className="w-20 md:w-24 aspect-square">
+        {/* Mini board — small visual accent */}
+        <div className="col-span-12 md:col-span-3 flex items-start justify-end">
+          <div className="w-16 md:w-20 aspect-square opacity-80">
             <MiniBoard arrows={opening.arrows} />
           </div>
         </div>
@@ -279,28 +264,18 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
 
       <div className="hairline mx-7 md:mx-8" />
 
-      <div className="grid grid-cols-12 gap-4 p-7 md:p-8 pt-6">
-        {/* Move list */}
-        <div className="col-span-12 md:col-span-4 font-mono text-[12px] text-ink-700 tabular-nums leading-7">
-          {opening.moves.map((m) => (
-            <div key={m} className="whitespace-nowrap">{m}</div>
+      <div className="p-7 md:p-8 pt-6">
+        <p className="lead text-[1.05rem] sm:text-[1.15rem] mb-5 leading-snug max-w-3xl">
+          {opening.thesis}
+        </p>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+          {opening.tactics.map((t) => (
+            <li key={t} className="flex items-baseline gap-2 text-sm text-ink-700">
+              <span className="font-mono text-[10px] text-oxblood">&#9670;</span>
+              <span>{t}</span>
+            </li>
           ))}
-        </div>
-
-        {/* Thesis + tactics */}
-        <div className="col-span-12 md:col-span-8">
-          <p className="lead text-[1.05rem] sm:text-[1.15rem] mb-5 leading-snug">
-            {opening.thesis}
-          </p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
-            {opening.tactics.map((t) => (
-              <li key={t} className="flex items-baseline gap-2 text-sm text-ink-700">
-                <span className="font-mono text-[10px] text-oxblood">&#9670;</span>
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        </ul>
       </div>
     </motion.article>
   )
@@ -311,7 +286,7 @@ const ServicesSection = () => {
   useSection('services', ref)
 
   return (
-    <section id="services" ref={ref} className="relative py-24 md:py-32">
+    <section id="services" ref={ref} className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         {/* Section heading row — editorial */}
         <motion.header
@@ -323,10 +298,10 @@ const ServicesSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 02 &mdash; Repertoire
+              / 02 &mdash; Services
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              Six openings &middot; one repertoire
+              Six disciplines &middot; one repertoire
             </div>
           </div>
           <div className="col-span-12 md:col-span-9">
@@ -336,9 +311,9 @@ const ServicesSection = () => {
               <span className="italic font-light text-oxblood">We run gambits.</span>
             </h2>
             <p className="lead mt-8 max-w-3xl">
-              Every Stratezik engagement is built on a documented opening &mdash; a sequence of moves
-              we&rsquo;ve studied, refined, and won with. Pick the opening that suits your position,
-              or let us prepare a tailored line.
+              Every Stratezik engagement is built on a documented playbook &mdash; six disciplines
+              we&rsquo;ve studied, refined, and won with. Pick the discipline that suits your
+              position, or let us prepare a tailored line of play.
             </p>
           </div>
         </motion.header>
