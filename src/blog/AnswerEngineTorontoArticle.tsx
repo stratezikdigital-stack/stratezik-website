@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { answerEngineTorontoFaq } from './postFaqs'
 
 const SITE = 'https://www.stratezik.com'
 
@@ -56,10 +57,11 @@ export default function AnswerEngineTorontoArticle() {
         aria-labelledby="feat-answer-heading"
       >
         <h2 id="feat-answer-heading" className="font-display text-xl md:text-2xl text-ink tracking-tight">
-          What is answer engine optimisation and how does it affect Toronto businesses?
+          {answerEngineTorontoFaq[0].question}
         </h2>
-        <p className="mt-4 text-ink-700 leading-relaxed">
-          Answer engine optimisation (AEO) means lining up pages so assistants can cite you inside AI-written summaries across{' '}
+        <p className="mt-4 text-ink-700 leading-relaxed">{answerEngineTorontoFaq[0].answer}</p>
+        <p className="mt-4 text-sm text-ink-600 leading-relaxed">
+          Tools referenced in conversation:{' '}
           <a href={REF.chatgpt} target="_blank" rel="noopener noreferrer" className="text-oxblood underline underline-offset-2">
             ChatGPT
           </a>
@@ -67,11 +69,11 @@ export default function AnswerEngineTorontoArticle() {
           <a href={REF.perplexity} target="_blank" rel="noopener noreferrer" className="text-oxblood underline underline-offset-2">
             Perplexity
           </a>
-          , and{' '}
+          ,{' '}
           <a href={REF.googleAioSite} target="_blank" rel="noopener noreferrer" className="text-oxblood underline underline-offset-2">
             Google AI Overviews
           </a>
-          . Practically, your shop shows when someone asks software for a vendor shortlist before they open Maps or skim blue links.
+          .
         </p>
       </aside>
 
@@ -290,6 +292,20 @@ export default function AnswerEngineTorontoArticle() {
           </Link>
         </p>
       </div>
+
+      <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="article-faq-heading">
+        <h2 id="article-faq-heading" className="font-display text-display-3 text-ink">
+          FAQ
+        </h2>
+        <dl className="mt-8 space-y-10">
+          {answerEngineTorontoFaq.slice(1).map((item) => (
+            <div key={item.question}>
+              <dt className="font-display text-xl md:text-2xl text-ink tracking-tight">{item.question}</dt>
+              <dd className="mt-4 text-ink-700 leading-relaxed">{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="sources-heading">
         <h2 id="sources-heading" className="font-display text-xl text-ink">

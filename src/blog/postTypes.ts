@@ -8,6 +8,8 @@ export type BlogPostMeta = {
   datePublished: string
   dateModified: string
   keywords: string[]
+  /** Path on origin for OG/Twitter + Article `image`, e.g. `/branding/blog-og-x.png` */
+  shareImagePath?: string
 }
 
 export type BlogPostDefinition = BlogPostMeta & {

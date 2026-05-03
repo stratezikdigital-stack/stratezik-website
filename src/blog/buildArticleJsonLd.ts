@@ -12,6 +12,11 @@ const publisher = {
   },
 }
 
+function articleImageUrls(meta: BlogPostMeta): string[] {
+  const path = meta.shareImagePath ?? '/branding/stratezik-horizontal.png'
+  return [`${SITE}${path}`]
+}
+
 export function buildArticleWithFaqJsonLd(meta: BlogPostMeta, faqMainEntity: { question: string; answer: string }[]) {
   const url = `${SITE}/blog/${meta.slug}`
   const article = {
@@ -23,7 +28,7 @@ export function buildArticleWithFaqJsonLd(meta: BlogPostMeta, faqMainEntity: { q
     dateModified: meta.dateModified,
     author: publisher,
     publisher,
-    image: [`${SITE}/branding/stratezik-vertical.png`],
+    image: articleImageUrls(meta),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': url,
@@ -66,7 +71,7 @@ export function buildSimpleArticleJsonLd(meta: BlogPostMeta) {
         dateModified: meta.dateModified,
         author: publisher,
         publisher,
-        image: [`${SITE}/branding/stratezik-vertical.png`],
+        image: articleImageUrls(meta),
         mainEntityOfPage: {
           '@type': 'WebPage',
           '@id': url,

@@ -19,6 +19,8 @@ export type ApplyPageMetaArgs = {
   /** Pathname only, e.g. /blog or /blog/my-post */
   path: string
   ogType?: string
+  /** Full absolute URL for og:image and twitter:image */
+  ogImageUrl?: string
 }
 
 /** Returns undo function (also runs on unmount via useEffect cleanup). */
@@ -42,6 +44,16 @@ export function applyPageMeta(args: ApplyPageMetaArgs): () => void {
     { selector: 'meta[name="twitter:description"]', value: args.description },
   ]
 
+  const ogImageEl = getMetaElement('meta[property="og:image"]')
+  const twitterImageEl = getMetaElement('meta[name="twitter:image"]')
+  const prevOgImage = snapshotContent(ogImageEl)
+  const prevTwitterImage = snapshotContent(twitterImageEl)
+
+  if (args.ogImageUrl) {
+    if (ogImageEl) ogImageEl.setAttribute('content', args.ogImageUrl)
+    if (twitterImageEl) twitterImageEl.setAttribute('content', args.ogImageUrl)
+  }
+
   const snapshots = ogTwitter.map(({ selector }) => {
     const el = getMetaElement(selector)
     return { el, prev: snapshotContent(el) }
@@ -55,6 +67,16 @@ export function applyPageMeta(args: ApplyPageMetaArgs): () => void {
   return () => {
     document.title = prevTitle
     if (descEl && prevDesc !== null) descEl.setAttribute('content', prevDesc)
+    if (args.ogImageUrl) {
+      if (ogImageEl) {
+        if (prevOgImage !== null) ogImageEl.setAttribute('content', prevOgImage)
+        else ogImageEl.removeAttribute('content')
+      }
+      if (twitterImageEl) {
+        if (prevTwitterImage !== null) twitterImageEl.setAttribute('content', prevTwitterImage)
+        else twitterImageEl.removeAttribute('content')
+      }
+    }
     snapshots.forEach(({ el, prev }) => {
       if (!el) return
       if (prev === null) el.removeAttribute('content')

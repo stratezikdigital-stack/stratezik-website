@@ -2,20 +2,29 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { blogPosts } from '../blog/posts'
-import { applyPageMeta } from '../utils/documentMeta'
+import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
+import { applyPageMeta, injectJsonLd } from '../utils/documentMeta'
+
+const SITE = 'https://www.stratezik.com'
 
 /**
  * Blog index: editorial listing aligned with Plan D typography.
  */
 const BlogPage = () => {
   useEffect(() => {
-    return applyPageMeta({
+    const undoMeta = applyPageMeta({
       title: 'Blog | Stratezik: Toronto SEO, PPC & Answer Engine Insights',
       description:
         'Articles from Stratezik on answer engine optimisation (AEO), Toronto local SEO, AI search, Google AI Overviews, and integrated growth strategy.',
       path: '/blog',
       ogType: 'website',
+      ogImageUrl: `${SITE}/branding/stratezik-horizontal.png`,
     })
+    const undoLd = injectJsonLd(buildBlogIndexJsonLd(blogPosts))
+    return () => {
+      undoMeta()
+      undoLd()
+    }
   }, [])
 
   return (

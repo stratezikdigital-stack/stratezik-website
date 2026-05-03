@@ -5,6 +5,8 @@ import { getPostBySlug } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { applyPageMeta, injectJsonLd } from '../utils/documentMeta'
 
+const SITE = 'https://www.stratezik.com'
+
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
   const post = getPostBySlug(slug)
@@ -12,11 +14,13 @@ const BlogPostPage = () => {
   useEffect(() => {
     if (!post) return undefined
 
+    const sharePath = post.shareImagePath ?? '/branding/stratezik-horizontal.png'
     const undoMeta = applyPageMeta({
       title: `${post.title} | Stratezik Blog`,
       description: post.description,
       path: `/blog/${post.slug}`,
       ogType: 'article',
+      ogImageUrl: `${SITE}${sharePath}`,
     })
 
     const jsonLd =
@@ -30,7 +34,7 @@ const BlogPostPage = () => {
       undoMeta()
       undoLd()
     }
-  }, [post?.slug, post?.title, post?.description, post?.datePublished, post?.dateModified])
+  }, [post?.slug, post?.title, post?.description, post?.datePublished, post?.dateModified, post?.shareImagePath])
 
   if (!post) {
     return <Navigate to="/blog" replace />

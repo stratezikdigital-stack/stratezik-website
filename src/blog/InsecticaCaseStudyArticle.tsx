@@ -15,6 +15,7 @@ import {
   Trophy,
 } from 'lucide-react'
 import { InsecticaJourneyInfographic, InsecticaOrganicImpressionsChart, InsecticaPaidEfficiencyChart } from './insectica/InsecticaBlogFigures'
+import { insecticaCaseStudyFaq } from './postFaqs'
 
 /** Insectica Pest Control case study for the Stratezik blog (metrics from engagement exports). */
 export default function InsecticaCaseStudyArticle() {
@@ -342,6 +343,20 @@ export default function InsecticaCaseStudyArticle() {
         </Link>
         .
       </aside>
+
+      <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="insectica-faq-heading">
+        <h2 id="insectica-faq-heading" className="font-display text-display-3 text-ink">
+          FAQ
+        </h2>
+        <dl className="mt-8 space-y-10">
+          {insecticaCaseStudyFaq.map((item) => (
+            <div key={item.question}>
+              <dt className="font-display text-xl md:text-2xl text-ink tracking-tight">{item.question}</dt>
+              <dd className="mt-4 text-ink-700 leading-relaxed">{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       <div className="mt-16 p-8 md:p-10 bg-ink text-cream border border-ink/10">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">Next engagement</p>
