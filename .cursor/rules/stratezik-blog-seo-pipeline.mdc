@@ -1,0 +1,15 @@
+---
+description: Routes Stratezik blog and SEO/AEO ship work through the pipeline skill chain
+globs: src/blog/**/*,src/components/Blog*.tsx
+alwaysApply: false
+---
+
+# Blog + SEO/AEO pipeline (mandatory for scoped files)
+
+When the task touches **`src/blog/**`**, **`BlogPostPage`**, **`posts.ts`**, **`buildArticleJsonLd.ts`**, or publishing/overhauling a blog article:
+
+1. **Follow** `.cursor/skills/stratezik-blog-seo-pipeline/SKILL.md` end-to-end. Use **Chain A** for greenfield posts (SEO brief, then draft). Use **Chain B** when the user pastes or uploads mostly finished copy (SEO §8 pre-publish audit first).
+2. Do **not** skip **`stratezik-seo-aeo`** or **`stratezik-blog-writing`** substeps defined inside that pipeline file unless the user explicitly restricts scope (for example “tone-only edit”).
+3. Keep **`public/sitemap.xml`** and **`posts.ts`** metadata aligned when adding or renaming URLs.
+
+If the user asks about blog SEO without matching globs, they should **`@stratezik-blog-seo-pipeline`** in chat or temporarily include `@`**`/blog`** files in context.
