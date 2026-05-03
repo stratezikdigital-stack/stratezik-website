@@ -130,36 +130,47 @@ export function InsecticaOrganicImpressionsChart() {
   const max = Math.max(...data.map((d) => d.v))
   const barW = 56
   const gap = 36
-  const chartH = 220
-  const baseY = 280
+  /** Taller plot + lower baseline so bar tops never collide with the header copy */
+  const chartH = 210
+  const baseY = 300
+  const w = 560
+  const h = 380
 
   return (
-    <svg viewBox="0 0 520 320" className="w-full max-w-lg mx-auto h-auto" role="img" aria-label="Organic search impressions growth by month">
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full max-w-xl mx-auto h-auto" role="img" aria-label="Organic search impressions growth by month">
       <title>Organic impressions growth February 2025 through April 2026</title>
-      <rect width="520" height="320" fill="#faf6ec" />
-      <text x="260" y="36" textAnchor="middle" className="fill-ink" style={{ fontSize: 15, fontFamily: 'Fraunces, serif' }}>
+      <rect width={w} height={h} fill="#faf6ec" />
+      <text x={w / 2} y={32} textAnchor="middle" fill="#0d0c0a" style={{ fontSize: 16, fontFamily: 'Fraunces, serif' }}>
         Organic impressions (Search Console)
       </text>
-      <text x="260" y="58" textAnchor="middle" fill="#5a554b" style={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace' }}>
-        HEIGHT ∝ IMPRESSIONS · SOURCE: ENGAGEMENT REPORTING
+      <text x={w / 2} y={52} textAnchor="middle" fill="#5a554b" style={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.06em' }}>
+        BAR HEIGHT ∝ MONTHLY IMPRESSIONS
       </text>
+      <text x={w / 2} y={68} textAnchor="middle" fill="#7d7669" style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+        Source: engagement reporting (Search Console exports)
+      </text>
+      <line x1="44" y1={baseY} x2={w - 44} y2={baseY} stroke="#0d0c0a" strokeOpacity="0.15" strokeWidth={1.5} />
       {data.map((d, i) => {
-        const h = (d.v / max) * chartH
-        const x = 60 + i * (barW + gap)
-        const y = baseY - h
+        const barH = (d.v / max) * chartH
+        const x = 52 + i * (barW + gap)
+        const y = baseY - barH
         return (
           <g key={d.label}>
-            <rect x={x} y={y} width={barW} height={h} fill="#7a1f1f" opacity={0.85} rx={2} />
-            <text x={x + barW / 2} y={baseY + 22} textAnchor="middle" style={{ fontSize: 10, fill: '#2a2722', fontFamily: 'JetBrains Mono, monospace' }}>
+            <rect x={x} y={y} width={barW} height={barH} fill="#7a1f1f" opacity={0.88} rx={3} />
+            <text
+              x={x + barW / 2}
+              y={baseY + 18}
+              textAnchor="middle"
+              style={{ fontSize: 10, fill: '#2a2722', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}
+            >
               {d.label}
             </text>
-            <text x={x + barW / 2} y={y - 8} textAnchor="middle" style={{ fontSize: 10, fill: '#5a554b' }}>
+            <text x={x + barW / 2} y={baseY + 34} textAnchor="middle" style={{ fontSize: 10, fill: '#5a554b' }}>
               {d.v.toLocaleString()}
             </text>
           </g>
         )
       })}
-      <line x1="40" y1={baseY} x2="480" y2={baseY} stroke="#0d0c0a" strokeOpacity="0.15" />
     </svg>
   )
 }
@@ -172,38 +183,64 @@ export function InsecticaPaidEfficiencyChart() {
     { month: "Apr '26", conv: 86, cpl: 41.89 },
   ]
   const maxConv = Math.max(...rows.map((r) => r.conv))
+  const plotMaxH = 120
+  const baseY = 230
+  const bw = 118
+  const gap = 48
+  const w = 580
+  const h = 310
 
   return (
-    <svg viewBox="0 0 560 260" className="w-full max-w-lg mx-auto h-auto" role="img" aria-label="Paid conversions and cost per lead highlights">
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full max-w-xl mx-auto h-auto" role="img" aria-label="Paid conversions and cost per lead highlights">
       <title>Paid conversion volume vs CPL for selected months</title>
-      <rect width="560" height="260" fill="#faf6ec" />
-      <text x="280" y="34" textAnchor="middle" style={{ fontSize: 15, fontFamily: 'Fraunces, serif', fill: '#0d0c0a' }}>
+      <rect width={w} height={h} fill="#faf6ec" />
+      <text x={w / 2} y={30} textAnchor="middle" style={{ fontSize: 16, fontFamily: 'Fraunces, serif', fill: '#0d0c0a' }}>
         Paid conversions &amp; CPL (Google Ads)
       </text>
-      <text x="280" y="54" textAnchor="middle" style={{ fontSize: 10, fill: '#5a554b', fontFamily: 'JetBrains Mono, monospace' }}>
-        BAR = CONVERSIONS · LABEL = CPL IN CAD
+      <text x={w / 2} y={50} textAnchor="middle" style={{ fontSize: 10, fill: '#5a554b', fontFamily: 'JetBrains Mono, monospace' }}>
+        BAR HEIGHT = CONVERSION VOLUME (SELECTED MONTHS)
       </text>
+      <line x1="56" y1={baseY} x2={w - 56} y2={baseY} stroke="#0d0c0a" strokeOpacity="0.15" strokeWidth={1.5} />
       {rows.map((r, i) => {
-        const bw = 120
-        const gap = 50
-        const x = 80 + i * (bw + gap)
-        const h = (r.conv / maxConv) * 140
-        const y = 200 - h
+        const x = 72 + i * (bw + gap)
+        const barH = (r.conv / maxConv) * plotMaxH
+        const y = baseY - barH
+        const midY = y + barH / 2 + 4
+        const labelInside = barH >= 32
         return (
           <g key={r.month}>
-            <rect x={x} y={y} width={bw} height={h} fill="#0d0c0a" opacity={0.9} rx={2} />
-            <text x={x + bw / 2} y={218} textAnchor="middle" style={{ fontSize: 11, fontFamily: 'JetBrains Mono, monospace', fill: '#2a2722' }}>
+            <rect x={x} y={y} width={bw} height={barH} fill="#0d0c0a" opacity={0.92} rx={3} />
+            {labelInside ? (
+              <text
+                x={x + bw / 2}
+                y={midY}
+                textAnchor="middle"
+                style={{ fontSize: 13, fill: '#f4ede1', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}
+              >
+                {r.conv} conv
+              </text>
+            ) : (
+              <text
+                x={x + bw / 2}
+                y={y - 8}
+                textAnchor="middle"
+                style={{ fontSize: 11, fill: '#7a1f1f', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}
+              >
+                {r.conv} conv
+              </text>
+            )}
+            <text x={x + bw / 2} y={baseY + 20} textAnchor="middle" style={{ fontSize: 11, fontFamily: 'JetBrains Mono, monospace', fill: '#2a2722', fontWeight: 600 }}>
               {r.month}
             </text>
-            <text x={x + bw / 2} y={y - 10} textAnchor="middle" style={{ fontSize: 12, fill: '#7a1f1f', fontWeight: 600 }}>
-              {r.conv} conv
-            </text>
-            <text x={x + bw / 2} y={238} textAnchor="middle" style={{ fontSize: 11, fill: '#5a554b' }}>
-              CPL ${r.cpl.toFixed(2)}
+            <text x={x + bw / 2} y={baseY + 38} textAnchor="middle" style={{ fontSize: 11, fill: '#7a1f1f', fontFamily: 'JetBrains Mono, monospace' }}>
+              CPL ${r.cpl.toFixed(2)} CAD
             </text>
           </g>
         )
       })}
+      <text x={w / 2} y={h - 14} textAnchor="middle" style={{ fontSize: 9, fill: '#7d7669', fontFamily: 'JetBrains Mono, monospace' }}>
+        CPL shown under each month · illustrative peaks only
+      </text>
     </svg>
   )
 }

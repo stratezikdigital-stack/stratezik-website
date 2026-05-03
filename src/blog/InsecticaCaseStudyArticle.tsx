@@ -1,4 +1,19 @@
 import { Link } from 'react-router-dom'
+import type { LucideIcon } from 'lucide-react'
+import {
+  CalendarRange,
+  CircleDollarSign,
+  CircleSlash,
+  ClipboardList,
+  Flame,
+  LayoutDashboard,
+  LayoutGrid,
+  MapPinned,
+  Rocket,
+  Sparkles,
+  Sprout,
+  Trophy,
+} from 'lucide-react'
 import { InsecticaJourneyInfographic, InsecticaOrganicImpressionsChart, InsecticaPaidEfficiencyChart } from './insectica/InsecticaBlogFigures'
 
 /**
@@ -204,35 +219,54 @@ export default function InsecticaCaseStudyArticle() {
 
       <h2 className="mt-16 font-display text-display-3 text-ink">What we executed differently</h2>
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        {[
-          {
-            t: 'Granular ad groups',
-            b: 'Ten themed groups matched creative and landing experience to explicit pest intent — lifting Quality Score components instead of blending mismatched queries.',
-          },
-          {
-            t: 'Aggressive negatives',
-            b: 'Weekly query mining culled DIY supplies, hiring keywords, competitors’ brands, and out-of-geo noise so budget flowed to dispatch-ready searches.',
-          },
-          {
-            t: 'CPA-first bidding',
-            b: 'Target CPA anchored near $45 CAD — below launch pain — with identical conversion values on qualified calls and forms so the algorithm optimised toward revenue-ready leads.',
-          },
-          {
-            t: 'Geo fidelity',
-            b: 'Campaign geography mirrored the real truck routes; bids tilted toward dense boroughs (Toronto core, Mississauga, Brampton) where response times stay profitable.',
-          },
-          {
-            t: 'Operations intelligence',
-            b: 'Stratezik’s live Ads intelligence surface flagged CPA drift, auction pressure, and Quality Score erosion faster than monthly slide decks ever could.',
-          },
-          {
-            t: 'Organic byproduct',
-            b: 'Paid traffic supplied engagement logs that justified crawl priority; structured service copy did the rest — lifting impressions ~168× peak-to-trough without a standalone SEO invoice.',
-          },
-        ].map((x) => (
-          <div key={x.t} className="border border-ink/10 p-5 bg-white">
-            <h3 className="font-display text-lg text-ink">{x.t}</h3>
-            <p className="mt-3 text-sm text-ink-700 leading-relaxed">{x.b}</p>
+        {(
+          [
+            {
+              Icon: LayoutGrid,
+              t: 'Granular ad groups',
+              b: 'Ten themed groups matched creative and landing experience to explicit pest intent — lifting Quality Score components instead of blending mismatched queries.',
+            },
+            {
+              Icon: CircleSlash,
+              t: 'Aggressive negatives',
+              b: 'Weekly query mining culled DIY supplies, hiring keywords, competitors’ brands, and out-of-geo noise so budget flowed to dispatch-ready searches.',
+            },
+            {
+              Icon: CircleDollarSign,
+              t: 'CPA-first bidding',
+              b: 'Target CPA anchored near $45 CAD — below launch pain — with identical conversion values on qualified calls and forms so the algorithm optimised toward revenue-ready leads.',
+            },
+            {
+              Icon: MapPinned,
+              t: 'Geo fidelity',
+              b: 'Campaign geography mirrored the real truck routes; bids tilted toward dense boroughs (Toronto core, Mississauga, Brampton) where response times stay profitable.',
+            },
+            {
+              Icon: LayoutDashboard,
+              t: 'Operations intelligence',
+              b: 'Stratezik’s live Ads intelligence surface flagged CPA drift, auction pressure, and Quality Score erosion faster than monthly slide decks ever could.',
+            },
+            {
+              Icon: Sprout,
+              t: 'Organic byproduct',
+              b: 'Paid traffic supplied engagement logs that justified crawl priority; structured service copy did the rest — lifting impressions ~168× peak-to-trough without a standalone SEO invoice.',
+            },
+          ] satisfies { Icon: LucideIcon; t: string; b: string }[]
+        ).map(({ Icon, t, b }) => (
+          <div
+            key={t}
+            className="border border-ink/10 bg-white p-5 md:p-6 flex gap-4 md:gap-5 shadow-sm hover:border-ink/20 transition-colors"
+          >
+            <div
+              className="shrink-0 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-lg border border-ink/10 bg-cream-50 text-oxblood"
+              aria-hidden
+            >
+              <Icon size={22} strokeWidth={1.65} />
+            </div>
+            <div className="min-w-0">
+              <h3 className="font-display text-lg text-ink leading-snug">{t}</h3>
+              <p className="mt-3 text-sm text-ink-700 leading-relaxed">{b}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -271,32 +305,58 @@ export default function InsecticaCaseStudyArticle() {
       </div>
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Timeline beats</h2>
-      <ol className="mt-8 space-y-6 text-ink-700 leading-relaxed list-decimal pl-6 marker:text-oxblood marker:font-mono">
-        <li>
-          <strong className="text-ink">February&nbsp;2025 —</strong> Audit, measurement wiring, keyword maps for each pest
-          vertical, negatives drafted, launch queue built.
-        </li>
-        <li>
-          <strong className="text-ink">June&nbsp;2025 —</strong> Ads live; learning-phase CPL with early conversion volume;
-          sessions stepped up materially versus winter baseline.
-        </li>
-        <li>
-          <strong className="text-ink">August&nbsp;2025 —</strong> Seasonal apex proves efficiency — CPL near{' '}
-          <strong>$33</strong> with almost <strong>100</strong> conversions.
-        </li>
-        <li>
-          <strong className="text-ink">October–December&nbsp;2025 —</strong> Shoulder-season stability while organic curves
-          steepen; December impressions approach <strong>19k</strong>.
-        </li>
-        <li>
-          <strong className="text-ink">January&nbsp;2026 —</strong> Organic spike (<strong>28,508</strong> impressions)
-          validates authority layering on top of paid proof points.
-        </li>
-        <li>
-          <strong className="text-ink">April&nbsp;2026 —</strong> Paid + organic jointly reinforce dominance — strong
-          impression month, <strong>86</strong> conversions, rank consolidation near mid-page-one averages.
-        </li>
-      </ol>
+      <div className="relative mt-10">
+        <div
+          className="pointer-events-none absolute left-[21px] top-4 bottom-10 w-px bg-gradient-to-b from-oxblood/45 via-ink/12 to-gold/35 md:left-[25px]"
+          aria-hidden
+        />
+        <ul className="list-none pl-0">
+        {(
+          [
+            {
+              Icon: ClipboardList,
+              title: 'February 2025',
+              body: 'Audit, measurement wiring, keyword maps for each pest vertical, negatives drafted, launch queue built.',
+            },
+            {
+              Icon: Rocket,
+              title: 'June 2025',
+              body: 'Ads live; learning-phase CPL with early conversion volume; sessions stepped up materially versus winter baseline.',
+            },
+            {
+              Icon: Flame,
+              title: 'August 2025',
+              body: 'Seasonal apex proves efficiency — CPL near $33 with almost 100 conversions.',
+            },
+            {
+              Icon: CalendarRange,
+              title: 'October – December 2025',
+              body: 'Shoulder-season stability while organic curves steepen; December impressions approach 19k.',
+            },
+            {
+              Icon: Sparkles,
+              title: 'January 2026',
+              body: 'Organic spike (28,508 impressions) validates authority layering on top of paid proof points.',
+            },
+            {
+              Icon: Trophy,
+              title: 'April 2026',
+              body: 'Paid + organic jointly reinforce dominance — strong impression month, 86 conversions, rank consolidation near mid-page-one averages.',
+            },
+          ] satisfies { Icon: LucideIcon; title: string; body: string }[]
+        ).map(({ Icon, title, body }) => (
+          <li key={title} className="relative flex gap-4 pb-10 md:gap-5 md:pb-12 last:pb-2">
+            <div className="relative z-10 shrink-0 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full border-2 border-cream bg-ink text-cream shadow-md ring-4 ring-cream">
+              <Icon size={20} strokeWidth={1.65} aria-hidden />
+            </div>
+            <div className="min-w-0 pt-0.5">
+              <p className="font-display text-lg md:text-xl text-ink tracking-tight">{title}</p>
+              <p className="mt-2 text-ink-700 leading-relaxed">{body}</p>
+            </div>
+          </li>
+        ))}
+        </ul>
+      </div>
 
       <h2 className="mt-14 font-display text-display-3 text-ink">Picture the operating cadence</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
