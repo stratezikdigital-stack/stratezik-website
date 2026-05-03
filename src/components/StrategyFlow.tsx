@@ -66,7 +66,7 @@ const StrategyFlow = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 03 &mdash; How we work
+              / 03: How we work
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Four phases &middot; one accountable roadmap
@@ -81,7 +81,7 @@ const StrategyFlow = () => {
           </div>
         </motion.header>
 
-        {/* Phases — vertical editorial list with hairline rules */}
+        {/* Phases: vertical editorial list with hairline rules */}
         <div className="border-t border-ink/15">
           {STEPS.map((s, i) => (
             <motion.div
@@ -115,7 +115,7 @@ const StrategyFlow = () => {
           ))}
         </div>
 
-        {/* Index strip — running results */}
+        {/* Index strip: running results */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

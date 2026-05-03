@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Champion's Hall palette — editorial, considered, premium.
+        // Champion's Hall palette  -  editorial, considered, premium.
         ink: {
           DEFAULT: '#0d0c0a',
           900: '#0d0c0a',
@@ -52,7 +52,7 @@ export default {
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       fontSize: {
-        // Editorial scale — bigger than typical web. Designed for hero
+        // Editorial scale  -  bigger than typical web. Designed for hero
         // headlines that fill the viewport.
         'display-1': ['clamp(3.5rem, 13vw, 12rem)', { lineHeight: '0.92', letterSpacing: '-0.045em' }],
         'display-2': ['clamp(2.75rem, 9vw, 8rem)', { lineHeight: '0.96', letterSpacing: '-0.035em' }],

@@ -11,7 +11,7 @@ interface TiltCardProps {
 }
 
 /**
- * Lightweight 3D tilt — CSS-only, no WebGL canvas. Used in dense grids (Portfolio)
+ * Lightweight 3D tilt  -  CSS-only, no WebGL canvas. Used in dense grids (Portfolio)
  * where six per-card canvases would be expensive.
  */
 export function TiltCard({ children, className = '', max = 10, gloss = 0.45 }: TiltCardProps) {

@@ -1,6 +1,6 @@
 /**
  * Pure mapping from page progress 0..1 to per-piece state.
- * No three.js / React in here — easy to test, easy to tune.
+ * No three.js / React in here  -  easy to test, easy to tune.
  */
 
 const TILE = 0.6
@@ -16,7 +16,7 @@ export interface PawnState {
   position: [number, number, number]
   /** Hover height (small bob synced to scroll). */
   bob: number
-  /** 0..1 — visibility of the pawn (becomes 0 at promotion). */
+  /** 0..1  -  visibility of the pawn (becomes 0 at promotion). */
   alpha: number
   /** Label of the rank the pawn is currently on (for HUD). */
   rank: number
@@ -163,7 +163,7 @@ export function opponentKingAt(progress: number, resigned: boolean): OpponentKin
   if (resigned) {
     return { tilt: Math.PI / 2 - 0.05 }
   }
-  // Wobble grows in intensity as the visitor's pawn closes the distance —
+  // Wobble grows in intensity as the visitor's pawn closes the distance  - 
   // crescendo through the contact pin into the promotion moment.
   const wobble = smoothstep(range(progress, 0.82, 1.0))
   return { tilt: wobble * 0.32 }

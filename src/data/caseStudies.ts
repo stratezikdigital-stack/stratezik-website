@@ -22,7 +22,7 @@ export interface MatchRecord {
   num: string
   /** Whether the card reveals the brand or keeps it confidential */
   mode: CaseStudyMode
-  /** What the card is anchored on — the angle the headline emphasizes */
+  /** What the card is anchored on: the angle the headline emphasizes */
   angle: MatchAngle
   /** Headline shown on the card. Should match the angle. */
   headline: string
@@ -74,8 +74,8 @@ export const MATCHES: MatchRecord[] = [
     headline: 'Toronto Local Services · CPL crushed',
     category: 'Paid Media · Lead Cost',
     description:
-      "Industry CPL benchmark sat at $80\u2013120. We refused to accept it. Tight ad-group structure, aggressive negative keyword work, and CPA-first Smart Bidding pulled cost-per-lead to $33.38 in the best month \u2014 with quality holding through 700+ conversions.",
-    result: '$42.99 CPL &middot; 46\u201364% under industry avg',
+      "Industry CPL benchmark sat at $80-120. We refused to accept it. Tight ad-group structure, aggressive negative keyword work, and CPA-first Smart Bidding pulled cost-per-lead to $33.38 in the best month, with quality holding through 700+ conversions.",
+    result: '$42.99 CPL &middot; 46-64% under industry avg',
     notation: 'Qg7+',
     glyph: '\u265B',
     opening: "Queen's Gambit · CPA-first",
@@ -87,7 +87,7 @@ export const MATCHES: MatchRecord[] = [
     headline: 'GTA Lead-Gen Brand · Google Business',
     category: 'Local SEO · Map Pack',
     description:
-      'When we took over, the Google Business Profile sat past rank 60 for every commercial query they cared about. We rebuilt listing taxonomy, service categories, and review velocity, then layered the paid signal on top. Top 5 inside four months \u2014 then it stayed there.',
+      'When we took over, the Google Business Profile sat past rank 60 for every commercial query they cared about. We rebuilt listing taxonomy, service categories, and review velocity, then layered the paid signal on top. Top 5 inside four months, then it stayed there.',
     result: 'GBP 60+ \u2192 top 5 &middot; 4 months',
     notation: 'Nf6',
     glyph: '\u265E',
@@ -96,7 +96,7 @@ export const MATCHES: MatchRecord[] = [
 ]
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Full case study payload — used by the modal popup.
+ * Full case study payload: used by the modal popup.
  * Single source. The modal's renderer applies the redaction map for
  * anonymized cards so we never ship the brand name in those views.
  * ────────────────────────────────────────────────────────────────────────── */
@@ -132,7 +132,7 @@ export interface CaseStudyPayload {
   badge: string
   brandName: string
   brandShort: string
-  /** Live client site — omitted when the case is anonymized */
+  /** Live client site: omitted when the case is anonymized */
   clientWebsiteUrl?: string
   /** Big hero headline */
   headline: { lead: string; accent: string; tail: string }
@@ -142,9 +142,9 @@ export interface CaseStudyPayload {
   client: { label: string; body: string[]; stats: { big: string; sub: string; note: string }[] }
   phases: CaseStudyPhase[]
   bigQuote: { quote: string; sub: string }
-  /** Final scorecard — table of before/after */
+  /** Final scorecard: table of before/after */
   scorecard: CaseStudyScorecard[]
-  /** GBP callout — supplemental claim that's not in the original PDF but is true */
+  /** GBP callout: supplemental claim that's not in the original PDF but is true */
   gbpCallout: { headline: string; body: string }
   timeline: CaseStudyTimelineItem[]
   approach: CaseStudyApproachPillar[]
@@ -152,7 +152,7 @@ export interface CaseStudyPayload {
   sources: string
 }
 
-/** Insectica engagement — full, source-of-truth payload */
+/** Insectica engagement: full, source-of-truth payload */
 export const INSECTICA_PAYLOAD: CaseStudyPayload = {
   badge: 'Case Study \u00b7 Pest Control \u00b7 Toronto, GTA',
   brandName: 'Insectica Pest Control Inc.',
@@ -175,20 +175,20 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
     label: 'The Client',
     body: [
       'A Toronto-based pest control company serving the Greater Toronto Area (GTA). Insectica offers residential and commercial services covering bed bugs, rodents, spiders, wasps, ants, cockroaches, and more.',
-      "When they came to Stratezik Digital in early 2025, they had a freshly built website, zero ad history, and minimal organic presence \u2014 essentially starting from scratch in one of Canada's most competitive local service markets.",
+      "When they came to Stratezik Digital in early 2025, they had a freshly built website, zero ad history, and minimal organic presence, essentially starting from scratch in one of Canada's most competitive local service markets.",
     ],
     stats: [
       { big: 'GTA', sub: 'Service Area', note: '~100km radius of Toronto' },
       { big: '10', sub: 'Ad Groups', note: 'Hyper-targeted by pest type' },
       { big: "Feb '25", sub: 'Engagement Start', note: 'Site live, zero ad history' },
-      { big: '$42.99', sub: 'Avg CPL', note: 'vs. $80\u2013120 industry avg' },
+      { big: '$42.99', sub: 'Avg CPL', note: 'vs. $80-120 industry avg' },
     ],
   },
   phases: [
     {
       tag: 'Phase 1 \u00b7 Baseline',
       title: 'Building the foundation',
-      date: 'February \u2013 May 2025 (4 months)',
+      date: 'February - May 2025 (4 months)',
       body: 'The website was live but invisible. Organic rankings were at the bottom of page 5+, sessions were in the dozens, and there was no paid advertising in place. Conversions? Zero.',
       metrics: [
         { key: 'Organic impressions/mo', val: '~181 avg' },
@@ -200,8 +200,8 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
     {
       tag: 'Phase 2 \u00b7 Launch & Learn',
       title: 'Google Ads goes live',
-      date: 'June \u2013 September 2025 (4 months)',
-      body: 'A highly structured Google Search campaign with 10 hyper-targeted ad groups (one per pest type). Smart Bidding was trained rapidly, and CPA dropped from $60 at launch to an incredible $33.38 by August 2025 \u2014 peak pest control season.',
+      date: 'June - September 2025 (4 months)',
+      body: 'A highly structured Google Search campaign with 10 hyper-targeted ad groups (one per pest type). Smart Bidding was trained rapidly, and CPA dropped from $60 at launch to an incredible $33.38 by August 2025 during peak pest control season.',
       metrics: [
         { key: 'Launch CPA (Jun)', val: '$60.46' },
         { key: 'Best CPA (Aug)', val: '$33.38', emphasis: 'good' },
@@ -213,8 +213,8 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
     {
       tag: 'Phase 3 \u00b7 Scale & Compound',
       title: 'Organic authority builds',
-      date: 'October 2025 \u2013 April 2026 (7 months)',
-      body: 'As paid campaigns ran consistently, Google began recognizing the domain as a legitimate local authority. Organic impressions exploded \u2014 from 320/month in June 2025 to 28,508 in January 2026. By April 2026, average position climbed to 15.3, up from 57.',
+      date: 'October 2025 to April 2026 (7 months)',
+      body: 'As paid campaigns ran consistently, Google began recognizing the domain as a legitimate local authority. Organic impressions exploded from 320/month in June 2025 to 28,508 in January 2026. By April 2026, average position climbed to 15.3, up from 57.',
       metrics: [
         { key: "Jan '26 organic impressions", val: '28,508', emphasis: 'good' },
         { key: "Avg position (Apr '26)", val: '15.3', emphasis: 'good' },
@@ -226,8 +226,8 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
   ],
   bigQuote: {
     quote:
-      'Cost per lead of $42.99 \u2014 roughly 46\u201364% below the Canadian pest control industry average of $80\u2013120.',
-    sub: 'Achieved through tight ad-group structure, aggressive negative-keyword management, and continuous CPA-first optimization \u2014 not budget cuts.',
+      'Cost per lead of $42.99, roughly 46-64% below the Canadian pest control industry average of $80-120.',
+    sub: 'Achieved through tight ad-group structure, aggressive negative-keyword management, and continuous CPA-first optimization, not budget cuts.',
   },
   scorecard: [
     { metric: 'Monthly Ad Conversions', before: '0', after: '86', change: '\u221e (from zero)' },
@@ -241,7 +241,7 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
   ],
   gbpCallout: {
     headline: 'Google Business Profile · rank 60+ \u2192 top 5 in 4 months',
-    body: 'A parallel local-SEO play: we rebuilt the Google Business Profile listing \u2014 service categories, attributes, NAP consistency, photo cadence, and review velocity \u2014 then let the paid signal layer reinforce local authority. The map-pack ranking moved from past position 60 on every commercial pest-control query to inside the top 5 within four months, where it has held.',
+    body: 'A parallel local-SEO play: we rebuilt the Google Business Profile listing, service categories, attributes, NAP consistency, photo cadence, and review velocity, then let the paid signal layer reinforce local authority. The map-pack ranking moved from past position 60 on every commercial pest-control query to inside the top 5 within four months, where it has held.',
   },
   timeline: [
     {
@@ -252,49 +252,49 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
     {
       date: 'June 2025',
       glyph: '\u2659',
-      body: 'Google Ads launches. First month: 3,264 impressions, 155 clicks, 17 conversions at $60.46 CPA \u2014 an expected learning-phase cost while Smart Bidding trains. Website sessions jump to 361. GA4 records 80 conversions.',
+      body: 'Google Ads launches. First month: 3,264 impressions, 155 clicks, 17 conversions at $60.46 CPA, an expected learning-phase cost while Smart Bidding trains. Website sessions jump to 361. GA4 records 80 conversions.',
     },
     {
       date: 'August 2025',
       glyph: '\u2657',
-      body: 'Record month. Peak pest season drives volume. Ads deliver 96 conversions at $33.38 CPA \u2014 45% below the $60 launch cost and 63% below industry average. Impressions hit 17,467. Sessions reach 1,346. Organic search begins waking up: 9,995 impressions as Google crawls more pages.',
+      body: 'Record month. Peak pest season drives volume. Ads deliver 96 conversions at $33.38 CPA, 45% below the $60 launch cost and 63% below industry average. Impressions hit 17,467. Sessions reach 1,346. Organic search begins waking up: 9,995 impressions as Google crawls more pages.',
     },
     {
-      date: 'October \u2013 December 2025',
+      date: 'October - December 2025',
       glyph: '\u2658',
-      body: 'Steady compounding. CPA stabilizes in the $44\u201349 range (on-target). Meanwhile, organic impressions jump from 5,756 (Oct) to 18,755 (Dec) as domain authority builds. Average position improves to 24.3.',
+      body: 'Steady compounding. CPA stabilizes in the $44-49 range (on-target). Meanwhile, organic impressions jump from 5,756 (Oct) to 18,755 (Dec) as domain authority builds. Average position improves to 24.3.',
     },
     {
       date: 'January 2026',
       glyph: '\u2656',
-      body: 'Organic breakthrough. 28,508 organic impressions \u2014 the highest month on record. Position improves to 19.3 (approaching top 2 pages for most target keywords). Paid delivers 84 conversions at $38.26 CPA.',
+      body: 'Organic breakthrough. 28,508 organic impressions, the highest month on record. Position improves to 19.3 (approaching top 2 pages for most target keywords). Paid delivers 84 conversions at $38.26 CPA.',
     },
     {
       date: 'April 2026',
       glyph: '\u2655',
-      body: 'Best paid month ever. 24,345 impressions \u2014 a new record. 86 conversions at $41.89 CPA. Organic position reaches 15.3 (improved 73% from starting position of 57.4). The flywheel is turning: paid drives brand signals, organic authority grows, total leads increase.',
+      body: 'Best paid month ever. 24,345 impressions, a new record. 86 conversions at $41.89 CPA. Organic position reaches 15.3 (improved 73% from starting position of 57.4). The flywheel is turning: paid drives brand signals, organic authority grows, total leads increase.',
     },
   ],
   approach: [
     {
       glyph: '\u265F',
       title: '10 hyper-targeted ad groups',
-      body: 'One ad group per pest type (bed bugs, rodents, spiders, wasps, ants, cockroaches, etc.) \u2014 no generic "pest control" catch-all. This maximizes Quality Score, drives down CPC, and ensures the right message reaches the right searcher.',
+      body: 'One ad group per pest type (bed bugs, rodents, spiders, wasps, ants, cockroaches, etc.), no generic "pest control" catch-all. This maximizes Quality Score, drives down CPC, and ensures the right message reaches the right searcher.',
     },
     {
       glyph: '\u265D',
       title: 'Aggressive negative keywords',
-      body: 'Continuous search-query review \u2014 DIY intent, chemical product searches, job listings, competitor brand terms, and out-of-GTA geo queries were all negated. Every dollar was directed at genuine service-intent searches.',
+      body: 'Continuous search-query review, DIY intent, chemical product searches, job listings, competitor brand terms, and out-of-GTA geo queries were all negated. Every dollar was directed at genuine service-intent searches.',
     },
     {
       glyph: '\u265B',
       title: 'CPA-first bidding',
-      body: 'Target CPA set at $45 CAD \u2014 below the $60 launch cost. Smart Bidding was given clear signal through proper conversion tracking of both form fills and phone calls. Algorithm trained in 60 days to beat target.',
+      body: 'Target CPA set at $45 CAD, below the $60 launch cost. Smart Bidding was given clear signal through proper conversion tracking of both form fills and phone calls. Algorithm trained in 60 days to beat target.',
     },
     {
       glyph: '\u265C',
       title: 'Real-time intelligence dashboard',
-      body: 'A custom-built Google Ads Intelligence Tool (built by Stratezik) provides live monitoring of CPA, Quality Score drops, auction insights, and cross-channel performance \u2014 enabling faster decisions than any manual reporting cycle.',
+      body: 'A custom-built Google Ads Intelligence Tool (built by Stratezik) provides live monitoring of CPA, Quality Score drops, auction insights, and cross-channel performance, enabling faster decisions than any manual reporting cycle.',
     },
     {
       glyph: '\u265E',
@@ -304,16 +304,16 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
     {
       glyph: '\u265A',
       title: 'Organic authority as a byproduct',
-      body: 'Consistent paid traffic sent quality engagement signals to Google. Combined with structured site architecture, organic impressions grew 168\u00d7 and average position improved from 57 to 15 \u2014 without a separate SEO retainer.',
+      body: 'Consistent paid traffic sent quality engagement signals to Google. Combined with structured site architecture, organic impressions grew 168\u00d7 and average position improved from 57 to 15, without a separate SEO retainer.',
     },
   ],
   closingQuote: {
     quote:
-      'In 11 months, the brand went from zero digital leads to a self-sustaining growth engine \u2014 generating 700+ qualified leads at $42.99 each while building long-term organic authority that will keep compounding.',
+      'In 11 months, the brand went from zero digital leads to a self-sustaining growth engine, generating 700+ qualified leads at $42.99 each while building long-term organic authority that will keep compounding.',
     sub: 'The paid channel delivers immediate ROI. The organic channel, now at position 15 and climbing, represents free leads that will only grow over time.',
   },
   sources:
-    'All metrics sourced directly from Google Ads, Google Search Console, and Google Analytics 4. Data period: February 2025 \u2013 April 2026. Property and account IDs withheld for client confidentiality.',
+    'All metrics sourced directly from Google Ads, Google Search Console, and Google Analytics 4. Data period: February 2025 to April 2026. Property and account IDs withheld for client confidentiality.',
 }
 
 /**
@@ -322,7 +322,7 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
  * source payload can render either named or anonymized.
  */
 const REDACTION_PAIRS: [RegExp, string][] = [
-  // Brand name variants — order matters: longest specific match first.
+  // Brand name variants - order matters: longest specific match first.
   [/Insectica Pest Control Inc\./g, 'Confidential GTA Service Brand'],
   [/Insectica Pest Control/g, 'Confidential GTA Service Brand'],
   // Sentence-initial Insectica (start of string OR after period+space) → capitalized "The brand"
@@ -330,7 +330,7 @@ const REDACTION_PAIRS: [RegExp, string][] = [
   // Any other "Insectica" → lowercase "the brand"
   [/Insectica\b/g, 'the brand'],
 
-  // Industry-specific noun phrases — handle compound forms BEFORE the bare ones
+  // Industry-specific noun phrases - handle compound forms BEFORE the bare ones
   // so "Peak pest season" doesn't double-replace into "Peak peak demand season".
   [/Peak pest season/g, 'Peak demand season'],
   [/peak pest season/gi, 'peak demand season'],
@@ -411,14 +411,14 @@ export interface CaseStudyView {
     stats: { num: string; lbl: string }[]
   }
   /**
-   * Editorial sign-off for this angle — intentionally different across the
+   * Editorial sign-off for this angle: intentionally different across the
    * four presentations so anonymized cards don't all end on the exact same 700 /
    * $42 / position-15 recap.
    */
   signOff: { quote: string; sub: string }
   show: {
     client: boolean
-    /** Indices into payload.phases — empty array hides the phases section. */
+    /** Indices into payload.phases: empty array hides the phases section. */
     phaseIdxs: number[]
     bigQuote: boolean
     gbpCallout: boolean
@@ -433,7 +433,7 @@ export interface CaseStudyView {
 }
 
 export const VIEWS: Record<MatchAngle, CaseStudyView> = {
-  /* The full Insectica narrative — everything visible, nothing trimmed. */
+  /* The full Insectica narrative: everything visible, nothing trimmed. */
   overview: {
     hero: {
       headline: {
@@ -452,7 +452,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
     signOff: {
       quote:
-        'In 11 months, the brand went from zero digital leads to a self-sustaining growth engine \u2014 generating 700+ qualified leads at $42.99 each while building long-term organic authority that will keep compounding.',
+        'In 11 months, the brand went from zero digital leads to a self-sustaining growth engine, generating 700+ qualified leads at $42.99 each while building long-term organic authority that will keep compounding.',
       sub:
         'The paid channel delivers immediate ROI. The organic channel, now at position 15 and climbing, represents free leads that will only grow over time.',
     },
@@ -477,7 +477,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
   },
 
-  /* Organic-breakout view — leads on SEO, hides paid-cost framing. */
+  /* Organic-breakout view: leads on SEO, hides paid-cost framing. */
   organic: {
     hero: {
       headline: {
@@ -486,7 +486,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         tail: 'in fifteen months.',
       },
       subhead:
-        'How a brand-new local-services site climbed 73 ranking spots without a separate SEO retainer. Consistent paid traffic fed the engagement signals that taught Google to trust the domain — and the organic side compounded.',
+        'How a brand-new local-services site climbed 73 ranking spots without a separate SEO retainer. Consistent paid traffic fed the engagement signals that taught Google to trust the domain, and the organic side compounded.',
       stats: [
         { num: '168\u00d7', lbl: 'Organic Impressions Growth' },
         { num: '+10,990%', lbl: "Apr '26 vs. Feb '25" },
@@ -496,7 +496,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
     signOff: {
       quote:
-        'Organic impressions climbed triple-digit multiples while average SERP positions moved out of page five and into contention for page one \u2014 without commissioning a discrete SEO sprint on the side.',
+        'Organic impressions climbed triple-digit multiples while average SERP positions moved out of page five and into contention for page one, without commissioning a discrete SEO sprint on the side.',
       sub:
         'The playbook was structural clarity, ruthless intent routing, negatives that guarded quality, and a consistent acquisition signal upstream that convinced search engines this domain belonged in the consideration set.',
     },
@@ -517,16 +517,16 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
   },
 
-  /* Paid-CPL view — leads on cost efficiency, hides GBP detour. */
+  /* Paid-CPL view: leads on cost efficiency, hides GBP detour. */
   paid: {
     hero: {
       headline: {
-        lead: 'Industry CPL was $80\u2013120.',
+        lead: 'Industry CPL was $80-120.',
         accent: 'We held $42.99',
         tail: 'for eleven months.',
       },
       subhead:
-        'How Stratezik launched paid from a cold start, trained Smart Bidding to beat target inside sixty days, and ran 700+ qualified leads at less than half the local-services industry benchmark \u2014 without sacrificing volume.',
+        'How Stratezik launched paid from a cold start, trained Smart Bidding to beat target inside sixty days, and ran 700+ qualified leads at less than half the local-services industry benchmark, without sacrificing volume.',
       stats: [
         { num: '$42.99', lbl: 'Avg Cost Per Lead' },
         { num: '700', lbl: 'Total Paid Conversions' },
@@ -536,9 +536,9 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
     signOff: {
       quote:
-        'The account crossed seven hundred measured conversions inside the engagement window\u2014at an average CPL of $43 or less\u2014with the best-demand month nearing $33 per acquisition versus an $80\u2013120 industry bracket.',
+        'The account crossed seven hundred measured conversions inside the engagement window, at an average CPL of $43 or less, with the best-demand month nearing $33 per acquisition versus an $80-120 industry bracket.',
       sub:
-        'That isn\u2019t luck of the algorithm: granular ad grouping, obsessive negative-keyword hygiene, GTA-only geo fidelity, CPA-first bidding, and honest conversion tagging were negotiated as one engine\u2014not as a deck of unrelated experiments.',
+        'That isn\u2019t luck of the algorithm: granular ad grouping, obsessive negative-keyword hygiene, GTA-only geo fidelity, CPA-first bidding, and honest conversion tagging were negotiated as one engine, not as a deck of unrelated experiments.',
     },
     show: {
       client: true,
@@ -557,7 +557,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
   },
 
-  /* GBP / map-pack view — leads on the 60+ \u2192 top 5 result. */
+  /* GBP / map-pack view: leads on the 60+ \u2192 top 5 result. */
   gbp: {
     hero: {
       headline: {
@@ -566,7 +566,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         tail: 'in four months.',
       },
       subhead:
-        'How Stratezik rebuilt a Google Business Profile from invisible to map-pack dominant \u2014 through listing taxonomy, attributes, NAP consistency, photo cadence, review velocity, and a paid signal layer that compounded local authority.',
+        'How Stratezik rebuilt a Google Business Profile from invisible to map-pack dominant, through listing taxonomy, attributes, NAP consistency, photo cadence, review velocity, and a paid signal layer that compounded local authority.',
       stats: [
         { num: '60+ \u2192 5', lbl: 'GBP Map-pack Rank' },
         { num: '4 mo', lbl: 'Time to Top 5' },
@@ -576,7 +576,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
     },
     signOff: {
       quote:
-        'Map-pack placements that routinely sat beyond rank sixty for priority commercial intents broke into the top five inside roughly four calendar months\u2014and stayed there.',
+        'Map-pack placements that routinely sat beyond rank sixty for priority commercial intents broke into the top five inside roughly four calendar months, and stayed there.',
       sub:
         'Category precision, citation consistency, a deliberate imagery and attribute cadence, and review acceleration created the GBP foundation; layering paid demand on top kept prominence from collapsing the moment optimisation paused.',
     },

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useWorldStore } from '../three/world/store'
 
 /**
- * Plan D — Now-playing HUD.
+ * Plan D  -  Now-playing HUD.
  *
  * Bottom-left compact strip: scroll progress through major sections.
  *

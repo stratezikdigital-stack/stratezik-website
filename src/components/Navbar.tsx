@@ -8,7 +8,7 @@ const PHONE_TEL = '+14375254772'
 const EMAIL = 'dave@stratezik.com'
 
 /**
- * Plan D — Editorial navbar (Champion's Hall).
+ * Plan D - Editorial navbar (Champion's Hall).
  *
  * Two thin rails:
  *  • Top rail (hairline-divided): contact info as monospace notation
@@ -60,10 +60,10 @@ const Navbar = () => {
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-2 font-mono text-[12px] sm:text-[13px] tracking-[0.12em]">
             <div className="min-w-0 shrink">
             <span className="hidden md:inline uppercase tracking-[0.22em] text-[11px] text-cream/55">
-              Toronto &mdash; digital marketing studio
+              Toronto digital marketing studio
             </span>
               <span className="md:hidden uppercase tracking-[0.22em] text-[11px] text-cream/55">
-                Stratezik &mdash; Toronto
+                Stratezik, Toronto
               </span>
             </div>
             <div className="flex flex-wrap items-center justify-end gap-x-4 sm:gap-6 gap-y-1">
@@ -105,7 +105,7 @@ const Navbar = () => {
               data-cursor="cta"
               data-cursor-text="Home"
               className="flex items-center gap-2.5 md:gap-3 group"
-              aria-label="Stratezik — Home"
+              aria-label="Stratezik home"
             >
               <img
                 src="/branding/favicon.png"

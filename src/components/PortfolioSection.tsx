@@ -29,7 +29,7 @@ const PortfolioSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 04 &mdash; Case studies
+              / 04: Case studies
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Selected wins
@@ -42,13 +42,13 @@ const PortfolioSection = () => {
               <span className="italic font-light text-oxblood">Four wins.</span>
             </h2>
             <p className="lead mt-8 max-w-3xl">
-              Each card below is a record of a real engagement &mdash; the position we walked into,
+              Each card below is a record of a real engagement: the position we walked into,
               the move that decided it, and the outcome. Click any case to read the full story.
             </p>
           </div>
         </motion.header>
 
-        {/* Match list — editorial table */}
+        {/* Match list: editorial table */}
         <div className="border-t border-ink/15">
           {MATCHES.map((m, i) => (
             <motion.article
@@ -101,7 +101,7 @@ const PortfolioSection = () => {
                 </div>
               </div>
 
-              {/* Result — leads with the actual outcome */}
+              {/* Result: leads with the actual outcome */}
               <div className="col-span-12 md:col-span-5 flex flex-col items-start md:items-end md:text-right">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
                   Result

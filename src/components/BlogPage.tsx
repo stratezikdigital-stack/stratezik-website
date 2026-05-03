@@ -5,12 +5,12 @@ import { blogPosts } from '../blog/posts'
 import { applyPageMeta } from '../utils/documentMeta'
 
 /**
- * Blog index — editorial listing aligned with Plan D typography.
+ * Blog index: editorial listing aligned with Plan D typography.
  */
 const BlogPage = () => {
   useEffect(() => {
     return applyPageMeta({
-      title: 'Blog | Stratezik — Toronto SEO, PPC & Answer Engine Insights',
+      title: 'Blog | Stratezik: Toronto SEO, PPC & Answer Engine Insights',
       description:
         'Articles from Stratezik on answer engine optimisation (AEO), Toronto local SEO, AI search, Google AI Overviews, and integrated growth strategy.',
       path: '/blog',
@@ -29,7 +29,7 @@ const BlogPage = () => {
         >
           <div className="col-span-12 md:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 07 &mdash; Blog
+              / 07: Blog
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Strategy notes · Toronto &amp; Canada
@@ -41,7 +41,7 @@ const BlogPage = () => {
             </h1>
             <p className="lead mt-8 max-w-2xl">
               Practical writing for operators who need discovery to show up in organic results, AI summaries, and local
-              maps — without chasing tactics that do not compound.
+              maps without chasing tactics that do not compound.
             </p>
           </div>
         </motion.header>

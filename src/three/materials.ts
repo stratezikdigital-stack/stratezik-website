@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 /**
- * Stratezik palette — pulled into one place so every scene stays on-brand.
+ * Stratezik palette  -  pulled into one place so every scene stays on-brand.
  * Kept as constants (not React state) because they're consumed inside <Canvas>.
  */
 export const PALETTE = {
@@ -40,7 +40,7 @@ export function onyxMarbleMaterial(): THREE.MeshPhysicalMaterial {
   })
 }
 
-/** Stratezik signature red metal — used for the hero king. */
+/** Stratezik signature red metal  -  used for the hero king. */
 export function redMetalMaterial(): THREE.MeshPhysicalMaterial {
   return new THREE.MeshPhysicalMaterial({
     color: PALETTE.red,
@@ -53,7 +53,7 @@ export function redMetalMaterial(): THREE.MeshPhysicalMaterial {
   })
 }
 
-/** Subtle warm gold — used for trim like the cross on top of the king. */
+/** Subtle warm gold  -  used for trim like the cross on top of the king. */
 export function goldTrimMaterial(): THREE.MeshStandardMaterial {
   return new THREE.MeshStandardMaterial({
     color: PALETTE.gold,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Custom cursor — Champion's Hall signature.
+ * Custom cursor  -  Champion's Hall signature.
  *
  * Two layered elements:
  *   • a small ink dot that tracks the pointer 1:1

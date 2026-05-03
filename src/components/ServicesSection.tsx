@@ -4,7 +4,7 @@ import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
 /**
- * Plan D — Services grid.
+ * Plan D - Services grid.
  *
  * Six discipline cards with abstract lane diagrams. Copy stays channel-native
  * so visitors immediately map tiles to acquisition work.
@@ -20,7 +20,7 @@ interface Opening {
   thesis: string
   /** Tactical bullets */
   tactics: string[]
-  /** SVG diagram path d's — coordinates on a 8x8 grid (0..7) */
+  /** SVG diagram path d's: coordinates on a 8x8 grid (0..7) */
   arrows: { from: [number, number]; to: [number, number]; color: 'white' | 'black' }[]
 }
 
@@ -227,7 +227,7 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
       data-cursor-glyph={'\u265F'}
       className="group relative bg-cream-50 border border-ink/10 hover:border-ink/30 transition-all duration-700 lift"
     >
-      {/* Top hairline accent — appears on hover */}
+      {/* Top hairline accent: appears on hover */}
       <div
         aria-hidden
         className="absolute left-0 top-0 h-px bg-oxblood transition-all duration-700 ease-out group-hover:w-full"
@@ -242,7 +242,7 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
           </span>
         </div>
 
-        {/* Title block — service name is the headline, opening is a tiny accent */}
+        {/* Title block: service name is the headline, opening is a tiny accent */}
         <div className="col-span-10 md:col-span-8">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
             Lane &middot; {opening.opening}
@@ -252,7 +252,7 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
           </h3>
         </div>
 
-        {/* Mini board — small visual accent */}
+        {/* Mini board: small visual accent */}
         <div className="col-span-12 md:col-span-3 flex items-start justify-end">
           <div className="w-16 md:w-20 aspect-square opacity-80">
             <MiniBoard arrows={opening.arrows} />
@@ -286,7 +286,7 @@ const ServicesSection = () => {
   return (
     <section id="services" ref={ref} className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
-        {/* Section heading row — editorial */}
+        {/* Section heading row: editorial */}
         <motion.header
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -296,7 +296,7 @@ const ServicesSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 02 &mdash; Services
+              / 02: Services
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Six disciplines &middot; one playbook
@@ -309,7 +309,7 @@ const ServicesSection = () => {
               <span className="italic font-light text-oxblood">not random tactics.</span>
             </h2>
             <p className="lead mt-8 max-w-3xl">
-              Every engagement ties channels to revenue-facing KPIs &mdash; paid, organic, creative,
+              Every engagement ties channels to revenue-facing KPIs: paid, organic, creative,
               analytics, and tooling share one roadmap instead of competing narratives.
             </p>
           </div>
@@ -322,7 +322,7 @@ const ServicesSection = () => {
           ))}
         </div>
 
-        {/* Seventh discipline masthead — same grid pattern as opening services */}
+        {/* Seventh discipline masthead: same grid pattern as opening services */}
         <motion.header
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -332,7 +332,7 @@ const ServicesSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 07 &mdash; Seventh discipline
+              / 07: Seventh discipline
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               AI agents &middot; custom apps &middot; integrations
@@ -424,7 +424,7 @@ const ServicesSection = () => {
           </div>
         </motion.article>
 
-        {/* Bottom CTA strip — editorial CTA, no gradient */}
+        {/* Bottom CTA strip: editorial CTA, no gradient */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

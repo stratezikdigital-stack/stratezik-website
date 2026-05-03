@@ -6,7 +6,7 @@ interface LoaderProps {
 }
 
 /**
- * Plan D intro loader — ink scrim with sequenced brand glyphs and progress.
+ * Plan D intro loader: ink scrim with sequenced brand glyphs and progress.
  *
  * Skipped under prefers-reduced-motion.
  */
@@ -52,7 +52,7 @@ export function Loader({ onDone }: LoaderProps) {
     }
   }, [onDone])
 
-  // Eight glyphs — sequenced entrance for perceived loading progress.
+  // Eight glyphs: sequenced entrance for perceived loading progress.
   const pawns = Array.from({ length: 8 }, (_, i) => i)
 
   return (
@@ -73,7 +73,7 @@ export function Loader({ onDone }: LoaderProps) {
             <span>Preparing experience</span>
           </div>
 
-          {/* Centerpiece — pawns falling into rank 2 */}
+          {/* Centerpiece: pawns falling into rank 2 */}
           <div className="flex-1 flex flex-col items-center justify-center px-6">
             <div className="font-display text-cream/90 text-[clamp(3rem,12vw,9rem)] leading-none tracking-[-0.04em] mb-10">
               <motion.span
@@ -86,7 +86,7 @@ export function Loader({ onDone }: LoaderProps) {
               </motion.span>
             </div>
 
-            {/* Pawn rank — each glyph drops in sequenced */}
+            {/* Pawn rank: each glyph drops in sequenced */}
             <div className="flex items-end gap-4 sm:gap-6 md:gap-10 mb-8 select-none">
               {pawns.map((i) => (
                 <motion.div
@@ -128,7 +128,7 @@ export function Loader({ onDone }: LoaderProps) {
 
           {/* Bottom rail */}
           <div className="px-6 md:px-12 pb-8 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
-            <span>Toronto &mdash; digital marketing · growth</span>
+            <span>Toronto · digital marketing · growth</span>
             <span className="tabular-nums">{percent.toString().padStart(3, '0')}%</span>
           </div>
         </motion.div>

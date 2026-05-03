@@ -7,7 +7,7 @@ const LinkedInIcon = () => (
   </svg>
 )
 
-/** Map pin — used for Google Business Profile / listings link alongside LinkedIn */
+/** Map pin: used for Google Business Profile / listings link alongside LinkedIn */
 const MapPinIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ const MapPinIcon = () => (
 )
 
 /**
- * Plan D — Studio footer.
+ * Plan D - Studio footer.
  *
  * Columned links plus a plain-language section breadcrumb for humans & crawlers.
  */
@@ -70,14 +70,14 @@ const Footer = () => {
         <div className="grid grid-cols-12 gap-4 mb-16">
           <div className="col-span-12 md:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              / 06 &mdash; Site map
+              / 06: Site map
             </div>
             <div className="mt-2 hairline pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              Stratezik &mdash; Toronto
+              Stratezik, Toronto
             </div>
             <p className="mt-6 lead text-cream/70 max-w-md">
               Toronto digital marketing for startups and SMBs: SEO, PPC, social, and growth marketing in one
-              integrated playbook &mdash; fewer handoffs, clearer metrics.
+              integrated playbook with fewer handoffs, clearer metrics.
             </p>
             <div className="mt-6 flex items-center gap-3">
               <a
@@ -155,7 +155,7 @@ const Footer = () => {
           </h2>
         </div>
 
-        {/* Section breadcrumb — plain labels for humans & crawlers */}
+        {/* Section breadcrumb: plain labels for humans & crawlers */}
         <div className="mt-10 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7 break-words">
           <span>Home</span>
           <span className="mx-3 text-cream/25">&middot;</span>
@@ -177,7 +177,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 hairline border-cream/15 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-          <span>&copy; {new Date().getFullYear()} Stratezik &mdash; Toronto, Canada</span>
+          <span>&copy; {new Date().getFullYear()} Stratezik, Toronto, Canada</span>
           <span>Integrated channels · accountable measurement · pragmatic creative</span>
         </div>
       </div>

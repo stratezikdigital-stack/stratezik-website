@@ -67,7 +67,7 @@ function HeroSceneContent() {
           <group rotation={[0, 0.35, 0]} position={[0, -0.2, 0]}>
             <Chessboard size={BOARD} />
 
-            {/* Stratezik red king — focal point */}
+            {/* Stratezik red king  -  focal point */}
             <group position={sq('e', 4)}>
               <King tone="red" size={1.05} />
             </group>

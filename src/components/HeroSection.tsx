@@ -4,17 +4,17 @@ import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
 /**
- * Plan D — Editorial hero (Champion's Hall).
+ * Plan D - Editorial hero (Champion's Hall).
  *
  * Layout philosophy:
  *   • A single oversized serif headline carries the entire hero.
- *     Layout is deliberately asymmetric — heading hugs the left edge,
+ *     Layout is deliberately asymmetric: heading hugs the left edge,
  *     a thin column of editorial body sits below.
  *   • Top-row notation anchors the section without chess jargon.
  *   • The 3D world canvas behind the page provides the focal pawn under
  *     a raking key light. We leave the right half of the viewport empty
  *     so the pawn has space to breathe.
- *   • Stats live as a hairline-divided index strip at the bottom — like
+ *   • Stats live as a hairline-divided index strip at the bottom, like
  *     the running record on a magazine cover.
  *
  * Hero H1: lead line states role (“agency”) for crisp SEO + scanability; accent carries audience.
@@ -28,7 +28,7 @@ const HeroSection = () => {
       id="home"
       ref={ref}
       className="relative flex items-stretch min-h-[calc(100vh-9rem)] lg:min-h-[180vh]"
-      aria-label="Hero — Move 01"
+      aria-label="Hero: Move 01"
     >
       <div className="lg:sticky lg:top-0 w-full lg:h-screen flex flex-col">
         {/* Editorial top rule + notation row */}
@@ -38,12 +38,12 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.05 }}
           className="hairline mx-6 md:mx-12 mt-6 pt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500"
         >
-          <span>/ 01 &mdash; Intro</span>
-          <span className="hidden sm:inline">Toronto studio &mdash; digital growth</span>
+          <span>/ 01: Intro</span>
+          <span className="hidden sm:inline">Toronto studio, digital growth</span>
           <span className="tabular-nums">Est.&nbsp;2018</span>
         </motion.div>
 
-        {/* Soft left scrim — keeps headline crisp over 3D world */}
+        {/* Soft left scrim: keeps headline crisp over 3D world */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cream/85 via-cream/30 to-transparent"
@@ -86,7 +86,7 @@ const HeroSection = () => {
               We help Toronto startups and SMBs accelerate growth through integrated campaigns that combine{' '}
               <span className="text-ink">SEO</span>, <span className="text-ink">PPC</span>,{' '}
               <span className="text-ink">social media marketing</span>, and{' '}
-              <span className="text-ink">growth marketing</span>—one roadmap, fewer handoffs.
+              <span className="text-ink">growth marketing</span>, one roadmap, fewer handoffs.
             </motion.p>
 
             <motion.div
@@ -118,12 +118,12 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right column intentionally empty — the global 3D world's focal
+          {/* Right column intentionally empty: the global 3D world's focal
               pawn lives here. */}
           <div className="md:col-span-3 lg:col-span-5 hidden md:block" aria-hidden />
         </div>
 
-        {/* Hairline-divided index strip — magazine cover vibe.
+        {/* Hairline-divided index strip: magazine cover vibe.
             Sits inside its own cream band so the 3D world doesn't bleed
             dark pieces through the editorial type. */}
         <motion.div

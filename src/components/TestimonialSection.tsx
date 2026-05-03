@@ -5,7 +5,7 @@ import { useSection } from '../three/world/useSection'
 
 /**
  * Single flagship testimonial drawn from the Insectica engagement narrative
- * (see case studies / portfolio). Composite voice — outcomes aligned with measured results.
+ * (see case studies / portfolio). Composite voice: outcomes aligned with measured results.
  */
 const TestimonialSection = () => {
   const ref = useRef<HTMLElement>(null)
@@ -23,7 +23,7 @@ const TestimonialSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              / 04b &mdash; Client voice
+              / 04b: Client voice
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
               Toronto / GTA
@@ -31,7 +31,7 @@ const TestimonialSection = () => {
           </div>
           <div className="col-span-12 md:col-span-9">
             <h2 className="font-display text-display-3 md:text-display-2 text-cream leading-[1.02] tracking-[-0.035em]">
-              &ldquo;They built it like a product — not a one-off campaign.&rdquo;
+              &ldquo;They built it like a product, not a one-off campaign.&rdquo;
             </h2>
           </div>
         </motion.header>
@@ -52,12 +52,12 @@ const TestimonialSection = () => {
           <blockquote className="relative z-10 pt-6 md:pt-4">
             <p className="font-display text-xl md:text-2xl lg:text-[1.65rem] leading-snug text-cream tracking-[-0.02em]">
               We went live with a new site and{' '}
-              <span className="text-gold/95">zero ad history</span> — basically invisible in one of the toughest local
+              <span className="text-gold/95">zero ad history</span>, basically invisible in one of the toughest local
               markets in the country. Stratezik refused the generic &ldquo;pest control&rdquo; catch-all. They split the account by
               service line, hunted junk queries every week, and put CPL targets in front of volume games.{' '}
               <span className="text-cream/90">
                 Eleven months later we had north of seven hundred paid conversions at a cost per lead most competitors
-                cannot touch — and organic finally woke up behind it.
+                cannot touch, and organic finally woke up behind it.
               </span>
             </p>
             <footer className="mt-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 border-t border-cream/15 pt-8">

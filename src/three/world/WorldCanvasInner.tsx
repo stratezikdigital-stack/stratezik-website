@@ -37,7 +37,7 @@ export default function WorldCanvasInner({ mobile, reduced }: WorldCanvasInnerPr
         const canvas = gl.domElement
         canvas.addEventListener('webglcontextlost', (e) => {
           e.preventDefault()
-          console.warn('[WorldCanvas] WebGL context lost — will attempt restore')
+          console.warn('[WorldCanvas] WebGL context lost  -  will attempt restore')
         })
         canvas.addEventListener('webglcontextrestored', () => {
           console.info('[WorldCanvas] WebGL context restored')

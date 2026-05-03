@@ -1,10 +1,10 @@
 /**
- * Notation marquee — divider between sections.
+ * Notation marquee  -  divider between sections.
  *
  * Infinite-scrolling editorial fragments (value props / operating principles).
  * Two variants:
- *   • dark  — ink background, cream type. Used to punctuate.
- *   • light — cream background, ink type. Quieter rhythm.
+ *   • dark   -  ink background, cream type. Used to punctuate.
+ *   • light  -  cream background, ink type. Quieter rhythm.
  *
  * Pure CSS animation (no JS) so it costs effectively nothing.
  */

@@ -9,11 +9,11 @@ import { PIECE_COMPONENTS, PieceName } from '../pieces'
 interface ServicePieceCanvasProps {
   /** Which chess piece to render. */
   piece: PieceName
-  /** True when the parent card is hovered/focused — drives the move animation. */
+  /** True when the parent card is hovered/focused  -  drives the move animation. */
   active?: boolean
   /** Tiny vs. large rendering variants. */
   scale?: number
-  /** Show on which tone — defaults to ivory; cards switch on hover via redOnHover. */
+  /** Show on which tone  -  defaults to ivory; cards switch on hover via redOnHover. */
   tone?: 'ivory' | 'red'
   className?: string
 }
@@ -27,7 +27,7 @@ function AnimatedPiece({ piece, active, tone = 'ivory' }: { piece: PieceName; ac
   const ref = useRef<THREE.Group>(null)
   const t = useRef(0)
 
-  /** Pseudo-state — accumulates while active, decays when not. */
+  /** Pseudo-state  -  accumulates while active, decays when not. */
   useFrame((_, dt) => {
     if (!ref.current) return
     t.current += dt * (active ? 1 : 0.4)

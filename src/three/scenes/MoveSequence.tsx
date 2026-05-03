@@ -24,7 +24,7 @@ interface Move {
 
 export const MOVES: Record<number, Move> = {
   1: {
-    // Opening — knight develops
+    // Opening  -  knight develops
     piece: 'knight',
     tone: 'ivory',
     from: [1, 0],
@@ -36,7 +36,7 @@ export const MOVES: Record<number, Move> = {
     ],
   },
   2: {
-    // Middle game — bishop diagonal
+    // Middle game  -  bishop diagonal
     piece: 'bishop',
     tone: 'ivory',
     from: [0, 0],
@@ -47,7 +47,7 @@ export const MOVES: Record<number, Move> = {
     ],
   },
   3: {
-    // End game — queen swings
+    // End game  -  queen swings
     piece: 'queen',
     tone: 'ivory',
     from: [1, 1],
@@ -58,7 +58,7 @@ export const MOVES: Record<number, Move> = {
     ],
   },
   4: {
-    // Checkmate — Stratezik red king claims center
+    // Checkmate  -  Stratezik red king claims center
     piece: 'king',
     tone: 'red',
     from: [2, 2],

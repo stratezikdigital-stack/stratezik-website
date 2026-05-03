@@ -51,7 +51,7 @@ export function SceneShell({
 
   const finalDpr: [number, number] = mobile ? [1, Math.min(1.5, dpr[1])] : dpr
   const useShadows = shadows && !mobile
-  // Reduced-motion still renders the scene — it's the per-frame animations
+  // Reduced-motion still renders the scene  -  it's the per-frame animations
   // (Float speed, useFrame deltas) that should be quieted, not the visuals.
   const mountCanvas = visible
   const wantsAnimation = alwaysRender && !tabHidden && !reduced

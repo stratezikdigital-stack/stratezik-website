@@ -4,7 +4,7 @@ import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
 /**
- * Plan D — Contact / consultation section.
+ * Plan D - Contact / consultation section.
  *
  * Split layout: form + dark ledger with studio coordinates.
  */
@@ -73,7 +73,7 @@ export default function ContactSection() {
           >
             <div className="col-span-12 md:col-span-3">
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 05 &mdash; Contact
+              / 05: Contact
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Reply within one business day &middot; book a 30-minute call
@@ -85,7 +85,7 @@ export default function ContactSection() {
               </h2>
               <p className="lead mt-6 max-w-2xl">
                 Share goals, timelines, and constraints. We&rsquo;ll reply within one business day and,
-                if there&rsquo;s a fit, book a focused 30-minute call—no obligation.
+                if there&rsquo;s a fit, book a focused 30-minute call, no obligation.
               </p>
             </div>
           </motion.header>
@@ -125,7 +125,7 @@ export default function ContactSection() {
                     Message received
                   </div>
                   <h4 className="mt-2 font-display text-3xl md:text-4xl text-ink leading-[1.05]">
-                    Thanks—we&rsquo;ll be in touch.
+                    Thanks. We&rsquo;ll be in touch.
                   </h4>
                   <p className="lead mt-4 max-w-md">
                     Expect a reply within one business day with next steps. If there&rsquo;s a fit,
@@ -174,7 +174,7 @@ export default function ContactSection() {
                     label="What should we know?"
                     moveNumber="04"
                     multiline
-                    placeholder="Goals, budget band, channels you’ve tried, timelines, blockers—anything that helps us prepare."
+                    placeholder="Goals, budget band, channels you’ve tried, timelines, blockers; anything that helps us prepare."
                     value={formData.message}
                     onChange={handleInputChange}
                   />
@@ -256,14 +256,14 @@ export default function ContactSection() {
                   value={'2466 Eglinton Ave E\nToronto, ON, Canada'}
                   href="https://maps.google.com/?q=2466+Eglinton+Ave+E,+Toronto"
                 />
-                <Ledger label="Hours" value={'Mon\u2013Fri \u00b7 09\u201318 ET'} />
+                <Ledger label="Hours" value={'Mon-Fri · 09:00-18:00 ET'} />
               </div>
 
               <div className="hairline border-cream/15 mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7">
-                <div>Step 1 &mdash; Send your brief</div>
-                <div>Step 2 &mdash; We respond within 24h</div>
-                <div>Step 3 &mdash; Schedule the strategy call</div>
-                <div className="text-gold mt-1">Step 4 &mdash; Three proposals, one decision</div>
+                <div>Step 1: Send your brief</div>
+                <div>Step 2: We respond within 24h</div>
+                <div>Step 3: Schedule the strategy call</div>
+                <div className="text-gold mt-1">Step 4: Three proposals, one decision</div>
               </div>
             </motion.aside>
           </div>

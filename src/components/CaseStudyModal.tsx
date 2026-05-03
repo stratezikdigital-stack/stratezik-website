@@ -87,7 +87,7 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
             className="absolute inset-0 bg-ink/70 backdrop-blur-sm cursor-default"
           />
 
-          {/* Sheet — data-lenis-prevent makes Lenis ignore wheel events from
+          {/* Sheet: data-lenis-prevent makes Lenis ignore wheel events from
               inside this element so the native overflow-y-auto handles them. */}
           <motion.div
             ref={sheetRef}
@@ -125,7 +125,7 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
               </button>
             </div>
 
-            {/* HERO — uses view-specific overrides, not the shared payload hero */}
+            {/* HERO: uses view-specific overrides, not the shared payload hero */}
             <header className="relative bg-ink text-cream px-6 md:px-16 pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden">
               <div
                 aria-hidden="true"
@@ -233,7 +233,7 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
                 </h2>
                 {phases.length > 1 && (
                   <p className="mt-4 max-w-2xl text-ink-700 leading-relaxed">
-                    The transformation unfolded in clear phases &mdash; from a dormant start to an
+                    The transformation unfolded in clear phases, from a dormant start to an
                     optimized lead engine, with organic authority building in the background
                     throughout.
                   </p>
@@ -300,9 +300,9 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
                 <blockquote className="max-w-4xl">
                   <p className="font-display text-2xl md:text-[34px] leading-[1.2] tracking-[-0.02em] text-ink">
                     {payload.bigQuote.quote
-                      .split(/(\$42\.99|46\u201364% below)/)
+                      .split(/(\$42\.99|46-64% below)/)
                       .map((chunk, i) =>
-                        chunk === '$42.99' || chunk === '46\u201364% below' ? (
+                        chunk === '$42.99' || chunk === '46-64% below' ? (
                           <em key={i} className="not-italic text-oxblood font-semibold">
                             {chunk}
                           </em>
@@ -361,7 +361,7 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
                           Metric
                         </th>
                         <th className="text-right px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em]">
-                          Before (Feb&ndash;May 2025)
+                          Before (Feb to May 2025)
                         </th>
                         <th className="text-right px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em]">
                           After (Apr 2026)
@@ -473,7 +473,7 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
               </section>
             )}
 
-            {/* FOOTER — sources */}
+            {/* FOOTER: sources */}
             <footer className="px-6 md:px-16 py-10 bg-ink text-cream/65">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>

@@ -47,7 +47,7 @@ function App() {
   return (
     <Router>
       <CanonicalManager />
-      {/* Plan D — cinematic intro loader */}
+      {/* Plan D  -  cinematic intro loader */}
       <Loader onDone={() => setLoaded(true)} />
       {/* Custom cursor lives outside SmoothScroll so it tracks viewport pixels */}
       <CustomCursor />
@@ -55,7 +55,7 @@ function App() {
         <ScrollToHash />
         {/* Persistent 3D world living behind the entire page. */}
         <WorldCanvas />
-        {/* Now-playing HUD — appears after loader exits */}
+        {/* Now-playing HUD  -  appears after loader exits */}
         {loaded ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
           <Navbar />

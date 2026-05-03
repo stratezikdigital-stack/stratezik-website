@@ -60,7 +60,7 @@ const CareerPage: React.FC = () => {
               <div className="space-y-2">
                 <h3 className="text-2xl font-bold text-slate-900">
                   Business Development<br />
-                  Representative – Toronto
+                  Representative, Toronto
                 </h3>
                 <p className="text-slate-600 text-lg">
                   Join our dynamic team and help businesses grow through strategic digital marketing solutions.

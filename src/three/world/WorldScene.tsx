@@ -41,7 +41,7 @@ function StaticArmies() {
     [7, 2],
     [8, 2],
   ]
-  // Allied back rank — partial, just to feel populated
+  // Allied back rank  -  partial, just to feel populated
   const alliedBackRank: { file: number; rank: number; piece: 'rook' | 'knight' | 'bishop' }[] = [
     { file: 1, rank: 1, piece: 'rook' },
     { file: 8, rank: 1, piece: 'rook' },
@@ -103,7 +103,7 @@ function StaticArmies() {
   )
 }
 
-/** Focal pawn (the visitor avatar) — animated per-frame from store progress. */
+/** Focal pawn (the visitor avatar)  -  animated per-frame from store progress. */
 function FocalPawn() {
   const ref = useRef<THREE.Group>(null)
 
@@ -126,7 +126,7 @@ function FocalPawn() {
   )
 }
 
-/** Service piece companions — fade in/out around the focal pawn. */
+/** Service piece companions  -  fade in/out around the focal pawn. */
 function ServicePieces() {
   const refs = useRef<(THREE.Group | null)[]>([])
 
@@ -158,7 +158,7 @@ function ServicePieces() {
   )
 }
 
-/** Promoted red queen — rises out of the focal pawn at the very end. */
+/** Promoted red queen  -  rises out of the focal pawn at the very end. */
 function PromotedQueen() {
   const ref = useRef<THREE.Group>(null)
 
@@ -191,7 +191,7 @@ function OpponentKing() {
     const target = opponentKingAt(progress, resigned).tilt
     ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.z, target, 3, dt)
 
-    // Anticipation tremor — as the visitor closes in, the king's base
+    // Anticipation tremor  -  as the visitor closes in, the king's base
     // shudders almost imperceptibly. Stops once it has actually toppled.
     const wobble = Math.max(0, (progress - 0.82) / 0.18)
     const tremor = resigned ? 0 : Math.sin(state.clock.elapsedTime * 14) * 0.004 * wobble * wobble
