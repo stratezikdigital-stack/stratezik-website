@@ -5,19 +5,17 @@ import { useWorldStore } from '../three/world/store'
 /**
  * Plan D — Now-playing HUD.
  *
- * Bottom-left compact strip. Mirrors the visitor's progress through the
- * page-as-game: section name + percentage tick up as you scroll.
+ * Bottom-left compact strip: scroll progress through major sections.
  *
- * Hidden while the visitor is still in the hero (the hero already shows
- * its own "/ 01 — Opening" marker; redundant + collides with hero copy).
+ * Hidden on the hero (that section already carries primary messaging).
  * Hidden on small screens (clutters mobile layouts).
  */
 const MOVES = [
-  { name: 'hero',      stage: 'Opening' },
-  { name: 'services',  stage: 'Repertoire' },
-  { name: 'flow',      stage: 'Strategy' },
-  { name: 'portfolio', stage: 'Match record' },
-  { name: 'contact',   stage: 'Endgame' },
+  { name: 'hero', stage: 'Hero' },
+  { name: 'services', stage: 'Services' },
+  { name: 'flow', stage: 'Process' },
+  { name: 'portfolio', stage: 'Case studies' },
+  { name: 'contact', stage: 'Contact' },
 ] as const
 
 export function MoveCounterHUD() {
@@ -30,8 +28,7 @@ export function MoveCounterHUD() {
     return () => window.clearTimeout(t)
   }, [])
 
-  // Skip the hero — the section already advertises "/ 01 Opening" in its
-  // top notation row, and the HUD would just overlap the headline.
+  // Hero carries primary positioning; HUD starts below fold.
   if (current === 'hero') return null
 
   const idx = MOVES.findIndex((m) => m.name === current)
@@ -49,7 +46,7 @@ export function MoveCounterHUD() {
           exit={{ opacity: 0, y: 12 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="hidden lg:flex pointer-events-none fixed bottom-6 left-6 z-30 items-center gap-3 select-none bg-cream/92 backdrop-blur-md border border-ink/15 px-4 py-2.5 shadow-lg"
-          aria-label="Game progress"
+          aria-label="Page scroll progress"
         >
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-oxblood animate-pulse" />
           <div className="flex items-center gap-2 min-w-[180px]">

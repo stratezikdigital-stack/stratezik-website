@@ -6,15 +6,9 @@ interface LoaderProps {
 }
 
 /**
- * Plan D intro loader — "Setting up the board".
+ * Plan D intro loader — ink scrim with sequenced brand glyphs and progress.
  *
- * On first paint we cover the page with an ink-black scrim. Eight pawn
- * glyphs fall into rank 2 one-by-one with a percentage counter ticking up
- * from 0 → 100. When the counter reaches 100 the scrim slides up off the
- * viewport and the page underneath is revealed.
- *
- * The loader runs ~2.6s end-to-end, just long enough to feel cinematic
- * without testing patience. Skipped entirely under prefers-reduced-motion.
+ * Skipped under prefers-reduced-motion.
  */
 export function Loader({ onDone }: LoaderProps) {
   const [percent, setPercent] = useState(0)
@@ -58,9 +52,8 @@ export function Loader({ onDone }: LoaderProps) {
     }
   }, [onDone])
 
-  // Eight pawns, one per file (a..h). Each falls in turn.
+  // Eight glyphs — sequenced entrance for perceived loading progress.
   const pawns = Array.from({ length: 8 }, (_, i) => i)
-  const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
   return (
     <AnimatePresence>
@@ -77,7 +70,7 @@ export function Loader({ onDone }: LoaderProps) {
           {/* Top notation row */}
           <div className="flex items-center justify-between px-6 md:px-12 pt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/65">
             <span>Stratezik</span>
-            <span>Setting up the board</span>
+            <span>Preparing experience</span>
           </div>
 
           {/* Centerpiece — pawns falling into rank 2 */}
@@ -110,8 +103,8 @@ export function Loader({ onDone }: LoaderProps) {
                   className="flex flex-col items-center"
                 >
                   <span className="text-cream/90 text-[clamp(2rem,4vw,3rem)] leading-none">{'\u265F'}</span>
-                  <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-cream/35 mt-3">
-                    {files[i]}2
+                  <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-cream/35 mt-3 tabular-nums">
+                    {String(i + 1).padStart(2, '0')}
                   </span>
                 </motion.div>
               ))}
@@ -127,16 +120,16 @@ export function Loader({ onDone }: LoaderProps) {
                 />
               </div>
               <div className="flex items-center justify-between mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
-                <span>Initialising position</span>
+                <span>Loading modules</span>
                 <span className="tabular-nums">{percent.toString().padStart(3, '0')}%</span>
               </div>
             </div>
           </div>
 
-          {/* Bottom move-1 stamp */}
+          {/* Bottom rail */}
           <div className="px-6 md:px-12 pb-8 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
-            <span>Game #2026 &mdash; vs Inertia</span>
-            <span>1.&thinsp;e4</span>
+            <span>Toronto &mdash; digital marketing · growth</span>
+            <span className="tabular-nums">{percent.toString().padStart(3, '0')}%</span>
           </div>
         </motion.div>
       )}

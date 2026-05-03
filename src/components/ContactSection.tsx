@@ -4,13 +4,9 @@ import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
 /**
- * Plan D — "Your move."
+ * Plan D — Contact / consultation section.
  *
- * Editorial contact section styled as a chess clock + record card.
- * The form lives on the left in a thin-bordered editorial frame; the
- * right side is a contact ledger styled as algebraic notation. On
- * submit, the global world store is told the opposing king has
- * resigned (the persistent canvas behind the page handles the topple).
+ * Split layout: form + dark ledger with studio coordinates.
  */
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -77,19 +73,19 @@ export default function ContactSection() {
           >
             <div className="col-span-12 md:col-span-3">
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-                / 05 &mdash; Endgame
-              </div>
-              <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-                Move 47 &middot; the deciding move
+              / 05 &mdash; Contact
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              Reply within one business day &middot; book a 30-minute call
               </div>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
-                Your move.
+                Start the conversation.
               </h2>
               <p className="lead mt-6 max-w-2xl">
-                Tell us where you stand. We&rsquo;ll prepare three lines of play and walk you through
-                them in 30 minutes &mdash; no obligation. The opposing king is already wobbling.
+                Share goals, timelines, and constraints. We&rsquo;ll reply within one business day and,
+                if there&rsquo;s a fit, book a focused 30-minute call—no obligation.
               </p>
             </div>
           </motion.header>
@@ -107,7 +103,7 @@ export default function ContactSection() {
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
-                    Open the line
+                    Next step
                   </div>
                   <h3 className="font-display text-2xl md:text-3xl text-ink mt-1 tracking-[-0.025em]">
                     Start the consultation
@@ -126,17 +122,17 @@ export default function ContactSection() {
                   className="py-12"
                 >
                   <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
-                    Position resigned
+                    Message received
                   </div>
                   <h4 className="mt-2 font-display text-3xl md:text-4xl text-ink leading-[1.05]">
-                    Checkmate.
+                    Thanks—we&rsquo;ll be in touch.
                   </h4>
                   <p className="lead mt-4 max-w-md">
-                    Your message landed. We&rsquo;ll respond within one business day with three
-                    candidate lines of play tailored to your position.
+                    Expect a reply within one business day with next steps. If there&rsquo;s a fit,
+                    we&rsquo;ll propose three scoped directions you can compare quickly.
                   </p>
                   <div className="hairline mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
-                    {`47.\u2009\u2654g8#`} &middot; result 1\u20130
+                    Reference &middot; consultation queue
                   </div>
                 </motion.div>
               ) : (
@@ -175,10 +171,10 @@ export default function ContactSection() {
                   <Field
                     id="message"
                     name="message"
-                    label="Where do you stand on the board?"
+                    label="What should we know?"
                     moveNumber="04"
                     multiline
-                    placeholder="What's the position? Where do you want to go? What's blocking the move?"
+                    placeholder="Goals, budget band, channels you’ve tried, timelines, blockers—anything that helps us prepare."
                     value={formData.message}
                     onChange={handleInputChange}
                   />
@@ -205,7 +201,7 @@ export default function ContactSection() {
                         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">
                           Send
                         </span>
-                        <span>Press the clock</span>
+                        <span>Send message</span>
                         <span aria-hidden className="font-mono">&rarr;</span>
                       </>
                     )}
@@ -224,7 +220,7 @@ export default function ContactSection() {
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
-                  Game state
+                  Status
                 </div>
                 <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55">
                   <span
@@ -232,22 +228,22 @@ export default function ContactSection() {
                       isSubmitted ? 'bg-gold' : 'bg-oxblood-400 animate-pulse'
                     }`}
                   />
-                  {isSubmitted ? 'Resigned' : 'In progress'}
+                  {isSubmitted ? 'Queued' : 'Accepting briefs'}
                 </div>
               </div>
 
               <div className="font-display text-display-3 leading-[1.0] tracking-[-0.025em]">
                 {isSubmitted ? (
                   <>
-                    Welcome to the
+                    Welcome aboard.
                     <br />
-                    <span className="italic font-light text-gold">winning side.</span>
+                    <span className="italic font-light text-gold">We&rsquo;ll follow up shortly.</span>
                   </>
                 ) : (
                   <>
-                    Submit your details
+                    Tell us what you&rsquo;re building.
                     <br />
-                    <span className="italic font-light text-gold/90">to deliver checkmate.</span>
+                    <span className="italic font-light text-gold/90">We read every brief.</span>
                   </>
                 )}
               </div>
@@ -264,10 +260,10 @@ export default function ContactSection() {
               </div>
 
               <div className="hairline border-cream/15 mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7">
-                <div>1.&thinsp;e4 &mdash; Send the message</div>
-                <div>2.&thinsp;Nf3 &mdash; We respond within 24h</div>
-                <div>3.&thinsp;Bb5 &mdash; 30-min strategy session</div>
-                <div className="text-gold mt-1">4.&thinsp;Win &mdash; Three candidate lines, one decision</div>
+                <div>Step 1 &mdash; Send your brief</div>
+                <div>Step 2 &mdash; We respond within 24h</div>
+                <div>Step 3 &mdash; Schedule the strategy call</div>
+                <div className="text-gold mt-1">Step 4 &mdash; Three proposals, one decision</div>
               </div>
             </motion.aside>
           </div>
@@ -362,6 +358,8 @@ function Ledger({ label, value, href }: LedgerProps) {
   return href ? (
     <a
       href={href}
+      target={/^https?:\/\//.test(href) ? '_blank' : undefined}
+      rel={/^https?:\/\//.test(href) ? 'noopener noreferrer' : undefined}
       data-cursor="cta"
       data-cursor-text="Open"
       className="block hover:text-gold transition-colors"

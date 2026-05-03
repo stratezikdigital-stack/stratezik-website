@@ -29,10 +29,10 @@ const Navbar = () => {
   }, [])
 
   const navItems = [
-    { name: 'Openings', label: '02', href: '#services' },
+    { name: 'Services', label: '02', href: '#services' },
     { name: 'Strategy', label: '03', href: '#strategy' },
-    { name: 'Record', label: '04', href: '#portfolio' },
-    { name: 'Move', label: '05', href: '#contact' },
+    { name: 'Work', label: '04', href: '#portfolio' },
+    { name: 'Contact', label: '05', href: '#contact' },
   ]
 
   const goHash = (hash: string) => {
@@ -57,14 +57,16 @@ const Navbar = () => {
       {/* Top notation rail */}
       <div className="bg-ink text-cream/85">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
-          <div className="flex items-center justify-between gap-3 py-2 font-mono text-[12px] sm:text-[13px] tracking-[0.12em]">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-2 font-mono text-[12px] sm:text-[13px] tracking-[0.12em]">
+            <div className="min-w-0 shrink">
             <span className="hidden md:inline uppercase tracking-[0.22em] text-[11px] text-cream/55">
-              Game #2026 &mdash; in&nbsp;progress
+              Toronto &mdash; digital marketing studio
             </span>
-            <span className="md:hidden uppercase tracking-[0.22em] text-[11px] text-cream/55">
-              Stratezik &mdash; Toronto
-            </span>
-            <div className="flex items-center gap-4 sm:gap-6">
+              <span className="md:hidden uppercase tracking-[0.22em] text-[11px] text-cream/55">
+                Stratezik &mdash; Toronto
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center justify-end gap-x-4 sm:gap-6 gap-y-1">
               <a
                 href={`tel:${PHONE_TEL}`}
                 data-cursor="cta"
@@ -102,14 +104,24 @@ const Navbar = () => {
               to="/"
               data-cursor="cta"
               data-cursor-text="Home"
-              className="flex items-baseline gap-2 group"
+              className="flex items-center gap-2.5 md:gap-3 group"
               aria-label="Stratezik — Home"
             >
-              <span className="font-display text-2xl md:text-3xl text-ink tracking-[-0.03em] leading-none">
-                Stratezik
-              </span>
-              <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                / Toronto
+              <img
+                src="/branding/favicon.png"
+                alt=""
+                width={40}
+                height={40}
+                className="h-8 w-8 md:h-9 md:w-9 shrink-0 select-none rounded-full shadow-sm ring-1 ring-ink/10"
+                decoding="async"
+              />
+              <span className="flex items-baseline gap-2">
+                <span className="font-display text-2xl md:text-3xl text-ink tracking-[-0.03em] leading-none">
+                  Stratezik
+                </span>
+                <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                  / Toronto
+                </span>
               </span>
             </Link>
 

@@ -63,9 +63,27 @@ function App() {
                 element={
                   <>
                     <HeroSection />
-                    <NotationMarquee variant="dark" lines={['1.\u00a0e4 e5', '2.\u00a0Nf3 Nc6', '3.\u00a0Bb5 a6', '\u2014 The Spanish Game', '\u2014 We open with strategy', '\u2014 Stratezik']} />
+                    <NotationMarquee
+                      variant="dark"
+                      lines={[
+                        'Toronto digital marketing & growth',
+                        'SEO · PPC · social · conversion · analytics',
+                        'Integrated plans · fewer silos · clearer KPIs',
+                        'SMB & startup budgets · enterprise discipline',
+                        'Stratezik · measurable demand',
+                      ]}
+                    />
                     <ServicesSection />
-                    <NotationMarquee variant="light" lines={['Pattern recognition', 'Tempo over force', 'Position over pieces', 'The endgame begins on move one', 'Stratezik']} />
+                    <NotationMarquee
+                      variant="light"
+                      lines={[
+                        'Audience insight before media spend',
+                        'Creative & landing pages built to convert',
+                        'Attribution you can defend in the boardroom',
+                        'Weekly rhythm · monthly reviews · quarterly bets',
+                        'Stratezik',
+                      ]}
+                    />
                     <StrategyFlow />
                     <PortfolioSection />
                     <ContactSection />

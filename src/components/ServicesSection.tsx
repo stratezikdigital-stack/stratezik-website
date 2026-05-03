@@ -4,19 +4,17 @@ import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
 /**
- * Plan D — Services as openings.
+ * Plan D — Services grid.
  *
- * Each Stratezik service is reframed as a famous chess opening, paired
- * with a small SVG diagram showing that opening's first three moves.
- * Cards are editorial: hairline rules, tabular notation, no gradient
- * candy. Hover lifts the card slightly and reveals an accent rule.
+ * Six discipline cards with abstract lane diagrams. Copy stays channel-native
+ * so visitors immediately map tiles to acquisition work.
  */
 
 interface Opening {
   number: string
   /** The actual service we sell (large, dominant headline). */
   service: string
-  /** Chess-opening accent — small label only. */
+  /** Short discipline lane label (mono accent). */
   opening: string
   /** Editorial blurb */
   thesis: string
@@ -30,14 +28,14 @@ const OPENINGS: Opening[] = [
   {
     number: '01',
     service: 'Paid Search & Social Ads',
-    opening: "King's Gambit",
+    opening: 'Paid acquisition',
     thesis:
-      'Sacrifice a pawn early to seize the centre and the initiative. In paid media: a bold opening bid that buys position your competitors can\u2019t recover from.',
+      'Structured accounts beat guesswork: tight geo/device splits, conversion-grade creative velocity, disciplined negatives, and pacing tuned to margin\u2014not vanity reach.',
     tactics: [
       'High-performance Google Ads',
       'Programmatic + retargeting',
       'Meta, LinkedIn, TikTok, YouTube',
-      'Local + GBP dominance',
+      'Local + Google Business Profile',
     ],
     arrows: [
       { from: [4, 1], to: [4, 3], color: 'white' },
@@ -48,9 +46,9 @@ const OPENINGS: Opening[] = [
   {
     number: '02',
     service: 'SEO & Organic Growth',
-    opening: 'Sicilian Defense',
+    opening: 'Organic growth',
     thesis:
-      'The most-studied counter in modern chess. Asymmetric, patient, ruthlessly long-term. SEO\u2019s exact temperament \u2014 you don\u2019t buy attention, you compound it.',
+      'Search compounds when technical foundations, topical authority, helpful content, and earned links align\u2014patient capital that keeps yielding once rankings stabilize.',
     tactics: [
       'Technical SEO + site architecture',
       'Topical authority clusters',
@@ -66,9 +64,9 @@ const OPENINGS: Opening[] = [
   {
     number: '03',
     service: 'Social Strategy & Content',
-    opening: 'Italian Game',
+    opening: 'Social & content',
     thesis:
-      'Develops pieces toward the most provocative square \u2014 right next to the opponent\u2019s king. Social done right: every post is positional, none of it is filler.',
+      'Channels grow when editorial calendars, formats, and hooks ladder to revenue narratives\u2014always-on reporting keeps creative accountable to pipeline, not likes.',
     tactics: [
       'Editorial calendars + creative direction',
       'Short-form video systems',
@@ -84,9 +82,9 @@ const OPENINGS: Opening[] = [
   {
     number: '04',
     service: 'Brand Strategy & Identity',
-    opening: "Queen's Gambit",
+    opening: 'Brand platform',
     thesis:
-      'Offer a flank pawn to dominate the centre. The premium brand play: trade short-term volume for long-term positioning that no challenger can dislodge.',
+      'Premium positioning trades noisy short-term volume for durable recall\u2014architecture, naming, visual systems, and messaging your sales team can repeat without translating.',
     tactics: [
       'Brand architecture + naming',
       'Visual identity systems',
@@ -102,9 +100,9 @@ const OPENINGS: Opening[] = [
   {
     number: '05',
     service: 'Conversion & Growth',
-    opening: 'English Opening',
+    opening: 'Conversion systems',
     thesis:
-      'Flexible, hyper-modern, transposable. Conversion engineering at its best: every funnel adapts to the visitor, no scripted opening required.',
+      'Lifecycle revenue comes from deliberate experimentation\u2014landing tests, offers, nurture arcs, and retention hooks instrumented so winners scale with governance.',
     tactics: [
       'CRO + landing-page systems',
       'Lead-gen + nurture flows',
@@ -120,9 +118,9 @@ const OPENINGS: Opening[] = [
   {
     number: '06',
     service: 'Analytics & Data',
-    opening: "Reti Opening",
+    opening: 'Measurement stack',
     thesis:
-      'Win without revealing your plan. Modern analytics: the answer doesn\u2019t come from the dashboard \u2014 it comes from the question we frame two layers above it.',
+      'Dashboards only help when definitions match finance\u2014clean events, honest attribution narratives, executive summaries, and alerting before anomalies become crises.',
     tactics: [
       'Measurement architecture',
       'GA4 + server-side tagging',
@@ -165,7 +163,7 @@ function MiniBoard({ arrows }: { arrows: Opening['arrows'] }) {
       viewBox={`0 0 ${tile * 8} ${tile * 8}`}
       className="w-full h-full"
       role="img"
-      aria-label="Opening diagram"
+      aria-label="Service lane diagram"
     >
       <defs>
         <marker
@@ -247,7 +245,7 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
         {/* Title block — service name is the headline, opening is a tiny accent */}
         <div className="col-span-10 md:col-span-8">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
-            Plays the {opening.opening}
+            Lane &middot; {opening.opening}
           </div>
           <h3 className="mt-2 font-display text-display-3 text-ink leading-[1.02] tracking-[-0.025em]">
             {opening.service}
@@ -301,19 +299,18 @@ const ServicesSection = () => {
               / 02 &mdash; Services
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              Six disciplines &middot; one repertoire
+              Six disciplines &middot; one playbook
             </div>
           </div>
           <div className="col-span-12 md:col-span-9">
             <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
-              We don&rsquo;t run campaigns.
+              We ship integrated programs,
               <br />
-              <span className="italic font-light text-oxblood">We run gambits.</span>
+              <span className="italic font-light text-oxblood">not random tactics.</span>
             </h2>
             <p className="lead mt-8 max-w-3xl">
-              Every Stratezik engagement is built on a documented playbook &mdash; six disciplines
-              we&rsquo;ve studied, refined, and won with. Pick the discipline that suits your
-              position, or let us prepare a tailored line of play.
+              Every engagement ties channels to revenue-facing KPIs &mdash; paid, organic, creative,
+              analytics, and tooling share one roadmap instead of competing narratives.
             </p>
           </div>
         </motion.header>
@@ -325,7 +322,37 @@ const ServicesSection = () => {
           ))}
         </div>
 
-        {/* Flagship: AI agents & bespoke tools — full width of two cards */}
+        {/* Seventh discipline masthead — same grid pattern as opening services */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
+          className="grid grid-cols-12 gap-4 mt-24 md:mt-32 mb-10 md:mb-14"
+        >
+          <div className="col-span-12 md:col-span-3">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              / 07 &mdash; Seventh discipline
+            </div>
+            <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+              AI agents &middot; custom apps &middot; integrations
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-9">
+            <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
+              AI agent &amp; tool creation for clients
+            </h2>
+            <p className="lead mt-6 max-w-3xl">
+              We design, build, and maintain customer-facing apps and internal tools backed by AI where
+              it actually helps:&nbsp;research, drafting, routing, QA, reporting, and first-line customer
+              questions. Agents and workflows connect to your ad accounts, CRM, analytics suite, Google
+              Business Profile, and other systems you already use so your marketing and sales teams move
+              faster without broken handoffs or mystery automation.
+            </p>
+          </div>
+        </motion.header>
+
+        {/* Flagship: full-width band (two OpeningCard columns) */}
         <motion.article
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -333,8 +360,8 @@ const ServicesSection = () => {
           viewport={{ once: true, margin: '-60px' }}
           data-cursor="glyph"
           data-cursor-glyph={'\u265B'}
-          className="relative mt-[1px] bg-ink text-cream border border-ink/10 overflow-hidden lift"
-          aria-labelledby="ai-flagship-heading"
+          className="relative bg-ink text-cream border border-ink/10 overflow-hidden lift"
+          aria-labelledby="ai-band-title"
         >
           <div
             aria-hidden
@@ -348,23 +375,17 @@ const ServicesSection = () => {
           <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 p-8 md:p-12 lg:p-14">
             <div className="lg:col-span-5 flex flex-col justify-between gap-10">
               <div>
-                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
-                  / 07 &mdash; Seventh rank
-                </div>
-                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45 mt-3">
-                  Plays hypermodern flank development
-                </div>
                 <h3
-                  id="ai-flagship-heading"
-                  className="mt-5 font-display text-[clamp(1.85rem,4.2vw,2.95rem)] leading-[1.02] tracking-[-0.035em]"
+                  id="ai-band-title"
+                  className="font-display text-[clamp(1.65rem,3.2vw,2.35rem)] leading-[1.05] tracking-[-0.03em]"
                 >
-                  AI agents, apps&nbsp;& tools
+                  What we build together
                 </h3>
-                <p className="mt-5 text-cream/80 text-base md:text-[1.05rem] leading-relaxed max-w-md">
-                  We design and ship customer-facing calculators, onboarding flows, conversational agents, and
-                  internal tooling that tighten the loop between data, creatives, media, and your front line. The
-                  goal is simple: your team executes faster decisions with fewer handoffs&nbsp;&mdash;
-                  orchestration, guardrails, and measurable outcomes wired in by default.
+                <p className="mt-5 text-cream/85 text-base md:text-[1.05rem] leading-relaxed max-w-lg">
+                  Custom tools and assistants are scoped against your funnel, approvals, privacy rules,
+                  and measurement plan. Typical deliverables combine a working product or agent, prompts
+                  and playbooks people can repeat, APIs or secure data connections where needed, and a
+                  short training pass so adoption sticks past launch week.
                 </p>
               </div>
               <button
@@ -374,31 +395,31 @@ const ServicesSection = () => {
                 data-cursor-text="Brief"
                 className="inline-flex self-start items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors duration-300"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">/08</span>
-                Brief us on automation
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">
+                  Discuss a build
+                </span>
                 <span aria-hidden className="font-mono">&rarr;</span>
               </button>
             </div>
-            <div className="lg:col-span-7 border-t lg:border-t-0 lg:border-l border-cream/15 lg:pl-12 pt-8 lg:pt-0 space-y-6">
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">Deliverables include</p>
+            <div className="lg:col-span-7 border-t lg:border-t-0 lg:border-l border-cream/15 lg:pl-12 pt-8 lg:pt-0 space-y-5">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
+                Examples of scoped work
+              </p>
               <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-4">
                 {[
-                  'Conversational & task agents trained on brand + funnel context',
-                  'Customer-facing configurators, scorecards & micro-products',
-                  'Ops dashboards & alerts across Ads, CRM, analytics, GBP',
-                  'Workflow bridges: ingest, QA, escalate, annotate, ship',
-                  'Governance packs: prompting, approvals, auditing, escalation',
-                  'Hands-on rollout so adoption sticks past week one',
+                  'Chat and voice-style agents wired to CRM, ticketing, knowledge bases',
+                  'Customer calculators, onboarding wizards, and quote flows on your site',
+                  'Internal dashboards: pacing, creatives, anomalies, SLA alerts across channels',
+                  'Ops automation: ingest lead data, tag, escalate, annotate, reopen closed loops',
+                  'Prompt packs, escalation rules, auditing, reviewer roles, and veto paths',
+                  'Rollout checklist, stakeholder training, and a 30-day hardening window',
                 ].map((line) => (
-                  <li key={line} className="flex items-baseline gap-2.5 text-sm text-cream/85 leading-snug">
+                  <li key={line} className="flex items-baseline gap-2.5 text-sm text-cream/90 leading-snug">
                     <span className="font-mono text-[10px] text-oxblood-400 shrink-0">◇</span>
                     <span>{line}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-cream/50 text-sm italic font-display pt-4">
-                Chess metaphor: queenside castling&nbsp;&mdash; tuck the machinery, open the initiative.
-              </p>
             </div>
           </div>
         </motion.article>

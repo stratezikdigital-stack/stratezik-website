@@ -132,6 +132,8 @@ export interface CaseStudyPayload {
   badge: string
   brandName: string
   brandShort: string
+  /** Live client site — omitted when the case is anonymized */
+  clientWebsiteUrl?: string
   /** Big hero headline */
   headline: { lead: string; accent: string; tail: string }
   subhead: string
@@ -155,6 +157,7 @@ export const INSECTICA_PAYLOAD: CaseStudyPayload = {
   badge: 'Case Study \u00b7 Pest Control \u00b7 Toronto, GTA',
   brandName: 'Insectica Pest Control Inc.',
   brandShort: 'Insectica',
+  clientWebsiteUrl: 'https://insecticapestcontrol.ca/',
   headline: {
     lead: 'From invisible to',
     accent: '700 leads',
@@ -363,6 +366,7 @@ export function getCaseStudyPayload(mode: CaseStudyMode): CaseStudyPayload {
   const p = INSECTICA_PAYLOAD
   return {
     ...p,
+    clientWebsiteUrl: undefined,
     badge: redact(p.badge),
     brandName: 'Confidential GTA Service Brand',
     brandShort: 'Confidential client',

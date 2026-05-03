@@ -175,6 +175,23 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
                     <h2 className="font-display text-3xl md:text-4xl text-ink leading-[1.05] tracking-[-0.025em]">
                       {payload.brandName}
                     </h2>
+                    {payload.clientWebsiteUrl && (
+                      <p className="mt-4">
+                        <a
+                          href={payload.clientWebsiteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-cursor="cta"
+                          data-cursor-text="Open"
+                          className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood border border-oxblood/35 px-3 py-2 hover:border-ink hover:text-ink transition-colors"
+                        >
+                          insecticapestcontrol.ca
+                          <span aria-hidden className="font-sans text-sm normal-case tracking-normal">
+                            ↗
+                          </span>
+                        </a>
+                      </p>
+                    )}
                     <div className="mt-6 prose-editorial">
                       {payload.client.body.map((p, i) => (
                         <p key={i}>{p}</p>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GOOGLE_BUSINESS_PROFILE_URL } from '../constants/externalLinks'
 
 const LinkedInIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -6,19 +7,36 @@ const LinkedInIcon = () => (
   </svg>
 )
 
+/** Map pin — used for Google Business Profile / listings link alongside LinkedIn */
+const MapPinIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+)
+
 /**
- * Plan D — Endgame footer.
+ * Plan D — Studio footer.
  *
- * Editorial sitemap styled as a finished game record. Algebraic notation
- * line at the bottom literally lists each page-section as a move,
- * ending with checkmate.
+ * Columned links plus a plain-language section breadcrumb for humans & crawlers.
  */
 const Footer = () => {
   const baseUrl = 'https://www.stratezik.com'
 
   const cols = [
     {
-      label: 'I.\u00a0Repertoire',
+      label: 'I.\u00a0Services',
       links: [
         { name: 'Paid Search & Social', href: `${baseUrl}/#services` },
         { name: 'SEO & Organic', href: `${baseUrl}/#services` },
@@ -31,7 +49,7 @@ const Footer = () => {
       links: [
         { name: 'About', href: `${baseUrl}/#about` },
         { name: 'Careers', href: '/careers' },
-        { name: 'Match Record', href: `${baseUrl}/#portfolio` },
+        { name: 'Capstone work', href: `${baseUrl}/#portfolio` },
       ],
     },
     {
@@ -51,14 +69,14 @@ const Footer = () => {
         <div className="grid grid-cols-12 gap-4 mb-16">
           <div className="col-span-12 md:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              / 06 &mdash; Endgame
+              / 06 &mdash; Site map
             </div>
             <div className="mt-2 hairline pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              Game #2026 &mdash; resigned
+              Stratezik &mdash; Toronto
             </div>
             <p className="mt-6 lead text-cream/70 max-w-md">
-              Stratezik is a Toronto-based digital marketing studio. We help mid-market companies
-              outthink, outposition, and outlast.
+              Toronto digital marketing for startups and SMBs: SEO, PPC, social, and growth marketing in one
+              integrated playbook &mdash; fewer handoffs, clearer metrics.
             </p>
             <div className="mt-6 flex items-center gap-3">
               <a
@@ -71,6 +89,17 @@ const Footer = () => {
                 className="inline-flex items-center justify-center w-10 h-10 border border-cream/25 hover:border-cream hover:bg-cream/10 transition-colors"
               >
                 <LinkedInIcon />
+              </a>
+              <a
+                href={GOOGLE_BUSINESS_PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Stratezik on Google Business Profile"
+                data-cursor="cta"
+                data-cursor-text="Open"
+                className="inline-flex items-center justify-center w-10 h-10 border border-cream/25 hover:border-cream hover:bg-cream/10 transition-colors"
+              >
+                <MapPinIcon />
               </a>
             </div>
           </div>
@@ -95,6 +124,15 @@ const Footer = () => {
                     ) : (
                       <a
                         href={l.href}
+                        {...(() => {
+                          const ext =
+                            l.href.startsWith('http') &&
+                            !l.href.startsWith('mailto:') &&
+                            !l.href.startsWith('tel:')
+                          return ext
+                            ? { target: '_blank' as const, rel: 'noopener noreferrer' as const }
+                            : {}
+                        })()}
                         data-cursor="cta"
                         data-cursor-text="Open"
                         className="text-cream/85 hover:text-cream transition-colors"
@@ -116,24 +154,24 @@ const Footer = () => {
           </h2>
         </div>
 
-        {/* Algebraic notation — sitemap as game record */}
+        {/* Section breadcrumb — plain labels for humans & crawlers */}
         <div className="mt-10 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7 break-words">
-          <span>1.&thinsp;e4 Opening</span>
+          <span>Home</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span>2.&thinsp;Nf3 Repertoire</span>
+          <span>Services</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span>{'12.\u2009\u2658d5 Strategy'}</span>
+          <span>Process</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span>{'24.\u2009\u2655xh7 Record'}</span>
+          <span>Portfolio</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span>{'47.\u2009\u2654g8#'}</span>
+          <span>Contact</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span className="text-cream">Resigns</span>
+          <span className="text-cream">Careers</span>
         </div>
 
         <div className="mt-10 hairline border-cream/15 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
           <span>&copy; {new Date().getFullYear()} Stratezik &mdash; Toronto, Canada</span>
-          <span>Every move strategic. Every campaign victorious.</span>
+          <span>Integrated channels · accountable measurement · pragmatic creative</span>
         </div>
       </div>
     </footer>

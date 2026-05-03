@@ -1,8 +1,8 @@
 /**
  * Notation marquee — divider between sections.
  *
- * An infinite-scrolling row of chess notation + editorial pull-quote
- * fragments. Two variants:
+ * Infinite-scrolling editorial fragments (value props / operating principles).
+ * Two variants:
  *   • dark  — ink background, cream type. Used to punctuate.
  *   • light — cream background, ink type. Quieter rhythm.
  *

@@ -10,20 +10,19 @@ import { useSection } from '../three/world/useSection'
  *   • A single oversized serif headline carries the entire hero.
  *     Layout is deliberately asymmetric — heading hugs the left edge,
  *     a thin column of editorial body sits below.
- *   • Top-row notation marker '/ 01 — Opening' anchors the visitor in
- *     the metaphor: this is move 01 of an unfolding game.
+ *   • Top-row notation anchors the section without chess jargon.
  *   • The 3D world canvas behind the page provides the focal pawn under
  *     a raking key light. We leave the right half of the viewport empty
  *     so the pawn has space to breathe.
  *   • Stats live as a hairline-divided index strip at the bottom — like
  *     the running record on a magazine cover.
+ *
+ * Hero H1: lead line states role (“agency”) for crisp SEO + scanability; accent carries audience.
  */
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null)
   useSection('hero', ref)
 
-  // Headline: "Think n moves ahead." with the 'n' typeset as a slim italic
-  // chess-style variable. Tiny detail, huge editorial signal.
   return (
     <section
       id="home"
@@ -39,9 +38,9 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.05 }}
           className="hairline mx-6 md:mx-12 mt-6 pt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500"
         >
-          <span>/ 01 &mdash; Opening</span>
-          <span className="hidden sm:inline">Game #2026 &mdash; in&nbsp;progress</span>
-          <span>1.&thinsp;e4</span>
+          <span>/ 01 &mdash; Intro</span>
+          <span className="hidden sm:inline">Toronto studio &mdash; digital growth</span>
+          <span className="tabular-nums">Est.&nbsp;2018</span>
         </motion.div>
 
         {/* Soft left scrim — keeps headline crisp over 3D world */}
@@ -57,33 +56,43 @@ const HeroSection = () => {
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             className="md:col-span-9 lg:col-span-7 max-w-[58rem]"
           >
-            <h1
-              className="font-display font-medium text-display-1 text-ink"
-              style={{ fontVariationSettings: '"opsz" 144' }}
-            >
-              <span className="block">Think</span>
-              <span className="block">
-                <span className="italic font-light text-oxblood pr-2">n</span>
-                moves
+            <h1 className="font-display text-ink">
+              <span
+                className="block font-medium tracking-[-0.04em] leading-[0.98]"
+                style={{
+                  fontVariationSettings: '"opsz" 72',
+                  fontSize: 'clamp(2.85rem, 8.35vw, 6.05rem)',
+                }}
+              >
+                Toronto digital marketing agency
               </span>
-              <span className="block">ahead.</span>
+              <span
+                className="block mt-3 md:mt-4 italic font-normal text-oxblood tracking-[-0.035em] leading-[1.05]"
+                style={{
+                  fontVariationSettings: '"opsz" 60',
+                  fontSize: 'clamp(1.65rem, 4.85vw, 3.65rem)',
+                }}
+              >
+                for startups & SMBs.
+              </span>
             </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45, duration: 0.9 }}
-              className="lead mt-10 max-w-2xl"
+              className="lead mt-8 md:mt-10 max-w-[28rem]"
             >
-              Most agencies react to the market. <span className="text-ink">Stratezik anticipates it.</span>{' '}
-              We architect digital growth like grandmasters architect victories &mdash; pattern by
-              pattern, gambit by gambit, until the position is undeniable.
+              We help Toronto startups and SMBs accelerate growth through integrated campaigns that combine{' '}
+              <span className="text-ink">SEO</span>, <span className="text-ink">PPC</span>,{' '}
+              <span className="text-ink">social media marketing</span>, and{' '}
+              <span className="text-ink">growth marketing</span>—one roadmap, fewer handoffs.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65, duration: 0.7 }}
+              transition={{ delay: 0.58, duration: 0.7 }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <button

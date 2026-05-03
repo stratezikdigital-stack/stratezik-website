@@ -29,7 +29,7 @@ const PortfolioSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 04 &mdash; Match record
+              / 04 &mdash; Case studies
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Selected wins

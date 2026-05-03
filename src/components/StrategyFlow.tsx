@@ -5,8 +5,7 @@ import { useSection } from '../three/world/useSection'
 interface Step {
   step: number
   numeral: string
-  /** Move number this phase corresponds to in our metaphor */
-  moveLabel: string
+  phaseStrip: string
   label: string
   title: string
   description: string
@@ -16,38 +15,38 @@ const STEPS: Step[] = [
   {
     step: 1,
     numeral: 'I',
-    moveLabel: 'Moves 1\u20133',
-    label: 'Opening',
-    title: 'Read the position.',
+    phaseStrip: 'Discovery · weeks 1\u20132',
+    label: 'Audit & clarity',
+    title: 'Understand demand, gaps, and constraints.',
     description:
-      'We diagnose your position before suggesting a single move \u2014 audience, competitors, technical baseline, brand pressure points.',
+      'We review audiences, competitors, tracking, creative, funnels, and economics before spend ramps\u2014so budgets fight for verified opportunities, not guesses.',
   },
   {
     step: 2,
     numeral: 'II',
-    moveLabel: 'Moves 4\u201312',
-    label: 'Development',
-    title: 'Develop the plan.',
+    phaseStrip: 'Planning · scope lock',
+    label: 'Roadmap & priorities',
+    title: 'Agree on the playbook and KPIs.',
     description:
-      'We propose three lines of play with explicit trade-offs. You pick the one that fits your appetite. We commit, fully.',
+      'You get a prioritized roadmap with channel roles, budgets, milestones, and explicit trade-offs. Leadership signs scope once; execution stays aligned.',
   },
   {
     step: 3,
     numeral: 'III',
-    moveLabel: 'Moves 13\u201330',
-    label: 'Middle game',
-    title: 'Hold tempo.',
+    phaseStrip: 'Execution · always-on',
+    label: 'Ship, learn, tune',
+    title: 'Run campaigns with a weekly operating rhythm.',
     description:
-      'Weekly cadence. Daily monitoring. Every test is a deliberate move. Surprises are answered the same week, not the same quarter.',
+      'Structured reporting, creative iterations, search-query hygiene, and landing-page tests\u2014issues surfaced fast and resolved inside the same sprint cadence.',
   },
   {
     step: 4,
     numeral: 'IV',
-    moveLabel: 'Move 31+',
-    label: 'Endgame',
-    title: 'Convert to victory.',
+    phaseStrip: 'Scale · compound',
+    label: 'Optimize & expand',
+    title: 'Reinvest what proves out.',
     description:
-      'A simple position with a winning advantage. Compounding growth, codified plays, and a board you control.',
+      'Double down on compliant CPA/CPL, strengthen organic authority, tighten attribution narratives for finance, and document repeatable motions your team can own.',
   },
 ]
 
@@ -67,17 +66,17 @@ const StrategyFlow = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 03 &mdash; Anatomy of a gambit
+              / 03 &mdash; How we work
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              Four phases &middot; one game
+              Four phases &middot; one accountable roadmap
             </div>
           </div>
           <div className="col-span-12 md:col-span-9">
             <h2 className="font-display text-display-2 text-ink leading-[0.96] tracking-[-0.035em]">
-              Every campaign is a game.
+              From audit to scale,
               <br />
-              <span className="italic font-light text-oxblood">We play to convert.</span>
+              <span className="italic font-light text-oxblood">without losing the thread.</span>
             </h2>
           </div>
         </motion.header>
@@ -98,7 +97,7 @@ const StrategyFlow = () => {
               </div>
               <div className="col-span-10 md:col-span-3 flex flex-col justify-between">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-                  {s.moveLabel}
+                  {s.phaseStrip}
                 </div>
                 <div className="mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
                   Phase &middot; {s.label}
