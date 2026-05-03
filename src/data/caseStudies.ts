@@ -14,13 +14,16 @@
 
 export type CaseStudyMode = 'named' | 'anonymized'
 
+/** Which angle the case-study modal should emphasize when this card is opened. */
+export type MatchAngle = 'overview' | 'paid' | 'organic' | 'gbp'
+
 /** Headline framing for the portfolio card */
 export interface MatchRecord {
   num: string
   /** Whether the card reveals the brand or keeps it confidential */
   mode: CaseStudyMode
   /** What the card is anchored on — the angle the headline emphasizes */
-  angle: 'overview' | 'paid' | 'organic' | 'gbp'
+  angle: MatchAngle
   /** Headline shown on the card. Should match the angle. */
   headline: string
   /** Discipline label (chess-style category) */
@@ -383,5 +386,193 @@ export function getCaseStudyPayload(mode: CaseStudyMode): CaseStudyPayload {
     approach: p.approach.map((a) => ({ ...a, title: redact(a.title), body: redact(a.body) })),
     closingQuote: { quote: redact(p.closingQuote.quote), sub: redact(p.closingQuote.sub) },
     sources: redact(p.sources),
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Per-angle modal views.
+ *
+ * The same source engagement surfaces four distinct deep-dive narratives by
+ * cherry-picking which sections, scorecard rows, timeline beats, and
+ * approach pillars to show. Each view also overrides the hero (headline,
+ * subhead, hero-stat tiles) so the four popups feel like four engagements
+ * even though they share the same underlying data.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export interface CaseStudyView {
+  /** Hero overrides applied on top of the payload's default hero. */
+  hero: {
+    headline: { lead: string; accent: string; tail: string }
+    subhead: string
+    stats: { num: string; lbl: string }[]
+  }
+  show: {
+    client: boolean
+    /** Indices into payload.phases — empty array hides the phases section. */
+    phaseIdxs: number[]
+    bigQuote: boolean
+    gbpCallout: boolean
+    /** Metric names from payload.scorecard. Empty array hides the table. */
+    scorecardMetrics: string[]
+    /** Indices into payload.timeline. Empty array hides the timeline. */
+    timelineIdxs: number[]
+    /** Indices into payload.approach. Empty array hides the approach pillars. */
+    approachIdxs: number[]
+    closingQuote: boolean
+  }
+}
+
+export const VIEWS: Record<MatchAngle, CaseStudyView> = {
+  /* The full Insectica narrative — everything visible, nothing trimmed. */
+  overview: {
+    hero: {
+      headline: {
+        lead: 'From invisible to',
+        accent: '700 leads',
+        tail: 'in 11 months.',
+      },
+      subhead:
+        'How Stratezik Digital transformed a brand-new pest-control website with virtually zero digital presence into a lead-generating machine across paid and organic channels.',
+      stats: [
+        { num: '700', lbl: 'Paid Conversions' },
+        { num: '$42.99', lbl: 'Avg Cost Per Lead' },
+        { num: '168\u00d7', lbl: 'Organic Impressions Growth' },
+        { num: '19\u00d7', lbl: 'Website Sessions Growth' },
+      ],
+    },
+    show: {
+      client: true,
+      phaseIdxs: [0, 1, 2],
+      bigQuote: true,
+      gbpCallout: true,
+      scorecardMetrics: [
+        'Monthly Ad Conversions',
+        'Cost Per Lead',
+        'Monthly Impressions (Paid)',
+        'Organic Impressions/mo',
+        'Avg Organic Position',
+        'Monthly Website Sessions',
+        'GA4 Conversions/mo',
+        'Organic Clicks/mo',
+      ],
+      timelineIdxs: [0, 1, 2, 3, 4, 5],
+      approachIdxs: [0, 1, 2, 3, 4, 5],
+      closingQuote: true,
+    },
+  },
+
+  /* Organic-breakout view — leads on SEO, hides paid-cost framing. */
+  organic: {
+    hero: {
+      headline: {
+        lead: 'From page 5+',
+        accent: 'to position 15',
+        tail: 'in fifteen months.',
+      },
+      subhead:
+        'How a brand-new local-services site climbed 73 ranking spots without a separate SEO retainer. Consistent paid traffic fed the engagement signals that taught Google to trust the domain — and the organic side compounded.',
+      stats: [
+        { num: '168\u00d7', lbl: 'Organic Impressions Growth' },
+        { num: '+10,990%', lbl: "Apr '26 vs. Feb '25" },
+        { num: '57 \u2192 15', lbl: 'Avg Organic Position' },
+        { num: '19\u00d7', lbl: 'Website Sessions Growth' },
+      ],
+    },
+    show: {
+      client: true,
+      phaseIdxs: [2],
+      bigQuote: false,
+      gbpCallout: true,
+      scorecardMetrics: [
+        'Organic Impressions/mo',
+        'Avg Organic Position',
+        'Monthly Website Sessions',
+        'Organic Clicks/mo',
+      ],
+      timelineIdxs: [0, 2, 4, 5],
+      approachIdxs: [1, 3, 4, 5],
+      closingQuote: true,
+    },
+  },
+
+  /* Paid-CPL view — leads on cost efficiency, hides GBP detour. */
+  paid: {
+    hero: {
+      headline: {
+        lead: 'Industry CPL was $80\u2013120.',
+        accent: 'We held $42.99',
+        tail: 'for eleven months.',
+      },
+      subhead:
+        'How Stratezik launched paid from a cold start, trained Smart Bidding to beat target inside sixty days, and ran 700+ qualified leads at less than half the local-services industry benchmark \u2014 without sacrificing volume.',
+      stats: [
+        { num: '$42.99', lbl: 'Avg Cost Per Lead' },
+        { num: '700', lbl: 'Total Paid Conversions' },
+        { num: '$33.38', lbl: 'Best Month CPA' },
+        { num: '\u221245%', lbl: 'CPA in 90 Days' },
+      ],
+    },
+    show: {
+      client: true,
+      phaseIdxs: [0, 1],
+      bigQuote: true,
+      gbpCallout: false,
+      scorecardMetrics: [
+        'Monthly Ad Conversions',
+        'Cost Per Lead',
+        'Monthly Impressions (Paid)',
+        'GA4 Conversions/mo',
+      ],
+      timelineIdxs: [0, 1, 2, 5],
+      approachIdxs: [0, 1, 2, 4],
+      closingQuote: true,
+    },
+  },
+
+  /* GBP / map-pack view — leads on the 60+ \u2192 top 5 result. */
+  gbp: {
+    hero: {
+      headline: {
+        lead: 'Map-pack rank 60+',
+        accent: 'to top 5',
+        tail: 'in four months.',
+      },
+      subhead:
+        'How Stratezik rebuilt a Google Business Profile from invisible to map-pack dominant \u2014 through listing taxonomy, attributes, NAP consistency, photo cadence, review velocity, and a paid signal layer that compounded local authority.',
+      stats: [
+        { num: '60+ \u2192 5', lbl: 'GBP Map-pack Rank' },
+        { num: '4 mo', lbl: 'Time to Top 5' },
+        { num: '168\u00d7', lbl: 'Organic Impressions Growth' },
+        { num: '57 \u2192 15', lbl: 'SERP Avg Position' },
+      ],
+    },
+    show: {
+      client: true,
+      phaseIdxs: [],
+      bigQuote: false,
+      gbpCallout: true,
+      scorecardMetrics: [
+        'Avg Organic Position',
+        'Organic Impressions/mo',
+        'Monthly Website Sessions',
+        'Organic Clicks/mo',
+      ],
+      timelineIdxs: [0, 2, 4, 5],
+      approachIdxs: [4, 5, 0],
+      closingQuote: true,
+    },
+  },
+}
+
+/** Returns the resolved view for a given angle, with the redacted hero subhead applied if anonymized. */
+export function getCaseStudyView(angle: MatchAngle, mode: CaseStudyMode): CaseStudyView {
+  const v = VIEWS[angle]
+  if (mode === 'named') return v
+  return {
+    ...v,
+    hero: {
+      ...v.hero,
+      subhead: redact(v.hero.subhead),
+    },
   }
 }

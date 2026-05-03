@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useSection } from '../three/world/useSection'
-import { MATCHES, type CaseStudyMode } from '../data/caseStudies'
+import { MATCHES, type CaseStudyMode, type MatchAngle } from '../data/caseStudies'
 import CaseStudyModal from './CaseStudyModal'
 
 interface OpenCase {
   num: string
   mode: CaseStudyMode
+  angle: MatchAngle
 }
 
 const PortfolioSection = () => {
@@ -58,13 +59,13 @@ const PortfolioSection = () => {
               viewport={{ once: true, margin: '-80px' }}
               data-cursor="cta"
               data-cursor-text="Read"
-              onClick={() => setOpenCase({ num: m.num, mode: m.mode })}
+              onClick={() => setOpenCase({ num: m.num, mode: m.mode, angle: m.angle })}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  setOpenCase({ num: m.num, mode: m.mode })
+                  setOpenCase({ num: m.num, mode: m.mode, angle: m.angle })
                 }
               }}
               className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-oxblood"
@@ -123,6 +124,7 @@ const PortfolioSection = () => {
       <CaseStudyModal
         open={openCase !== null}
         mode={openCase?.mode ?? 'named'}
+        angle={openCase?.angle ?? 'overview'}
         matchNum={openCase?.num ?? ''}
         onClose={() => setOpenCase(null)}
       />
