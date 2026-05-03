@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { injectJsonLd } from './utils/documentMeta'
+import { HOME_FAQ_JSON_LD_SCRIPT_ID, homeFaqJsonLd } from './utils/homeFaqJsonLd'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import ServicesSection from './components/ServicesSection'
@@ -21,6 +23,12 @@ import { NotationMarquee } from './components/NotationMarquee'
 
 function CanonicalManager() {
   useCanonical()
+  return null
+}
+
+/** Homepage FAQ schema only — avoids FAQPage on /blog URLs conflicting with article FAQs. */
+function HomeFaqJsonLd() {
+  useEffect(() => injectJsonLd(homeFaqJsonLd, HOME_FAQ_JSON_LD_SCRIPT_ID), [])
   return null
 }
 
@@ -65,6 +73,7 @@ function App() {
                 path="/"
                 element={
                   <>
+                    <HomeFaqJsonLd />
                     <HeroSection />
                     <NotationMarquee
                       variant="dark"

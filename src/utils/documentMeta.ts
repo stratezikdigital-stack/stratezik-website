@@ -87,12 +87,12 @@ export function applyPageMeta(args: ApplyPageMetaArgs): () => void {
 
 const JSON_LD_ID = 'stratezik-jsonld'
 
-export function injectJsonLd(data: unknown): () => void {
-  let el = document.getElementById(JSON_LD_ID) as HTMLScriptElement | null
+export function injectJsonLd(data: unknown, scriptId: string = JSON_LD_ID): () => void {
+  let el = document.getElementById(scriptId) as HTMLScriptElement | null
   const created = !el
   if (!el) {
     el = document.createElement('script')
-    el.id = JSON_LD_ID
+    el.id = scriptId
     el.type = 'application/ld+json'
     document.head.appendChild(el)
   }
