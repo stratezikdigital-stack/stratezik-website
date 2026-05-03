@@ -16,7 +16,7 @@ const aeoFaq = [
   {
     question: 'What should Toronto service businesses prioritise for answer engine optimisation?',
     answer:
-      'Prioritise direct, extractable answers in your content; structured data such as LocalBusiness, FAQPage, or Service schema where appropriate; consistent name, address, and phone across your website and Google Business Profile; and specific local language that matches how customers search. Layer paid search if you need immediate coverage while citation equity compounds.',
+      'Ship paragraphs someone could lift verbatim into an assistant response. Layer LocalBusiness, FAQPage, or Service schema when they genuinely describe what you sell. Keep your legal business name, address, and phone identical across your site, GBP, and major citations. Write neighbourhoods the same way locals type them. If auctions matter immediately, keep paid live while citations compound.',
   },
 ]
 
@@ -43,7 +43,7 @@ export const blogPosts: BlogPostDefinition[] = [
     slug: 'insectica-gta-pest-control-scaling-case-study',
     title: 'How We Scaled a Toronto Pest Control Company: The Insectica Story (700+ Leads, Full Breakdown)',
     description:
-      'Month-by-month narrative of Insectica Pest Control’s GTA growth: ten ad groups, CPA-first bidding, 700+ paid conversions at ~$43 CPL, organic impressions up 168×, plus charts and infographic.',
+      'Month-by-month narrative of Insectica Pest Control’s GTA growth: ten ad groups, CPA-first bidding, 700+ paid conversions at ~$43 CPL, organic impressions up 168x, plus charts and infographic.',
     datePublished: '2026-05-02',
     dateModified: '2026-05-02',
     keywords: [
@@ -63,7 +63,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       "83% of businesses cited in AI search don't rank in Google's top 10. What answer engine optimisation means for Toronto businesses.",
     datePublished: '2026-05-01',
-    dateModified: '2026-05-03',
+    dateModified: '2026-05-02',
     keywords: [
       'answer engine optimisation Toronto',
       'AI search Toronto',

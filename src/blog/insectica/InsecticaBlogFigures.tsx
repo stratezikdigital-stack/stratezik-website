@@ -24,10 +24,10 @@ export function InsecticaJourneyInfographic() {
       <rect width="920" height="520" fill="#f4ede1" />
       <rect width="920" height="520" fill="url(#grid)" />
       <text x="460" y="44" textAnchor="middle" className="fill-ink font-serif" style={{ fontSize: 22, fontFamily: 'Fraunces, serif' }}>
-        From invisible → scaled demand
+        From invisible to scaled demand
       </text>
       <text x="460" y="72" textAnchor="middle" fill="#5a554b" style={{ fontSize: 12, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.14em' }}>
-        INSECTICA · GTA PEST CONTROL · FEB 2025 – APR 2026
+        INSECTICA · GTA PEST CONTROL · FEB 2025 TO APR 2026
       </text>
 
       {/* Phase boxes */}
@@ -61,7 +61,7 @@ export function InsecticaJourneyInfographic() {
           10 pest-type ad groups
         </text>
         <text x="125" y="100" textAnchor="middle" fill="#a89f8e" style={{ fontSize: 12 }}>
-          Jun CPA $60.46 → Aug $33.38
+          Jun CPA $60.46 to Aug $33.38
         </text>
         <text x="125" y="122" textAnchor="middle" fill="#a89f8e" style={{ fontSize: 12 }}>
           Aug: 96 conversions (peak season)
@@ -96,9 +96,9 @@ export function InsecticaJourneyInfographic() {
       <g transform="translate(40, 360)">
         {[
           ['700+', 'Paid conversions', '(11 mo window)'],
-          ['$42.99', 'Avg CPL', 'vs $80–120 bench'],
-          ['168×', 'Organic impressions', 'peak trajectory'],
-          ['57 → 15', 'Avg position', 'Search Console'],
+          ['$42.99', 'Avg CPL', 'vs $80-120 bench'],
+          ['168x', 'Organic impressions', 'peak trajectory'],
+          ['57 to 15', 'Avg position', 'Search Console'],
         ].map(([a, b, c], i) => (
           <g key={b} transform={`translate(${i * 220}, 0)`}>
             <rect width="200" height="120" fill="#faf6ec" stroke="#0d0c0a" strokeOpacity="0.12" rx="2" />
