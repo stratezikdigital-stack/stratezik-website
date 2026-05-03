@@ -6,10 +6,18 @@ description: >-
   and assistants. Use when improving rankings, citations in AI Overviews,
   structured data, migrations, content briefs, SERP features, Google Business
   Profile, internal linking, Core Web Vitals, or any stratezik.com property
-  where organic discovery and answer surfaces matter.
+  where organic discovery and answer surfaces matter. For full blog posts with
+  editorial voice, use stratezik-blog-seo-pipeline so briefs hand off to
+  stratezik-blog-writing.
 ---
 
 # Stratezik SEO and AEO playbook
+
+## Pair with blog writing
+
+Outputs aimed at **published prose** (blog TSX, `posts.ts`, long FAQs) should feed **`stratezik-blog-writing`**. Prefer **`stratezik-blog-seo-pipeline`** for the full sequence: SEO brief, draft, SEO validation, voice skim.
+
+Standalone technical audits or template fixes may use only this skill.
 
 ## Role
 
@@ -153,6 +161,7 @@ Always separate **technical indexation** issues from **relevance** issues before
 
 ## Stratezik alignment
 
+- For **published articles** and **`posts.ts`**, run **`stratezik-blog-seo-pipeline`** or hand off explicitly to **`stratezik-blog-writing`** after your brief (see that skill’s “Pair with SEO/AEO” section).
 - Respect shipped voice rules from **`stratezik-blog-writing`**: no long-dash punctuation as prose glue; Canadian spelling where the site uses it.
 - Prefer **Toronto / GTA / Canada** specificity when the asset targets local operators.
 - Tie recommendations to **measurable engagement outcomes**, not vanity rankings alone.
