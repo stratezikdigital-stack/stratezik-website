@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type SectionName = 'hero' | 'services' | 'flow' | 'portfolio' | 'contact'
+export type SectionName = 'hero' | 'services' | 'flow' | 'portfolio' | 'testimonials' | 'contact'
 
 export interface SectionBounds {
   top: number
@@ -33,6 +33,7 @@ const ZERO_SECTION_PROGRESS: Record<SectionName, number> = {
   services: 0,
   flow: 0,
   portfolio: 0,
+  testimonials: 0,
   contact: 0,
 }
 

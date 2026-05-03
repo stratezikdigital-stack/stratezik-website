@@ -15,6 +15,7 @@ const MOVES = [
   { name: 'services', stage: 'Services' },
   { name: 'flow', stage: 'Process' },
   { name: 'portfolio', stage: 'Case studies' },
+  { name: 'testimonials', stage: 'Proof' },
   { name: 'contact', stage: 'Contact' },
 ] as const
 

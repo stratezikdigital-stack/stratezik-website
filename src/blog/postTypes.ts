@@ -12,4 +12,6 @@ export type BlogPostMeta = {
 
 export type BlogPostDefinition = BlogPostMeta & {
   Component: FC
+  /** Optional FAQ entries for FAQPage JSON-LD */
+  faqEntities?: { question: string; answer: string }[]
 }

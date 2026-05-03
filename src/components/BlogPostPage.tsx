@@ -2,26 +2,8 @@ import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getPostBySlug } from '../blog/posts'
-import { buildAeoArticleJsonLd } from '../blog/buildArticleJsonLd'
+import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { applyPageMeta, injectJsonLd } from '../utils/documentMeta'
-
-const faqEntities = [
-  {
-    question: 'What is answer engine optimisation and how does it affect Toronto businesses?',
-    answer:
-      'Answer engine optimisation (AEO) is the practice of structuring your website content so it can be cited inside AI-generated answers in tools like ChatGPT and Perplexity and in Google AI Overviews. For Toronto businesses, it means appearing when someone asks an assistant to recommend a local provider before they open a map or traditional search results.',
-  },
-  {
-    question: 'What is an answer engine compared to a classic search engine?',
-    answer:
-      'A classic search engine primarily returns a list of links for the user to choose from. An answer engine synthesises information from multiple sources into one response, often showing only a handful of citations — so visibility depends on being quoted, not only on ranking somewhere on the page.',
-  },
-  {
-    question: 'Why do some local businesses get cited in AI answers while others do not?',
-    answer:
-      'Systems tend to cite sources that directly answer the user question in clear structure, show topical depth, and align with consistent business facts across the website and Google Business Profile. Thin promotional copy and mismatched contact details reduce trust.',
-  },
-]
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -38,29 +20,9 @@ const BlogPostPage = () => {
     })
 
     const jsonLd =
-      post.slug === 'answer-engine-optimisation-toronto'
-        ? buildAeoArticleJsonLd(post, faqEntities)
-        : {
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'Article',
-                headline: post.title,
-                description: post.description,
-                datePublished: post.datePublished,
-                dateModified: post.dateModified,
-                author: { '@type': 'Organization', name: 'Stratezik', url: 'https://www.stratezik.com' },
-                publisher: {
-                  '@type': 'Organization',
-                  name: 'Stratezik',
-                  logo: {
-                    '@type': 'ImageObject',
-                    url: 'https://www.stratezik.com/branding/stratezik-vertical.png',
-                  },
-                },
-              },
-            ],
-          }
+      post.faqEntities && post.faqEntities.length > 0
+        ? buildArticleWithFaqJsonLd(post, post.faqEntities)
+        : buildSimpleArticleJsonLd(post)
 
     const undoLd = injectJsonLd(jsonLd)
 
