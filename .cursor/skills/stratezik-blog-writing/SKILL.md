@@ -7,15 +7,17 @@ description: >-
   blog posts, blog FAQs in posts.ts, case study articles, figure captions, or
   any long-form marketing content for stratezik.com that should match existing
   blog tone and structure. For publish-ready posts that must also satisfy SEO
-  and AEO, prefer stratezik-blog-seo-pipeline so this skill runs after the SEO
-  brief.
+  and AEO, prefer stratezik-blog-seo-pipeline (Chain A after SEO brief, or
+  Chain B after SEO pre-publish audit of supplied drafts) before final edits.
 ---
 
 # Stratezik blog writing
 
 ## Pair with SEO/AEO
 
-For anything **publish-ready** (ranking + citations + voice), do **not** use this skill alone. Use **`stratezik-blog-seo-pipeline`** so **`stratezik-seo-aeo`** produces the brief first (intent, outline, links, schema, AEO extractability), then apply this skill to draft. After a technical SEO pass, run this skill again for a final voice skim.
+For anything **publish-ready** (ranking + citations + voice), do **not** use this skill alone for greenfield posts. Use **`stratezik-blog-seo-pipeline`** (**Chain A**) so **`stratezik-seo-aeo`** produces the brief first, then apply this skill to draft.
+
+If the user supplies **ready content** first, use **`stratezik-blog-seo-pipeline` Chain B**: SEO runs **`stratezik-seo-aeo`** section 8 (pre-publish audit), then this skill **merges** required SEO additions (headings, asides, FAQ blocks, internal links, TSX structure) while keeping voice and punctuation rules.
 
 If you only have a **tone or structure** tweak on existing strong URLs, you may use this skill alone.
 

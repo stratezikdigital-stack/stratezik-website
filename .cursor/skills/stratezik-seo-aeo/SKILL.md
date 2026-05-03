@@ -5,9 +5,10 @@ description: >-
   entity optimization, plus answer-engine optimization (AEO) for AI summaries
   and assistants. Use when improving rankings, citations in AI Overviews,
   structured data, migrations, content briefs, SERP features, Google Business
-  Profile, internal linking, Core Web Vitals, or any stratezik.com property
-  where organic discovery and answer surfaces matter. For full blog posts with
-  editorial voice, use stratezik-blog-seo-pipeline so briefs hand off to
+  Profile, internal linking, Core Web Vitals, reviewing user-supplied blog
+  drafts before publish, or any stratezik.com property where organic discovery
+  and answer surfaces matter. For full posts with editorial voice, use
+  stratezik-blog-seo-pipeline so briefs or audits hand off to
   stratezik-blog-writing.
 ---
 
@@ -156,6 +157,71 @@ Always separate **technical indexation** issues from **relevance** issues before
 - [ ] No conflicting canonical or noindex surprises.
 - [ ] Metrics or claims sourced or qualified (avoid stale stats).
 - [ ] **AEO pass**: could an assistant cite one paragraph without hallucinating context?
+
+---
+
+## 8. Pre-publish review: user-supplied blog draft
+
+Use when the user brings **ready prose** (paste, Doc export, or existing TSX) and wants it **shipped** on Stratezik with strongest SEO/AEO readiness.
+
+**Reality check**: third-party “SEO scores” and automated testers disagree and change often. Target **full checklist coverage** and validation in **Google’s Rich Results Test**, **URL Inspection**, and **live SERPs**, not a mythical single 10/10.
+
+### Repo wiring (this codebase)
+
+| Surface | Where it lives |
+|--------|----------------|
+| Post registry, slug, dates, keywords, FAQ entities | `src/blog/posts.ts` plus `BlogPostDefinition` in `src/blog/postTypes.ts` |
+| Article (+ optional FAQPage) JSON-LD | `src/blog/buildArticleJsonLd.ts`; injected in `BlogPostPage` via `injectJsonLd` |
+| Title tag, meta description, OG/Twitter for `/blog/{slug}` | `applyPageMeta` in `src/components/BlogPostPage.tsx` from `post.title` and `post.description` |
+| Article body component | `src/blog/*.tsx` (e.g. pillar or case study component) |
+| Sitemap URL | `public/sitemap.xml` (keep URL + `lastmod` accurate when you publish) |
+
+`BlogPostPage` already renders **one** `<h1>` from `post.title`. Body components should use **`h2`+** only so hierarchy stays valid.
+
+### Audit output (what you deliver before merge)
+
+1. **Gap list**: bullets of missing or weak items from the checklist below.
+2. **Concrete deltas**: exact suggested `title`, `description`, `slug`, `keywords[]`, `faqEntities[]` (if used), `datePublished` / `dateModified`, plus copy edits or new sections in the article TSX.
+3. **Schema**: confirm `faqEntities` answers match **visible** FAQ or definitional copy (or add visible FAQ); otherwise use Article-only JSON-LD (`buildSimpleArticleJsonLd`).
+4. **Verification**: Rich Results Test on URL or markup snippet; URL Inspection after deploy when possible; GSC MCP for query/page context when relevant.
+
+### Checklist: technical (blog URL)
+
+- [ ] **Indexable route**: `/blog/{slug}` matches production hostname strategy (`www` vs apex) used elsewhere; no accidental noindex on template.
+- [ ] **Sitemap**: new post URL listed; `lastmod` reflects real change when maintained manually.
+- [ ] **Canonical**: SPA shell + meta canonical behavior consistent with `BlogPostPage` path (`applyPageMeta` path `/blog/{slug}`).
+- [ ] **Performance**: hero images or embeds not destroying LCP on mobile; lazy-load heavy below-fold assets where sensible.
+
+### Checklist: on-page
+
+- [ ] **Title (`post.title`)**: dominant intent, distinct vs other posts; length sensible for SERP display; honest vs body.
+- [ ] **Meta description (`post.description`)**: tight value prop + differentiation; aligned with first screen of content.
+- [ ] **Keywords (`keywords[]`)**: 5–8 phrases reflecting content and queries; no stuffing in body.
+- [ ] **Heading outline**: `h2`/`h3` cover SERP sub-questions; no skipped levels inside article body.
+- [ ] **Intro**: answers who/for what in two to three sentences (humans + extractors).
+- [ ] **Internal links**: mesh to services, portfolio/case proof, contact, or sibling posts with descriptive anchors.
+- [ ] **Images**: `alt` where they carry information; compress large assets.
+- [ ] **Outbound citations**: stats and claims tied to linked sources where applicable.
+
+### Checklist: AEO
+
+- [ ] **Definition**: early block or aside answering “what is / how does this apply” when intent warrants it.
+- [ ] **Atomic facts**: one stat or date per sentence; scope explicit (geo, vertical).
+- [ ] **Quotability**: at least one passage that could be cited without missing context.
+- [ ] **Consistency**: numbers in prose match FAQ/schema and executive snapshot if present.
+
+### Checklist: structured data
+
+- [ ] **Article**: `title`, `description`, `datePublished`, `dateModified`, `keywords`, `inLanguage` consistent with `posts.ts`.
+- [ ] **FAQPage**: only if FAQs exist on-page or are mirrored verbatim in-page; no contradiction with article body.
+- [ ] Validate merged **`@graph`** in Rich Results Test.
+
+### Checklist: off-site (post-launch or parallel)
+
+- [ ] **GBP / NAP / entity**: claims in local posts align with Google Business Profile and homepage organization schema where referenced.
+- [ ] **Distribution**: ethical amplification (newsletter, LinkedIn, partners): supports discovery and mentions, not a prerequisite for going live.
+
+After this audit, **`stratezik-blog-writing`** merges SEO-required additions while preserving voice and punctuation rules unless an SEO requirement explicitly overrides (rare).
 
 ---
 
