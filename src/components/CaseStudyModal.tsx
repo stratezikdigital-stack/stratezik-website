@@ -447,10 +447,10 @@ const CaseStudyModal = ({ open, mode, angle, matchNum, onClose }: CaseStudyModal
               <section className="px-6 md:px-16 py-14 md:py-20 border-b border-ink/15 bg-gradient-to-b from-cream-200 to-cream">
                 <blockquote className="max-w-4xl">
                   <p className="font-display text-2xl md:text-[34px] leading-[1.2] tracking-[-0.02em] text-ink">
-                    {payload.closingQuote.quote}
+                    {view.signOff.quote}
                   </p>
                   <p className="mt-5 text-ink-700 leading-relaxed text-base md:text-lg">
-                    {payload.closingQuote.sub}
+                    {view.signOff.sub}
                   </p>
                 </blockquote>
               </section>

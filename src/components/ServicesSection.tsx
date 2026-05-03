@@ -325,6 +325,84 @@ const ServicesSection = () => {
           ))}
         </div>
 
+        {/* Flagship: AI agents & bespoke tools — full width of two cards */}
+        <motion.article
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: '-60px' }}
+          data-cursor="glyph"
+          data-cursor-glyph={'\u265B'}
+          className="relative mt-[1px] bg-ink text-cream border border-ink/10 overflow-hidden lift"
+          aria-labelledby="ai-flagship-heading"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                'linear-gradient(#f4ede1 1px, transparent 1px), linear-gradient(90deg, #f4ede1 1px, transparent 1px)',
+              backgroundSize: '48px 48px',
+            }}
+          />
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 p-8 md:p-12 lg:p-14">
+            <div className="lg:col-span-5 flex flex-col justify-between gap-10">
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
+                  / 07 &mdash; Seventh rank
+                </div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45 mt-3">
+                  Plays hypermodern flank development
+                </div>
+                <h3
+                  id="ai-flagship-heading"
+                  className="mt-5 font-display text-[clamp(1.85rem,4.2vw,2.95rem)] leading-[1.02] tracking-[-0.035em]"
+                >
+                  AI agents, apps&nbsp;& tools
+                </h3>
+                <p className="mt-5 text-cream/80 text-base md:text-[1.05rem] leading-relaxed max-w-md">
+                  We design and ship customer-facing calculators, onboarding flows, conversational agents, and
+                  internal tooling that tighten the loop between data, creatives, media, and your front line. The
+                  goal is simple: your team executes faster decisions with fewer handoffs&nbsp;&mdash;
+                  orchestration, guardrails, and measurable outcomes wired in by default.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={scrollToContactSection}
+                data-cursor="cta"
+                data-cursor-text="Brief"
+                className="inline-flex self-start items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors duration-300"
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">/08</span>
+                Brief us on automation
+                <span aria-hidden className="font-mono">&rarr;</span>
+              </button>
+            </div>
+            <div className="lg:col-span-7 border-t lg:border-t-0 lg:border-l border-cream/15 lg:pl-12 pt-8 lg:pt-0 space-y-6">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">Deliverables include</p>
+              <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-4">
+                {[
+                  'Conversational & task agents trained on brand + funnel context',
+                  'Customer-facing configurators, scorecards & micro-products',
+                  'Ops dashboards & alerts across Ads, CRM, analytics, GBP',
+                  'Workflow bridges: ingest, QA, escalate, annotate, ship',
+                  'Governance packs: prompting, approvals, auditing, escalation',
+                  'Hands-on rollout so adoption sticks past week one',
+                ].map((line) => (
+                  <li key={line} className="flex items-baseline gap-2.5 text-sm text-cream/85 leading-snug">
+                    <span className="font-mono text-[10px] text-oxblood-400 shrink-0">◇</span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-cream/50 text-sm italic font-display pt-4">
+                Chess metaphor: queenside castling&nbsp;&mdash; tuck the machinery, open the initiative.
+              </p>
+            </div>
+          </div>
+        </motion.article>
+
         {/* Bottom CTA strip — editorial CTA, no gradient */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

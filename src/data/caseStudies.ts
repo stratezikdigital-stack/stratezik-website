@@ -406,6 +406,12 @@ export interface CaseStudyView {
     subhead: string
     stats: { num: string; lbl: string }[]
   }
+  /**
+   * Editorial sign-off for this angle — intentionally different across the
+   * four presentations so anonymized cards don't all end on the exact same 700 /
+   * $42 / position-15 recap.
+   */
+  signOff: { quote: string; sub: string }
   show: {
     client: boolean
     /** Indices into payload.phases — empty array hides the phases section. */
@@ -439,6 +445,12 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         { num: '168\u00d7', lbl: 'Organic Impressions Growth' },
         { num: '19\u00d7', lbl: 'Website Sessions Growth' },
       ],
+    },
+    signOff: {
+      quote:
+        'In 11 months, the brand went from zero digital leads to a self-sustaining growth engine \u2014 generating 700+ qualified leads at $42.99 each while building long-term organic authority that will keep compounding.',
+      sub:
+        'The paid channel delivers immediate ROI. The organic channel, now at position 15 and climbing, represents free leads that will only grow over time.',
     },
     show: {
       client: true,
@@ -478,6 +490,12 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         { num: '19\u00d7', lbl: 'Website Sessions Growth' },
       ],
     },
+    signOff: {
+      quote:
+        'Organic impressions climbed triple-digit multiples while average SERP positions moved out of page five and into contention for page one \u2014 without commissioning a discrete SEO sprint on the side.',
+      sub:
+        'The playbook was structural clarity, ruthless intent routing, negatives that guarded quality, and a consistent acquisition signal upstream that convinced search engines this domain belonged in the consideration set.',
+    },
     show: {
       client: true,
       phaseIdxs: [2],
@@ -511,6 +529,12 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         { num: '$33.38', lbl: 'Best Month CPA' },
         { num: '\u221245%', lbl: 'CPA in 90 Days' },
       ],
+    },
+    signOff: {
+      quote:
+        'The account crossed seven hundred measured conversions inside the engagement window\u2014at an average CPL of $43 or less\u2014with the best-demand month nearing $33 per acquisition versus an $80\u2013120 industry bracket.',
+      sub:
+        'That isn\u2019t luck of the algorithm: granular ad grouping, obsessive negative-keyword hygiene, GTA-only geo fidelity, CPA-first bidding, and honest conversion tagging were negotiated as one engine\u2014not as a deck of unrelated experiments.',
     },
     show: {
       client: true,
@@ -546,6 +570,12 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
         { num: '57 \u2192 15', lbl: 'SERP Avg Position' },
       ],
     },
+    signOff: {
+      quote:
+        'Map-pack placements that routinely sat beyond rank sixty for priority commercial intents broke into the top five inside roughly four calendar months\u2014and stayed there.',
+      sub:
+        'Category precision, citation consistency, a deliberate imagery and attribute cadence, and review acceleration created the GBP foundation; layering paid demand on top kept prominence from collapsing the moment optimisation paused.',
+    },
     show: {
       client: true,
       phaseIdxs: [],
@@ -564,7 +594,7 @@ export const VIEWS: Record<MatchAngle, CaseStudyView> = {
   },
 }
 
-/** Returns the resolved view for a given angle, with the redacted hero subhead applied if anonymized. */
+/** Returns the resolved view for a given angle, with hero + sign-off redacted if anonymized. */
 export function getCaseStudyView(angle: MatchAngle, mode: CaseStudyMode): CaseStudyView {
   const v = VIEWS[angle]
   if (mode === 'named') return v
@@ -573,6 +603,10 @@ export function getCaseStudyView(angle: MatchAngle, mode: CaseStudyMode): CaseSt
     hero: {
       ...v.hero,
       subhead: redact(v.hero.subhead),
+    },
+    signOff: {
+      quote: redact(v.signOff.quote),
+      sub: redact(v.signOff.sub),
     },
   }
 }
