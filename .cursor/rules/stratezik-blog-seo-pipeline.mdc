@@ -1,15 +1,23 @@
 ---
-description: Routes Stratezik blog and SEO/AEO ship work through the pipeline skill chain
+description: Mandatory Stratezik blog ship workflow using pipeline plus SEO and blog-writing skills
 globs: src/blog/**/*,src/components/Blog*.tsx
 alwaysApply: false
 ---
 
-# Blog + SEO/AEO pipeline (mandatory for scoped files)
+# Blog + SEO/AEO pipeline (mandatory)
 
-When the task touches **`src/blog/**`**, **`BlogPostPage`**, **`posts.ts`**, **`buildArticleJsonLd.ts`**, or publishing/overhauling a blog article:
+This rule applies when **matched files are in context** (see `globs`). If you are planning blog ship work **without** those paths attached (chat-only), treat the user referring to **blog, post, article, publish, posts.ts, blog FAQ, or article schema** as the same obligation: **read `.cursor/skills/stratezik-blog-seo-pipeline/SKILL.md`** or ask them to **`@stratezik-blog-seo-pipeline`** once so context is explicit.
 
-1. **Follow** `.cursor/skills/stratezik-blog-seo-pipeline/SKILL.md` end-to-end. Use **Chain A** for greenfield posts (SEO brief, then draft). Use **Chain B** when the user pastes or uploads mostly finished copy (SEO §8 pre-publish audit first).
-2. Do **not** skip **`stratezik-seo-aeo`** or **`stratezik-blog-writing`** substeps defined inside that pipeline file unless the user explicitly restricts scope (for example “tone-only edit”).
-3. Keep **`public/sitemap.xml`** and **`posts.ts`** metadata aligned when adding or renaming URLs.
+## MUST use all three skill files (do not skip)
 
-If the user asks about blog SEO without matching globs, they should **`@stratezik-blog-seo-pipeline`** in chat or temporarily include `@`**`/blog`** files in context.
+For **any** Stratezik blog publish or overhaul (new post, rewrite, `posts.ts`, FAQ entities, article TSX):
+
+1. **Read and follow** `.cursor/skills/stratezik-blog-seo-pipeline/SKILL.md` (**Chain A** or **Chain B**).
+2. **Read and apply** `.cursor/skills/stratezik-seo-aeo/SKILL.md` for every SEO/AEO step that chain assigns (including **§8** for supplied drafts). Do not invent SEO checklist from memory when those steps apply.
+3. **Read and apply** `.cursor/skills/stratezik-blog-writing/SKILL.md` for every draft, merge, or voice pass that chain assigns.
+
+Skip (2) or (3) **only** if the user **explicitly** narrows scope (example: “rename variable only”, “fix one typo”).
+
+4. Keep **`public/sitemap.xml`** and **`posts.ts`** aligned when URLs or dates change.
+
+**Default:** the user should not need to `@` skills for routine blog ship work when this rule is active; **you** open those three `SKILL.md` files at task start.

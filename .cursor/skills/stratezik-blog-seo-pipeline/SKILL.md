@@ -16,6 +16,12 @@ description: >-
 
 Use this **instead of picking only one skill** when the deliverable is **shipped content** (React blog TSX, `posts.ts`, FAQs, deep landing sections) that must be **discoverable** and **on-brand**.
 
+## Mandatory bundle
+
+Shipped blog work **must** run **`stratezik-seo-aeo`** and **`stratezik-blog-writing`** through the chains below. Do not treat one skill alone as sufficient unless the user explicitly scoped a non-content change.
+
+---
+
 ## Skill chains
 
 ### Chain A: SEO brief first (greenfield)
