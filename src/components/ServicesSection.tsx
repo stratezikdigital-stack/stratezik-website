@@ -135,6 +135,64 @@ const ServicesSection = () => {
           ))}
         </div>
 
+        {/* Full-width flagship: AI agents & bespoke tools */}
+        <motion.article
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65 }}
+          viewport={{ once: true, margin: '-40px' }}
+          className="mt-10 lg:mt-14 rounded-2xl border border-slate-900/70 bg-gradient-to-br from-slate-900 via-slate-800 to-red-950/90 p-8 sm:p-10 text-white shadow-[0_30px_80px_-35px_rgba(15,23,42,0.55)] lg:grid lg:grid-cols-12 lg:gap-10"
+          aria-labelledby="ai-services-heading"
+        >
+          <div className="lg:col-span-5 mb-8 lg:mb-0">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-200/90 mb-4">
+              <span>&#9819;</span>
+              AI &amp; automation
+            </div>
+            <h3
+              id="ai-services-heading"
+              className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight"
+              style={{ fontFamily: '"Fraunces", "Inter", serif' }}
+            >
+              AI agents, apps &amp;{' '}
+              <span className="bg-gradient-to-r from-red-400 to-amber-300 bg-clip-text text-transparent">
+                workflow tools
+              </span>
+            </h3>
+            <p className="mt-4 text-white/80 text-[15px] sm:text-base leading-relaxed">
+              Ship customer-facing configurators and micro-apps, train conversational agents on your funnel and
+              brand guardrails, and wire internal dashboards so Ads, CRM, analytics, and your team stay aligned.
+              Fewer spreadsheets, sharper decisions hyper-performing teams deserve.
+            </p>
+          </div>
+          <div className="lg:col-span-7 lg:border-l lg:border-white/15 lg:pl-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200/85 mb-4">
+              What we build
+            </p>
+            <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-[15px] text-white/85">
+              {[
+                'Conversational & task agents grounded in approved knowledge',
+                'Customer-facing calculators, scorecards, onboarding flows',
+                'Ops dashboards, alerts & QA pipelines across martech stacks',
+                'Automation bridges covering leads, creatives, tagging, GBP',
+              ].map((t) => (
+                <li key={t} className="flex gap-2 items-start">
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={scrollToContactSection}
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white text-red-700 px-5 py-2.5 font-semibold text-sm hover:bg-slate-100 transition-colors"
+            >
+              Talk AI &amp; tools
+              <span aria-hidden>&rarr;</span>
+            </button>
+          </div>
+        </motion.article>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
