@@ -7,7 +7,8 @@ description: >-
   structured data, migrations, content briefs, SERP features, Google Business
   Profile, internal linking, Core Web Vitals, reviewing user-supplied blog
   drafts before publish, or any stratezik.com property where organic discovery
-  and answer surfaces matter. For full posts with editorial voice, use
+  and answer surfaces matter. When Search Console MCP data should drive the
+  brief, pair with stratezik-gsc-intelligence first. For full posts with editorial voice, use
   stratezik-blog-seo-pipeline so briefs or audits hand off to
   stratezik-blog-writing.
 ---
@@ -19,6 +20,10 @@ description: >-
 Outputs aimed at **published prose** (blog TSX, `posts.ts`, long FAQs) should feed **`stratezik-blog-writing`**. Prefer **`stratezik-blog-seo-pipeline`** for the full sequence: SEO brief, draft, SEO validation, voice skim.
 
 Standalone technical audits or template fixes may use only this skill.
+
+## Search Console–grounded briefs
+
+When **`google-search-console`** MCP is available and decisions depend on **real queries/pages** (refresh, striking distance, CTR issues, decay), run **`stratezik-gsc-intelligence`** before locking recommendations. Consume its scout handoff: prioritized queries/pages, play type, date windows, and **`inspect_url`** findings. Your output remains the SEO/AEO blueprint; do not duplicate raw MCP pulls unless verifying.
 
 ## Role
 
