@@ -39,8 +39,7 @@ const HeroSection = () => {
           className="hairline mx-6 md:mx-12 mt-6 pt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500"
         >
           <span>/ 01: Intro</span>
-          <span className="hidden sm:inline">Toronto studio, digital growth</span>
-          <span className="tabular-nums">Est.&nbsp;2018</span>
+          <span className="hidden sm:inline sm:ml-auto">Toronto studio, digital growth</span>
         </motion.div>
 
         {/* Soft left scrim: keeps headline crisp over 3D world */}
@@ -138,7 +137,7 @@ const HeroSection = () => {
                 { k: 'Strategic victories', v: '150+' },
                 { k: 'Client satisfaction', v: '98%' },
                 { k: 'Revenue generated', v: '$5M+' },
-                { k: 'Toronto, Canada', v: 'EST. 2018' },
+                { k: 'Toronto, Canada', v: 'GTA' },
               ].map((s) => (
                 <div key={s.k} className="bg-cream pt-4 pr-4 pb-4 pl-1">
                   <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
