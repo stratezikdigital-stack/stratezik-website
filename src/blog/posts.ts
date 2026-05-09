@@ -1,9 +1,33 @@
 import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
+import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
-import { answerEngineTorontoFaq, insecticaCaseStudyFaq } from './postFaqs'
+import {
+  answerEngineTorontoFaq,
+  googleMapsRankingServiceBusinessFaq,
+  insecticaCaseStudyFaq,
+} from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'google-maps-ranking-service-business',
+    title: 'Why Service Businesses Lose on Google Maps',
+    description:
+      'Whitespark 2026 local ranking factors put GBP primary category ahead of reviews for Maps pack influence. What Ontario service operators should fix first: categories, hours, and per-service site depth.',
+    datePublished: '2026-05-07',
+    dateModified: '2026-05-07',
+    keywords: [
+      'Google Maps ranking service business',
+      'Google Business Profile primary category',
+      'Ontario local SEO',
+      'local pack ranking factors 2026',
+      'GBP audit Ontario',
+      'Stratezik local search',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: googleMapsRankingServiceBusinessFaq,
+    Component: GoogleMapsRankingServiceBusinessArticle,
+  },
   {
     slug: 'insectica-gta-pest-control-scaling-case-study',
     title: 'How We Scaled a Toronto Pest Control Company: The Insectica Story (700+ Leads, Full Breakdown)',

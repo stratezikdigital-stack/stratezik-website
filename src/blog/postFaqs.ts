@@ -1,5 +1,23 @@
 /** FAQ blocks mirrored in JSON-LD (`faqEntities`) and on-page FAQ sections. */
 
+export const googleMapsRankingServiceBusinessFaq = [
+  {
+    question: 'What is the most important ranking factor on Google Maps for a local service business?',
+    answer:
+      'BrightLocal’s synthesis of the Whitespark 2026 Local Search Ranking Factors report places your Google Business Profile primary category as the single strongest individual signal in the local pack. GBP-related signals as a group carry about 32% of local pack weight in that model; reviews sit near 20%. Category choice shapes which searches Google treats your listing as relevant for, ahead of star counts alone.',
+  },
+  {
+    question: 'Why do service businesses with decent reviews still lose the Maps 3-pack?',
+    answer:
+      'Reviews are visible and worth earning, but competitors can still outrank you if their primary category, posted hours accuracy, and website service-page structure match high-intent searches better than yours. When we see a listing lose to a rival with fewer reviews, the gap is usually upstream in those structural signals, not review volume alone.',
+  },
+  {
+    question: 'Do business hours affect Google Maps rankings when someone searches?',
+    answer:
+      'Whitespark’s 2026 factor list treats whether the business is open at search time as a major individual signal (often cited around fifth in importance), with notes that visibility can soften near closing time. Accurate hours help both customers and Google’s relevance signal for “open now” intent.',
+  },
+]
+
 export const answerEngineTorontoFaq = [
   {
     question: 'What is answer engine optimisation and how does it affect Toronto businesses?',

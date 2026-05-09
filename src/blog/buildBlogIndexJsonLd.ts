@@ -23,7 +23,7 @@ export function buildBlogIndexJsonLd(posts: BlogPostMeta[]) {
         '@id': `${blogUrl}#blog`,
         name: 'Stratezik Blog',
         description:
-          'Articles on answer engine optimisation (AEO), Toronto SEO, PPC, AI search, Google AI Overviews, and growth strategy.',
+          'Articles on answer engine optimisation (AEO), Toronto and Ontario local SEO, Google Maps and Business Profile, PPC, AI search, and growth strategy.',
         url: blogUrl,
         inLanguage: 'en-CA',
         publisher,
