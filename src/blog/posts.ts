@@ -1,14 +1,36 @@
 import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
+import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
 import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import {
   answerEngineTorontoFaq,
+  chatgptAdsGuideFaq,
   googleMapsRankingServiceBusinessFaq,
   insecticaCaseStudyFaq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'chatgpt-ads-2026-guide',
+    title: 'ChatGPT Ads in 2026: Setup, Costs, and When to Skip It',
+    description:
+      'How OpenAI Ads Manager Beta places sponsored recommendations in ChatGPT, what context hints replace keywords, reported pricing bands, geography, category gates, and honest fit notes for Toronto operators.',
+    datePublished: '2026-05-11',
+    dateModified: '2026-05-11',
+    keywords: [
+      'ChatGPT Ads',
+      'Ads Manager Beta OpenAI',
+      'context hints advertising',
+      'ChatGPT CPC ads',
+      'Canada ChatGPT advertising',
+      'Toronto digital marketing ChatGPT',
+      'Stratezik paid media',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: chatgptAdsGuideFaq,
+    Component: ChatGPTAdsGuideArticle,
+  },
   {
     slug: 'google-maps-ranking-service-business',
     title: 'Why Service Businesses Lose on Google Maps',

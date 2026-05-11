@@ -36,6 +36,34 @@ export const answerEngineTorontoFaq = [
   },
 ]
 
+export const chatgptAdsGuideFaq = [
+  {
+    question: 'What is ChatGPT Ads?',
+    answer:
+      'ChatGPT Ads is OpenAI\'s self-serve Ads Manager Beta at ads.openai.com. It places sponsored recommendations inside ChatGPT conversations for users on the Free and Go subscription tiers, using conversation context rather than keyword auctions.',
+  },
+  {
+    question: 'Who can advertise with ChatGPT Ads in 2026?',
+    answer:
+      'As of mid-May 2026, advertiser onboarding has been available in the United States, Canada, Australia, and New Zealand. Public reporting describes further markets (including the United Kingdom, Japan, South Korea, Brazil, and Mexico) opening on a rolling basis, with European Union expansion reportedly in preparation.',
+  },
+  {
+    question: 'What does ChatGPT Ads cost?',
+    answer:
+      'Industry reporting described early CPM-only pricing around sixty US dollars CPM with a two hundred thousand dollar minimum commitment. From April 2026, reporting commonly cites roughly three to five US dollars cost per click with a fifty thousand dollar minimum for new advertisers on the CPC model. Treat numbers as directional; confirm in Ads Manager and contracts.',
+  },
+  {
+    question: 'How do you target ChatGPT Ads if there are no keywords?',
+    answer:
+      'You choose structural filters such as country, region or city where supported, device type, and subscription tier (Free versus Go), plus context hints: short thematic descriptions of conversations where your offer fits. The model matches hints and creative to live dialogue; it is not exact keyword matching.',
+  },
+  {
+    question: 'Should a Toronto SMB buy ChatGPT Ads today?',
+    answer:
+      'If the goal is more local leads next month, Google Search Ads, a strong Google Business Profile, and local SEO still tend to win on efficiency for typical service trades. ChatGPT Ads makes more sense for national brands with conversational use cases, category eligibility, and budget for a multi-week learning curve, including minimum spend expectations in beta.',
+  },
+]
+
 export const insecticaCaseStudyFaq = [
   {
     question: 'How did Insectica Pest Control scale leads across the GTA?',

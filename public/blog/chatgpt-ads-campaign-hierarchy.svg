@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="320" viewBox="0 0 560 320" role="img" aria-labelledby="title desc">
+  <title id="title">Ads Manager Beta campaign hierarchy</title>
+  <desc id="desc">Campaign contains ad groups; each ad group contains ads.</desc>
+  <rect width="560" height="320" fill="#faf7f2"/>
+  <rect x="140" y="24" width="280" height="56" rx="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="280" y="46" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#b01030" text-anchor="middle">CAMPAIGN</text>
+  <text x="280" y="66" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#3a3a3a" text-anchor="middle">Objective · budget · dates · targeting</text>
+  <path d="M280 80 L280 100" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  <path d="M140 100 L420 100" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  <path d="M180 100 L180 118" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  <path d="M280 100 L280 118" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  <path d="M380 100 L380 118" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  <rect x="72" y="120" width="216" height="56" rx="8" fill="#f0ebe3" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="180" y="142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a" text-anchor="middle">AD GROUP</text>
+  <text x="180" y="160" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#4a4a4a" text-anchor="middle">Context hints · theme</text>
+  <rect x="272" y="120" width="216" height="56" rx="8" fill="#f0ebe3" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="380" y="142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a" text-anchor="middle">AD GROUP</text>
+  <text x="380" y="160" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#4a4a4a" text-anchor="middle">Context hints · theme</text>
+  <path d="M180 176 L180 194" stroke="#1a1a1a" stroke-width="1" fill="none"/>
+  <path d="M380 176 L380 194" stroke="#1a1a1a" stroke-width="1" fill="none"/>
+  <rect x="100" y="198" width="160" height="44" rx="6" fill="#ffffff" stroke="#b01030" stroke-width="1.5"/>
+  <text x="180" y="224" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600" fill="#1a1a1a" text-anchor="middle">AD</text>
+  <rect x="300" y="198" width="160" height="44" rx="6" fill="#ffffff" stroke="#b01030" stroke-width="1.5"/>
+  <text x="380" y="224" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600" fill="#1a1a1a" text-anchor="middle">AD</text>
+  <text x="280" y="284" font-family="ui-mono, monospace" font-size="10" fill="#6a6a6a" text-anchor="middle">Based on OpenAI Help Center quickstart structure.</text>
+</svg>
