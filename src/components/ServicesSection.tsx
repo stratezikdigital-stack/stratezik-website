@@ -11,7 +11,6 @@ import { useSection } from '../three/world/useSection'
  */
 
 interface Opening {
-  number: string
   /** The actual service we sell (large, dominant headline). */
   service: string
   /** Short discipline lane label (mono accent). */
@@ -26,7 +25,6 @@ interface Opening {
 
 const OPENINGS: Opening[] = [
   {
-    number: '01',
     service: 'Paid Search & Social Ads',
     opening: 'Paid acquisition',
     thesis:
@@ -44,7 +42,6 @@ const OPENINGS: Opening[] = [
     ],
   },
   {
-    number: '02',
     service: 'SEO & Organic Growth',
     opening: 'Organic growth',
     thesis:
@@ -62,7 +59,6 @@ const OPENINGS: Opening[] = [
     ],
   },
   {
-    number: '03',
     service: 'Social Strategy & Content',
     opening: 'Social & content',
     thesis:
@@ -80,7 +76,6 @@ const OPENINGS: Opening[] = [
     ],
   },
   {
-    number: '04',
     service: 'Brand Strategy & Identity',
     opening: 'Brand platform',
     thesis:
@@ -98,7 +93,6 @@ const OPENINGS: Opening[] = [
     ],
   },
   {
-    number: '05',
     service: 'Conversion & Growth',
     opening: 'Conversion systems',
     thesis:
@@ -116,7 +110,6 @@ const OPENINGS: Opening[] = [
     ],
   },
   {
-    number: '06',
     service: 'Analytics & Data',
     opening: 'Measurement stack',
     thesis:
@@ -235,15 +228,8 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
       />
 
       <div className="grid grid-cols-12 gap-4 p-7 md:p-8">
-        {/* Number */}
-        <div className="col-span-2 md:col-span-1">
-          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
-            {opening.number}
-          </span>
-        </div>
-
         {/* Title block: service name is the headline, opening is a tiny accent */}
-        <div className="col-span-10 md:col-span-8">
+        <div className="col-span-12 md:col-span-9">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
             Lane &middot; {opening.opening}
           </div>
@@ -296,7 +282,7 @@ const ServicesSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 02: Services
+              Services
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Six disciplines &middot; one playbook
@@ -332,7 +318,7 @@ const ServicesSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 07: Seventh discipline
+              Seventh discipline
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               AI agents &middot; custom apps &middot; integrations
@@ -448,7 +434,6 @@ const ServicesSection = () => {
               data-cursor-text="Open"
               className="mt-8 inline-flex items-center gap-3 bg-ink text-cream px-8 py-4 font-medium hover:bg-oxblood transition-colors"
             >
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">/03</span>
               Book the consultation
               <span aria-hidden className="font-mono">&rarr;</span>
             </button>

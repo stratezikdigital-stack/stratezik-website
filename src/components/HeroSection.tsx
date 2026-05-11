@@ -28,7 +28,7 @@ const HeroSection = () => {
       id="home"
       ref={ref}
       className="relative flex items-stretch min-h-[calc(100vh-9rem)] lg:min-h-[180vh]"
-      aria-label="Hero: Move 01"
+      aria-label="Hero introduction"
     >
       <div className="lg:sticky lg:top-0 w-full lg:h-screen flex flex-col">
         {/* Editorial top rule + notation row */}
@@ -38,7 +38,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.05 }}
           className="hairline mx-6 md:mx-12 mt-6 pt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500"
         >
-          <span>/ 01: Intro</span>
+          <span>Intro</span>
           <span className="hidden sm:inline sm:ml-auto">Toronto studio, digital growth</span>
         </motion.div>
 
@@ -101,7 +101,6 @@ const HeroSection = () => {
                 data-cursor-text="Open"
                 className="group inline-flex items-center justify-center gap-3 bg-ink text-cream px-8 py-4 font-medium tracking-wide hover:bg-oxblood transition-colors"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">01</span>
                 Book the consultation
                 <span aria-hidden className="font-mono">&rarr;</span>
               </button>
@@ -111,7 +110,6 @@ const HeroSection = () => {
                 data-cursor-text="Read"
                 className="inline-flex items-center justify-center gap-3 border border-ink/35 hover:border-ink text-ink px-8 py-4 font-medium tracking-wide transition-colors hover:bg-ink hover:text-cream"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500 group-hover:text-cream/60">02</span>
                 Study the openings
               </a>
             </motion.div>

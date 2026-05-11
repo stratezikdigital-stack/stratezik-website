@@ -70,7 +70,7 @@ const Footer = () => {
         <div className="grid grid-cols-12 gap-4 mb-16">
           <div className="col-span-12 md:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              / 06: Site map
+              Site map
             </div>
             <div className="mt-2 hairline pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
               Stratezik, Toronto

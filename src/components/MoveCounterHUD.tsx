@@ -34,8 +34,6 @@ export function MoveCounterHUD() {
 
   const idx = MOVES.findIndex((m) => m.name === current)
   const move = idx >= 0 ? MOVES[idx] : MOVES[1]
-  const total = MOVES.length - 1
-  const ordinal = idx >= 1 ? idx : 1
 
   return (
     <AnimatePresence>
@@ -50,10 +48,7 @@ export function MoveCounterHUD() {
           aria-label="Page scroll progress"
         >
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-oxblood animate-pulse" />
-          <div className="flex items-center gap-2 min-w-[180px]">
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
-              {ordinal}/{total}
-            </span>
+          <div className="flex items-center gap-2 min-w-0">
             <AnimatePresence mode="wait">
               <motion.span
                 key={move.name}

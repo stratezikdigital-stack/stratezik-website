@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { scrollToContactSection } from '../utils/navigation'
+import { StratezikWordmark } from './StratezikWordmark'
 
 const PHONE_DISPLAY = '437-525-4772'
 const PHONE_TEL = '+14375254772'
@@ -29,10 +30,10 @@ const Navbar = () => {
   }, [])
 
   const navItems = [
-    { name: 'Services', label: '02', href: '#services' },
-    { name: 'Strategy', label: '03', href: '#strategy' },
-    { name: 'Work', label: '04', href: '#portfolio' },
-    { name: 'Contact', label: '05', href: '#contact' },
+    { name: 'Services', href: '#services' },
+    { name: 'Strategy', href: '#strategy' },
+    { name: 'Work', href: '#portfolio' },
+    { name: 'Contact', href: '#contact' },
   ]
 
   const goHash = (hash: string) => {
@@ -94,7 +95,7 @@ const Navbar = () => {
       {/* Main bar */}
       <nav
         className={`transition-all duration-500 border-b border-ink/10 ${
-          isScrolled ? 'bg-cream/92 backdrop-blur-md' : 'bg-cream/82 backdrop-blur-sm'
+          isScrolled ? 'bg-cream shadow-[0_1px_0_rgba(13,12,10,0.06)]' : 'bg-cream'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
@@ -104,25 +105,27 @@ const Navbar = () => {
               to="/"
               data-cursor="cta"
               data-cursor-text="Home"
-              className="flex items-center gap-2.5 md:gap-3 group"
+              className="flex items-center group min-w-0 gap-3 sm:gap-3.5 text-ink"
               aria-label="Stratezik home"
             >
+              {/* Roundel: source file from /public/stratezik logo — isolated img avoids fused scaling with type. */}
               <img
-                src="/branding/favicon.png"
+                src="/stratezik%20logo/favicon.svg?v=6"
                 alt=""
-                width={40}
-                height={40}
-                className="h-8 w-8 md:h-9 md:w-9 shrink-0 select-none rounded-full shadow-sm ring-1 ring-ink/10"
+                width={36}
+                height={36}
                 decoding="async"
+                draggable={false}
+                className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 select-none rounded-full bg-transparent"
               />
-              <span className="flex items-baseline gap-2">
-                <span className="font-display text-2xl md:text-3xl text-ink tracking-[-0.03em] leading-none">
-                  Stratezik
+              <div className="flex min-w-0 items-center gap-3 sm:gap-3.5">
+                <StratezikWordmark className="h-[1.05rem] w-auto min-w-0 sm:h-5 md:h-[1.35rem] max-w-[min(100%,13rem)] sm:max-w-[15rem] shrink-0 overflow-visible" />
+                <span className="hidden sm:flex flex-col justify-center min-w-0 pl-3 sm:pl-3.5 border-l border-ink/15">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-500 leading-none">
+                    Toronto
+                  </span>
                 </span>
-                <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
-                  / Toronto
-                </span>
-              </span>
+              </div>
             </Link>
 
             {/* Center nav */}
@@ -133,13 +136,10 @@ const Navbar = () => {
                   type="button"
                   onClick={() => goHash(item.href)}
                   data-cursor="cta"
-                  data-cursor-text={item.label}
-                  className="group inline-flex items-baseline gap-1.5 text-ink-700 hover:text-ink transition-colors"
+                  data-cursor-text={item.name}
+                  className="font-display text-[1.05rem] tracking-tight text-ink-700 hover:text-ink transition-colors"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300 group-hover:text-oxblood transition-colors">
-                    /{item.label}
-                  </span>
-                  <span className="font-display text-[1.05rem] tracking-tight">{item.name}</span>
+                  {item.name}
                 </button>
               ))}
               <Link
@@ -194,11 +194,8 @@ const Navbar = () => {
                     key={item.name}
                     type="button"
                     onClick={() => goHash(item.href)}
-                    className="flex items-baseline gap-2 text-ink-700 hover:text-oxblood block px-2 py-2 font-display text-lg w-full text-left"
+                    className="text-ink-700 hover:text-oxblood block px-2 py-2 font-display text-lg w-full text-left"
                   >
-                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300">
-                      /{item.label}
-                    </span>
                     {item.name}
                   </button>
                 ))}

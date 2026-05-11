@@ -29,7 +29,7 @@ const PortfolioSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 04: Case studies
+              Case studies
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Selected wins
@@ -70,14 +70,8 @@ const PortfolioSection = () => {
               }}
               className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-oxblood"
             >
-              {/* Case number */}
-              <div className="col-span-3 md:col-span-1 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 pt-2">
-                Case
-                <div className="text-ink mt-0.5 tabular-nums">{m.num}</div>
-              </div>
-
               {/* Headline + category + body */}
-              <div className="col-span-9 md:col-span-6">
+              <div className="col-span-12 md:col-span-7">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood flex items-center gap-2">
                   <span>{m.category}</span>
                   {m.mode === 'anonymized' && (

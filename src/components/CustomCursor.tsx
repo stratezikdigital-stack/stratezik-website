@@ -3,9 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * Custom cursor  -  Champion's Hall signature.
  *
- * Two layered elements:
- *   • a small ink dot that tracks the pointer 1:1
- *   • a larger ring that lerps behind with damping (Lusion-style trail)
+ * Default state: double-outline ring + dot with cream/ink halos (no mix-blend) so the pointer stays
+ * visible on cream, ink, and busy backdrops.
  *
  * On hover over `[data-cursor]` elements:
  *   • the ring fattens and changes mode
@@ -108,7 +107,11 @@ export function CustomCursor() {
       : variant === 'glyph'
         ? 'rgba(122,31,31,0.92)'
         : 'transparent'
-  const ringBorder = variant === 'default' ? '1px solid rgba(13,12,10,0.55)' : 'none'
+  /** Default ring: double outline (cream + ink) so it reads on light and dark surfaces without blend-mode tricks. */
+  const ringBoxShadow =
+    variant === 'default'
+      ? '0 0 0 1px rgba(244,237,225,0.95), 0 0 0 2px rgba(13,12,10,0.72), 0 4px 14px rgba(13,12,10,0.12)'
+      : undefined
   const ringTextColor = '#f4ede1'
 
   return (
@@ -117,15 +120,15 @@ export function CustomCursor() {
       <div
         ref={ringRef}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[9999] flex items-center justify-center font-mono text-[10px] uppercase tracking-[0.18em] transition-[width,height,background,border-color,color] duration-300 ease-out"
+        className="pointer-events-none fixed top-0 left-0 z-[9999] flex items-center justify-center font-mono text-[10px] uppercase tracking-[0.18em] transition-[width,height,background,border-color,color,box-shadow] duration-300 ease-out"
         style={{
           width: ringSize,
           height: ringSize,
           borderRadius: '9999px',
           background: ringBg,
-          border: ringBorder,
+          border: 'none',
+          boxShadow: ringBoxShadow,
           color: ringTextColor,
-          mixBlendMode: variant === 'default' ? 'difference' : 'normal',
           willChange: 'transform',
         }}
       >
@@ -141,12 +144,16 @@ export function CustomCursor() {
         aria-hidden
         className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full"
         style={{
-          width: 6,
-          height: 6,
+          width: 7,
+          height: 7,
+          // Center dot + cream inner ring + ink outer ring + soft drop shadow: visible on cream, ink, and photo/3D backdrops.
           background: variant === 'default' ? '#0d0c0a' : '#f4ede1',
+          boxShadow:
+            variant === 'default'
+              ? '0 0 0 1px rgba(244,237,225,0.98), 0 0 0 2px rgba(13,12,10,0.75), 0 2px 6px rgba(13,12,10,0.35)'
+              : '0 0 0 1px rgba(13,12,10,0.88), 0 2px 6px rgba(13,12,10,0.35)',
           willChange: 'transform',
-          mixBlendMode: variant === 'default' ? 'difference' : 'normal',
-          transition: 'background 200ms',
+          transition: 'background 200ms, box-shadow 200ms',
         }}
       />
     </>

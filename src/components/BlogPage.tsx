@@ -38,7 +38,7 @@ const BlogPage = () => {
         >
           <div className="col-span-12 md:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 07: Blog
+              Blog
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Strategy notes · Toronto &amp; Canada

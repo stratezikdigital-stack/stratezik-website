@@ -73,7 +73,7 @@ export default function ContactSection() {
           >
             <div className="col-span-12 md:col-span-3">
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
-              / 05: Contact
+              Contact
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
               Reply within one business day &middot; book a 30-minute call
@@ -110,7 +110,7 @@ export default function ContactSection() {
                   </h3>
                 </div>
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 tabular-nums">
-                  / 30&nbsp;min
+                  30&nbsp;min
                 </div>
               </div>
 
@@ -142,7 +142,6 @@ export default function ContactSection() {
                       id="name"
                       name="name"
                       label="Full name"
-                      moveNumber="01"
                       value={formData.name}
                       onChange={handleInputChange}
                       required
@@ -152,7 +151,6 @@ export default function ContactSection() {
                       name="email"
                       type="email"
                       label="Email address"
-                      moveNumber="02"
                       value={formData.email}
                       onChange={handleInputChange}
                       required
@@ -163,7 +161,6 @@ export default function ContactSection() {
                     id="company"
                     name="company"
                     label="Company"
-                    moveNumber="03"
                     value={formData.company}
                     onChange={handleInputChange}
                   />
@@ -172,7 +169,6 @@ export default function ContactSection() {
                     id="message"
                     name="message"
                     label="What should we know?"
-                    moveNumber="04"
                     multiline
                     placeholder="Goals, budget band, channels you’ve tried, timelines, blockers; anything that helps us prepare."
                     value={formData.message}
@@ -277,7 +273,6 @@ interface FieldProps {
   id: string
   name: string
   label: string
-  moveNumber: string
   type?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
@@ -290,7 +285,6 @@ function Field({
   id,
   name,
   label,
-  moveNumber,
   type = 'text',
   value,
   onChange,
@@ -303,9 +297,6 @@ function Field({
       <div className="flex items-baseline justify-between mb-2">
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
           {label}
-        </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-300 tabular-nums">
-          /{moveNumber}
         </span>
       </div>
       {multiline ? (

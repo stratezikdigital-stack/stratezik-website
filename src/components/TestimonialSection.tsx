@@ -23,7 +23,7 @@ const TestimonialSection = () => {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
-              / 04b: Client voice
+              Client voice
             </div>
             <div className="hairline mt-3 pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
               Toronto / GTA
