@@ -110,7 +110,7 @@ export default function ChatGPTAdsGuideArticle() {
 
       <figure className="mt-10">
         <img
-          src="/blog/chatgpt-ads-sponsored-card.svg"
+          src="/illustrations/chatgpt-ads-sponsored-card.svg"
           width={640}
           height={280}
           alt="Diagram: assistant reply block above a tinted sponsored card with favicon, headline, description, and thumbnail"
@@ -210,7 +210,7 @@ export default function ChatGPTAdsGuideArticle() {
 
       <figure className="mt-10">
         <img
-          src="/blog/chatgpt-ads-campaign-hierarchy.svg"
+          src="/illustrations/chatgpt-ads-campaign-hierarchy.svg"
           width={560}
           height={320}
           alt="Diagram: campaign branches to two ad groups, each containing ads"

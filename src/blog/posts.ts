@@ -27,7 +27,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Toronto digital marketing ChatGPT',
       'Stratezik paid media',
     ],
-    shareImagePath: '/branding/stratezik-horizontal.png',
+    shareImagePath: '/branding/blog-og-chatgpt-ads.png',
     faqEntities: chatgptAdsGuideFaq,
     Component: ChatGPTAdsGuideArticle,
   },
