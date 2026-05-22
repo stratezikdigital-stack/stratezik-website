@@ -49,22 +49,20 @@ function ScrollToHash() {
   return null
 }
 
-function App() {
+function AppShell() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
   const [loaded, setLoaded] = useState(false)
 
   return (
-    <Router>
+    <>
       <CanonicalManager />
-      {/* Plan D  -  cinematic intro loader */}
       <Loader onDone={() => setLoaded(true)} />
-      {/* Custom cursor lives outside SmoothScroll so it tracks viewport pixels */}
       <CustomCursor />
       <SmoothScroll>
         <ScrollToHash />
-        {/* Persistent 3D world living behind the entire page. */}
-        <WorldCanvas />
-        {/* Now-playing HUD  -  appears after loader exits */}
-        {loaded ? <MoveCounterHUD /> : null}
+        {isHome ? <WorldCanvas /> : null}
+        {isHome && loaded ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
           <Navbar />
           <main className="pt-36">
@@ -111,6 +109,14 @@ function App() {
           <Footer />
         </div>
       </SmoothScroll>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <AppShell />
     </Router>
   )
 }
