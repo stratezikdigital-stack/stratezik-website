@@ -1,16 +1,38 @@
 import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
 import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
+import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
 import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
+  chatgptRecommendationPlaybookFaq,
   googleMapsRankingServiceBusinessFaq,
   insecticaCaseStudyFaq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'get-recommended-by-chatgpt-playbook',
+    title: 'How to Get Your Business Recommended by ChatGPT (2026 Playbook)',
+    description:
+      'SOCi visibility stats, citation research, OppAlerts correlations, schema + answer-first tactics, crawler checks, GTA measurement habits, plus honest limits on controlling generative mentions.',
+    datePublished: '2026-05-11',
+    dateModified: '2026-05-11',
+    keywords: [
+      'ChatGPT recommend business',
+      'answer engine optimisation playbook',
+      'LocalBusiness schema ChatGPT',
+      'SOCi AI local visibility 2026',
+      'Perplexity ChatGPT citations',
+      'Toronto AEO playbook',
+      'Stratezik generative visibility',
+    ],
+    shareImagePath: '/branding/blog-og-chatgpt-recommendations.png',
+    faqEntities: chatgptRecommendationPlaybookFaq,
+    Component: GetRecommendedByChatGPTPlaybookArticle,
+  },
   {
     slug: 'chatgpt-ads-2026-guide',
     title: 'ChatGPT Ads in 2026: Setup, Costs, and When to Skip It',

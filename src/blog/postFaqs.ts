@@ -64,6 +64,39 @@ export const chatgptAdsGuideFaq = [
   },
 ]
 
+export const chatgptRecommendationPlaybookFaq = [
+  {
+    question: 'How does ChatGPT decide which businesses to recommend?',
+    answer:
+      'ChatGPT-style answers assemble from readable first-party sources (especially your website when it is crawlable and clear), corroborating listings and directories, discussion on platforms such as Reddit and forums where applicable, and review signals. Widely cited research from vendors such as Yext suggests the majority of AI citations trace to marketer-influenced surfaces when you aggregate models and query types.',
+  },
+  {
+    question: 'What should I prioritise first for local ChatGPT visibility?',
+    answer:
+      'Implement LocalBusiness schema plus answer-first copy on priority service pages so the model can extract who you serve, where, and how to reach you. Pair that with crawler access checks and consistent name, address, and phone signals across listings.',
+  },
+  {
+    question: 'Can I pay to be recommended organically in ChatGPT?',
+    answer:
+      'No. Paid placements come from products such as ChatGPT Ads, which are separate from unpaid recommendations earned through relevance, clarity, corroboration, and authority signals.',
+  },
+  {
+    question: 'How long does it take to start appearing in ChatGPT answers?',
+    answer:
+      'Timelines compress versus crowded head-term SEO programmes when competitors have not optimised yet, often weeks to a few months depending on existing domain authority and how fast you ship schema plus content fixes. OppAlerts-style correlation studies emphasise classic search authority as a dominant tier, so very weak domains still face a slower climb.',
+  },
+  {
+    question: 'Do I need page-one Google rankings to be recommended?',
+    answer:
+      'You do not need the top organic slot. Correlation studies show strong regular-search visibility predicts LLM citations, but anecdotes also show divergence: excellent Maps rankings do not guarantee AI mentions, and some businesses with middling SERP placement still earn recommendations when information is exceptionally clear.',
+  },
+  {
+    question: 'How do I measure answer engine optimisation without a rankings dashboard?',
+    answer:
+      'Track a fixed question list monthly across ChatGPT, Perplexity, and Google AI experiences, noting presence and which competitors appear. Layer branded search and direct traffic trends as proxies for zero-click recommendations.',
+  },
+]
+
 export const insecticaCaseStudyFaq = [
   {
     question: 'How did Insectica Pest Control scale leads across the GTA?',
