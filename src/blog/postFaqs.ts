@@ -97,6 +97,121 @@ export const chatgptRecommendationPlaybookFaq = [
   },
 ]
 
+export const getFound2026Part1BrandFaq = [
+  {
+    question: 'Do I need a brand before I start marketing?',
+    answer:
+      'You need positioning before you spend on tactics, plus at least a consistent voice and visual identity. Positioning is a decision, not a rebrand budget. The clearer your answer to who you serve and why you win, the cheaper every later channel becomes.',
+  },
+  {
+    question: 'What is the difference between brand and positioning?',
+    answer:
+      'Positioning is the strategic choice about what space you own in a customer\'s mind and why you are the better fit for a specific group. Brand is how that choice shows up: voice, visual identity, reputation, and trust signals. Positioning is the what; brand is the how.',
+  },
+  {
+    question: 'How do I find differentiation in a crowded market?',
+    answer:
+      'Study why your best customers actually choose you, not the polite reason. Apply the competitor test: could your closest rival claim the same line with a straight face? Narrow until the answer is no. The survivor is usually something you already do naturally.',
+  },
+  {
+    question: 'Is reputation management part of brand?',
+    answer:
+      'Yes, and often the decisive part. Reviews and third-party mentions shape buying decisions and feed search and AI visibility. Reputation is an operating system (ask, respond, monitor), not a crisis task after one bad rating.',
+  },
+]
+
+export const getFound2026Part2SeoFaq = [
+  {
+    question: 'Is SEO dead because of AI search?',
+    answer:
+      'No. Strong traditional search authority remains among the strongest predictors of AI citations. SEO is the bedrock AI visibility builds on. Abandoning organic search tends to hurt both classic rankings and assistant mentions.',
+  },
+  {
+    question: 'How long does SEO take for a local business?',
+    answer:
+      'Meaningful movement usually takes months because authority and indexing compound. It is slower than paid ads, but traffic does not stop when spend stops. That trade-off is why the bedrock step still matters.',
+  },
+  {
+    question: 'What is the highest-impact neglected SEO step?',
+    answer:
+      'Technical plumbing: fast mobile loads, crawlable architecture, valid structured data, and ensuring search and AI crawlers are not blocked. Fix access and speed before investing heavily downstream.',
+  },
+  {
+    question: 'What is keyword fanout?',
+    answer:
+      'Fanout maps the full set of real questions customers ask around a core service, not only the short head term. With AI Mode queries running longer than classic searches, the specific branches are where winnable volume lives.',
+  },
+]
+
+export const getFound2026Part3AiFaq = [
+  {
+    question: 'What is the difference between AEO and GEO?',
+    answer:
+      'Answer engine optimisation (AEO) and generative engine optimisation (GEO) describe the same practical work: structuring your business and content so AI tools cite and recommend you. The labels differ; the execution overlaps.',
+  },
+  {
+    question: 'Can I pay to appear in ChatGPT recommendations organically?',
+    answer:
+      'No. Organic recommendations are earned through clarity, authority, and corroboration. ChatGPT Ads is a separate paid product. Do not confuse sponsored placements with unpaid mentions in answers.',
+  },
+  {
+    question: 'What matters most for AI search visibility?',
+    answer:
+      'Classic search authority is the dominant tier in correlation studies. After that, add schema markup, answer-first pages, third-party corroboration, and confirm AI crawlers can reach your site.',
+  },
+  {
+    question: 'How do I know if AI tools recommend my business?',
+    answer:
+      'Maintain a fixed question list and run it monthly across ChatGPT, Perplexity, and Google AI experiences. Track presence, named competitors, and branded search lift. Automated dashboards are still thin; manual audits are the standard.',
+  },
+]
+
+export const getFound2026Part4ContentFaq = [
+  {
+    question: 'What content should a small business prioritise in 2026?',
+    answer:
+      'Educational buying guides led by real operator expertise, plus schema-rich service pages. These rank, earn AI citations, and build trust simultaneously. Start with depth on one service before chasing volume across every channel.',
+  },
+  {
+    question: 'Do I need to be the face of my content?',
+    answer:
+      'Founder-led perspective is the hardest asset for competitors to copy and the most trusted by audiences and models. You do not have to write: talk through the problem and shape the transcript. The voice should stay genuinely yours.',
+  },
+  {
+    question: 'How do I publish across many channels without burning out?',
+    answer:
+      'Repurpose one substantial piece: blog post, social snippets, short video, email. One strong hour of expertise can fuel weeks of output. Start with the reservoir, then adapt formats.',
+  },
+  {
+    question: 'Does giving away a playbook hurt sales?',
+    answer:
+      'Usually the opposite. A useful playbook demonstrates depth. DIY readers remember you; many decide the work is better hired after seeing the full method.',
+  },
+]
+
+export const getFound2026Part5PaidFaq = [
+  {
+    question: 'Should I start with Google Ads or Facebook ads?',
+    answer:
+      'On a careful budget, start with Google Search and light retargeting because intent is highest. Paid social can work for demand generation but demands stronger creative and patience; it often follows once search proves economics.',
+  },
+  {
+    question: 'What is a good ROAS?',
+    answer:
+      'There is no universal benchmark. It depends on margin and customer lifetime value. Calculate break-even against LTV for your business instead of copying a figure from another vertical.',
+  },
+  {
+    question: 'Why are my ads not working?',
+    answer:
+      'Often the funnel is not ready: muddy positioning, weak landing pages, or offers people do not want. Paid amplifies whatever it points at. Fix upstream steps before blaming the ad platform.',
+  },
+  {
+    question: 'Do I need paid if SEO and content are working?',
+    answer:
+      'Not always. Organic can carry growth alone. Paid accelerates proven demand and plugs leaks, especially retargeting visitors your content already attracted.',
+  },
+]
+
 export const insecticaCaseStudyFaq = [
   {
     question: 'How did Insectica Pest Control scale leads across the GTA?',

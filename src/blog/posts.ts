@@ -2,17 +2,123 @@ import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
 import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
 import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
+import GetFound2026Part1BrandArticle from './GetFound2026Part1BrandArticle'
+import GetFound2026Part2SeoArticle from './GetFound2026Part2SeoArticle'
+import GetFound2026Part3AiArticle from './GetFound2026Part3AiArticle'
+import GetFound2026Part4ContentArticle from './GetFound2026Part4ContentArticle'
+import GetFound2026Part5PaidArticle from './GetFound2026Part5PaidArticle'
 import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
   chatgptRecommendationPlaybookFaq,
+  getFound2026Part1BrandFaq,
+  getFound2026Part2SeoFaq,
+  getFound2026Part3AiFaq,
+  getFound2026Part4ContentFaq,
+  getFound2026Part5PaidFaq,
   googleMapsRankingServiceBusinessFaq,
   insecticaCaseStudyFaq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'get-found-2026-brand-positioning',
+    title: 'How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning',
+    description:
+      'Positioning before tactics: differentiation that survives the competitor test, voice and visual identity, reputation systems, and trust signals that make SEO, AI, content, and paid work harder together.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'brand positioning small business 2026',
+      'differentiation local business',
+      'reputation management SEO AI',
+      'founder brand voice',
+      'Stratezik Get Found 2026',
+      'Toronto marketing foundation',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: getFound2026Part1BrandFaq,
+    Component: GetFound2026Part1BrandArticle,
+  },
+  {
+    slug: 'get-found-2026-seo-organic-search',
+    title: 'How Businesses Get Found and Grow in 2026, Part 2: SEO and Organic Search',
+    description:
+      'Keyword fanout, answer-first on-page work, technical plumbing, backlink authority, and indexing gates. Why organic search remains the bedrock AI visibility builds on, not a rival to it.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'SEO organic search 2026',
+      'keyword fanout local business',
+      'technical SEO AI crawlers',
+      'local backlink authority',
+      'indexing audit',
+      'Stratezik Get Found 2026',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: getFound2026Part2SeoFaq,
+    Component: GetFound2026Part2SeoArticle,
+  },
+  {
+    slug: 'get-found-2026-ai-search-visibility',
+    title: 'How Businesses Get Found and Grow in 2026, Part 3: AI Search Visibility',
+    description:
+      'AEO and GEO citations, conversational fanout, schema and crawler access, share-of-voice audits, and how ChatGPT, Perplexity, and Gemini differ. Built on Part 2 SEO authority.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'answer engine optimisation 2026',
+      'AI search visibility local business',
+      'ChatGPT Perplexity Gemini citations',
+      'SOCi AI local visibility',
+      'OppAlerts LLM factors',
+      'structured data crawler audit',
+      'Stratezik Get Found 2026',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: getFound2026Part3AiFaq,
+    Component: GetFound2026Part3AiArticle,
+  },
+  {
+    slug: 'get-found-2026-content-strategy',
+    title: 'How Businesses Get Found and Grow in 2026, Part 4: Content Strategy',
+    description:
+      'Founder-led storytelling, educational guides, ethical lead magnets, short-form video transcripts, repurposing ladders, plus how Part 4 locks to brand, SEO, and AI layers before paid acceleration.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'founder-led content strategy',
+      'local business repurposing playbook',
+      'AI-friendly educational guides',
+      'lead magnets service business',
+      'video transcripts SEO AI',
+      'Stratezik Get Found 2026',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: getFound2026Part4ContentFaq,
+    Component: GetFound2026Part4ContentArticle,
+  },
+  {
+    slug: 'get-found-2026-paid-performance',
+    title: 'How Businesses Get Found and Grow in 2026, Part 5: Paid and Performance',
+    description:
+      'Why order matters inside the pillar, paid versus organic interplay, disciplined Google Ads, retargeting with Part 4 assets, CAC and ROAS guardrails, funnel honesty, plus Insectica proof and services alignment.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'paid social local business 2026',
+      'Google Ads retargeting strategy',
+      'CAC ROAS LTV playbook',
+      'marketing attribution pragmatic',
+      'Stratezik Get Found 2026',
+      'Toronto performance marketing',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: getFound2026Part5PaidFaq,
+    Component: GetFound2026Part5PaidArticle,
+  },
   {
     slug: 'get-recommended-by-chatgpt-playbook',
     title: 'How to Get Your Business Recommended by ChatGPT (2026 Playbook)',
