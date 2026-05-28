@@ -97,6 +97,29 @@ export const chatgptRecommendationPlaybookFaq = [
   },
 ]
 
+export const scarboroughAgencyTriggersFaq = [
+  {
+    question: 'When should a Scarborough or GTA small business hire a digital marketing agency?',
+    answer:
+      'Hire when growth stalls despite a decent product, when paid spend rises while returns fall, when local discovery or conversions lag traffic, or when launches and expansion need coordinated execution your team cannot run alone. The trigger is predictable revenue missing from channels you already touch, not vanity metrics.',
+  },
+  {
+    question: 'What is the first thing Stratezik does after an Ontario SMB reaches out?',
+    answer:
+      'We run a focused audit across website conversion paths, analytics and ad accounts, and local listings such as Google Business Profile. We prioritise quick wins (tracking, landing pages, low-cost ad tests) and deliver a 90-day roadmap for SEO, content, and sustained paid media.',
+  },
+  {
+    question: 'How do I compare digital marketing agencies in Toronto or Scarborough?',
+    answer:
+      'Define one urgent revenue goal in a sentence. Ask each agency for a 30 to 90 day roadmap with estimated impact and cost, GTA-relevant case examples, reporting cadence, named account contact, trial or performance clause, tool ownership, and transparent pricing split between retainer and recommended ad spend.',
+  },
+  {
+    question: 'Can a local agency fix low Google Maps visibility for a brick-and-mortar business?',
+    answer:
+      'Often yes, when the gap is structural: primary category choice, citation consistency, review velocity, service-page depth, and geo-targeted campaigns. We treat Maps and organic local SEO as the bedrock before scaling paid, consistent with our Get Found 2026 playbook.',
+  },
+]
+
 export const getFound2026Part1BrandFaq = [
   {
     question: 'Do I need a brand before I start marketing?',

@@ -2,6 +2,7 @@ import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
 import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
 import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
+import ScarboroughAgencyTriggersArticle from './ScarboroughAgencyTriggersArticle'
 import GetFound2026Part1BrandArticle from './GetFound2026Part1BrandArticle'
 import GetFound2026Part2SeoArticle from './GetFound2026Part2SeoArticle'
 import GetFound2026Part3AiArticle from './GetFound2026Part3AiArticle'
@@ -13,6 +14,7 @@ import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
   chatgptRecommendationPlaybookFaq,
+  scarboroughAgencyTriggersFaq,
   getFound2026Part1BrandFaq,
   getFound2026Part2SeoFaq,
   getFound2026Part3AiFaq,
@@ -23,6 +25,26 @@ import {
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'when-hire-digital-marketing-agency-scarborough-gta',
+    title: 'When GTA SMBs Decide It Is Time for a Digital Marketing Agency',
+    description:
+      'Ten real triggers Scarborough and Toronto SMBs hit before hiring an agency: flat conversions, rising ad waste, Maps gaps, launches, expansion, reviews, bandwidth limits, and seasonal urgency, plus Stratezik audit steps and an RFP checklist.',
+    datePublished: '2026-05-25',
+    dateModified: '2026-05-25',
+    keywords: [
+      'digital marketing agency Scarborough',
+      'Toronto GTA SMB marketing',
+      'when to hire marketing agency',
+      'Google Ads agency Toronto',
+      'local SEO Scarborough',
+      'Ontario small business marketing',
+      'Stratezik digital marketing',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: scarboroughAgencyTriggersFaq,
+    Component: ScarboroughAgencyTriggersArticle,
+  },
   {
     slug: 'get-found-2026-brand-positioning',
     title: 'How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning',
