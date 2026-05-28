@@ -1,4 +1,5 @@
 import type { BlogPostMeta } from './postTypes'
+import { buildBlogPostBreadcrumbJsonLd } from '../seo/buildBreadcrumbJsonLd'
 
 const SITE = 'https://www.stratezik.com'
 
@@ -50,15 +51,19 @@ export function buildArticleWithFaqJsonLd(meta: BlogPostMeta, faqMainEntity: { q
     })),
   }
 
+  const breadcrumb = buildBlogPostBreadcrumbJsonLd(meta.slug, meta.title)
+
   return {
     '@context': 'https://schema.org',
-    '@graph': [article, faq],
+    '@graph': [article, faq, breadcrumb],
   }
 }
 
 /** Article structured data without FAQ block. */
 export function buildSimpleArticleJsonLd(meta: BlogPostMeta) {
   const url = `${SITE}/blog/${meta.slug}`
+  const breadcrumb = buildBlogPostBreadcrumbJsonLd(meta.slug, meta.title)
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -79,6 +84,7 @@ export function buildSimpleArticleJsonLd(meta: BlogPostMeta) {
         keywords: meta.keywords.join(', '),
         inLanguage: 'en-CA',
       },
+      breadcrumb,
     ],
   }
 }

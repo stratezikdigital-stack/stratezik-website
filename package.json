@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
-    "build": "node ./node_modules/typescript/bin/tsc && node ./node_modules/vite/bin/vite.js build",
+    "build": "node ./node_modules/typescript/bin/tsc && node ./node_modules/vite/bin/vite.js build && node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "node ./node_modules/vite/bin/vite.js preview"
+    "preview": "node ./node_modules/vite/bin/vite.js preview",
+    "seo:postbuild": "node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",
@@ -33,6 +34,7 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
+    "tsx": "^4.19.4",
     "typescript": "^5.2.2",
     "vite": "^4.5.0"
   }

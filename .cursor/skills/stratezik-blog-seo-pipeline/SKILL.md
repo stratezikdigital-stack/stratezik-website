@@ -7,7 +7,8 @@ description: >-
   earn citations in AI summaries, and match Stratezik voice. Handles both
   SEO-first drafts and user-supplied drafts needing a full SEO/AEO pre-publish
   audit before merge. Combines stratezik-gsc-intelligence (when Search Console
-  MCP is used), stratezik-seo-aeo, and stratezik-blog-writing in an explicit order.
+  MCP is used), stratezik-seo-aeo, stratezik-blog-writing, and stratezik-seo-master
+  for build-time prerender and release gates in an explicit order.
 ---
 
 # Stratezik blog + SEO/AEO pipeline
@@ -48,7 +49,7 @@ When the **google-search-console** MCP is enabled and work touches **existing UR
 1. **`stratezik-gsc-intelligence`** when MCP is enabled — pull performance for the draft’s URL(s) and relevant queries (`query_search_analytics` with `page` filter or dimension `page` + `query`, `compare_performance` if refresh/decay). Attach scout summary to the audit.
 
 2. **`stratezik-seo-aeo`** section **“8. Pre-publish review: user-supplied blog draft”**  
-   Full audit: gap list; concrete deltas for `posts.ts` (title, description, slug, keywords, dates, `faqEntities`), article TSX, `public/sitemap.xml`; schema alignment with `buildArticleJsonLd.ts`. Validate with **Rich Results Test** and **URL Inspection** after deploy; reconcile with scout metrics when step 1 ran. Do **not** claim one numeric perfect score across all third-party SEO testers.
+   Full audit: gap list; concrete deltas for `posts.ts` (title, description, slug, keywords, dates, `faqEntities`), article TSX; schema alignment with `buildArticleJsonLd.ts`. Sitemap and prerender are **auto-generated on build** — see **`stratezik-seo-master`**. Validate with **Rich Results Test** and **URL Inspection** after deploy; reconcile with scout metrics when step 1 ran. Do **not** claim one numeric perfect score across all third-party SEO testers.
 
 3. **`stratezik-blog-writing`**  
    Merge SEO-required sections and links into the supplied draft while preserving Stratezik patterns and punctuation rules.
@@ -58,6 +59,9 @@ When the **google-search-console** MCP is enabled and work touches **existing UR
 
 5. **`stratezik-blog-writing`** micro-pass  
    Final readability only.
+
+6. **`stratezik-seo-master`** release gate  
+   Run `npm run build`; curl-verify prerendered meta for the new slug; confirm `llms-full.txt` updated.
 
 Use **Chain A** for net-new posts. Use **Chain B** when the user drops in mostly finished prose.
 
@@ -81,4 +85,5 @@ Follow **`stratezik-gsc-intelligence`**: explicit plays (growth / optimization /
 
 - GSC scout layer: **`stratezik-gsc-intelligence`**  
 - Full SEO/AEO depth: **`stratezik-seo-aeo`**  
+- Implementation / prerender / release gates: **`stratezik-seo-master`**  
 - Voice, structure, JSX: **`stratezik-blog-writing`**

@@ -1,4 +1,5 @@
 import type { BlogPostMeta } from './postTypes'
+import { buildBlogIndexBreadcrumbJsonLd } from '../seo/buildBreadcrumbJsonLd'
 
 const SITE = 'https://www.stratezik.com'
 
@@ -43,6 +44,7 @@ export function buildBlogIndexJsonLd(posts: BlogPostMeta[]) {
           },
         })),
       },
+      buildBlogIndexBreadcrumbJsonLd(),
     ],
   }
 }

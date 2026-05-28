@@ -7,10 +7,11 @@ description: >-
   structured data, migrations, content briefs, SERP features, Google Business
   Profile, internal linking, Core Web Vitals, reviewing user-supplied blog
   drafts before publish, or any stratezik.com property where organic discovery
-  and answer surfaces matter. When Search Console MCP data should drive the
-  brief, pair with stratezik-gsc-intelligence first. For full posts with editorial voice, use
-  stratezik-blog-seo-pipeline so briefs or audits hand off to
-  stratezik-blog-writing.
+  and answer surfaces matter. For implementation (prerender, registry, sitemap,
+  llms.txt), use stratezik-seo-master. When Search Console MCP data should drive
+  the brief, pair with stratezik-gsc-intelligence first. For full posts with
+  editorial voice, use stratezik-blog-seo-pipeline so briefs or audits hand off
+  to stratezik-blog-writing.
 ---
 
 # Stratezik SEO and AEO playbook
@@ -49,7 +50,7 @@ Operate as a **senior SEO/AEO lead**: intent-first, measurement-grounded, skepti
 
 ## 1. Technical SEO (foundation)
 
-Use as an audit spine; tailor depth to the stack (here: Vercel-hosted SPA with prerender/noscript shell, client routing).
+Use as an audit spine; tailor depth to the stack (Vercel-hosted SPA with **build-time prerender** via `scripts/postbuild-seo.ts` + `RouteSeoManager` for client navigation). Implementation details: **`stratezik-seo-master`**.
 
 ### Crawling and indexation
 
@@ -176,10 +177,14 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 | Surface | Where it lives |
 |--------|----------------|
 | Post registry, slug, dates, keywords, FAQ entities | `src/blog/posts.ts` plus `BlogPostDefinition` in `src/blog/postTypes.ts` |
-| Article (+ optional FAQPage) JSON-LD | `src/blog/buildArticleJsonLd.ts`; injected in `BlogPostPage` via `injectJsonLd` |
-| Title tag, meta description, OG/Twitter for `/blog/{slug}` | `applyPageMeta` in `src/components/BlogPostPage.tsx` from `post.title` and `post.description` |
+| Route SEO registry (all pages) | `src/seo/pageSeoRegistry.ts` |
+| Build-time prerender + sitemap + llms-full | `scripts/postbuild-seo.ts` (runs on `npm run build`) |
+| Client navigation meta + JSON-LD | `src/seo/RouteSeoManager.tsx` |
+| Article (+ FAQPage + BreadcrumbList) JSON-LD | `src/blog/buildArticleJsonLd.ts` |
+| Title, meta, OG/Twitter, canonical | `src/seo/buildPageHeadHtml.ts` (server) + `applyRouteSeo` (client) |
 | Article body component | `src/blog/*.tsx` (e.g. pillar or case study component) |
-| Sitemap URL | `public/sitemap.xml` (keep URL + `lastmod` accurate when you publish) |
+| Sitemap | Auto-generated to `public/sitemap.xml` on build |
+| LLM index | `public/llms.txt` + generated `llms-full.txt` |
 
 `BlogPostPage` already renders **one** `<h1>` from `post.title`. Body components should use **`h2`+** only so hierarchy stays valid.
 
@@ -193,8 +198,8 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 ### Checklist: technical (blog URL)
 
 - [ ] **Indexable route**: `/blog/{slug}` matches production hostname strategy (`www` vs apex) used elsewhere; no accidental noindex on template.
-- [ ] **Sitemap**: new post URL listed; `lastmod` reflects real change when maintained manually.
-- [ ] **Canonical**: SPA shell + meta canonical behavior consistent with `BlogPostPage` path (`applyPageMeta` path `/blog/{slug}`).
+- [ ] **Sitemap**: post URL included after `npm run build` (auto-generated).
+- [ ] **Canonical + initial HTML meta**: prerendered `dist/blog/{slug}/index.html` matches registry; curl-verify before deploy.
 - [ ] **Performance**: hero images or embeds not destroying LCP on mobile; lazy-load heavy below-fold assets where sensible.
 
 ### Checklist: on-page

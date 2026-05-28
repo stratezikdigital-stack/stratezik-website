@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import { injectJsonLd } from './utils/documentMeta'
-import { HOME_FAQ_JSON_LD_SCRIPT_ID, homeFaqJsonLd } from './utils/homeFaqJsonLd'
+import { RouteSeoManager } from './seo/RouteSeoManager'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import ServicesSection from './components/ServicesSection'
@@ -13,24 +12,12 @@ import CareerPage from './components/CareerPage'
 import BlogPage from './components/BlogPage'
 import BlogPostPage from './components/BlogPostPage'
 import Footer from './components/Footer'
-import { useCanonical } from './utils/canonical'
 import { SmoothScroll } from './three/world/SmoothScroll'
 import { WorldCanvas } from './three/world/WorldCanvas'
 import { Loader } from './components/Loader'
 import { CustomCursor } from './components/CustomCursor'
 import { MoveCounterHUD } from './components/MoveCounterHUD'
 import { NotationMarquee } from './components/NotationMarquee'
-
-function CanonicalManager() {
-  useCanonical()
-  return null
-}
-
-/** Homepage FAQ schema only — avoids FAQPage on /blog URLs conflicting with article FAQs. */
-function HomeFaqJsonLd() {
-  useEffect(() => injectJsonLd(homeFaqJsonLd, HOME_FAQ_JSON_LD_SCRIPT_ID), [])
-  return null
-}
 
 /** After SPA navigation or full load with #contact / #contact-form, scroll into view. */
 function ScrollToHash() {
@@ -56,7 +43,7 @@ function AppShell() {
 
   return (
     <>
-      <CanonicalManager />
+      <RouteSeoManager />
       <Loader onDone={() => setLoaded(true)} />
       <CustomCursor />
       <SmoothScroll>
@@ -71,7 +58,6 @@ function AppShell() {
                 path="/"
                 element={
                   <>
-                    <HomeFaqJsonLd />
                     <HeroSection />
                     <NotationMarquee
                       variant="dark"

@@ -1,0 +1,82 @@
+# Stratezik — extended LLM index
+
+> Toronto digital marketing agency. Canonical site: https://www.stratezik.com
+
+## Core pages
+
+- [Home](https://www.stratezik.com/): Digital marketing services, SEO, PPC, strategy, contact
+- [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
+- [Careers](https://www.stratezik.com/careers): Toronto team hiring
+
+## Blog articles (11)
+
+### When GTA SMBs Decide It Is Time for a Digital Marketing Agency
+- URL: https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta
+- Summary: Ten real triggers Scarborough and Toronto SMBs hit before hiring an agency: flat conversions, rising ad waste, Maps gaps, launches, expansion, reviews, bandwidth limits, and seasonal urgency, plus Stratezik audit steps and an RFP checklist.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning
+- URL: https://www.stratezik.com/blog/get-found-2026-brand-positioning
+- Summary: Positioning before tactics: differentiation that survives the competitor test, voice and visual identity, reputation systems, and trust signals that make SEO, AI, content, and paid work harder together.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How Businesses Get Found and Grow in 2026, Part 2: SEO and Organic Search
+- URL: https://www.stratezik.com/blog/get-found-2026-seo-organic-search
+- Summary: Keyword fanout, answer-first on-page work, technical plumbing, backlink authority, and indexing gates. Why organic search remains the bedrock AI visibility builds on, not a rival to it.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How Businesses Get Found and Grow in 2026, Part 3: AI Search Visibility
+- URL: https://www.stratezik.com/blog/get-found-2026-ai-search-visibility
+- Summary: AEO and GEO citations, conversational fanout, schema and crawler access, share-of-voice audits, and how ChatGPT, Perplexity, and Gemini differ. Built on Part 2 SEO authority.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How Businesses Get Found and Grow in 2026, Part 4: Content Strategy
+- URL: https://www.stratezik.com/blog/get-found-2026-content-strategy
+- Summary: Founder-led storytelling, educational guides, ethical lead magnets, short-form video transcripts, repurposing ladders, plus how Part 4 locks to brand, SEO, and AI layers before paid acceleration.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How Businesses Get Found and Grow in 2026, Part 5: Paid and Performance
+- URL: https://www.stratezik.com/blog/get-found-2026-paid-performance
+- Summary: Why order matters inside the pillar, paid versus organic interplay, disciplined Google Ads, retargeting with Part 4 assets, CAC and ROAS guardrails, funnel honesty, plus Insectica proof and services alignment.
+- Published: 2026-05-25
+- Updated: 2026-05-25
+
+### How to Get Your Business Recommended by ChatGPT (2026 Playbook)
+- URL: https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook
+- Summary: SOCi visibility stats, citation research, OppAlerts correlations, schema + answer-first tactics, crawler checks, GTA measurement habits, plus honest limits on controlling generative mentions.
+- Published: 2026-05-11
+- Updated: 2026-05-11
+
+### ChatGPT Ads in 2026: Setup, Costs, and When to Skip It
+- URL: https://www.stratezik.com/blog/chatgpt-ads-2026-guide
+- Summary: How OpenAI Ads Manager Beta places sponsored recommendations in ChatGPT, what context hints replace keywords, reported pricing bands, geography, category gates, and honest fit notes for Toronto operators.
+- Published: 2026-05-11
+- Updated: 2026-05-11
+
+### Why Service Businesses Lose on Google Maps
+- URL: https://www.stratezik.com/blog/google-maps-ranking-service-business
+- Summary: Whitespark 2026 local ranking factors put GBP primary category ahead of reviews for Maps pack influence. What Ontario service operators should fix first: categories, hours, and per-service site depth.
+- Published: 2026-05-07
+- Updated: 2026-05-07
+
+### How We Scaled a Toronto Pest Control Company: The Insectica Story (700+ Leads, Full Breakdown)
+- URL: https://www.stratezik.com/blog/insectica-gta-pest-control-scaling-case-study
+- Summary: Month-by-month narrative of Insectica Pest Control’s GTA growth: ten ad groups, CPA-first bidding, 700+ paid conversions at ~$43 CPL, organic impressions up 168x, plus charts and infographic.
+- Published: 2026-05-02
+- Updated: 2026-05-03
+
+### Answer Engine Optimisation for Toronto Businesses
+- URL: https://www.stratezik.com/blog/answer-engine-optimisation-toronto
+- Summary: Most websites cited in Google's AI-generated answers don't rank in the organic top 10 for that query. What answer engine optimisation means for Toronto businesses.
+- Published: 2026-05-01
+- Updated: 2026-05-03
+
+## Contact
+
+- Email: dave@stratezik.com
+- Phone: +1-437-525-4772

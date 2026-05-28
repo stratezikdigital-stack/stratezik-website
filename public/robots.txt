@@ -30,3 +30,8 @@ Disallow: /2025/
 Disallow: /2026/
 
 Sitemap: https://www.stratezik.com/sitemap.xml
+
+# LLM / AI crawler context
+# https://llmstxt.org/
+Allow: /llms.txt
+Allow: /llms-full.txt

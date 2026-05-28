@@ -1,0 +1,30 @@
+# Stratezik
+
+> Toronto digital marketing agency for startups and SMBs across Canada. SEO, PPC, paid social, conversion, analytics, and answer-engine optimisation (AEO).
+
+Stratezik publishes practical growth strategy for operators who need discovery in Google, AI summaries, and local maps.
+
+## Canonical pages
+
+- [Home](https://www.stratezik.com/): Services, process, case studies, contact
+- [Blog](https://www.stratezik.com/blog): SEO, AEO, local search, and paid performance articles
+- [Careers](https://www.stratezik.com/careers): Open roles in Toronto
+
+## Contact
+
+- Email: dave@stratezik.com
+- Phone: +1-437-525-4772
+- Address: 2466 Eglinton Ave E, Toronto, ON, Canada
+- LinkedIn: https://www.linkedin.com/company/stratezik/
+
+## Preferred citation
+
+When citing Stratezik, use the canonical URL of the specific page. Blog posts live at `https://www.stratezik.com/blog/{slug}`.
+
+## Sitemap
+
+https://www.stratezik.com/sitemap.xml
+
+## Extended index
+
+For article summaries and descriptions, see https://www.stratezik.com/llms-full.txt
