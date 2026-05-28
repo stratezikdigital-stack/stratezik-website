@@ -6,7 +6,8 @@ description: >-
   articles, case studies, posts.ts entries, or long-form pages that must rank,
   earn citations in AI summaries, and match Stratezik voice. Handles both
   SEO-first drafts and user-supplied drafts needing a full SEO/AEO pre-publish
-  audit before merge. Combines stratezik-gsc-intelligence (when Search Console
+  audit before merge. Agent must run npm run build and verify prerender/sitemap
+  on every shipped post — not a manual user step. Combines stratezik-gsc-intelligence (when Search Console
   MCP is used), stratezik-seo-aeo, stratezik-blog-writing, and stratezik-seo-master
   for build-time prerender and release gates in an explicit order.
 ---
@@ -22,6 +23,17 @@ Use this **instead of picking only one skill** when the deliverable is **shipped
 Shipped blog work **must** run **`stratezik-seo-aeo`** and **`stratezik-blog-writing`** through the chains below. Do not treat one skill alone as sufficient unless the user explicitly scoped a non-content change.
 
 When the **google-search-console** MCP is enabled and work touches **existing URLs**, **refreshes**, **striking distance**, **CTR fixes**, or **traffic drops**, run **`stratezik-gsc-intelligence`** first (scout → brief), then continue the chain.
+
+## Agent obligation (not a user manual step)
+
+When the user asks to **write, publish, or ship** a blog post in this repo, the agent **must** complete the full technical SEO pass before calling the task done:
+
+1. Add or update `src/blog/posts.ts`, article TSX, and `postFaqs.ts` as needed.
+2. Run **`npm run build`** (triggers prerender, `public/sitemap.xml`, and `public/llms-full.txt`).
+3. Confirm `dist/blog/{slug}/index.html` exists and grep title/canonical from that file.
+4. Commit (and push when the user asks) so Vercel deploys prerendered HTML.
+
+**Never** tell the user to run the build themselves unless they explicitly asked for copy-only or a draft with no repo changes. **`posts.ts` alone is not “published”** until build has run and artifacts are committed.
 
 ---
 
@@ -44,6 +56,9 @@ When the **google-search-console** MCP is enabled and work touches **existing UR
 5. **`stratezik-blog-writing`** final skim  
    Tighten rhythm; ensure no banned punctuation or generic AI cadence crept in during SEO edits.
 
+6. **`stratezik-seo-master`** release gate (**agent runs automatically**)  
+   Run `npm run build`; verify `dist/blog/{slug}/index.html`, updated `public/sitemap.xml` and `public/llms-full.txt`; commit when shipping.
+
 ### Chain B: user-supplied draft first (ready content)
 
 1. **`stratezik-gsc-intelligence`** when MCP is enabled — pull performance for the draft’s URL(s) and relevant queries (`query_search_analytics` with `page` filter or dimension `page` + `query`, `compare_performance` if refresh/decay). Attach scout summary to the audit.
@@ -60,8 +75,8 @@ When the **google-search-console** MCP is enabled and work touches **existing UR
 5. **`stratezik-blog-writing`** micro-pass  
    Final readability only.
 
-6. **`stratezik-seo-master`** release gate  
-   Run `npm run build`; curl-verify prerendered meta for the new slug; confirm `llms-full.txt` updated.
+6. **`stratezik-seo-master`** release gate (**agent runs automatically**)  
+   Run `npm run build`; curl-verify prerendered meta for the new slug; confirm `llms-full.txt` and sitemap updated; commit (and push if requested).
 
 Use **Chain A** for net-new posts. Use **Chain B** when the user drops in mostly finished prose.
 

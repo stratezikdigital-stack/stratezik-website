@@ -9,6 +9,7 @@ description: >-
   blog tone and structure. For publish-ready posts that must also satisfy SEO
   and AEO, prefer stratezik-blog-seo-pipeline (Chain A after SEO brief, or
   Chain B after SEO pre-publish audit of supplied drafts) before final edits.
+  Shipped posts require the agent to run npm run build — not the user.
 ---
 
 # Stratezik blog writing
@@ -75,3 +76,4 @@ Match the pattern of the **Insectica** post:
 - [ ] Opens with something **specific**, not a generic industry preamble.
 - [ ] Every bold metric or dramatic claim traceable to **source or engagement fact**.
 - [ ] Archetype matches: pillar (aside + contested stats + internal links) vs case study (snapshot + figures + phased `·` headings).
+- [ ] If committing to repo: **`npm run build` run by agent**; sitemap and `llms-full.txt` updated (see **`stratezik-seo-master`**).

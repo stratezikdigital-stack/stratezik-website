@@ -5,7 +5,8 @@ description: >-
   prerendered meta, JSON-LD, sitemap, llms.txt, registry-driven route SEO, and
   release gates. Use when fixing crawl/index issues, SPA meta gaps, schema,
   canonicals, OG/Twitter cards, breadcrumbs, AEO machine-readable files, or
-  shipping any new indexable page or blog post. Pair with stratezik-seo-aeo for
+  shipping any new indexable page or blog post. Agent must run npm run build
+  automatically when publishing — never defer to the user. Pair with stratezik-seo-aeo for
   strategy/briefs and stratezik-blog-seo-pipeline for editorial content.
 ---
 
@@ -29,6 +30,8 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 
 **Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts only need `posts.ts` — registry maps them automatically.
 
+**Agent rule:** After any blog or indexable page change, run `npm run build` in the same session. Include regenerated `public/sitemap.xml` and `public/llms-full.txt` in the commit. Do not mark “published” until build passes and prerender output is verified.
+
 ## Release checklist (run before merge)
 
 Copy and complete:
@@ -50,8 +53,9 @@ SEO release gate:
 
 1. Add entry to `src/blog/posts.ts` (slug, title, description, dates, keywords, shareImagePath, faqEntities, Component).
 2. Add FAQ copy to `src/blog/postFaqs.ts` if using FAQ schema.
-3. Run `npm run build` — do **not** hand-edit `public/sitemap.xml`.
-4. Verify prerender: `curl -s https://www.stratezik.com/blog/{slug} | head -40`
+3. **Agent runs** `npm run build` — do **not** hand-edit `public/sitemap.xml`.
+4. Verify `dist/blog/{slug}/index.html` title and canonical; commit sitemap + llms-full with the post.
+5. After deploy, optional: `curl -s https://www.stratezik.com/blog/{slug} | grep -E '<title>|canonical'`
 
 ## Adding a non-blog page
 
