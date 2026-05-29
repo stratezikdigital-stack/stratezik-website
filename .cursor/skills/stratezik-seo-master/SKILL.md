@@ -26,11 +26,16 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Build prerender | `scripts/postbuild-seo.ts` | Writes `dist/{route}/index.html` + `sitemap.xml` + `llms-full.txt` |
 | Blog data | `src/blog/posts.ts` | Slug, dates, description, keywords, `shareImagePath`, `authorSlug`, FAQs |
 | Article schema | `src/blog/buildArticleJsonLd.ts` | Article + FAQPage + BreadcrumbList `@graph`; Person author |
+| Services data | `src/services/services.ts` (metadata) + `src/services/serviceContent.ts` (raw md bodies, browser-only) | Slug, title, meta, keywords, `serviceType`, `faqEntities` |
+| Service schema | `src/services/buildServiceJsonLd.ts` | Service + FAQPage + BreadcrumbList; hub = CollectionPage + ItemList; `areaServed` Toronto/Scarborough/GTA/Canada (GEO) |
+| Service rendering | `src/components/ServicePage.tsx` + `src/components/Markdown.tsx` | `/services` hub + `/services/:slug`; markdown renderer strips links to non-existent (Phase 2) routes |
 | Organization entity | `src/seo/organization.ts` | Shared publisher node: `sameAs`, `knowsAbout`, `foundingDate` |
 | Author entities | `src/seo/authors.ts` + `src/components/AuthorPage.tsx` | Person + ProfilePage schema, `/authors/{slug}` pages |
 | AEO files | `public/llms.txt`, generated `llms-full.txt`, `public/llm-context.json` | Machine-readable site index + structured brand facts |
 
 **Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts only need `posts.ts` — registry maps them automatically.
+
+**Rule (services):** Keep service *metadata* (`services.ts`) free of Vite `?raw` imports — `postbuild-seo.ts` imports the registry chain under Node/tsx, which cannot resolve `*.md?raw`. Raw markdown bodies live in `serviceContent.ts` (browser-only, imported by `ServicePage`). Never give the markdown renderer a link to a route that is not in `serviceRoutePaths` / the registry; it strips unresolved internal links to plain text to avoid broken links / soft 404s.
 
 **Agent rule:** After any blog or indexable page change, run `npm run build` in the same session. Include regenerated `public/sitemap.xml` and `public/llms-full.txt` in the commit. Do not mark “published” until build passes and prerender output is verified.
 
@@ -65,6 +70,14 @@ SEO release gate:
 1. Add React route in `App.tsx`.
 2. Add `RouteSeoConfig` in `pageSeoRegistry.ts` with full meta + jsonLd.
 3. Build and curl-verify as above.
+
+## Adding a service page
+
+1. Add metadata entry to `services` in `src/services/services.ts` (slug, title, meta, keywords, `serviceType`, `faqEntities` mirroring visible copy).
+2. Add the markdown body file under `src/services/content/{slug}.md` and register it in `serviceBodies` in `src/services/serviceContent.ts` (body only — no frontmatter; drop redundant address signature line).
+3. Registry auto-maps it via `servicePageSeo` in `pageSeoRegistry.ts` (no manual `RouteSeoConfig` needed for `/services/{slug}`). The `:slug` route in `App.tsx` already renders it.
+4. **Agent runs** `npm run build` — prerender, sitemap, `llms-full.txt`, and `llm-context.json` services list regenerate automatically.
+5. Verify `dist/services/{slug}/index.html` shows the Service + FAQPage + BreadcrumbList JSON-LD with `areaServed` and a self-referencing canonical.
 
 ## Primary SEO (must pass)
 
@@ -105,8 +118,10 @@ These are intentional next steps. Do **not** start them silently — confirm sco
 | Item | Why deferred | Trigger to do it |
 |------|--------------|------------------|
 | **Full SSR/ISR (article body in HTML)** | Current prerender already ships meta + JSON-LD in first packet; body SSR likely means a framework migration (Next.js) | When zero-JS full-text indexing or strict crawl-budget needs justify a migration |
-| **`/services/*` parent-child cluster routing** | Site-architecture + content decision, not just SEO plumbing | When building out service landing pages and topical clusters |
+| **`/services/*/*` child focus-area pages** | Phase 1 ships the hub + 8 parent service pages; child routes (e.g. `technical-seo`, `meta-ads`) are Phase 2 content. Parent-page links to them are stripped by the markdown renderer until they exist | When Phase 2 child content is written |
 | **Author E-E-A-T hardening** | `authors.ts` exists; needs real full name, headshot (`imagePath`), and verified personal LinkedIn in `sameAs` | When the author confirms profile details — never fabricate `sameAs` |
+
+**Done (2026-05):** `/services` hub + 8 parent service pages (`paid-search`, `paid-social`, `seo-aeo`, `google-business-profile`, `social-media-marketing`, `brand-strategy`, `web-design`, `ai-agents`) with Service/CollectionPage + FAQPage + BreadcrumbList schema, GEO `areaServed` (Toronto/Scarborough/GTA), prerender, sitemap, and llm-context entries.
 
 ## Off-page / citational footprint
 
@@ -130,6 +145,9 @@ curl -sS "https://www.stratezik.com/blog" | grep -E '<title>|rel="canonical"'
 
 # Author entity
 curl -sS "https://www.stratezik.com/authors/dave" | grep -E '<title>|ProfilePage|"Person"'
+
+# Service page — Service schema + GEO areaServed, not homepage
+curl -sS "https://www.stratezik.com/services/seo-aeo" | grep -E '<title>|rel="canonical"|"Service"|areaServed|FAQPage'
 
 # LLM files
 curl -sS "https://www.stratezik.com/llms.txt" | head

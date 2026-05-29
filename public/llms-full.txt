@@ -5,8 +5,45 @@
 ## Core pages
 
 - [Home](https://www.stratezik.com/): Digital marketing services, SEO, PPC, strategy, contact
+- [Services hub](https://www.stratezik.com/services): All digital marketing services in Toronto and the GTA
 - [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](https://www.stratezik.com/careers): Toronto team hiring
+
+## Services (8)
+
+Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
+
+### Google Ads Management in Toronto
+- URL: https://www.stratezik.com/services/paid-search
+- Summary: Toronto Google Ads management from a founder who has run $10M+ in annual spend and holds a Google Search Honours Award. Disciplined paid search that compounds.
+
+### Paid Social Ads Agency in Toronto
+- URL: https://www.stratezik.com/services/paid-social
+- Summary: Toronto paid social management across Meta, LinkedIn, TikTok, and Pinterest, built around real intent. Strong creative, honest measurement, scalable structure.
+
+### SEO and AEO Agency in Toronto
+- URL: https://www.stratezik.com/services/seo-aeo
+- Summary: Toronto SEO and AEO services that rank you in Google and get you cited inside ChatGPT, Perplexity, and Google AI Overviews. Position 50 to top 5 in four months.
+
+### Google Business Profile Management in Toronto
+- URL: https://www.stratezik.com/services/google-business-profile
+- Summary: Toronto Google Business Profile management that drives Maps rankings, calls, and direction requests. Real local result: position 50 to top 5 in four months.
+
+### Social Media Marketing in Toronto
+- URL: https://www.stratezik.com/services/social-media-marketing
+- Summary: Toronto organic social media strategy and execution: LinkedIn and Facebook content calendars, post copy, scheduling, and community management for SMBs.
+
+### Brand Strategy Agency in Toronto
+- URL: https://www.stratezik.com/services/brand-strategy
+- Summary: Toronto brand strategy services: positioning, messaging, and voice that beats the alternative. Led by a founder with 15+ years brand experience including GM time.
+
+### Web Design in Toronto
+- URL: https://www.stratezik.com/services/web-design
+- Summary: Toronto web design and landing page builds in Webflow, Framer, or custom. SEO-ready, AODA compliant, fast, and built to convert from day one.
+
+### AI Agent Development in Toronto
+- URL: https://www.stratezik.com/services/ai-agents
+- Summary: Toronto AI agent development and strategy. Custom systems for your business, built by the agency that runs on its own. See the reference build before you commit.
 
 ## Blog articles (11)
 

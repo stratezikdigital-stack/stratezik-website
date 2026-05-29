@@ -2,6 +2,8 @@ import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd } from './authors'
+import { services, servicesHub } from '../services/services'
+import { buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { homeFaqJsonLd } from '../utils/homeFaqJsonLd'
 import {
   DEFAULT_OG_ALT,
@@ -141,11 +143,45 @@ function authorPageSeo(author: (typeof authors)[number]): RouteSeoConfig {
   }
 }
 
+const SERVICES_HUB_SEO: RouteSeoConfig = {
+  path: '/services',
+  title: servicesHub.title,
+  description: servicesHub.metaDescription,
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: 1024,
+  ogImageHeight: 625,
+  ogImageAlt: 'Stratezik Digital Marketing Services',
+  keywords: [servicesHub.primaryKeyword, ...servicesHub.secondaryKeywords],
+  jsonLd: buildServicesHubJsonLd(),
+  sitemapPriority: 0.9,
+  sitemapChangefreq: 'monthly',
+}
+
+function servicePageSeo(service: (typeof services)[number]): RouteSeoConfig {
+  return {
+    path: `/services/${service.slug}`,
+    title: service.title,
+    description: service.metaDescription,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE,
+    ogImageWidth: 1024,
+    ogImageHeight: 625,
+    ogImageAlt: `${service.primaryKeyword} — Stratezik`,
+    keywords: [service.primaryKeyword, ...service.secondaryKeywords],
+    jsonLd: buildServiceJsonLd(service),
+    sitemapPriority: 0.88,
+    sitemapChangefreq: 'monthly',
+  }
+}
+
 /** All indexable routes with server-rendered SEO metadata. */
 export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
   return [
     HOME_SEO,
     CAREERS_SEO,
+    SERVICES_HUB_SEO,
+    ...services.map(servicePageSeo),
     BLOG_INDEX_SEO,
     ...blogPosts.map(blogPostSeo),
     ...authors.map(authorPageSeo),

@@ -5,6 +5,7 @@ import { buildRouteHeadHtml } from '../src/seo/buildPageHeadHtml'
 import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
+import { services as serviceDefs } from '../src/services/services'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -87,8 +88,20 @@ function main(): void {
 ## Core pages
 
 - [Home](${SITE_ORIGIN}/): Digital marketing services, SEO, PPC, strategy, contact
+- [Services hub](${SITE_ORIGIN}/services): All digital marketing services in Toronto and the GTA
 - [Blog index](${SITE_ORIGIN}/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](${SITE_ORIGIN}/careers): Toronto team hiring
+
+## Services (${serviceDefs.length})
+
+Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
+
+${serviceDefs
+  .map(
+    (svc) =>
+      `### ${svc.title.replace(/\| Stratezik$/, '').trim()}\n- URL: ${SITE_ORIGIN}/services/${svc.slug}\n- Summary: ${svc.metaDescription}`,
+  )
+  .join('\n\n')}
 
 ## Blog articles (${blogPosts.length})
 
@@ -119,6 +132,12 @@ ${blogPosts
     context.articles = blogPosts.map((post) => ({
       title: post.title.replace(/\| Stratezik Blog$/, '').trim(),
       url: `${SITE_ORIGIN}${post.path}`,
+    }))
+    context.serviceAreas = ['Toronto', 'Scarborough', 'Greater Toronto Area', 'Canada']
+    context.services = serviceDefs.map((svc) => ({
+      name: svc.title.replace(/\| Stratezik$/, '').trim(),
+      url: `${SITE_ORIGIN}/services/${svc.slug}`,
+      summary: svc.metaDescription,
     }))
     context.generated = new Date().toISOString().slice(0, 10)
     const json = `${JSON.stringify(context, null, 2)}\n`

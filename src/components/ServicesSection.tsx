@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
 
@@ -298,6 +299,15 @@ const ServicesSection = () => {
               Every engagement ties channels to revenue-facing KPIs: paid, organic, creative,
               analytics, and tooling share one roadmap instead of competing narratives.
             </p>
+            <Link
+              to="/services"
+              data-cursor="cta"
+              data-cursor-text="Explore"
+              className="mt-8 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink transition-colors"
+            >
+              Explore all services
+              <span aria-hidden>&rarr;</span>
+            </Link>
           </div>
         </motion.header>
 

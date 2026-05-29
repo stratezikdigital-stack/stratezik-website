@@ -38,10 +38,11 @@ const Footer = () => {
     {
       label: 'I.\u00a0Services',
       links: [
-        { name: 'Paid Search & Social', href: `${baseUrl}/#services` },
-        { name: 'SEO & Organic', href: `${baseUrl}/#services` },
-        { name: 'Brand Strategy', href: `${baseUrl}/#services` },
-        { name: 'Conversion & Growth', href: `${baseUrl}/#services` },
+        { name: 'All Services', href: '/services' },
+        { name: 'SEO & AEO', href: '/services/seo-aeo' },
+        { name: 'Google Ads', href: '/services/paid-search' },
+        { name: 'AI Agents', href: '/services/ai-agents' },
+        { name: 'Web Design', href: '/services/web-design' },
       ],
     },
     {
@@ -159,7 +160,9 @@ const Footer = () => {
         <div className="mt-10 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7 break-words">
           <span>Home</span>
           <span className="mx-3 text-cream/25">&middot;</span>
-          <span>Services</span>
+          <Link to="/services" className="hover:text-cream transition-colors">
+            Services
+          </Link>
           <span className="mx-3 text-cream/25">&middot;</span>
           <span>Process</span>
           <span className="mx-3 text-cream/25">&middot;</span>
