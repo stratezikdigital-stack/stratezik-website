@@ -92,6 +92,7 @@ SEO release gate:
 - [ ] **No homepage meta leakage** on deep links (verify raw curl, Rich Results, LinkedIn debugger)
 - [ ] **Entity consistency**: NAP, org schema in `index.html` body, GBP link in sameAs
 - [ ] **OG dimensions**: brand 1024×625; `blog-og-*` 1200×630 via `ogImageDimensionsForPath`
+- [ ] **Self-hosted fonts**: woff2 in `public/fonts/` (latin + latin-ext, variable), `fonts.css` linked, above-fold weights preloaded with `fetchpriority`, no Google Fonts CDN `<link>`. Regenerate with `node scripts/fetch-fonts.mjs`
 - [ ] **SPA navigation** does not duplicate or orphan JSON-LD (`RouteSeoManager` cleanup)
 - [ ] **No hidden/cloaked SEO blocks** in DOM
 - [ ] **Static assets** for illustrations under `/public/illustrations/` (not `/blog/*` — SPA rewrite conflict)
@@ -103,7 +104,6 @@ These are intentional next steps. Do **not** start them silently — confirm sco
 
 | Item | Why deferred | Trigger to do it |
 |------|--------------|------------------|
-| **Self-host fonts as `.woff2` + preload + `fetchpriority`** | Binary assets + typography regression risk; needs visual QA | When CWV/LCP work is prioritised. Subset Fraunces/Inter/JetBrains Mono, preload only above-fold weights, drop the Google Fonts CDN `<link>` |
 | **Full SSR/ISR (article body in HTML)** | Current prerender already ships meta + JSON-LD in first packet; body SSR likely means a framework migration (Next.js) | When zero-JS full-text indexing or strict crawl-budget needs justify a migration |
 | **`/services/*` parent-child cluster routing** | Site-architecture + content decision, not just SEO plumbing | When building out service landing pages and topical clusters |
 | **Author E-E-A-T hardening** | `authors.ts` exists; needs real full name, headshot (`imagePath`), and verified personal LinkedIn in `sameAs` | When the author confirms profile details — never fabricate `sameAs` |
