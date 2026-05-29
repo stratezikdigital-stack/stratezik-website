@@ -1,17 +1,10 @@
 import type { BlogPostMeta } from './postTypes'
 import { buildBlogIndexBreadcrumbJsonLd } from '../seo/buildBreadcrumbJsonLd'
+import { organizationNode } from '../seo/organization'
 
 const SITE = 'https://www.stratezik.com'
 
-const publisher = {
-  '@type': 'Organization',
-  name: 'Stratezik',
-  url: SITE,
-  logo: {
-    '@type': 'ImageObject',
-    url: `${SITE}/branding/stratezik-vertical.png`,
-  },
-}
+const publisher = organizationNode
 
 /** Blog listing page: Blog + BlogPosting entries for crawl context. */
 export function buildBlogIndexJsonLd(posts: BlogPostMeta[]) {

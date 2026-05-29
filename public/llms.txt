@@ -28,3 +28,7 @@ https://www.stratezik.com/sitemap.xml
 ## Extended index
 
 For article summaries and descriptions, see https://www.stratezik.com/llms-full.txt
+
+## Structured brand facts
+
+Machine-readable entity, services, and verified case-study data points: https://www.stratezik.com/llm-context.json

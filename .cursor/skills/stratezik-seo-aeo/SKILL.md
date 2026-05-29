@@ -142,6 +142,17 @@ Goal: be **quotable** and **corroborated**, not merely ranked.
 - **Local**: GBP completeness, categories, services, photos, reviews velocity handled ethically, UTM hygiene for reporting.
 - **Brand SERP**: owned profiles, consistent NAP, suppression of incorrect duplicates via official channels where possible.
 
+### Citational footprint for AEO (LLM trust matrix)
+
+LLMs weight **co-mentions** and **third-party corroboration**, not just PageRank. Build:
+
+- **Contextual co-mentions**: editorial sentences pairing the brand with target services + geo ("Stratezik" + "technical SEO" + "Canada"), valuable even when `nofollow`.
+- **Regulated third-party platforms**: steady, keyword-rich reviews on **Google Business Profile**, **Clutch**, **G2** (LLMs trust these over self-hosted copy).
+- **Developer footprint**: public **GitHub** tools/configs as authentic authority signals.
+- **Entity linking**: `knowsAbout` → Wikipedia/Wikidata service entries; `sameAs` → owned profiles. Keep brand facts identical across site schema, `llm-context.json`, and listings.
+
+Implementation of the on-site pieces (schema, `llm-context.json`, author entities) lives in **`stratezik-seo-master`**.
+
 ---
 
 ## 6. Analytics and diagnostics
@@ -181,6 +192,9 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 | Build-time prerender + sitemap + llms-full | `scripts/postbuild-seo.ts` (runs on `npm run build`) |
 | Client navigation meta + JSON-LD | `src/seo/RouteSeoManager.tsx` |
 | Article (+ FAQPage + BreadcrumbList) JSON-LD | `src/blog/buildArticleJsonLd.ts` |
+| Person author + `/authors/{slug}` | `src/seo/authors.ts`, `src/components/AuthorPage.tsx` (set `authorSlug` in `posts.ts`) |
+| Org entity (`sameAs`, `knowsAbout`, `foundingDate`) | `src/seo/organization.ts` + `index.html` schema |
+| Structured brand facts for LLMs | `public/llm-context.json` (regenerated on build) |
 | Title, meta, OG/Twitter, canonical | `src/seo/buildPageHeadHtml.ts` (server) + `applyRouteSeo` (client) |
 | Article body component | `src/blog/*.tsx` (e.g. pillar or case study component) |
 | Sitemap | Auto-generated to `public/sitemap.xml` on build |

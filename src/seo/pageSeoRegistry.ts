@@ -1,6 +1,7 @@
 import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
+import { authors, buildAuthorPageJsonLd } from './authors'
 import { homeFaqJsonLd } from '../utils/homeFaqJsonLd'
 import {
   DEFAULT_OG_ALT,
@@ -124,9 +125,31 @@ function blogPostSeo(post: (typeof blogPosts)[number]): RouteSeoConfig {
   }
 }
 
+function authorPageSeo(author: (typeof authors)[number]): RouteSeoConfig {
+  return {
+    path: `/authors/${author.slug}`,
+    title: `${author.name}, ${author.jobTitle} | Stratezik`,
+    description: author.bio,
+    ogType: 'website',
+    ogImageUrl: author.imagePath ? `${SITE_ORIGIN}${author.imagePath}` : DEFAULT_OG_IMAGE,
+    ogImageWidth: 1024,
+    ogImageHeight: 625,
+    ogImageAlt: `${author.name} — Stratezik`,
+    jsonLd: buildAuthorPageJsonLd(author),
+    sitemapPriority: 0.6,
+    sitemapChangefreq: 'monthly',
+  }
+}
+
 /** All indexable routes with server-rendered SEO metadata. */
 export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
-  return [HOME_SEO, CAREERS_SEO, BLOG_INDEX_SEO, ...blogPosts.map(blogPostSeo)]
+  return [
+    HOME_SEO,
+    CAREERS_SEO,
+    BLOG_INDEX_SEO,
+    ...blogPosts.map(blogPostSeo),
+    ...authors.map(authorPageSeo),
+  ]
 }
 
 export function getRouteSeoByPath(pathname: string): RouteSeoConfig | undefined {

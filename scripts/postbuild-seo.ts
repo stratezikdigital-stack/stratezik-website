@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { buildRouteHeadHtml } from '../src/seo/buildPageHeadHtml'
 import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
+import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -107,6 +108,24 @@ ${blogPosts
   fs.writeFileSync(path.join(rootDir, 'public', 'llms-full.txt'), llmsFull, 'utf8')
   fs.writeFileSync(path.join(distDir, 'llms-full.txt'), llmsFull, 'utf8')
   console.log('[seo] llms-full.txt')
+
+  // Keep the structured brand fact sheet in sync with the org entity and posts.
+  const baseContextPath = path.join(rootDir, 'public', 'llm-context.json')
+  if (fs.existsSync(baseContextPath)) {
+    const context = JSON.parse(fs.readFileSync(baseContextPath, 'utf8'))
+    context.sameAs = ORG_SAME_AS
+    context.knowsAbout = ORG_KNOWS_ABOUT
+    context.sitemap = `${SITE_ORIGIN}/sitemap.xml`
+    context.articles = blogPosts.map((post) => ({
+      title: post.title.replace(/\| Stratezik Blog$/, '').trim(),
+      url: `${SITE_ORIGIN}${post.path}`,
+    }))
+    context.generated = new Date().toISOString().slice(0, 10)
+    const json = `${JSON.stringify(context, null, 2)}\n`
+    fs.writeFileSync(baseContextPath, json, 'utf8')
+    fs.writeFileSync(path.join(distDir, 'llm-context.json'), json, 'utf8')
+    console.log('[seo] llm-context.json')
+  }
 }
 
 main()

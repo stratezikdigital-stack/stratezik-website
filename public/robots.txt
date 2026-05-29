@@ -35,3 +35,4 @@ Sitemap: https://www.stratezik.com/sitemap.xml
 # https://llmstxt.org/
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /llm-context.json

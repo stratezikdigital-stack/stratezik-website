@@ -24,9 +24,11 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Head HTML builder | `src/seo/buildPageHeadHtml.ts` | Server-visible `<head>` fragment |
 | Client hydration | `src/seo/RouteSeoManager.tsx` | Mirrors registry on SPA navigation |
 | Build prerender | `scripts/postbuild-seo.ts` | Writes `dist/{route}/index.html` + `sitemap.xml` + `llms-full.txt` |
-| Blog data | `src/blog/posts.ts` | Slug, dates, description, keywords, `shareImagePath`, FAQs |
-| Article schema | `src/blog/buildArticleJsonLd.ts` | Article + FAQPage + BreadcrumbList `@graph` |
-| AEO files | `public/llms.txt`, generated `llms-full.txt` | Machine-readable site index |
+| Blog data | `src/blog/posts.ts` | Slug, dates, description, keywords, `shareImagePath`, `authorSlug`, FAQs |
+| Article schema | `src/blog/buildArticleJsonLd.ts` | Article + FAQPage + BreadcrumbList `@graph`; Person author |
+| Organization entity | `src/seo/organization.ts` | Shared publisher node: `sameAs`, `knowsAbout`, `foundingDate` |
+| Author entities | `src/seo/authors.ts` + `src/components/AuthorPage.tsx` | Person + ProfilePage schema, `/authors/{slug}` pages |
+| AEO files | `public/llms.txt`, generated `llms-full.txt`, `public/llm-context.json` | Machine-readable site index + structured brand facts |
 
 **Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts only need `posts.ts` — registry maps them automatically.
 
@@ -51,11 +53,12 @@ SEO release gate:
 
 ## Adding a blog post
 
-1. Add entry to `src/blog/posts.ts` (slug, title, description, dates, keywords, shareImagePath, faqEntities, Component).
+1. Add entry to `src/blog/posts.ts` (slug, title, description, dates, keywords, shareImagePath, `authorSlug`, faqEntities, Component).
 2. Add FAQ copy to `src/blog/postFaqs.ts` if using FAQ schema.
-3. **Agent runs** `npm run build` — do **not** hand-edit `public/sitemap.xml`.
-4. Verify `dist/blog/{slug}/index.html` title and canonical; commit sitemap + llms-full with the post.
-5. After deploy, optional: `curl -s https://www.stratezik.com/blog/{slug} | grep -E '<title>|canonical'`
+3. Set `authorSlug` to a real person in `src/seo/authors.ts`; add a new author there if needed (never invent `sameAs` profiles).
+4. **Agent runs** `npm run build` — do **not** hand-edit `public/sitemap.xml`, `llms-full.txt`, or `llm-context.json` (all generated).
+5. Verify `dist/blog/{slug}/index.html` title, canonical, and Person author; commit generated files with the post.
+6. After deploy, optional: `curl -s https://www.stratezik.com/blog/{slug} | grep -E '<title>|canonical|Person'`
 
 ## Adding a non-blog page
 
@@ -79,7 +82,9 @@ SEO release gate:
 - [ ] **Article OG** on posts: `article:published_time`, `article:modified_time`, author, section
 - [ ] **JSON-LD**: Article + FAQPage + BreadcrumbList on posts; Blog + BlogPosting on index; FAQ on home
 - [ ] **BreadcrumbList** in schema (visible breadcrumb nav on posts)
-- [ ] **llms.txt** + **llms-full.txt** for AI crawlers
+- [ ] **Person author** on posts (visible byline + Person schema linked to `/authors/{slug}#person`)
+- [ ] **Org entity**: `foundingDate`, `sameAs`, `knowsAbout` (Wikipedia/Wikidata) on publisher + `index.html` schema
+- [ ] **llms.txt** + **llms-full.txt** + **llm-context.json** (structured brand facts) for AI crawlers
 - [ ] **Keywords** in registry (JSON-LD + meta where configured)
 
 ## Advanced / enterprise
@@ -92,6 +97,26 @@ SEO release gate:
 - [ ] **Static assets** for illustrations under `/public/illustrations/` (not `/blog/*` — SPA rewrite conflict)
 - [ ] **Preview/staging** noindex if ever exposed (production only indexed today)
 
+## Roadmap / deliberate decisions (not yet implemented)
+
+These are intentional next steps. Do **not** start them silently — confirm scope with the user, then implement and update this skill.
+
+| Item | Why deferred | Trigger to do it |
+|------|--------------|------------------|
+| **Self-host fonts as `.woff2` + preload + `fetchpriority`** | Binary assets + typography regression risk; needs visual QA | When CWV/LCP work is prioritised. Subset Fraunces/Inter/JetBrains Mono, preload only above-fold weights, drop the Google Fonts CDN `<link>` |
+| **Full SSR/ISR (article body in HTML)** | Current prerender already ships meta + JSON-LD in first packet; body SSR likely means a framework migration (Next.js) | When zero-JS full-text indexing or strict crawl-budget needs justify a migration |
+| **`/services/*` parent-child cluster routing** | Site-architecture + content decision, not just SEO plumbing | When building out service landing pages and topical clusters |
+| **Author E-E-A-T hardening** | `authors.ts` exists; needs real full name, headshot (`imagePath`), and verified personal LinkedIn in `sameAs` | When the author confirms profile details — never fabricate `sameAs` |
+
+## Off-page / citational footprint
+
+Off-page is **operational marketing work**, tracked here as a standing playbook (strategy lives in `stratezik-seo-aeo` §5). For LLM/AEO trust:
+
+- **Digital PR**: earn contextual co-mentions ("Stratezik" + "technical SEO" + "Canada") on reputable publications, even `nofollow`.
+- **Third-party validation**: steady, keyword-rich review velocity on **Google Business Profile**, **Clutch**, **G2**.
+- **Developer footprint**: public **GitHub** tools/configs reinforce authenticity for developer-focused models.
+- Keep NAP and brand facts identical to `index.html` schema and `llm-context.json`.
+
 ## Validation commands
 
 ```bash
@@ -103,9 +128,13 @@ curl -sS "https://www.stratezik.com/blog/chatgpt-ads-2026-guide" | grep -E '<tit
 # Blog index
 curl -sS "https://www.stratezik.com/blog" | grep -E '<title>|rel="canonical"'
 
+# Author entity
+curl -sS "https://www.stratezik.com/authors/dave" | grep -E '<title>|ProfilePage|"Person"'
+
 # LLM files
 curl -sS "https://www.stratezik.com/llms.txt" | head
 curl -sS "https://www.stratezik.com/llms-full.txt" | head
+curl -sS "https://www.stratezik.com/llm-context.json" | head
 ```
 
 ## Common failures

@@ -1,0 +1,112 @@
+{
+  "entity": "Stratezik",
+  "alternateName": "Stratezik Digital Marketing",
+  "url": "https://www.stratezik.com/",
+  "foundingYear": 2026,
+  "type": "Digital marketing agency",
+  "location": {
+    "streetAddress": "2466 Eglinton Ave E",
+    "city": "Toronto",
+    "region": "ON",
+    "country": "Canada"
+  },
+  "contact": {
+    "email": "dave@stratezik.com",
+    "phone": "+1-437-525-4772"
+  },
+  "serviceArea": [
+    "Toronto",
+    "Mississauga",
+    "Brampton",
+    "Markham",
+    "Vaughan",
+    "Greater Toronto Area",
+    "Canada"
+  ],
+  "coreSpecializations": [
+    "Technical SEO",
+    "Answer engine optimisation (AEO)",
+    "Paid search and paid social",
+    "Local SEO and Google Business Profile",
+    "Conversion rate optimisation",
+    "Growth analytics and measurement",
+    "AI agents and workflow automation"
+  ],
+  "audience": "Startups and SMBs in the Greater Toronto Area and across Canada",
+  "verifiedCaseStudyDataPoints": [
+    {
+      "client": "Insectica Pest Control (Toronto, GTA)",
+      "url": "https://www.stratezik.com/blog/insectica-gta-pest-control-scaling-case-study",
+      "results": [
+        "700+ paid conversions in 11 months from a cold start",
+        "Average cost per lead of $42.99, roughly 46-64% below the $80-120 industry average",
+        "Organic impressions grew 168x; average position improved from 57 to 15",
+        "Google Business Profile moved from rank 60+ to top 5 in 4 months"
+      ],
+      "dataSources": "Google Ads, Google Search Console, Google Analytics 4 (Feb 2025 to Apr 2026)"
+    }
+  ],
+  "sameAs": [
+    "https://www.stratezik.com/blog",
+    "https://www.linkedin.com/company/stratezik/",
+    "https://share.google/VEBDLnS7ZRK7cxRV9"
+  ],
+  "knowsAbout": [
+    "https://en.wikipedia.org/wiki/Search_engine_optimization",
+    "https://en.wikipedia.org/wiki/Pay-per-click",
+    "https://en.wikipedia.org/wiki/Digital_marketing",
+    "https://en.wikipedia.org/wiki/Social_media_marketing",
+    "https://en.wikipedia.org/wiki/Local_search_(Internet)",
+    "https://en.wikipedia.org/wiki/Conversion_rate_optimization",
+    "https://en.wikipedia.org/wiki/Web_analytics"
+  ],
+  "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
+  "sitemap": "https://www.stratezik.com/sitemap.xml",
+  "generated": "2026-05-29",
+  "articles": [
+    {
+      "title": "When GTA SMBs Decide It Is Time for a Digital Marketing Agency",
+      "url": "https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta"
+    },
+    {
+      "title": "How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning",
+      "url": "https://www.stratezik.com/blog/get-found-2026-brand-positioning"
+    },
+    {
+      "title": "How Businesses Get Found and Grow in 2026, Part 2: SEO and Organic Search",
+      "url": "https://www.stratezik.com/blog/get-found-2026-seo-organic-search"
+    },
+    {
+      "title": "How Businesses Get Found and Grow in 2026, Part 3: AI Search Visibility",
+      "url": "https://www.stratezik.com/blog/get-found-2026-ai-search-visibility"
+    },
+    {
+      "title": "How Businesses Get Found and Grow in 2026, Part 4: Content Strategy",
+      "url": "https://www.stratezik.com/blog/get-found-2026-content-strategy"
+    },
+    {
+      "title": "How Businesses Get Found and Grow in 2026, Part 5: Paid and Performance",
+      "url": "https://www.stratezik.com/blog/get-found-2026-paid-performance"
+    },
+    {
+      "title": "How to Get Your Business Recommended by ChatGPT (2026 Playbook)",
+      "url": "https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook"
+    },
+    {
+      "title": "ChatGPT Ads in 2026: Setup, Costs, and When to Skip It",
+      "url": "https://www.stratezik.com/blog/chatgpt-ads-2026-guide"
+    },
+    {
+      "title": "Why Service Businesses Lose on Google Maps",
+      "url": "https://www.stratezik.com/blog/google-maps-ranking-service-business"
+    },
+    {
+      "title": "How We Scaled a Toronto Pest Control Company: The Insectica Story (700+ Leads, Full Breakdown)",
+      "url": "https://www.stratezik.com/blog/insectica-gta-pest-control-scaling-case-study"
+    },
+    {
+      "title": "Answer Engine Optimisation for Toronto Businesses",
+      "url": "https://www.stratezik.com/blog/answer-engine-optimisation-toronto"
+    }
+  ]
+}

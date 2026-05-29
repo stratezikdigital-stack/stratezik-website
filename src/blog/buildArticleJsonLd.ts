@@ -1,16 +1,15 @@
 import type { BlogPostMeta } from './postTypes'
 import { buildBlogPostBreadcrumbJsonLd } from '../seo/buildBreadcrumbJsonLd'
+import { organizationNode } from '../seo/organization'
+import { getAuthorBySlug, buildAuthorNode } from '../seo/authors'
 
 const SITE = 'https://www.stratezik.com'
 
-const publisher = {
-  '@type': 'Organization',
-  name: 'Stratezik',
-  url: SITE,
-  logo: {
-    '@type': 'ImageObject',
-    url: `${SITE}/branding/stratezik-vertical.png`,
-  },
+const publisher = organizationNode
+
+function authorNodeFor(meta: BlogPostMeta) {
+  const author = getAuthorBySlug(meta.authorSlug)
+  return author ? buildAuthorNode(author) : publisher
 }
 
 function articleImageUrls(meta: BlogPostMeta): string[] {
@@ -27,7 +26,7 @@ export function buildArticleWithFaqJsonLd(meta: BlogPostMeta, faqMainEntity: { q
     description: meta.description,
     datePublished: meta.datePublished,
     dateModified: meta.dateModified,
-    author: publisher,
+    author: authorNodeFor(meta),
     publisher,
     image: articleImageUrls(meta),
     mainEntityOfPage: {
@@ -74,7 +73,7 @@ export function buildSimpleArticleJsonLd(meta: BlogPostMeta) {
         description: meta.description,
         datePublished: meta.datePublished,
         dateModified: meta.dateModified,
-        author: publisher,
+        author: authorNodeFor(meta),
         publisher,
         image: articleImageUrls(meta),
         mainEntityOfPage: {

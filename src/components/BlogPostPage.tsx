@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getPostBySlug } from '../blog/posts'
+import { getAuthorBySlug } from '../seo/authors'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -11,6 +12,7 @@ const BlogPostPage = () => {
   }
 
   const { Component } = post
+  const author = getAuthorBySlug(post.authorSlug)
 
   return (
     <article className="min-h-screen bg-cream pb-24">
@@ -38,6 +40,19 @@ const BlogPostPage = () => {
           </h1>
           <p className="lead mt-8 text-ink-700">{post.description}</p>
           <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-400">
+            {author && (
+              <>
+                <span>
+                  By{' '}
+                  <Link to={`/authors/${author.slug}`} className="text-ink hover:text-oxblood transition-colors">
+                    {author.name}
+                  </Link>
+                </span>
+                <span aria-hidden className="hidden sm:inline text-ink-300">
+                  |
+                </span>
+              </>
+            )}
             <time dateTime={post.datePublished}>Published {post.datePublished}</time>
             <span aria-hidden className="hidden sm:inline text-ink-300">
               |

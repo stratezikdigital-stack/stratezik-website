@@ -10,6 +10,8 @@ export type BlogPostMeta = {
   keywords: string[]
   /** Path on origin for OG/Twitter + Article `image`, e.g. `/branding/blog-og-x.png` */
   shareImagePath?: string
+  /** Author registry slug (see src/seo/authors.ts). Defaults to the primary author. */
+  authorSlug?: string
 }
 
 export type BlogPostDefinition = BlogPostMeta & {
