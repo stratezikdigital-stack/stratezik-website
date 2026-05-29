@@ -30,7 +30,6 @@ const Navbar = () => {
   }, [])
 
   const navItems = [
-    { name: 'Services', href: '#services' },
     { name: 'Strategy', href: '#strategy' },
     { name: 'Work', href: '#portfolio' },
     { name: 'Contact', href: '#contact' },
@@ -130,6 +129,14 @@ const Navbar = () => {
 
             {/* Center nav */}
             <div className="hidden md:flex items-center gap-7">
+              <Link
+                to="/services"
+                data-cursor="cta"
+                data-cursor-text="Services"
+                className="font-display text-[1.05rem] tracking-tight text-ink-700 hover:text-ink transition-colors"
+              >
+                Services
+              </Link>
               {navItems.map((item) => (
                 <button
                   key={item.name}
@@ -189,6 +196,13 @@ const Navbar = () => {
           {isOpen && (
             <div className="md:hidden border-t border-ink/10 pt-3 pb-4">
               <div className="space-y-1">
+                <Link
+                  to="/services"
+                  className="block px-2 py-2 font-display text-lg text-ink-700 hover:text-oxblood"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Services
+                </Link>
                 {navItems.map((item) => (
                   <button
                     key={item.name}

@@ -22,6 +22,8 @@ interface Opening {
   tactics: string[]
   /** SVG diagram path d's: coordinates on a 8x8 grid (0..7) */
   arrows: { from: [number, number]; to: [number, number]; color: 'white' | 'black' }[]
+  /** Detail page this discipline maps to */
+  href: string
 }
 
 const OPENINGS: Opening[] = [
@@ -41,6 +43,7 @@ const OPENINGS: Opening[] = [
       { from: [4, 6], to: [4, 4], color: 'black' },
       { from: [5, 1], to: [5, 3], color: 'white' },
     ],
+    href: '/services/paid-search',
   },
   {
     service: 'SEO & Organic Growth',
@@ -58,6 +61,7 @@ const OPENINGS: Opening[] = [
       { from: [2, 6], to: [2, 4], color: 'black' },
       { from: [6, 0], to: [5, 2], color: 'white' },
     ],
+    href: '/services/seo-aeo',
   },
   {
     service: 'Social Strategy & Content',
@@ -75,6 +79,7 @@ const OPENINGS: Opening[] = [
       { from: [6, 0], to: [5, 2], color: 'white' },
       { from: [5, 0], to: [2, 3], color: 'white' },
     ],
+    href: '/services/social-media-marketing',
   },
   {
     service: 'Brand Strategy & Identity',
@@ -92,6 +97,7 @@ const OPENINGS: Opening[] = [
       { from: [2, 1], to: [2, 3], color: 'white' },
       { from: [3, 6], to: [3, 4], color: 'black' },
     ],
+    href: '/services/brand-strategy',
   },
   {
     service: 'Conversion & Growth',
@@ -109,6 +115,7 @@ const OPENINGS: Opening[] = [
       { from: [4, 6], to: [4, 4], color: 'black' },
       { from: [1, 0], to: [2, 2], color: 'white' },
     ],
+    href: '/services/web-design',
   },
   {
     service: 'Analytics & Data',
@@ -126,6 +133,7 @@ const OPENINGS: Opening[] = [
       { from: [3, 6], to: [3, 4], color: 'black' },
       { from: [2, 1], to: [2, 3], color: 'white' },
     ],
+    href: '/services',
   },
 ]
 
@@ -261,6 +269,15 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
             </li>
           ))}
         </ul>
+        <Link
+          to={opening.href}
+          data-cursor="cta"
+          data-cursor-text="Explore"
+          className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink transition-colors"
+        >
+          Explore service
+          <span aria-hidden>&rarr;</span>
+        </Link>
       </div>
     </motion.article>
   )
@@ -384,18 +401,29 @@ const ServicesSection = () => {
                   short training pass so adoption sticks past launch week.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={scrollToContactSection}
-                data-cursor="cta"
-                data-cursor-text="Brief"
-                className="inline-flex self-start items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors duration-300"
-              >
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">
-                  Discuss a build
-                </span>
-                <span aria-hidden className="font-mono">&rarr;</span>
-              </button>
+              <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+                <button
+                  type="button"
+                  onClick={scrollToContactSection}
+                  data-cursor="cta"
+                  data-cursor-text="Brief"
+                  className="inline-flex self-start items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors duration-300"
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/55">
+                    Discuss a build
+                  </span>
+                  <span aria-hidden className="font-mono">&rarr;</span>
+                </button>
+                <Link
+                  to="/services/ai-agents"
+                  data-cursor="cta"
+                  data-cursor-text="Explore"
+                  className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-gold hover:text-cream transition-colors"
+                >
+                  AI Agents service
+                  <span aria-hidden>&rarr;</span>
+                </Link>
+              </div>
             </div>
             <div className="lg:col-span-7 border-t lg:border-t-0 lg:border-l border-cream/15 lg:pl-12 pt-8 lg:pt-0 space-y-5">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">

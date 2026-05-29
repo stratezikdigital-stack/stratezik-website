@@ -2,8 +2,80 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getServiceBySlug } from '../services/services'
 import { serviceBodies, servicesHubBody } from '../services/serviceContent'
-import { scrollToContactSection } from '../utils/navigation'
+import { scrollToContactForm } from '../utils/navigation'
 import { Markdown } from './Markdown'
+
+/** Split a markdown body into its H1 title, intro prose, and the rest (from first ##). */
+function splitBody(md: string): { title: string; intro: string; rest: string } {
+  const m = md.match(/^#\s+(.+?)\n+/)
+  if (!m) return { title: '', intro: '', rest: md }
+  const title = m[1].trim()
+  const after = md.slice(m[0].length)
+  const idx = after.indexOf('\n## ')
+  if (idx === -1) return { title, intro: after.trim(), rest: '' }
+  return { title, intro: after.slice(0, idx).trim(), rest: after.slice(idx + 1).trim() }
+}
+
+/**
+ * Deterministic, on-brand geometric motif keyed off the route slug, so each
+ * service page gets a distinct visual without sourcing photography.
+ */
+function ServiceGlyph({ seed }: { seed: string }) {
+  let h = 0
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  const cols = 6
+  const rows = 6
+  const tile = 40
+  const dots = []
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const on = ((h >> ((r * cols + c) % 31)) & 1) === 1
+      dots.push(
+        <circle
+          key={`${r}-${c}`}
+          cx={c * tile + tile / 2}
+          cy={r * tile + tile / 2}
+          r={on ? 4.5 : 2}
+          fill={on ? '#7a1f1f' : '#0d0c0a'}
+          opacity={on ? 0.9 : 0.18}
+        />,
+      )
+    }
+  }
+  // A couple of oxblood "move" lines derived from the hash.
+  const p = (n: number) => (n % cols) * tile + tile / 2
+  const q = (n: number) => (n % rows) * tile + tile / 2
+  return (
+    <svg
+      viewBox={`0 0 ${cols * tile} ${rows * tile}`}
+      className="w-full h-full"
+      role="img"
+      aria-label="Service motif"
+    >
+      {dots}
+      <line
+        x1={p(h)}
+        y1={q(h >> 3)}
+        x2={p(h >> 6)}
+        y2={q(h >> 9)}
+        stroke="#7a1f1f"
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        opacity={0.8}
+      />
+      <line
+        x1={p(h >> 12)}
+        y1={q(h >> 15)}
+        x2={p(h >> 18)}
+        y2={q(h >> 21)}
+        stroke="#0d0c0a"
+        strokeWidth={2}
+        strokeLinecap="round"
+        opacity={0.5}
+      />
+    </svg>
+  )
+}
 
 const ServicePage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -14,12 +86,16 @@ const ServicePage = () => {
     return <Navigate to="/services" replace />
   }
 
-  const body = isHub ? servicesHubBody : serviceBodies[service!.slug]
+  const rawBody = isHub ? servicesHubBody : serviceBodies[service!.slug]
+  const { title, intro, rest } = splitBody(rawBody)
+  const kicker = isHub ? 'All services' : service!.serviceType
+  const introParas = intro.split(/\n{2,}/).filter(Boolean)
 
   return (
     <article className="min-h-screen bg-cream pb-24">
+      {/* Breadcrumb */}
       <div className="container-custom px-6 md:px-12 pt-8 md:pt-12">
-        <nav className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 mb-10">
+        <nav className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
           <Link to="/" className="hover:text-ink transition-colors">
             Home
           </Link>
@@ -32,26 +108,86 @@ const ServicePage = () => {
                 Services
               </Link>
               <span className="mx-2 text-ink-300">&middot;</span>
-              <span className="text-ink">Service</span>
+              <span className="text-ink">{service!.primaryKeyword}</span>
             </>
           )}
         </nav>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="mt-2 md:mt-4"
-        >
-          <Markdown content={body} />
-        </motion.div>
+      {/* Hero */}
+      <header className="container-custom px-6 md:px-12 mt-8 md:mt-12">
+        <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="col-span-12 lg:col-span-7"
+          >
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">{kicker}</div>
+            <h1 className="mt-3 font-display text-[clamp(2.1rem,5vw,3.6rem)] text-ink leading-[1.04] tracking-[-0.03em]">
+              {title}
+            </h1>
+            {introParas.map((para, i) => (
+              <p key={i} className="lead mt-6 max-w-2xl text-ink-700">
+                {para}
+              </p>
+            ))}
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <button
+                type="button"
+                onClick={scrollToContactForm}
+                data-cursor="cta"
+                data-cursor-text="Quote"
+                className="inline-flex items-center gap-3 bg-ink text-cream px-7 py-3.5 font-medium hover:bg-oxblood transition-colors"
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">Start</span>
+                Request a quote
+                <span aria-hidden className="font-mono">&rarr;</span>
+              </button>
+              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
+                Toronto &middot; Scarborough &middot; GTA
+              </span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="col-span-12 lg:col-span-5"
+          >
+            <div className="relative bg-cream-50 border border-ink/10 aspect-[5/4] p-8 md:p-10 overflow-hidden">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-[0.05]"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(#0d0c0a 1px, transparent 1px), linear-gradient(90deg, #0d0c0a 1px, transparent 1px)',
+                  backgroundSize: '40px 40px',
+                }}
+              />
+              <div className="relative w-full h-full flex items-center justify-center">
+                <div className="w-[80%] max-w-[280px]">
+                  <ServiceGlyph seed={service?.slug ?? 'services'} />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      {/* Body */}
+      <div className="container-custom px-6 md:px-12 mt-16 md:mt-20">
+        <div className="border-t border-ink/10 pt-12">
+          <Markdown content={rest} />
+        </div>
 
         <footer className="max-w-[720px] mt-16 pt-10 border-t border-ink/10 flex flex-wrap items-center gap-x-8 gap-y-4">
           <button
             type="button"
-            onClick={scrollToContactSection}
+            onClick={scrollToContactForm}
             data-cursor="cta"
-            data-cursor-text="Talk"
+            data-cursor-text="Quote"
             className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink transition-colors"
           >
             Request a quote

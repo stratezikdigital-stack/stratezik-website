@@ -59,18 +59,19 @@ If you prefer a simpler solution:
 5. Replace the fetch URL in your contact form with the Formspree URL
 6. Formspree will email you leads and provide a dashboard
 
-## 📧 **Email Notifications**
+## 📧 **Email Notifications (built in)**
 
-You can also set up email notifications in Google Apps Script:
+`google-apps-script.js` now emails every submission to **stratezikdigital@gmail.com**
+via the shared `recordLead()` function (used by both `doGet` and `doPost`). The
+`replyTo` is set to the lead's email so you can reply directly from the notification.
 
-```javascript
-// Add this to the doPost function after adding to sheet
-MailApp.sendEmail({
-  to: "your-email@stratezik.com",
-  subject: "New Lead from Stratezik Website",
-  body: `New lead received:\n\nName: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company}\nMessage: ${data.message}`
-});
-```
+To change the recipient, edit `LEAD_NOTIFICATION_EMAIL` at the top of the script.
+
+> **Deploy step (required):** The live code runs inside Google Apps Script, not in
+> this repo. After editing `google-apps-script.js`, paste it into the Apps Script
+> project, then **Deploy → Manage deployments → Edit (pencil) → Version: New version → Deploy**.
+> The first run will prompt you to authorize the `MailApp` (send email) scope —
+> approve it once. The web app URL stays the same, so no website change is needed.
 
 ## 🎯 **Benefits of This Setup**
 

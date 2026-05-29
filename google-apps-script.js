@@ -1,117 +1,110 @@
 // Google Apps Script for Stratezik Contact Form
-// Deploy this as a web app to receive form submissions
+// Deploy this as a web app to receive form submissions.
+//
+// IMPORTANT: This file is the source of truth, but the live code runs inside
+// Google Apps Script. After editing here you MUST paste it into the Apps Script
+// project and create a NEW deployment (Deploy -> Manage deployments -> Edit ->
+// New version) for changes to take effect on the live site.
+
+// Where new-lead notification emails are sent.
+var LEAD_NOTIFICATION_EMAIL = 'stratezikdigital@gmail.com';
+var LEADS_SPREADSHEET_URL =
+  'https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit';
+
+/** Append a lead to the sheet and send a notification email. */
+function recordLead(data) {
+  var spreadsheet = SpreadsheetApp.openByUrl(LEADS_SPREADSHEET_URL);
+  var sheet = spreadsheet.getActiveSheet();
+  var timestamp = new Date();
+
+  sheet.appendRow([
+    timestamp,
+    data.name,
+    data.email,
+    data.company,
+    data.message,
+    data.source || 'Website Form',
+  ]);
+
+  // Notify the team of every submission.
+  try {
+    MailApp.sendEmail({
+      to: LEAD_NOTIFICATION_EMAIL,
+      replyTo: data.email || LEAD_NOTIFICATION_EMAIL,
+      subject: 'New lead from Stratezik website' + (data.name ? ' — ' + data.name : ''),
+      body:
+        'A new lead was submitted on stratezik.com.\n\n' +
+        'Name: ' + (data.name || '(not provided)') + '\n' +
+        'Email: ' + (data.email || '(not provided)') + '\n' +
+        'Company: ' + (data.company || '(not provided)') + '\n' +
+        'Message: ' + (data.message || '(not provided)') + '\n' +
+        'Source: ' + (data.source || 'Website Form') + '\n' +
+        'Received: ' + timestamp + '\n',
+    });
+  } catch (mailError) {
+    // Don't fail the submission if the email quota/permission hiccups.
+    console.error('Lead email failed: ' + mailError.toString());
+  }
+}
 
 function doPost(e) {
   try {
-    // Handle FormData (URL-encoded data)
-    let data;
+    var data;
     if (e.postData && e.postData.contents) {
-      // Parse URL-encoded data from FormData
-      const params = new URLSearchParams(e.postData.contents);
+      var params = new URLSearchParams(e.postData.contents);
       data = {
         name: params.get('name') || '',
         email: params.get('email') || '',
         company: params.get('company') || '',
         message: params.get('message') || '',
-        source: params.get('source') || 'Website Form'
+        source: params.get('source') || 'Website Form',
       };
     } else {
-      // Fallback for JSON data
       data = JSON.parse(e.postData.contents);
     }
-    
-    // Get the spreadsheet by URL
-    const spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit');
-    const sheet = spreadsheet.getActiveSheet();
-    
-    // Get current timestamp
-    const timestamp = new Date();
-    
-    // Prepare row data
-    const rowData = [
-      timestamp,           // Timestamp
-      data.name,          // Name
-      data.email,         // Email
-      data.company,       // Company
-      data.message,       // Message
-      data.source || 'Website Form' // Source
-    ];
-    
-    // Add data to the sheet
-    sheet.appendRow(rowData);
-    
-    // Return success response
-    return ContentService
-      .createTextOutput(JSON.stringify({ success: true, message: 'Form submitted successfully' }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
+
+    recordLead(data);
+
+    return ContentService.createTextOutput(
+      JSON.stringify({ success: true, message: 'Form submitted successfully' }),
+    ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
-    // Return error response
-    return ContentService
-      .createTextOutput(JSON.stringify({ success: false, error: error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(
+      JSON.stringify({ success: false, error: error.toString() }),
+    ).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 function doGet(e) {
   try {
-    // Handle GET requests with query parameters
-    const data = {
+    var data = {
       name: e.parameter.name || '',
       email: e.parameter.email || '',
       company: e.parameter.company || '',
       message: e.parameter.message || '',
-      source: e.parameter.source || 'Website Form'
+      source: e.parameter.source || 'Website Form',
     };
-    
-    // Get the spreadsheet by URL
-    const spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit');
-    const sheet = spreadsheet.getActiveSheet();
-    
-    // Get current timestamp
-    const timestamp = new Date();
-    
-    // Prepare row data
-    const rowData = [
-      timestamp,           // Timestamp
-      data.name,          // Name
-      data.email,         // Email
-      data.company,      // Company
-      data.message,      // Message
-      data.source        // Source
-    ];
-    
-    // Add data to the sheet
-    sheet.appendRow(rowData);
-    
-    // Return success response
-    return ContentService
-      .createTextOutput('Form submitted successfully')
-      .setMimeType(ContentService.MimeType.TEXT);
-      
+
+    recordLead(data);
+
+    return ContentService.createTextOutput('Form submitted successfully').setMimeType(
+      ContentService.MimeType.TEXT,
+    );
   } catch (error) {
-    // Return error response
-    return ContentService
-      .createTextOutput('Error: ' + error.toString())
-      .setMimeType(ContentService.MimeType.TEXT);
+    return ContentService.createTextOutput('Error: ' + error.toString()).setMimeType(
+      ContentService.MimeType.TEXT,
+    );
   }
 }
 
 // Setup function to create headers in the sheet
 function setupSheet() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadsheet.getActiveSheet();
-  
-  // Set up headers
-  const headers = [
-    'Timestamp',
-    'Name', 
-    'Email',
-    'Company',
-    'Message',
-    'Source'
-  ];
-  
+  var spreadsheet = SpreadsheetApp.getActiveSheet
+    ? SpreadsheetApp.openByUrl(LEADS_SPREADSHEET_URL)
+    : SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getActiveSheet();
+
+  var headers = ['Timestamp', 'Name', 'Email', 'Company', 'Message', 'Source'];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
 }

@@ -15,11 +15,26 @@ import AuthorPage from './components/AuthorPage'
 import ServicePage from './components/ServicePage'
 import Footer from './components/Footer'
 import { SmoothScroll } from './three/world/SmoothScroll'
+import { getLenis } from './three/world/lenisRef'
 import { WorldCanvas } from './three/world/WorldCanvas'
 import { Loader } from './components/Loader'
 import { CustomCursor } from './components/CustomCursor'
 import { MoveCounterHUD } from './components/MoveCounterHUD'
 import { NotationMarquee } from './components/NotationMarquee'
+
+/** On route change without a target hash, reset scroll to the top of the page. */
+function ScrollToTop() {
+  const location = useLocation()
+  useEffect(() => {
+    if (location.hash) return
+    const lenis = getLenis()
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true })
+    }
+    window.scrollTo(0, 0)
+  }, [location.pathname, location.hash])
+  return null
+}
 
 /** After SPA navigation or full load with #contact / #contact-form, scroll into view. */
 function ScrollToHash() {
@@ -49,6 +64,7 @@ function AppShell() {
       <Loader onDone={() => setLoaded(true)} />
       <CustomCursor />
       <SmoothScroll>
+        <ScrollToTop />
         <ScrollToHash />
         {isHome ? <WorldCanvas /> : null}
         {isHome && loaded ? <MoveCounterHUD /> : null}
