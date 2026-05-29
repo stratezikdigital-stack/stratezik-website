@@ -2,8 +2,10 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getServiceBySlug } from '../services/services'
 import { serviceBodies, servicesHubBody } from '../services/serviceContent'
-import { scrollToContactForm } from '../utils/navigation'
 import { Markdown } from './Markdown'
+
+/** Home contact form anchor — handled by ScrollToHash in App.tsx. */
+const QUOTE_HREF = '/#contact-form'
 
 /** Split a markdown body into its H1 title, intro prose, and the rest (from first ##). */
 function splitBody(md: string): { title: string; intro: string; rest: string } {
@@ -133,9 +135,8 @@ const ServicePage = () => {
               </p>
             ))}
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <button
-                type="button"
-                onClick={scrollToContactForm}
+              <Link
+                to={QUOTE_HREF}
                 data-cursor="cta"
                 data-cursor-text="Quote"
                 className="inline-flex items-center gap-3 bg-ink text-cream px-7 py-3.5 font-medium hover:bg-oxblood transition-colors"
@@ -143,7 +144,7 @@ const ServicePage = () => {
                 <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-cream/60">Start</span>
                 Request a quote
                 <span aria-hidden className="font-mono">&rarr;</span>
-              </button>
+              </Link>
               <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">
                 Toronto &middot; Scarborough &middot; GTA
               </span>
@@ -183,16 +184,15 @@ const ServicePage = () => {
         </div>
 
         <footer className="max-w-[720px] mt-16 pt-10 border-t border-ink/10 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <button
-            type="button"
-            onClick={scrollToContactForm}
+          <Link
+            to={QUOTE_HREF}
             data-cursor="cta"
             data-cursor-text="Quote"
             className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink transition-colors"
           >
             Request a quote
             <span aria-hidden>&rarr;</span>
-          </button>
+          </Link>
           {!isHub && (
             <Link
               to="/services"

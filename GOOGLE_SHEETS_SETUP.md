@@ -67,11 +67,24 @@ via the shared `recordLead()` function (used by both `doGet` and `doPost`). The
 
 To change the recipient, edit `LEAD_NOTIFICATION_EMAIL` at the top of the script.
 
-> **Deploy step (required):** The live code runs inside Google Apps Script, not in
-> this repo. After editing `google-apps-script.js`, paste it into the Apps Script
-> project, then **Deploy → Manage deployments → Edit (pencil) → Version: New version → Deploy**.
-> The first run will prompt you to authorize the `MailApp` (send email) scope —
-> approve it once. The web app URL stays the same, so no website change is needed.
+### ⚠️ Emails not arriving but the sheet still updates?
+
+This is the #1 gotcha. The sheet updating means the script runs — but the live
+web app is almost certainly serving an **old deployed version** (no email code),
+or the **send-email permission was never granted**. Do these in order:
+
+1. **Paste** the latest `google-apps-script.js` into the Apps Script project and **Save**.
+2. **Authorize email:** in the editor, select the function **`sendTestEmail`** in the
+   toolbar dropdown and click **Run**. Approve the Google consent screen (it now asks
+   for "Send email as you"). Confirm a test email lands at **stratezikdigital@gmail.com**
+   (check Spam too).
+3. **Redeploy a new version:** **Deploy → Manage deployments → Edit (pencil icon) →
+   Version: _New version_ → Deploy.** Saving alone does NOT update the live `/exec`
+   URL — you must publish a new version. The URL stays the same, so no website change.
+4. Submit the live form once and confirm both the sheet row **and** the email.
+
+To change the recipient, edit `LEAD_NOTIFICATION_EMAIL` at the top of the script,
+then repeat steps 2–3.
 
 ## 🎯 **Benefits of This Setup**
 

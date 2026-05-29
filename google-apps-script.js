@@ -97,6 +97,25 @@ function doGet(e) {
   }
 }
 
+/**
+ * Run this ONCE from the Apps Script editor (select sendTestEmail -> Run).
+ * It does two things:
+ *   1) Triggers the Google authorization prompt for the "send email" scope
+ *      (MailApp). The web app runs as you, so you must grant this once or
+ *      emails are silently skipped even though sheet rows are still written.
+ *   2) Sends a test email to confirm delivery (check inbox AND spam).
+ * After it succeeds, redeploy: Deploy -> Manage deployments -> Edit (pencil)
+ * -> Version: New version -> Deploy.
+ */
+function sendTestEmail() {
+  MailApp.sendEmail({
+    to: LEAD_NOTIFICATION_EMAIL,
+    subject: 'Stratezik lead notifications — test',
+    body: 'If you can read this, lead notification emails are working. ' + new Date(),
+  });
+  Logger.log('Test email sent to ' + LEAD_NOTIFICATION_EMAIL + '. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
+}
+
 // Setup function to create headers in the sheet
 function setupSheet() {
   var spreadsheet = SpreadsheetApp.getActiveSheet
