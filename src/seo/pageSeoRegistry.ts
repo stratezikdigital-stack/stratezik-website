@@ -2,8 +2,8 @@ import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd } from './authors'
-import { services, servicesHub } from '../services/services'
-import { buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
+import { serviceChildren, services, servicesHub } from '../services/services'
+import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { homeFaqJsonLd } from '../utils/homeFaqJsonLd'
 import {
   DEFAULT_OG_ALT,
@@ -175,6 +175,23 @@ function servicePageSeo(service: (typeof services)[number]): RouteSeoConfig {
   }
 }
 
+function serviceChildPageSeo(child: (typeof serviceChildren)[number]): RouteSeoConfig {
+  return {
+    path: `/services/${child.parentSlug}/${child.slug}`,
+    title: child.title,
+    description: child.metaDescription,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE,
+    ogImageWidth: 1024,
+    ogImageHeight: 625,
+    ogImageAlt: `${child.primaryKeyword} — Stratezik`,
+    keywords: [child.primaryKeyword, ...child.secondaryKeywords],
+    jsonLd: buildServiceChildJsonLd(child),
+    sitemapPriority: 0.82,
+    sitemapChangefreq: 'monthly',
+  }
+}
+
 /** All indexable routes with server-rendered SEO metadata. */
 export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
   return [
@@ -182,6 +199,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     CAREERS_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),
+    ...serviceChildren.map(serviceChildPageSeo),
     BLOG_INDEX_SEO,
     ...blogPosts.map(blogPostSeo),
     ...authors.map(authorPageSeo),

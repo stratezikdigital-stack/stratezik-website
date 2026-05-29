@@ -1,7 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { getServiceBySlug } from '../services/services'
-import { serviceBodies, servicesHubBody } from '../services/serviceContent'
+import { getServiceBySlug, getServiceChild } from '../services/services'
+import { serviceBodies, serviceChildBodies, servicesHubBody } from '../services/serviceContent'
 import { Markdown } from './Markdown'
 
 /** Home contact form anchor — handled by ScrollToHash in App.tsx. */
@@ -80,17 +80,27 @@ function ServiceGlyph({ seed }: { seed: string }) {
 }
 
 const ServicePage = () => {
-  const { slug } = useParams<{ slug: string }>()
+  const { slug, child } = useParams<{ slug: string; child: string }>()
   const isHub = !slug
-  const service = isHub ? undefined : getServiceBySlug(slug)
+  const isChild = !!slug && !!child
+  const parentService = slug ? getServiceBySlug(slug) : undefined
+  const childDef = isChild ? getServiceChild(slug, child) : undefined
 
-  if (!isHub && !service) {
+  if (isChild && !childDef) {
+    return <Navigate to="/services" replace />
+  }
+  if (!isHub && !isChild && !parentService) {
     return <Navigate to="/services" replace />
   }
 
-  const rawBody = isHub ? servicesHubBody : serviceBodies[service!.slug]
+  const rawBody = isHub
+    ? servicesHubBody
+    : isChild
+      ? serviceChildBodies[`${slug}/${child}`]
+      : serviceBodies[parentService!.slug]
   const { title, intro, rest } = splitBody(rawBody)
-  const kicker = isHub ? 'All services' : service!.serviceType
+  const kicker = isHub ? 'All services' : isChild ? childDef!.serviceType : parentService!.serviceType
+  const glyphSeed = isChild ? `${slug}-${child}` : parentService?.slug ?? 'services'
   const introParas = intro.split(/\n{2,}/).filter(Boolean)
 
   return (
@@ -104,13 +114,25 @@ const ServicePage = () => {
           <span className="mx-2 text-ink-300">&middot;</span>
           {isHub ? (
             <span className="text-ink">Services</span>
+          ) : isChild ? (
+            <>
+              <Link to="/services" className="hover:text-ink transition-colors">
+                Services
+              </Link>
+              <span className="mx-2 text-ink-300">&middot;</span>
+              <Link to={`/services/${slug}`} className="hover:text-ink transition-colors">
+                {parentService?.primaryKeyword ?? slug}
+              </Link>
+              <span className="mx-2 text-ink-300">&middot;</span>
+              <span className="text-ink">{childDef!.primaryKeyword}</span>
+            </>
           ) : (
             <>
               <Link to="/services" className="hover:text-ink transition-colors">
                 Services
               </Link>
               <span className="mx-2 text-ink-300">&middot;</span>
-              <span className="text-ink">{service!.primaryKeyword}</span>
+              <span className="text-ink">{parentService!.primaryKeyword}</span>
             </>
           )}
         </nav>
@@ -169,7 +191,7 @@ const ServicePage = () => {
               />
               <div className="relative w-full h-full flex items-center justify-center">
                 <div className="w-[80%] max-w-[280px]">
-                  <ServiceGlyph seed={service?.slug ?? 'services'} />
+                  <ServiceGlyph seed={glyphSeed} />
                 </div>
               </div>
             </div>
@@ -193,6 +215,14 @@ const ServicePage = () => {
             Request a quote
             <span aria-hidden>&rarr;</span>
           </Link>
+          {isChild && (
+            <Link
+              to={`/services/${slug}`}
+              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500 hover:text-ink transition-colors"
+            >
+              &larr; {parentService?.primaryKeyword ?? 'Parent service'}
+            </Link>
+          )}
           {!isHub && (
             <Link
               to="/services"

@@ -12,8 +12,8 @@ Stratezik manages Google Ads and Microsoft Ads campaigns for Toronto, Scarboroug
 
 ## How we do it
 
-- **Google Ads** — Search, Performance Max, Shopping where it fits. The biggest paid lever for most businesses.
-- **Microsoft Ads** — Often the cheapest qualified clicks available, frequently underused by Toronto businesses.
+- **[Google Ads](/services/paid-search/google-ads)** — Search, Performance Max, Shopping where it fits. The biggest paid lever for most businesses.
+- **[Microsoft Ads](/services/paid-search/microsoft-ads)** — Often the cheapest qualified clicks available, frequently underused by Toronto businesses.
 
 Every engagement starts with an audit (for existing accounts) or a clean build (for new ones), proper conversion tracking via GA4 and Google Tag Manager, and a campaign architecture that gives the bidder good signal to work with. Then we run it and iterate.
 

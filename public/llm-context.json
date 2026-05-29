@@ -119,42 +119,115 @@
     {
       "name": "Google Ads Management in Toronto",
       "url": "https://www.stratezik.com/services/paid-search",
-      "summary": "Toronto Google Ads management from a founder who has run $10M+ in annual spend and holds a Google Search Honours Award. Disciplined paid search that compounds."
+      "summary": "Toronto Google Ads management from a founder who has run $10M+ in annual spend and holds a Google Search Honours Award. Disciplined paid search that compounds.",
+      "focusAreas": [
+        {
+          "name": "Google Ads Agency in Toronto",
+          "url": "https://www.stratezik.com/services/paid-search/google-ads",
+          "summary": "Toronto Google Ads management led by a founder who has run $10M+ in annual spend. Search, Performance Max, and Shopping campaigns with disciplined measurement."
+        },
+        {
+          "name": "Microsoft Ads in Toronto",
+          "url": "https://www.stratezik.com/services/paid-search/microsoft-ads",
+          "summary": "Toronto Microsoft Ads (Bing) management. Often the cheapest qualified clicks available, frequently underused by GTA businesses, run by a $10M+ ad operator."
+        }
+      ]
     },
     {
       "name": "Paid Social Ads Agency in Toronto",
       "url": "https://www.stratezik.com/services/paid-social",
-      "summary": "Toronto paid social management across Meta, LinkedIn, TikTok, and Pinterest, built around real intent. Strong creative, honest measurement, scalable structure."
+      "summary": "Toronto paid social management across Meta, LinkedIn, TikTok, and Pinterest, built around real intent. Strong creative, honest measurement, scalable structure.",
+      "focusAreas": [
+        {
+          "name": "Meta Ads Agency in Toronto",
+          "url": "https://www.stratezik.com/services/paid-social/meta-ads",
+          "summary": "Toronto Meta Ads management (Facebook + Instagram). Pixel and CAPI set up right, A/B testing that means something, and retargeting that converts the warm audience."
+        },
+        {
+          "name": "LinkedIn Ads Agency in Toronto",
+          "url": "https://www.stratezik.com/services/paid-social/linkedin-ads",
+          "summary": "Toronto LinkedIn Ads management for B2B and high-deal-size services. Narrow targeting, strong creative, and ROI math that justifies the premium click costs."
+        },
+        {
+          "name": "TikTok Ads in Toronto",
+          "url": "https://www.stratezik.com/services/paid-social/tiktok-ads",
+          "summary": "Toronto TikTok Ads management for businesses whose buyers actually live on the platform. Short-form creative direction, honest reach math, real test framework."
+        }
+      ]
     },
     {
       "name": "SEO and AEO Agency in Toronto",
       "url": "https://www.stratezik.com/services/seo-aeo",
-      "summary": "Toronto SEO and AEO services that rank you in Google and get you cited inside ChatGPT, Perplexity, and Google AI Overviews. Position 50 to top 5 in four months."
+      "summary": "Toronto SEO and AEO services that rank you in Google and get you cited inside ChatGPT, Perplexity, and Google AI Overviews. Position 50 to top 5 in four months.",
+      "focusAreas": [
+        {
+          "name": "Technical SEO in Toronto",
+          "url": "https://www.stratezik.com/services/seo-aeo/technical-seo",
+          "summary": "Toronto technical SEO audits and fixes: Core Web Vitals, schema markup, indexing, and the AI-crawler access most local sites are quietly blocking."
+        },
+        {
+          "name": "Local SEO in Toronto",
+          "url": "https://www.stratezik.com/services/seo-aeo/local-seo",
+          "summary": "Toronto local SEO: Google Maps rankings, neighbourhood-level relevance, and the structural work behind a position 50 to top 5 move in four months."
+        },
+        {
+          "name": "Answer Engine Optimisation (AEO) in Toronto",
+          "url": "https://www.stratezik.com/services/seo-aeo/answer-engine-optimization",
+          "summary": "Toronto AEO that gets your business cited inside ChatGPT, Perplexity, and Google AI Overviews. AI search recommends 1.2% of local businesses, here's how to be one."
+        }
+      ]
     },
     {
       "name": "Google Business Profile Management in Toronto",
       "url": "https://www.stratezik.com/services/google-business-profile",
-      "summary": "Toronto Google Business Profile management that drives Maps rankings, calls, and direction requests. Real local result: position 50 to top 5 in four months."
+      "summary": "Toronto Google Business Profile management that drives Maps rankings, calls, and direction requests. Real local result: position 50 to top 5 in four months.",
+      "focusAreas": []
     },
     {
       "name": "Social Media Marketing in Toronto",
       "url": "https://www.stratezik.com/services/social-media-marketing",
-      "summary": "Toronto organic social media strategy and execution: LinkedIn and Facebook content calendars, post copy, scheduling, and community management for SMBs."
+      "summary": "Toronto organic social media strategy and execution: LinkedIn and Facebook content calendars, post copy, scheduling, and community management for SMBs.",
+      "focusAreas": []
     },
     {
       "name": "Brand Strategy Agency in Toronto",
       "url": "https://www.stratezik.com/services/brand-strategy",
-      "summary": "Toronto brand strategy services: positioning, messaging, and voice that beats the alternative. Led by a founder with 15+ years brand experience including GM time."
+      "summary": "Toronto brand strategy services: positioning, messaging, and voice that beats the alternative. Led by a founder with 15+ years brand experience including GM time.",
+      "focusAreas": []
     },
     {
       "name": "Web Design in Toronto",
       "url": "https://www.stratezik.com/services/web-design",
-      "summary": "Toronto web design and landing page builds in Webflow, Framer, or custom. SEO-ready, AODA compliant, fast, and built to convert from day one."
+      "summary": "Toronto web design and landing page builds in Webflow, Framer, or custom. SEO-ready, AODA compliant, fast, and built to convert from day one.",
+      "focusAreas": [
+        {
+          "name": "Landing Page Design in Toronto",
+          "url": "https://www.stratezik.com/services/web-design/landing-pages",
+          "summary": "Toronto landing page design and build. Single conversion-focused pages for paid campaigns and launches, in Webflow or Framer, AODA compliant, live in 2-3 weeks."
+        },
+        {
+          "name": "Small Business Website Design in Toronto",
+          "url": "https://www.stratezik.com/services/web-design/website-design",
+          "summary": "Toronto small business website design and build. Webflow, Framer, or custom. SEO-ready, AODA compliant, conversion-focused, live in 6 to 10 weeks."
+        }
+      ]
     },
     {
       "name": "AI Agent Development in Toronto",
       "url": "https://www.stratezik.com/services/ai-agents",
-      "summary": "Toronto AI agent development and strategy. Custom systems for your business, built by the agency that runs on its own. See the reference build before you commit."
+      "summary": "Toronto AI agent development and strategy. Custom systems for your business, built by the agency that runs on its own. See the reference build before you commit.",
+      "focusAreas": [
+        {
+          "name": "AI Strategy Consulting in Toronto",
+          "url": "https://www.stratezik.com/services/ai-agents/ai-strategy",
+          "summary": "Toronto AI strategy consulting for founders deciding what to automate first. Agent org design, context engineering, and a deployment roadmap from operators."
+        },
+        {
+          "name": "Custom AI Agent Development in Toronto",
+          "url": "https://www.stratezik.com/services/ai-agents/agent-development",
+          "summary": "Toronto custom AI agent build and deployment. End-to-end work from context engineering and tool integration to handoff, by an agency that runs on its own agents."
+        }
+      ]
     }
   ]
 }

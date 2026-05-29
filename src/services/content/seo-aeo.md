@@ -14,9 +14,9 @@ Stratezik ranks Toronto and Scarborough businesses in two competitions at once: 
 
 Our SEO and AEO work covers three layers, and you can see each as its own focus area:
 
-- **Technical SEO** — Site speed, schema, indexing, and the AI-crawler access most local sites are quietly blocking.
-- **Local SEO** — Maps, Google Business Profile alignment, neighbourhood-level relevance.
-- **Answer Engine Optimisation** — Getting cited by ChatGPT, Perplexity, and Google's AI Mode.
+- **[Technical SEO](/services/seo-aeo/technical-seo)** — Site speed, schema, indexing, and the AI-crawler access most local sites are quietly blocking.
+- **[Local SEO](/services/seo-aeo/local-seo)** — Maps, Google Business Profile alignment, neighbourhood-level relevance.
+- **[Answer Engine Optimisation](/services/seo-aeo/answer-engine-optimization)** — Getting cited by ChatGPT, Perplexity, and Google's AI Mode.
 
 ## Proof
 

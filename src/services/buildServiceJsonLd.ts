@@ -1,7 +1,7 @@
 import { SITE_ORIGIN } from '../seo/siteConfig'
 import { organizationNode } from '../seo/organization'
-import type { ServiceDefinition } from './serviceTypes'
-import { services, servicesHub } from './services'
+import type { ServiceChildDefinition, ServiceDefinition } from './serviceTypes'
+import { getServiceBySlug, services, servicesHub } from './services'
 
 /** GEO targeting: office is in Scarborough (M1K), serving Toronto + GTA. */
 const AREA_SERVED = [
@@ -46,6 +46,52 @@ export function buildServiceJsonLd(service: ServiceDefinition) {
       '@type': 'FAQPage',
       '@id': `${url}#faq`,
       mainEntity: service.faqEntities.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    })
+  }
+
+  return { '@context': 'https://schema.org', '@graph': graph }
+}
+
+export function buildServiceChildJsonLd(child: ServiceChildDefinition) {
+  const parent = getServiceBySlug(child.parentSlug)
+  const parentUrl = `${SITE_ORIGIN}/services/${child.parentSlug}`
+  const url = `${parentUrl}/${child.slug}`
+  const parentName = parent ? parent.title.replace(/\s*\|\s*Stratezik$/, '').trim() : child.parentSlug
+
+  const graph: Record<string, unknown>[] = [
+    {
+      '@type': 'Service',
+      '@id': `${url}#service`,
+      name: child.title.replace(/\s*\|\s*Stratezik$/, '').trim(),
+      description: child.metaDescription,
+      serviceType: child.serviceType,
+      url,
+      provider: organizationNode,
+      areaServed: AREA_SERVED,
+      isPartOf: { '@id': `${parentUrl}#service` },
+      inLanguage: 'en-CA',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_ORIGIN}/` },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_ORIGIN}/services` },
+        { '@type': 'ListItem', position: 3, name: parentName, item: parentUrl },
+        { '@type': 'ListItem', position: 4, name: child.primaryKeyword, item: url },
+      ],
+    },
+  ]
+
+  if (child.faqEntities && child.faqEntities.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      mainEntity: child.faqEntities.map((item) => ({
         '@type': 'Question',
         name: item.question,
         acceptedAnswer: { '@type': 'Answer', text: item.answer },

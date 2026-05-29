@@ -12,10 +12,10 @@ Stratezik runs paid social campaigns across Meta, LinkedIn, TikTok, and Pinteres
 
 ## How we do it
 
-- **Meta Ads** — Facebook and Instagram. Broad reach, strong for local consumer services and visual offers.
-- **LinkedIn Ads** — Narrow, precise, and worth the cost when the deal size justifies it.
+- **[Meta Ads](/services/paid-social/meta-ads)** — Facebook and Instagram. Broad reach, strong for local consumer services and visual offers.
+- **[LinkedIn Ads](/services/paid-social/linkedin-ads)** — Narrow, precise, and worth the cost when the deal size justifies it.
 
-We also run TikTok and Pinterest campaigns where the audience genuinely lives there. The platform choice is part of the strategy, not an afterthought.
+We also run [TikTok](/services/paid-social/tiktok-ads) and Pinterest campaigns where the audience genuinely lives there. The platform choice is part of the strategy, not an afterthought.
 
 ## Proof
 

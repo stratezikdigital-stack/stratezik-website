@@ -14,8 +14,8 @@ Stratezik designs and builds custom AI agent systems for businesses that want to
 
 Two main shapes of engagement, depending on where you are:
 
-- **AI Strategy** — Org-chart design, context engineering, and the roadmap to deploy. For founders deciding what to automate first.
-- **Agent Development** — End-to-end build of a single agent or a full agent org. For teams ready to ship.
+- **[AI Strategy](/services/ai-agents/ai-strategy)** — Org-chart design, context engineering, and the roadmap to deploy. For founders deciding what to automate first.
+- **[Agent Development](/services/ai-agents/agent-development)** — End-to-end build of a single agent or a full agent org. For teams ready to ship.
 
 A single-agent build typically runs two to four weeks. A full agent org build runs eight to sixteen weeks. Every engagement ends with a working system, audit logs, and an operator who can manage it without us.
 

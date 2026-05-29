@@ -21,3 +21,16 @@ export type ServicesHubDefinition = {
   primaryKeyword: string
   secondaryKeywords: string[]
 }
+
+export type ServiceChildDefinition = {
+  /** Parent service slug, e.g. 'paid-search' */
+  parentSlug: string
+  /** Child slug under the parent, e.g. 'google-ads' */
+  slug: string
+  title: string
+  metaDescription: string
+  primaryKeyword: string
+  secondaryKeywords: string[]
+  serviceType: string
+  faqEntities?: ServiceFaq[]
+}

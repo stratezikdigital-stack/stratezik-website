@@ -108,6 +108,7 @@ function AppShell() {
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/services/:slug" element={<ServicePage />} />
+              <Route path="/services/:slug/:child" element={<ServicePage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/authors/:slug" element={<AuthorPage />} />

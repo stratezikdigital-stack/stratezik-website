@@ -14,8 +14,8 @@ Stratezik designs and builds web work that does the job the rest of your marketi
 
 We do two main flavours of web work, and the right one depends on what you actually need:
 
-- **Landing Pages** — A single conversion-focused page for a paid campaign, lead push, or service launch. Typically two to three weeks from brief to live.
-- **Full Websites** — A permanent marketing site that converts visitors into leads or clients. Typically six to ten weeks from brief to launch.
+- **[Landing Pages](/services/web-design/landing-pages)** — A single conversion-focused page for a paid campaign, lead push, or service launch. Typically two to three weeks from brief to live.
+- **[Full Websites](/services/web-design/website-design)** — A permanent marketing site that converts visitors into leads or clients. Typically six to ten weeks from brief to launch.
 
 Every project starts with discovery and wireframes, then copywriting through our content team, then design and build, then QA across devices and browsers before launch.
 

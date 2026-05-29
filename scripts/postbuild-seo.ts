@@ -5,7 +5,7 @@ import { buildRouteHeadHtml } from '../src/seo/buildPageHeadHtml'
 import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
-import { services as serviceDefs } from '../src/services/services'
+import { serviceChildren as serviceChildDefs, services as serviceDefs } from '../src/services/services'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -97,10 +97,13 @@ function main(): void {
 Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
 
 ${serviceDefs
-  .map(
-    (svc) =>
-      `### ${svc.title.replace(/\| Stratezik$/, '').trim()}\n- URL: ${SITE_ORIGIN}/services/${svc.slug}\n- Summary: ${svc.metaDescription}`,
-  )
+  .map((svc) => {
+    const kids = serviceChildDefs.filter((c) => c.parentSlug === svc.slug)
+    const kidLines = kids
+      .map((c) => `  - [${c.primaryKeyword}](${SITE_ORIGIN}/services/${c.parentSlug}/${c.slug}): ${c.metaDescription}`)
+      .join('\n')
+    return `### ${svc.title.replace(/\| Stratezik$/, '').trim()}\n- URL: ${SITE_ORIGIN}/services/${svc.slug}\n- Summary: ${svc.metaDescription}${kids.length ? `\n- Focus areas:\n${kidLines}` : ''}`
+  })
   .join('\n\n')}
 
 ## Blog articles (${blogPosts.length})
@@ -138,6 +141,13 @@ ${blogPosts
       name: svc.title.replace(/\| Stratezik$/, '').trim(),
       url: `${SITE_ORIGIN}/services/${svc.slug}`,
       summary: svc.metaDescription,
+      focusAreas: serviceChildDefs
+        .filter((c) => c.parentSlug === svc.slug)
+        .map((c) => ({
+          name: c.title.replace(/\| Stratezik$/, '').trim(),
+          url: `${SITE_ORIGIN}/services/${c.parentSlug}/${c.slug}`,
+          summary: c.metaDescription,
+        })),
     }))
     context.generated = new Date().toISOString().slice(0, 10)
     const json = `${JSON.stringify(context, null, 2)}\n`
