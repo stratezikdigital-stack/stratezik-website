@@ -49,7 +49,12 @@ export default function ScarboroughAgencyTriggersArticle() {
         <Link to="/blog/get-found-2026-paid-performance" className="text-oxblood underline underline-offset-2">
           Get Found 2026 paid chapter
         </Link>{' '}
-        explains why we treat paid as an accelerator only after positioning, SEO, and content foundations are in place.
+        explains why we treat paid as an accelerator only after positioning, SEO, and content foundations are in place. For ten
+        industry-specific stories from across the GTA, read{' '}
+        <Link to="/blog/signs-time-digital-marketing-agency-gta" className="text-oxblood underline underline-offset-2">
+          Part 2: signs it is time to partner with an agency
+        </Link>
+        .
       </p>
 
       <aside className="mt-12 p-6 md:p-8 border border-ink/10 bg-cream-50" aria-labelledby="scarborough-agency-feat-heading">

@@ -3,6 +3,7 @@ import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
 import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
 import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
 import ScarboroughAgencyTriggersArticle from './ScarboroughAgencyTriggersArticle'
+import GtaAgencyTriggersScenariosArticle from './GtaAgencyTriggersScenariosArticle'
 import GetFound2026Part1BrandArticle from './GetFound2026Part1BrandArticle'
 import GetFound2026Part2SeoArticle from './GetFound2026Part2SeoArticle'
 import GetFound2026Part3AiArticle from './GetFound2026Part3AiArticle'
@@ -15,6 +16,7 @@ import {
   chatgptAdsGuideFaq,
   chatgptRecommendationPlaybookFaq,
   scarboroughAgencyTriggersFaq,
+  gtaAgencyTriggersScenariosFaq,
   getFound2026Part1BrandFaq,
   getFound2026Part2SeoFaq,
   getFound2026Part3AiFaq,
@@ -44,6 +46,26 @@ export const blogPosts: BlogPostDefinition[] = [
     shareImagePath: '/branding/stratezik-horizontal.png',
     faqEntities: scarboroughAgencyTriggersFaq,
     Component: ScarboroughAgencyTriggersArticle,
+  },
+  {
+    slug: 'signs-time-digital-marketing-agency-gta',
+    title: '10 Signs It Is Time to Partner With a Digital Marketing Agency (GTA SMB Scenarios)',
+    description:
+      'Part 2 of our GTA agency guide: ten triggers shown as real Scarborough, Toronto, and Ontario neighbourhood scenarios, from no-time owners and leaking ad spend to weak local search, stalled growth, and post-pivot resets, with the first moves Stratezik makes.',
+    datePublished: '2026-05-30',
+    dateModified: '2026-05-30',
+    keywords: [
+      'signs to hire digital marketing agency',
+      'Scarborough small business marketing',
+      'Toronto GTA SMB digital marketing',
+      'when to outsource marketing Ontario',
+      'local SEO Scarborough',
+      'GTA marketing agency',
+      'Stratezik Digital',
+    ],
+    shareImagePath: '/branding/stratezik-horizontal.png',
+    faqEntities: gtaAgencyTriggersScenariosFaq,
+    Component: GtaAgencyTriggersScenariosArticle,
   },
   {
     slug: 'get-found-2026-brand-positioning',

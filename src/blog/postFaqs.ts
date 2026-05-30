@@ -120,6 +120,29 @@ export const scarboroughAgencyTriggersFaq = [
   },
 ]
 
+export const gtaAgencyTriggersScenariosFaq = [
+  {
+    question: 'What are the clearest signs a Scarborough or GTA business should hire a digital marketing agency?',
+    answer:
+      'The common ones: no time to market consistently, ad money going out with little to show for it, a skills gap the team cannot close, a website that does not convert or take bookings, a launch or expansion that needs coordination, and pressure to prove results with real numbers. One sign on its own is a maybe. Three or four at once usually means the cost of waiting is higher than the cost of help.',
+  },
+  {
+    question: 'Are the scenarios in this article based on real Stratezik clients?',
+    answer:
+      'They are representative composites of situations we see across Scarborough, Toronto, and the wider GTA, written to make each trigger concrete. For a fully documented engagement with verified numbers, read our Insectica pest control case study, which breaks down 700+ paid conversions at roughly $43 per lead and a large organic lift, month by month.',
+  },
+  {
+    question: 'Is outsourcing to an agency cheaper than hiring an in-house marketer?',
+    answer:
+      'For most SMBs, yes. A single in-house hire carries salary, benefits, tools, and training, and still covers only one or two skills well. A retainer buys strategist, paid, content, and analytics coverage for less than a senior salary, and you can scale it up for peak seasons and down in the quiet months.',
+  },
+  {
+    question: 'Will an agency actually understand my neighbourhood and customers?',
+    answer:
+      'It should, because local context is the whole point. We work the specifics that matter in places like Agincourt, Highland Creek, North York, Pickering, and Markham: neighbourhood search terms, Google Business Profile, multilingual audiences, and the seasonal patterns that move demand across Ontario.',
+  },
+]
+
 export const getFound2026Part1BrandFaq = [
   {
     question: 'Do I need a brand before I start marketing?',

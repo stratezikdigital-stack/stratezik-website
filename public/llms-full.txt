@@ -62,13 +62,19 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
   - [AI strategy consulting Toronto](https://www.stratezik.com/services/ai-agents/ai-strategy): Toronto AI strategy consulting for founders deciding what to automate first. Agent org design, context engineering, and a deployment roadmap from operators.
   - [custom AI agent development Toronto](https://www.stratezik.com/services/ai-agents/agent-development): Toronto custom AI agent build and deployment. End-to-end work from context engineering and tool integration to handoff, by an agency that runs on its own agents.
 
-## Blog articles (11)
+## Blog articles (12)
 
 ### When GTA SMBs Decide It Is Time for a Digital Marketing Agency
 - URL: https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta
 - Summary: Ten real triggers Scarborough and Toronto SMBs hit before hiring an agency: flat conversions, rising ad waste, Maps gaps, launches, expansion, reviews, bandwidth limits, and seasonal urgency, plus Stratezik audit steps and an RFP checklist.
 - Published: 2026-05-25
 - Updated: 2026-05-25
+
+### 10 Signs It Is Time to Partner With a Digital Marketing Agency (GTA SMB Scenarios)
+- URL: https://www.stratezik.com/blog/signs-time-digital-marketing-agency-gta
+- Summary: Part 2 of our GTA agency guide: ten triggers shown as real Scarborough, Toronto, and Ontario neighbourhood scenarios, from no-time owners and leaking ad spend to weak local search, stalled growth, and post-pivot resets, with the first moves Stratezik makes.
+- Published: 2026-05-30
+- Updated: 2026-05-30
 
 ### How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning
 - URL: https://www.stratezik.com/blog/get-found-2026-brand-positioning
