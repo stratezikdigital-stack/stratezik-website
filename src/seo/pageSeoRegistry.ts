@@ -4,12 +4,14 @@ import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd } from './authors'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
+import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
 import { homeFaqJsonLd } from '../utils/homeFaqJsonLd'
 import {
   DEFAULT_OG_ALT,
   DEFAULT_OG_IMAGE,
   DEFAULT_OG_IMAGE_PATH,
   SITE_ORIGIN,
+  BRAND_OG_DIMENSIONS,
   canonicalUrl,
   ogImageDimensionsForPath,
 } from './siteConfig'
@@ -148,10 +150,10 @@ const SERVICES_HUB_SEO: RouteSeoConfig = {
   title: servicesHub.title,
   description: servicesHub.metaDescription,
   ogType: 'website',
-  ogImageUrl: DEFAULT_OG_IMAGE,
-  ogImageWidth: 1024,
-  ogImageHeight: 625,
-  ogImageAlt: 'Stratezik Digital Marketing Services',
+  ogImageUrl: `${SITE_ORIGIN}${getServiceHeroImage(undefined)!}`,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: serviceHeroImageAlt('Stratezik digital marketing services in Toronto and the GTA'),
   keywords: [servicesHub.primaryKeyword, ...servicesHub.secondaryKeywords],
   jsonLd: buildServicesHubJsonLd(),
   sitemapPriority: 0.9,
@@ -159,15 +161,18 @@ const SERVICES_HUB_SEO: RouteSeoConfig = {
 }
 
 function servicePageSeo(service: (typeof services)[number]): RouteSeoConfig {
+  const heroPath = getServiceHeroImage(service.slug)
   return {
     path: `/services/${service.slug}`,
     title: service.title,
     description: service.metaDescription,
     ogType: 'website',
-    ogImageUrl: DEFAULT_OG_IMAGE,
-    ogImageWidth: 1024,
-    ogImageHeight: 625,
-    ogImageAlt: `${service.primaryKeyword} — Stratezik`,
+    ogImageUrl: heroPath ? `${SITE_ORIGIN}${heroPath}` : DEFAULT_OG_IMAGE,
+    ogImageWidth: BRAND_OG_DIMENSIONS.width,
+    ogImageHeight: BRAND_OG_DIMENSIONS.height,
+    ogImageAlt: heroPath
+      ? serviceHeroImageAlt(`${service.primaryKeyword} — Stratezik`)
+      : `${service.primaryKeyword} — Stratezik`,
     keywords: [service.primaryKeyword, ...service.secondaryKeywords],
     jsonLd: buildServiceJsonLd(service),
     sitemapPriority: 0.88,
@@ -176,15 +181,18 @@ function servicePageSeo(service: (typeof services)[number]): RouteSeoConfig {
 }
 
 function serviceChildPageSeo(child: (typeof serviceChildren)[number]): RouteSeoConfig {
+  const heroPath = getServiceHeroImage(child.parentSlug, child.slug)
   return {
     path: `/services/${child.parentSlug}/${child.slug}`,
     title: child.title,
     description: child.metaDescription,
     ogType: 'website',
-    ogImageUrl: DEFAULT_OG_IMAGE,
-    ogImageWidth: 1024,
-    ogImageHeight: 625,
-    ogImageAlt: `${child.primaryKeyword} — Stratezik`,
+    ogImageUrl: heroPath ? `${SITE_ORIGIN}${heroPath}` : DEFAULT_OG_IMAGE,
+    ogImageWidth: BRAND_OG_DIMENSIONS.width,
+    ogImageHeight: BRAND_OG_DIMENSIONS.height,
+    ogImageAlt: heroPath
+      ? serviceHeroImageAlt(`${child.primaryKeyword} — Stratezik`)
+      : `${child.primaryKeyword} — Stratezik`,
     keywords: [child.primaryKeyword, ...child.secondaryKeywords],
     jsonLd: buildServiceChildJsonLd(child),
     sitemapPriority: 0.82,

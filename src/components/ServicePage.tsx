@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getServiceBySlug, getServiceChild } from '../services/services'
 import { serviceBodies, serviceChildBodies, servicesHubBody } from '../services/serviceContent'
+import { SERVICE_HERO_AI_LABEL, getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
 import { Markdown } from './Markdown'
 
 /** Home contact form anchor — handled by ScrollToHash in App.tsx. */
@@ -101,6 +102,13 @@ const ServicePage = () => {
   const { title, intro, rest } = splitBody(rawBody)
   const kicker = isHub ? 'All services' : isChild ? childDef!.serviceType : parentService!.serviceType
   const glyphSeed = isChild ? `${slug}-${child}` : parentService?.slug ?? 'services'
+  const heroImage = getServiceHeroImage(isHub ? undefined : slug, isChild ? child : undefined)
+  const heroAltBase = isHub
+    ? 'Stratezik digital marketing services in Toronto and the GTA'
+    : isChild
+      ? childDef!.primaryKeyword
+      : parentService!.primaryKeyword
+  const heroAlt = heroImage ? serviceHeroImageAlt(heroAltBase) : heroAltBase
   const introParas = intro.split(/\n{2,}/).filter(Boolean)
 
   return (
@@ -179,22 +187,40 @@ const ServicePage = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="col-span-12 lg:col-span-5"
           >
-            <div className="relative bg-cream-50 border border-ink/10 aspect-[5/4] p-8 md:p-10 overflow-hidden">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-[0.05]"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(#0d0c0a 1px, transparent 1px), linear-gradient(90deg, #0d0c0a 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                }}
-              />
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="w-[80%] max-w-[280px]">
-                  <ServiceGlyph seed={glyphSeed} />
-                </div>
-              </div>
-            </div>
+            <figure className="relative bg-cream-50 border border-ink/10 aspect-[5/4] overflow-hidden m-0">
+              {heroImage ? (
+                <>
+                  <img
+                    src={heroImage}
+                    alt={heroAlt}
+                    width={1400}
+                    height={1120}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    fetchPriority="high"
+                  />
+                  <figcaption className="absolute bottom-0 inset-x-0 px-4 py-2.5 bg-ink/55 font-mono text-[10px] uppercase tracking-[0.22em] text-cream/90 text-right">
+                    {SERVICE_HERO_AI_LABEL}
+                  </figcaption>
+                </>
+              ) : (
+                <>
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 opacity-[0.05]"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(#0d0c0a 1px, transparent 1px), linear-gradient(90deg, #0d0c0a 1px, transparent 1px)',
+                      backgroundSize: '40px 40px',
+                    }}
+                  />
+                  <div className="relative w-full h-full flex items-center justify-center p-8 md:p-10">
+                    <div className="w-[80%] max-w-[280px]">
+                      <ServiceGlyph seed={glyphSeed} />
+                    </div>
+                  </div>
+                </>
+              )}
+            </figure>
           </motion.div>
         </div>
       </header>
