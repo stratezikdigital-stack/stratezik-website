@@ -27,10 +27,31 @@ function replaceSeoBlock(html: string, headFragment: string): string {
   return html.replace(pattern, `${SEO_START}\n${headFragment}\n    ${SEO_END}`)
 }
 
-function assertNoNoscriptOnContentRoute(routePath: string, html: string): void {
-  if (routePath === '/') return
+function assertNoNoscript(routePath: string, html: string): void {
   if (/<noscript\b/i.test(html)) {
     throw new Error(`[seo] P0 violation: <noscript> found in prerendered HTML for ${routePath}`)
+  }
+}
+
+/** Homepage must ship PrerenderHomePage body, not legacy noscript fallback. */
+function assertHomePrerenderBody(html: string): void {
+  const required = [
+    'Frequently asked questions',
+    'Latest insights',
+    '/services/ai-agents',
+    '/services/web-design',
+    'Integrated channels · accountable measurement · pragmatic creative',
+  ]
+  const forbidden = ['<noscript', 'Our Services', 'All rights reserved']
+  for (const text of required) {
+    if (!html.includes(text)) {
+      throw new Error(`[seo] Homepage prerender missing: ${text}`)
+    }
+  }
+  for (const text of forbidden) {
+    if (html.includes(text)) {
+      throw new Error(`[seo] Homepage prerender stale marker: ${text}`)
+    }
   }
 }
 
@@ -53,7 +74,8 @@ function writeRouteHtml(baseHtml: string, routePath: string, headFragment: strin
       ? path.join(distDir, 'index.html')
       : path.join(distDir, routePath.slice(1), 'index.html')
 
-  assertNoNoscriptOnContentRoute(routePath, html)
+  assertNoNoscript(routePath, html)
+  if (routePath === '/') assertHomePrerenderBody(html)
 
   fs.mkdirSync(path.dirname(outFile), { recursive: true })
   fs.writeFileSync(outFile, html, 'utf8')
