@@ -7,6 +7,7 @@ import BlogPostPage from '../components/BlogPostPage'
 import AuthorPage from '../components/AuthorPage'
 import { ServicePageView } from '../components/ServicePageView'
 import CareerPage from '../components/CareerPage'
+import { PrerenderHomePage } from './PrerenderHomePage'
 import { PrerenderBodiesContext, type PrerenderBodies } from './PrerenderBodiesContext'
 
 type PrerenderAppProps = {
@@ -23,6 +24,7 @@ export function PrerenderApp({ pathname, bodies }: PrerenderAppProps) {
           <Navbar />
           <main className="pt-36">
             <Routes>
+              <Route path="/" element={<PrerenderHomePage />} />
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/services" element={<ServicePageView />} />
               <Route path="/services/:slug/:child" element={<ServicePageView />} />

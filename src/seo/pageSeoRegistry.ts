@@ -1,3 +1,4 @@
+import { getBlogShareImagePath } from '../blog/blogShareImages'
 import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
@@ -9,7 +10,6 @@ import { homeFaqJsonLd } from '../utils/homeFaqJsonLd'
 import {
   DEFAULT_OG_ALT,
   DEFAULT_OG_IMAGE,
-  DEFAULT_OG_IMAGE_PATH,
   SITE_ORIGIN,
   BRAND_OG_DIMENSIONS,
   canonicalUrl,
@@ -106,7 +106,7 @@ export const BLOG_INDEX_SEO: RouteSeoConfig = {
 }
 
 function blogPostSeo(post: (typeof blogPosts)[number]): RouteSeoConfig {
-  const sharePath = post.shareImagePath ?? DEFAULT_OG_IMAGE_PATH
+  const sharePath = post.shareImagePath ?? getBlogShareImagePath(post.slug)
   const dims = ogImageDimensionsForPath(sharePath)
   const jsonLd =
     post.faqEntities && post.faqEntities.length > 0

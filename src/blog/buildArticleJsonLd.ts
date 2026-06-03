@@ -1,3 +1,4 @@
+import { getBlogShareImagePath } from './blogShareImages'
 import type { BlogPostMeta } from './postTypes'
 import { buildBlogPostBreadcrumbJsonLd } from '../seo/buildBreadcrumbJsonLd'
 import { organizationNode } from '../seo/organization'
@@ -13,7 +14,7 @@ function authorNodeFor(meta: BlogPostMeta) {
 }
 
 function articleImageUrls(meta: BlogPostMeta): string[] {
-  const path = meta.shareImagePath ?? '/branding/stratezik-horizontal.png'
+  const path = meta.shareImagePath ?? getBlogShareImagePath(meta.slug)
   return [`${SITE}${path}`]
 }
 

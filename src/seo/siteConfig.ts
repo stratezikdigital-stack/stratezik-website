@@ -15,6 +15,6 @@ export function canonicalUrl(path: string): string {
 }
 
 export function ogImageDimensionsForPath(imagePath: string): { width: number; height: number } {
-  if (imagePath.includes('blog-og-')) return BLOG_OG_DIMENSIONS
+  if (imagePath.includes('blog-og-') || imagePath.startsWith('/services/')) return BLOG_OG_DIMENSIONS
   return BRAND_OG_DIMENSIONS
 }

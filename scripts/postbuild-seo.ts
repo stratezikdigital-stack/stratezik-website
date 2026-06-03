@@ -6,23 +6,11 @@ import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
 import { serviceChildren as serviceChildDefs, services as serviceDefs } from '../src/services/services'
-import { buildHomeFeaturedBlogNoscriptHtml } from './buildHomeFeaturedBlogHtml'
 import {
-  extractHomeNoscriptFromTemplate,
   renderRouteBodyHtml,
   replaceRootInner,
   shouldPrerenderBody,
 } from './prerender-static'
-
-const FEATURED_BLOG_MARKER = '<!-- FEATURED_BLOG_POSTS -->'
-
-function injectFeaturedBlogIntoHomeNoscript(homeNoscript: string): string {
-  const featuredHtml = buildHomeFeaturedBlogNoscriptHtml()
-  if (homeNoscript.includes(FEATURED_BLOG_MARKER)) {
-    return homeNoscript.replace(FEATURED_BLOG_MARKER, featuredHtml)
-  }
-  return `${homeNoscript}\n${featuredHtml}`
-}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -39,17 +27,17 @@ function replaceSeoBlock(html: string, headFragment: string): string {
   return html.replace(pattern, `${SEO_START}\n${headFragment}\n    ${SEO_END}`)
 }
 
-function writeRouteHtml(
-  baseHtml: string,
-  routePath: string,
-  headFragment: string,
-  homeNoscript: string,
-): void {
+function assertNoNoscriptOnContentRoute(routePath: string, html: string): void {
+  if (routePath === '/') return
+  if (/<noscript\b/i.test(html)) {
+    throw new Error(`[seo] P0 violation: <noscript> found in prerendered HTML for ${routePath}`)
+  }
+}
+
+function writeRouteHtml(baseHtml: string, routePath: string, headFragment: string): void {
   let html = replaceSeoBlock(baseHtml, headFragment)
 
-  if (routePath === '/') {
-    html = replaceRootInner(html, homeNoscript)
-  } else if (shouldPrerenderBody(routePath)) {
+  if (shouldPrerenderBody(routePath)) {
     try {
       const bodyHtml = renderRouteBodyHtml(routePath)
       html = replaceRootInner(html, bodyHtml)
@@ -64,6 +52,8 @@ function writeRouteHtml(
     routePath === '/'
       ? path.join(distDir, 'index.html')
       : path.join(distDir, routePath.slice(1), 'index.html')
+
+  assertNoNoscriptOnContentRoute(routePath, html)
 
   fs.mkdirSync(path.dirname(outFile), { recursive: true })
   fs.writeFileSync(outFile, html, 'utf8')
@@ -102,16 +92,12 @@ function main(): void {
     throw new Error('dist/index.html not found — run vite build first')
   }
 
-  const viteTemplatePath = path.join(rootDir, 'index.html')
-  const homeNoscript = injectFeaturedBlogIntoHomeNoscript(
-    extractHomeNoscriptFromTemplate(fs.readFileSync(viteTemplatePath, 'utf8')),
-  )
   const baseHtml = fs.readFileSync(baseHtmlPath, 'utf8')
   const configs = getAllRouteSeoConfigs()
 
   for (const config of configs) {
     const headFragment = buildRouteHeadHtml(config)
-    writeRouteHtml(baseHtml, config.path, headFragment, homeNoscript)
+    writeRouteHtml(baseHtml, config.path, headFragment)
     console.log(`[seo] head prerendered ${config.path}`)
   }
 
