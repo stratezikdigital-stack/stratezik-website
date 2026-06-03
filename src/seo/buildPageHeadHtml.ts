@@ -53,7 +53,9 @@ export function buildRouteHeadHtml(config: RouteSeoConfig): string {
     lines.push(metaLine('meta', { property: 'article:modified_time', content: config.dateModified }))
   }
   if (config.ogType === 'article') {
-    lines.push(metaLine('meta', { property: 'article:author', content: 'Stratezik' }))
+    if (config.articleAuthor) {
+      lines.push(metaLine('meta', { property: 'article:author', content: config.articleAuthor }))
+    }
     lines.push(metaLine('meta', { property: 'article:section', content: 'Digital Marketing' }))
   }
 

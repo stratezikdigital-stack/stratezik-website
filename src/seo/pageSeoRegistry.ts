@@ -1,7 +1,7 @@
 import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
-import { authors, buildAuthorPageJsonLd } from './authors'
+import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
@@ -34,6 +34,8 @@ export type RouteSeoConfig = {
   extraJsonLd?: { id: string; data: unknown }[]
   sitemapPriority: number
   sitemapChangefreq: 'weekly' | 'monthly'
+  /** Person name for article:author meta (blogs only). */
+  articleAuthor?: string
 }
 
 export const HOME_SEO: RouteSeoConfig = {
@@ -111,10 +113,13 @@ function blogPostSeo(post: (typeof blogPosts)[number]): RouteSeoConfig {
       ? buildArticleWithFaqJsonLd(post, post.faqEntities)
       : buildSimpleArticleJsonLd(post)
 
+  const author = getAuthorBySlug(post.authorSlug)
+
   return {
     path: `/blog/${post.slug}`,
     title: `${post.title} | Stratezik Blog`,
     description: post.description,
+    articleAuthor: author?.name ?? 'Didar Sampson',
     ogType: 'article',
     ogImageUrl: `${SITE_ORIGIN}${sharePath}`,
     ogImageWidth: dims.width,

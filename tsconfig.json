@@ -21,5 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": ["src/prerender/PrerenderApp.tsx", "src/prerender/mocks"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -6,6 +6,12 @@ import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
 import { serviceChildren as serviceChildDefs, services as serviceDefs } from '../src/services/services'
+import {
+  extractHomeNoscriptFromTemplate,
+  renderRouteBodyHtml,
+  replaceRootInner,
+  shouldPrerenderBody,
+} from './prerender-static'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -22,8 +28,27 @@ function replaceSeoBlock(html: string, headFragment: string): string {
   return html.replace(pattern, `${SEO_START}\n${headFragment}\n    ${SEO_END}`)
 }
 
-function writeRouteHtml(baseHtml: string, routePath: string, headFragment: string): void {
-  const html = replaceSeoBlock(baseHtml, headFragment)
+function writeRouteHtml(
+  baseHtml: string,
+  routePath: string,
+  headFragment: string,
+  homeNoscript: string,
+): void {
+  let html = replaceSeoBlock(baseHtml, headFragment)
+
+  if (routePath === '/') {
+    html = replaceRootInner(html, homeNoscript)
+  } else if (shouldPrerenderBody(routePath)) {
+    try {
+      const bodyHtml = renderRouteBodyHtml(routePath)
+      html = replaceRootInner(html, bodyHtml)
+      console.log(`[seo] body prerendered ${routePath}`)
+    } catch (err) {
+      console.error(`[seo] body prerender failed ${routePath}:`, err)
+      throw err
+    }
+  }
+
   const outFile =
     routePath === '/'
       ? path.join(distDir, 'index.html')
@@ -66,13 +91,15 @@ function main(): void {
     throw new Error('dist/index.html not found — run vite build first')
   }
 
+  const viteTemplatePath = path.join(rootDir, 'index.html')
+  const homeNoscript = extractHomeNoscriptFromTemplate(fs.readFileSync(viteTemplatePath, 'utf8'))
   const baseHtml = fs.readFileSync(baseHtmlPath, 'utf8')
   const configs = getAllRouteSeoConfigs()
 
   for (const config of configs) {
     const headFragment = buildRouteHeadHtml(config)
-    writeRouteHtml(baseHtml, config.path, headFragment)
-    console.log(`[seo] prerendered ${config.path}`)
+    writeRouteHtml(baseHtml, config.path, headFragment, homeNoscript)
+    console.log(`[seo] head prerendered ${config.path}`)
   }
 
   const sitemap = generateSitemap(configs)
