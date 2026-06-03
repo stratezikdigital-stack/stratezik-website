@@ -266,3 +266,8 @@ export function getPostBySlug(slug: string | undefined) {
   if (!slug) return undefined
   return blogPosts.find((p) => p.slug === slug)
 }
+
+/** Homepage + noscript featured list (newest by dateModified). */
+export function getFeaturedBlogPosts(limit = 4) {
+  return [...blogPosts].sort((a, b) => b.dateModified.localeCompare(a.dateModified)).slice(0, limit)
+}

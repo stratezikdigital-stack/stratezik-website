@@ -7,6 +7,7 @@ import ServicesSection from './components/ServicesSection'
 import StrategyFlow from './components/StrategyFlow'
 import PortfolioSection from './components/PortfolioSection'
 import TestimonialSection from './components/TestimonialSection'
+import LatestInsightsSection from './components/LatestInsightsSection'
 import ContactSection from './components/ContactSection'
 import CareerPage from './components/CareerPage'
 import BlogPage from './components/BlogPage'
@@ -101,6 +102,7 @@ function AppShell() {
                     <StrategyFlow />
                     <PortfolioSection />
                     <TestimonialSection />
+                    <LatestInsightsSection />
                     <ContactSection />
                   </>
                 }

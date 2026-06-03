@@ -6,12 +6,23 @@ import { getAllRouteSeoConfigs } from '../src/seo/pageSeoRegistry'
 import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
 import { serviceChildren as serviceChildDefs, services as serviceDefs } from '../src/services/services'
+import { buildHomeFeaturedBlogNoscriptHtml } from './buildHomeFeaturedBlogHtml'
 import {
   extractHomeNoscriptFromTemplate,
   renderRouteBodyHtml,
   replaceRootInner,
   shouldPrerenderBody,
 } from './prerender-static'
+
+const FEATURED_BLOG_MARKER = '<!-- FEATURED_BLOG_POSTS -->'
+
+function injectFeaturedBlogIntoHomeNoscript(homeNoscript: string): string {
+  const featuredHtml = buildHomeFeaturedBlogNoscriptHtml()
+  if (homeNoscript.includes(FEATURED_BLOG_MARKER)) {
+    return homeNoscript.replace(FEATURED_BLOG_MARKER, featuredHtml)
+  }
+  return `${homeNoscript}\n${featuredHtml}`
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -92,7 +103,9 @@ function main(): void {
   }
 
   const viteTemplatePath = path.join(rootDir, 'index.html')
-  const homeNoscript = extractHomeNoscriptFromTemplate(fs.readFileSync(viteTemplatePath, 'utf8'))
+  const homeNoscript = injectFeaturedBlogIntoHomeNoscript(
+    extractHomeNoscriptFromTemplate(fs.readFileSync(viteTemplatePath, 'utf8')),
+  )
   const baseHtml = fs.readFileSync(baseHtmlPath, 'utf8')
   const configs = getAllRouteSeoConfigs()
 
