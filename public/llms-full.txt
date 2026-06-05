@@ -62,7 +62,13 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
   - [AI strategy consulting Toronto](https://www.stratezik.com/services/ai-agents/ai-strategy): Toronto AI strategy consulting for founders deciding what to automate first. Agent org design, context engineering, and a deployment roadmap from operators.
   - [custom AI agent development Toronto](https://www.stratezik.com/services/ai-agents/agent-development): Toronto custom AI agent build and deployment. End-to-end work from context engineering and tool integration to handoff, by an agency that runs on its own agents.
 
-## Blog articles (12)
+## Blog articles (13)
+
+### AI-Native GTM Part 1: Build the Function From Day 1
+- URL: https://www.stratezik.com/blog/ai-native-gtm-build-from-day-1
+- Summary: Part 1 of our AI-native GTM series for Toronto founders: design a marketing function around agents from day one and out-run US-funded rivals.
+- Published: 2026-06-03
+- Updated: 2026-06-03
 
 ### When GTA SMBs Decide It Is Time for a Digital Marketing Agency
 - URL: https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta

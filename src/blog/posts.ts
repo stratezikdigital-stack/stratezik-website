@@ -11,6 +11,7 @@ import GetFound2026Part4ContentArticle from './GetFound2026Part4ContentArticle'
 import GetFound2026Part5PaidArticle from './GetFound2026Part5PaidArticle'
 import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
+import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -24,9 +25,29 @@ import {
   getFound2026Part5PaidFaq,
   googleMapsRankingServiceBusinessFaq,
   insecticaCaseStudyFaq,
+  aiNativeGtmPart1Faq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'ai-native-gtm-build-from-day-1',
+    title: 'AI-Native GTM Part 1: Build the Function From Day 1',
+    description:
+      'Part 1 of our AI-native GTM series for Toronto founders: design a marketing function around agents from day one and out-run US-funded rivals.',
+    datePublished: '2026-06-03',
+    dateModified: '2026-06-03',
+    keywords: [
+      'AI-native GTM startup',
+      'Toronto startup marketing',
+      'startup GTM 2026',
+      'marketing function design',
+      'AI agents marketing',
+      'Toronto founder GTM',
+      'Stratezik AI agents',
+    ],
+    faqEntities: aiNativeGtmPart1Faq,
+    Component: AiNativeGtmPart1Article,
+  },
   {
     slug: 'when-hire-digital-marketing-agency-scarborough-gta',
     title: 'When GTA SMBs Decide It Is Time for a Digital Marketing Agency',

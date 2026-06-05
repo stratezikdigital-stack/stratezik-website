@@ -12,6 +12,7 @@ const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
   'google-maps-ranking-service-business': '/services/google-business-profile-maps.png',
   'insectica-gta-pest-control-scaling-case-study': '/branding/blog-og-insectica-case-study.png',
   'answer-engine-optimisation-toronto': '/services/seo-aeo-local-seo.png',
+  'ai-native-gtm-build-from-day-1': '/services/ai-agents.png',
 }
 
 export function getBlogShareImagePath(slug: string): string {

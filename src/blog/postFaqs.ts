@@ -258,6 +258,34 @@ export const getFound2026Part5PaidFaq = [
   },
 ]
 
+export const aiNativeGtmPart1Faq = [
+  {
+    question: 'What does AI-native GTM mean for a startup?',
+    answer:
+      'AI-native GTM is the deliberate design of your marketing function so that AI agents handle the repeatable, structured work (research, drafting, monitoring, reporting) and humans handle the parts that genuinely need judgement (positioning, key creative, relationships, real decisions). For a Toronto startup, it lets you run with a far leaner team than US-funded competitors while moving faster, because you are not bottlenecked on hiring or human capacity for the work that does not need to be human.',
+  },
+  {
+    question: 'How early should I start building AI-native GTM?',
+    answer:
+      'Day one if you can, or the moment after you raise pre-seed at the latest. Retrofitting AI-native onto a manual function is much harder than starting that way, because habits and inconsistent output have to be undone as well as the system installed.',
+  },
+  {
+    question: 'Do I need to be technical to run AI-native GTM?',
+    answer:
+      'No. Agent workflow platforms have matured enough that a non-technical founder can stand up the basic structure, and more complex agent builds can be outsourced. What you need is the design discipline, not the code.',
+  },
+  {
+    question: 'Will AI-native GTM look serious to investors?',
+    answer:
+      'Yes, increasingly so. Investors are asking how you intend to use AI to scale capital-efficiently. A founder with a clear AI-native GTM plan answers that question better than a founder hiring a five-person marketing team by default.',
+  },
+  {
+    question: 'Is AI-native GTM just lean marketing rebranded?',
+    answer:
+      'No. Lean was about doing less. AI-native is about doing the same or more with a different structure. The output is not smaller; the headcount is.',
+  },
+]
+
 export const insecticaCaseStudyFaq = [
   {
     question: 'How did Insectica Pest Control scale leads across the GTA?',

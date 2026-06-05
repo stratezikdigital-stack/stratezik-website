@@ -62,8 +62,12 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-06-03",
+  "generated": "2026-06-05",
   "articles": [
+    {
+      "title": "AI-Native GTM Part 1: Build the Function From Day 1",
+      "url": "https://www.stratezik.com/blog/ai-native-gtm-build-from-day-1"
+    },
     {
       "title": "When GTA SMBs Decide It Is Time for a Digital Marketing Agency",
       "url": "https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta"
