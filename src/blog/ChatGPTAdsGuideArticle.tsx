@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { chatgptAdsGuideFaq } from './postFaqs'
 
 const SITE = 'https://www.stratezik.com'
@@ -378,6 +379,8 @@ export default function ChatGPTAdsGuideArticle() {
         </Link>
         .
       </p>
+
+      <BlogDiscoveryHub heading="Related Stratezik guides" />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="chatgpt-ads-faq-heading">
         <h2 id="chatgpt-ads-faq-heading" className="font-display text-display-3 text-ink">

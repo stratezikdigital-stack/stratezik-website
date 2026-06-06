@@ -12,6 +12,7 @@ import GetFound2026Part5PaidArticle from './GetFound2026Part5PaidArticle'
 import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
+import AiNativeGtmPart2Article from './AiNativeGtmPart2Article'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -26,6 +27,7 @@ import {
   googleMapsRankingServiceBusinessFaq,
   insecticaCaseStudyFaq,
   aiNativeGtmPart1Faq,
+  aiNativeGtmPart2Faq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
@@ -35,7 +37,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Part 1 of our AI-native GTM series for Toronto founders: design a marketing function around agents from day one and out-run US-funded rivals.',
     datePublished: '2026-06-03',
-    dateModified: '2026-06-03',
+    dateModified: '2026-06-01',
     keywords: [
       'AI-native GTM startup',
       'Toronto startup marketing',
@@ -49,12 +51,31 @@ export const blogPosts: BlogPostDefinition[] = [
     Component: AiNativeGtmPart1Article,
   },
   {
+    slug: 'ai-native-gtm-cited-by-chatgpt',
+    title: 'AI-Native GTM Part 2: Be Cited by ChatGPT First',
+    description:
+      'Part 2 of the AI-native GTM series: why Toronto startups should claim AI search visibility now, before US-funded competitors do. Five practical moves.',
+    datePublished: '2026-06-01',
+    dateModified: '2026-06-01',
+    keywords: [
+      'AEO for startups',
+      'ChatGPT visibility startup',
+      'AI search startup',
+      'Toronto startup AEO',
+      'answer engine optimisation startup',
+      'AI-native GTM',
+      'Stratezik Toronto founders',
+    ],
+    faqEntities: aiNativeGtmPart2Faq,
+    Component: AiNativeGtmPart2Article,
+  },
+  {
     slug: 'when-hire-digital-marketing-agency-scarborough-gta',
     title: 'When GTA SMBs Decide It Is Time for a Digital Marketing Agency',
     description:
       'Ten real triggers Scarborough and Toronto SMBs hit before hiring an agency: flat conversions, rising ad waste, Maps gaps, launches, expansion, reviews, bandwidth limits, and seasonal urgency, plus Stratezik audit steps and an RFP checklist.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'digital marketing agency Scarborough',
       'Toronto GTA SMB marketing',
@@ -73,7 +94,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Part 2 of our GTA agency guide: ten triggers shown as real Scarborough, Toronto, and Ontario neighbourhood scenarios, from no-time owners and leaking ad spend to weak local search, stalled growth, and post-pivot resets, with the first moves Stratezik makes.',
     datePublished: '2026-05-30',
-    dateModified: '2026-05-30',
+    dateModified: '2026-06-05',
     keywords: [
       'signs to hire digital marketing agency',
       'Scarborough small business marketing',
@@ -92,7 +113,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Positioning before tactics: differentiation that survives the competitor test, voice and visual identity, reputation systems, and trust signals that make SEO, AI, content, and paid work harder together.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'brand positioning small business 2026',
       'differentiation local business',
@@ -110,7 +131,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Keyword fanout, answer-first on-page work, technical plumbing, backlink authority, and indexing gates. Why organic search remains the bedrock AI visibility builds on, not a rival to it.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'SEO organic search 2026',
       'keyword fanout local business',
@@ -128,7 +149,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'AEO and GEO citations, conversational fanout, schema and crawler access, share-of-voice audits, and how ChatGPT, Perplexity, and Gemini differ. Built on Part 2 SEO authority.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'answer engine optimisation 2026',
       'AI search visibility local business',
@@ -147,7 +168,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Founder-led storytelling, educational guides, ethical lead magnets, short-form video transcripts, repurposing ladders, plus how Part 4 locks to brand, SEO, and AI layers before paid acceleration.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'founder-led content strategy',
       'local business repurposing playbook',
@@ -165,7 +186,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Why order matters inside the pillar, paid versus organic interplay, disciplined Google Ads, retargeting with Part 4 assets, CAC and ROAS guardrails, funnel honesty, plus Insectica proof and services alignment.',
     datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
+    dateModified: '2026-06-05',
     keywords: [
       'paid social local business 2026',
       'Google Ads retargeting strategy',
@@ -183,7 +204,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'SOCi visibility stats, citation research, OppAlerts correlations, schema + answer-first tactics, crawler checks, GTA measurement habits, plus honest limits on controlling generative mentions.',
     datePublished: '2026-05-11',
-    dateModified: '2026-05-11',
+    dateModified: '2026-06-05',
     keywords: [
       'ChatGPT recommend business',
       'answer engine optimisation playbook',
@@ -202,7 +223,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'How OpenAI Ads Manager Beta places sponsored recommendations in ChatGPT, what context hints replace keywords, reported pricing bands, geography, category gates, and honest fit notes for Toronto operators.',
     datePublished: '2026-05-11',
-    dateModified: '2026-05-11',
+    dateModified: '2026-06-05',
     keywords: [
       'ChatGPT Ads',
       'Ads Manager Beta OpenAI',
@@ -221,7 +242,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Whitespark 2026 local ranking factors put GBP primary category ahead of reviews for Maps pack influence. What Ontario service operators should fix first: categories, hours, and per-service site depth.',
     datePublished: '2026-05-07',
-    dateModified: '2026-05-07',
+    dateModified: '2026-06-05',
     keywords: [
       'Google Maps ranking service business',
       'Google Business Profile primary category',
@@ -239,7 +260,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Month-by-month narrative of Insectica Pest Control’s GTA growth: ten ad groups, CPA-first bidding, 700+ paid conversions at ~$43 CPL, organic impressions up 168x, plus charts and infographic.',
     datePublished: '2026-05-02',
-    dateModified: '2026-05-03',
+    dateModified: '2026-06-05',
     keywords: [
       'Insectica Pest Control case study',
       'Toronto pest control marketing',

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { gtaAgencyTriggersScenariosFaq } from './postFaqs'
 
 const faq = gtaAgencyTriggersScenariosFaq
@@ -283,6 +284,8 @@ export default function GtaAgencyTriggersScenariosArticle() {
         </a>
         .
       </p>
+
+      <BlogDiscoveryHub />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gta-triggers-faq-heading">
         <h2 id="gta-triggers-faq-heading" className="font-display text-display-3 text-ink">

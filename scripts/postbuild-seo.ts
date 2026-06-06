@@ -11,6 +11,7 @@ import {
   replaceRootInner,
   shouldPrerenderBody,
 } from './prerender-static'
+import { pingSearchEngines } from './pingSearchEngines'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -108,7 +109,7 @@ ${urls}
 `
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const baseHtmlPath = path.join(distDir, 'index.html')
   if (!fs.existsSync(baseHtmlPath)) {
     throw new Error('dist/index.html not found — run vite build first')
@@ -203,6 +204,11 @@ ${blogPosts
     fs.writeFileSync(path.join(distDir, 'llm-context.json'), json, 'utf8')
     console.log('[seo] llm-context.json')
   }
+
+  await pingSearchEngines(`${SITE_ORIGIN}/sitemap.xml`)
 }
 
-main()
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

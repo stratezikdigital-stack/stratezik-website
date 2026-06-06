@@ -259,12 +259,16 @@ export default function AiNativeGtmPart1Article() {
         lose to a competitor who skipped it.
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
-        In Part 2 of this series, we cover the practical first move that builds visibility and authority while you are
-        designing this function: how to be cited by ChatGPT before your US competitors are. Until that instalment ships, the{' '}
+        In{' '}
+        <Link to="/blog/ai-native-gtm-cited-by-chatgpt" className="text-oxblood underline underline-offset-2">
+          Part 2 of this series
+        </Link>
+        , we cover the practical first move that builds visibility and authority while you are designing this function: how to
+        be cited by ChatGPT before your US competitors are. The{' '}
         <Link to="/blog/get-recommended-by-chatgpt-playbook" className="text-oxblood underline underline-offset-2">
           ChatGPT recommendation playbook
         </Link>{' '}
-        covers the same terrain in depth.
+        covers the same terrain in tactical depth.
       </p>
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Where Stratezik fits</h2>

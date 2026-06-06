@@ -258,6 +258,34 @@ export const getFound2026Part5PaidFaq = [
   },
 ]
 
+export const aiNativeGtmPart2Faq = [
+  {
+    question: 'Why should a Toronto startup founder care about ChatGPT visibility?',
+    answer:
+      'Because AI search is reshaping how customers discover and evaluate vendors, and the businesses cited by ChatGPT, Perplexity, and Google\'s AI Mode are gaining a compounding trust advantage at almost no cost. For a Toronto startup competing against better-funded US incumbents, AI visibility is the cheapest, most defensible moat available right now, because the field is nearly empty in 2026 and getting cited establishes you as the credible answer before competitors realise the competition exists.',
+  },
+  {
+    question: 'How long until I see AEO results for a startup?',
+    answer:
+      'First measurable presence in AI tools usually within two to three months of starting the work, with the strongest position by month six. Faster than traditional SEO because the field is less crowded.',
+  },
+  {
+    question: 'Do I need to be a public company to be cited by ChatGPT?',
+    answer:
+      'No. AI tools cite small businesses, startups, and well-structured private companies routinely. The bar is being legible to the model, not being famous.',
+  },
+  {
+    question: 'Should I do AEO before or after product-market fit?',
+    answer:
+      'Before. The credibility AEO builds shapes how prospects find and trust you, which feeds the search for PMF rather than waiting on it.',
+  },
+  {
+    question: 'Will paying for ChatGPT ads get me organic citations?',
+    answer:
+      'No. They are separate products. Organic recommendations are earned through schema, answer-first content, and third-party authority; ChatGPT Ads is a paid placement product that does not influence organic answers.',
+  },
+]
+
 export const aiNativeGtmPart1Faq = [
   {
     question: 'What does AI-native GTM mean for a startup?',

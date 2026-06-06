@@ -16,7 +16,7 @@ export const AI_NATIVE_GTM_PARTS: AiNativeGtmPart[] = [
   },
   {
     part: 2,
-    slug: null,
+    slug: 'ai-native-gtm-cited-by-chatgpt',
     shortTitle: 'Cited by ChatGPT before US rivals',
     role: 'Visibility',
   },

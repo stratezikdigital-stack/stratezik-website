@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { scarboroughAgencyTriggersFaq } from './postFaqs'
 
 const faq = scarboroughAgencyTriggersFaq
@@ -220,6 +221,8 @@ export default function ScarboroughAgencyTriggersArticle() {
         </a>
         .
       </p>
+
+      <BlogDiscoveryHub />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="scarborough-agency-faq-heading">
         <h2 id="scarborough-agency-faq-heading" className="font-display text-display-3 text-ink">

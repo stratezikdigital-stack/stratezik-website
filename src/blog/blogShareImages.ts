@@ -13,6 +13,7 @@ const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
   'insectica-gta-pest-control-scaling-case-study': '/branding/blog-og-insectica-case-study.png',
   'answer-engine-optimisation-toronto': '/services/seo-aeo-local-seo.png',
   'ai-native-gtm-build-from-day-1': '/services/ai-agents.png',
+  'ai-native-gtm-cited-by-chatgpt': '/branding/blog-og-chatgpt-recommendations.png',
 }
 
 export function getBlogShareImagePath(slug: string): string {
