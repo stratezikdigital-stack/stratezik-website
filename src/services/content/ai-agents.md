@@ -1,6 +1,6 @@
-# AI Agents Built by an Agency That Runs on Its Own
+# Most agencies sell AI services. We run on one.
 
-Stratezik designs and builds custom AI agent systems for businesses that want to scale without scaling headcount. We can do this credibly because we already do it: our agency runs on the same agent architecture we sell, which means you can see the reference build before you commit.
+Every blog post, every email sequence, and every client brief on this site was produced by a five-agent organisation that works for our agency twenty-four hours a day. Below is what it does, how it actually works, and why you can see the whole thing before you commit to anything.
 
 ## What you get
 
@@ -18,10 +18,6 @@ Two main shapes of engagement, depending on where you are:
 - **[Agent Development](/services/ai-agents/agent-development)** — End-to-end build of a single agent or a full agent org. For teams ready to ship.
 
 A single-agent build typically runs two to four weeks. A full agent org build runs eight to sixteen weeks. Every engagement ends with a working system, audit logs, and an operator who can manage it without us.
-
-## Proof
-
-The agent org behind this site is the agent org we sell. The same context files, the same handoff rules, the same evals. We do not pitch theory about AI in marketing. We run a marketing agency on it, in public, and we will show you exactly how it works on a call.
 
 This is also Stratezik's highest-value and most differentiated service, which is reflected in our [AI-Enabled Bundle](/services), where AI agents can sit underneath any of our other services to make them faster and more consistent.
 

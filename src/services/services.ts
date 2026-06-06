@@ -194,7 +194,7 @@ export const services: ServiceDefinition[] = [
     slug: 'ai-agents',
     title: 'AI Agent Development in Toronto | Stratezik',
     metaDescription:
-      'Toronto AI agent development and strategy. Custom systems for your business, built by the agency that runs on its own. See the reference build before you commit.',
+      'Stratezik runs on a five-agent organisation that researches, writes, reviews, and ships marketing work every day. Meet the team, see the handoffs, and look at what it produces.',
     primaryKeyword: 'AI agent development Toronto',
     secondaryKeywords: ['AI strategy Toronto', 'custom AI agents', 'AI automation Toronto'],
     serviceType: 'AI agent development and automation',

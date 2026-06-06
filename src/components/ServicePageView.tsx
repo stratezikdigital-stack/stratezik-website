@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { usePrerenderBodies, type PrerenderBodies } from '../prerender/PrerenderBodiesContext'
 import { getServiceBySlug, getServiceChild } from '../services/services'
 import { SERVICE_HERO_AI_LABEL, getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
+import { AiAgentsOrgFeature } from './aiAgents/AiAgentsOrgFeature'
 import { Markdown } from './Markdown'
 
 /** Home contact form anchor — handled by ScrollToHash in App.tsx. */
@@ -227,6 +228,8 @@ export function ServicePageView({ clientBodies }: ServicePageViewProps) {
           </motion.div>
         </div>
       </header>
+
+      {!isHub && !isChild && parentService?.slug === 'ai-agents' ? <AiAgentsOrgFeature /> : null}
 
       <div className="container-custom px-6 md:px-12 mt-16 md:mt-20">
         <div className="border-t border-ink/10 pt-12">
