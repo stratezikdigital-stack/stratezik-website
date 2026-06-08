@@ -25,7 +25,9 @@ const AuthorPage = () => {
             Blog
           </Link>
           <span className="mx-2 text-ink-300">&middot;</span>
-          <span className="text-ink">Author</span>
+          <span className="text-ink" aria-current="page">
+            {author.name}
+          </span>
         </nav>
 
         <motion.header

@@ -3,6 +3,7 @@ import { blogPosts } from '../blog/posts'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
+import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
@@ -77,14 +78,19 @@ export const CAREERS_SEO: RouteSeoConfig = {
   ogImageAlt: 'Careers at Stratezik Digital Marketing',
   jsonLd: {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    '@id': `${SITE_ORIGIN}/careers#webpage`,
-    name: 'Careers at Stratezik',
-    description:
-      'Join Stratezik Digital in Toronto. Business Development Representative and future roles on a Toronto growth team.',
-    url: `${SITE_ORIGIN}/careers`,
-    inLanguage: 'en-CA',
-    isPartOf: { '@type': 'WebSite', '@id': `${SITE_ORIGIN}/#website`, name: 'Stratezik', url: SITE_ORIGIN },
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${SITE_ORIGIN}/careers#webpage`,
+        name: 'Careers at Stratezik',
+        description:
+          'Join Stratezik Digital in Toronto. Business Development Representative and future roles on a Toronto growth team.',
+        url: `${SITE_ORIGIN}/careers`,
+        inLanguage: 'en-CA',
+        isPartOf: { '@type': 'WebSite', '@id': `${SITE_ORIGIN}/#website`, name: 'Stratezik', url: SITE_ORIGIN },
+      },
+      buildCareersBreadcrumbJsonLd(),
+    ],
   },
   sitemapPriority: 0.8,
   sitemapChangefreq: 'monthly',

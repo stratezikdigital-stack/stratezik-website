@@ -1,3 +1,4 @@
+import { buildAuthorBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { SITE_ORIGIN } from './siteConfig'
 
 export type Author = {
@@ -68,18 +69,20 @@ export function buildAuthorNode(author: Author) {
 
 /** ProfilePage + Person JSON-LD for the standalone /authors/{slug} route. */
 export function buildAuthorPageJsonLd(author: Author) {
+  const url = authorUrl(author)
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'ProfilePage',
-        '@id': `${authorUrl(author)}#profilepage`,
-        url: authorUrl(author),
+        '@id': `${url}#profilepage`,
+        url,
         name: `${author.name} — Stratezik`,
-        mainEntity: { '@id': `${authorUrl(author)}#person` },
+        mainEntity: { '@id': `${url}#person` },
         inLanguage: 'en-CA',
       },
       buildAuthorNode(author),
+      buildAuthorBreadcrumbJsonLd(author.slug, author.name),
     ],
   }
 }

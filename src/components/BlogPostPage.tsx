@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
+import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -13,6 +14,7 @@ const BlogPostPage = () => {
 
   const { Component } = post
   const author = getAuthorBySlug(post.authorSlug)
+  const breadcrumbLabel = formatBreadcrumbLabel(post.title)
 
   return (
     <article className="min-h-screen bg-cream pb-24">
@@ -26,7 +28,9 @@ const BlogPostPage = () => {
             Blog
           </Link>
           <span className="mx-2 text-ink-300">&middot;</span>
-          <span className="text-ink">Article</span>
+          <span className="text-ink" aria-current="page">
+            {breadcrumbLabel}
+          </span>
         </nav>
 
         <motion.header
