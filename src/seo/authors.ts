@@ -28,6 +28,7 @@ export const authors: Author[] = [
     name: 'Shah Md. Rifat',
     jobTitle: 'Content Writer',
     bio: 'Content writer at Stratezik Digital Inc, a Toronto digital marketing agency. Covers SEO, answer-engine optimisation, AI-native GTM, and growth strategy for startups and SMBs across the GTA and Canada.',
+    imagePath: '/branding/author-shah-md-rifat.png',
     sameAs: ['https://www.linkedin.com/in/shah-md-rifat-737874144/'],
   },
 ]
