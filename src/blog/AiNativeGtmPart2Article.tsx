@@ -266,8 +266,11 @@ export default function AiNativeGtmPart2Article() {
         this month, puts you ahead of nearly every Toronto startup competitor and most of your US ones.
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
-        In Part 3, we cover the agent stack that pays back at each funding stage: what to build, what to buy, and what to
-        skip.
+        In{' '}
+        <Link to="/blog/ai-native-gtm-agent-stack-by-stage" className="text-oxblood underline underline-offset-2">
+          Part 3
+        </Link>
+        , we cover the agent stack that pays back at each funding stage: what to build, what to buy, and what to skip.
       </p>
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Where Stratezik fits</h2>

@@ -258,6 +258,34 @@ export const getFound2026Part5PaidFaq = [
   },
 ]
 
+export const aiNativeGtmPart3Faq = [
+  {
+    question: 'What AI tools should a startup actually use for marketing in 2026?',
+    answer:
+      'The right AI tools depend entirely on funding stage and team size. At pre-seed, the answer is almost nothing beyond a strong foundation model (Claude, ChatGPT, or Gemini), a structured prompt library you have built yourself, and a single agent or two that handle research and drafting. At seed, you add monitoring, structured CRM integration, and a paid-media analyst agent. By Series A, you are running a small agent organisation with defined roles and handoffs, supervised by a senior human or two. Almost every other AI tool you see advertised solves a problem you should not have yet.',
+  },
+  {
+    question: 'Should I build agents in-house or hire an agency to do it?',
+    answer:
+      'Depends on stage. At pre-seed and early seed, do it yourself; the learning is part of the value. By Series A, hiring an outside partner for the build often makes sense, because the cost of getting the architecture wrong is significant. Stratezik does this work through Agent Development for teams ready to ship.',
+  },
+  {
+    question: 'Which foundation model should I use?',
+    answer:
+      'Honest answer: try Claude, ChatGPT, and Gemini, use all three for a month, and pick the one that feels right for your work. They are competitive at the top end. Sticking with one and going deep beats spreading thinly across all three.',
+  },
+  {
+    question: 'Are AI SDR tools worth it?',
+    answer:
+      'Selectively. They can scale outbound for narrow motions, but they are also responsible for a lot of generic-sounding cold email, which has trained buyers to distrust it. If your motion depends on outbound, build the agent layer carefully and add human voice on top. The fully-automated version often underperforms.',
+  },
+  {
+    question: 'Do I need a data warehouse early?',
+    answer:
+      'Probably not at pre-seed. By seed you start to want one for any non-trivial paid motion. By Series A it is table stakes for serious attribution.',
+  },
+]
+
 export const aiNativeGtmPart2Faq = [
   {
     question: 'Why should a Toronto startup founder care about ChatGPT visibility?',

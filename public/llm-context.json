@@ -62,7 +62,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-06-06",
+  "generated": "2026-06-08",
   "articles": [
     {
       "title": "AI-Native GTM Part 1: Build the Function From Day 1",
@@ -71,6 +71,10 @@
     {
       "title": "AI-Native GTM Part 2: Be Cited by ChatGPT First",
       "url": "https://www.stratezik.com/blog/ai-native-gtm-cited-by-chatgpt"
+    },
+    {
+      "title": "AI-Native GTM Part 3: The Agent Stack by Funding Stage",
+      "url": "https://www.stratezik.com/blog/ai-native-gtm-agent-stack-by-stage"
     },
     {
       "title": "When GTA SMBs Decide It Is Time for a Digital Marketing Agency",

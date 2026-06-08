@@ -22,7 +22,7 @@ export const AI_NATIVE_GTM_PARTS: AiNativeGtmPart[] = [
   },
   {
     part: 3,
-    slug: null,
+    slug: 'ai-native-gtm-agent-stack-by-stage',
     shortTitle: 'Agent stack that pays back at each stage',
     role: 'Systems',
   },

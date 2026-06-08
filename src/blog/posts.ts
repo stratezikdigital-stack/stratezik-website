@@ -13,6 +13,7 @@ import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceB
 import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
 import AiNativeGtmPart2Article from './AiNativeGtmPart2Article'
+import AiNativeGtmPart3Article from './AiNativeGtmPart3Article'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -28,6 +29,7 @@ import {
   insecticaCaseStudyFaq,
   aiNativeGtmPart1Faq,
   aiNativeGtmPart2Faq,
+  aiNativeGtmPart3Faq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
@@ -68,6 +70,25 @@ export const blogPosts: BlogPostDefinition[] = [
     ],
     faqEntities: aiNativeGtmPart2Faq,
     Component: AiNativeGtmPart2Article,
+  },
+  {
+    slug: 'ai-native-gtm-agent-stack-by-stage',
+    title: 'AI-Native GTM Part 3: The Agent Stack by Funding Stage',
+    description:
+      'Part 3 of the AI-native GTM series: which AI tools and agents to build or buy at each funding stage, pre-seed through Series A. No vendor pitch.',
+    datePublished: '2026-06-01',
+    dateModified: '2026-06-01',
+    keywords: [
+      'AI marketing stack startup',
+      'startup AI tools',
+      'agent stack',
+      'Toronto startup tooling',
+      'AI tools by funding stage',
+      'AI-native GTM',
+      'Stratezik Toronto founders',
+    ],
+    faqEntities: aiNativeGtmPart3Faq,
+    Component: AiNativeGtmPart3Article,
   },
   {
     slug: 'when-hire-digital-marketing-agency-scarborough-gta',
