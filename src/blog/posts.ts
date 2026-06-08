@@ -14,6 +14,7 @@ import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
 import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
 import AiNativeGtmPart2Article from './AiNativeGtmPart2Article'
 import AiNativeGtmPart3Article from './AiNativeGtmPart3Article'
+import AiNativeGtmPart4Article from './AiNativeGtmPart4Article'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -30,6 +31,7 @@ import {
   aiNativeGtmPart1Faq,
   aiNativeGtmPart2Faq,
   aiNativeGtmPart3Faq,
+  aiNativeGtmPart4Faq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
@@ -77,7 +79,7 @@ export const blogPosts: BlogPostDefinition[] = [
     description:
       'Part 3 of the AI-native GTM series: which AI tools and agents to build or buy at each funding stage, pre-seed through Series A. No vendor pitch.',
     datePublished: '2026-06-01',
-    dateModified: '2026-06-01',
+    dateModified: '2026-06-08',
     keywords: [
       'AI marketing stack startup',
       'startup AI tools',
@@ -89,6 +91,25 @@ export const blogPosts: BlogPostDefinition[] = [
     ],
     faqEntities: aiNativeGtmPart3Faq,
     Component: AiNativeGtmPart3Article,
+  },
+  {
+    slug: 'ai-native-gtm-marketing-hire-2026',
+    title: 'AI-Native GTM Part 4: The 2026 Marketing Hire',
+    description:
+      'Part 4 of the AI-native GTM series: what your 2026 marketing hire should look like, how to test AI fluency, and the three hires to avoid.',
+    datePublished: '2026-06-08',
+    dateModified: '2026-06-08',
+    keywords: [
+      'startup marketing hire 2026',
+      'fractional CMO Toronto',
+      'AI marketing hire',
+      'first marketing hire startup',
+      'head of growth hire',
+      'AI-native GTM',
+      'Stratezik Toronto founders',
+    ],
+    faqEntities: aiNativeGtmPart4Faq,
+    Component: AiNativeGtmPart4Article,
   },
   {
     slug: 'when-hire-digital-marketing-agency-scarborough-gta',

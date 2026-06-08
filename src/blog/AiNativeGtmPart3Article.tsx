@@ -256,8 +256,12 @@ export default function AiNativeGtmPart3Article() {
         The shape almost certainly needs to consolidate toward fewer real tools and a custom agent layer.
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
-        In Part 4, the final post in the series, we cover the people question: what your marketing hire should look like in
-        2026 and how to test for AI fluency without being fooled.
+        In{' '}
+        <Link to="/blog/ai-native-gtm-marketing-hire-2026" className="text-oxblood underline underline-offset-2">
+          Part 4
+        </Link>
+        , the final post in the series, we cover the people question: what your marketing hire should look like in 2026 and how
+        to test for AI fluency without being fooled.
       </p>
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Where Stratezik fits</h2>

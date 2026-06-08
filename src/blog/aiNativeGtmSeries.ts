@@ -28,7 +28,7 @@ export const AI_NATIVE_GTM_PARTS: AiNativeGtmPart[] = [
   },
   {
     part: 4,
-    slug: null,
+    slug: 'ai-native-gtm-marketing-hire-2026',
     shortTitle: 'What your marketing hire looks like in 2026',
     role: 'Team design',
   },

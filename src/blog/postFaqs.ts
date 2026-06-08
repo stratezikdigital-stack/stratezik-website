@@ -258,6 +258,34 @@ export const getFound2026Part5PaidFaq = [
   },
 ]
 
+export const aiNativeGtmPart4Faq = [
+  {
+    question: 'What should a startup marketing hire look like in 2026?',
+    answer:
+      'The 2026 marketing hire is a senior orchestrator who supervises an agent system rather than producing inside it. They have strong judgement on positioning, channels, and economics. They are AI-fluent in a way that goes beyond using ChatGPT, meaning they can design workflows, evaluate output critically, and know what AI cannot yet do. For most early-stage startups, the right first marketing hire is a senior growth operator or fractional CMO, not a junior content or paid marketer. Hiring the legacy shape gets you a slower, more expensive version of what your agent system can already do.',
+  },
+  {
+    question: 'Should I hire in-house or use an agency or fractional CMO?',
+    answer:
+      'Depends on stage and shape. Pre-seed and early seed: usually fractional or agency, because the function does not yet justify a full-time senior hire. Late seed into Series A: a senior in-house hire becomes worthwhile, ideally paired with continued agency or fractional support for specialised work. Stratezik specifically serves the seed-to-Series A bridge through senior partnership engagements.',
+  },
+  {
+    question: 'What should I pay a senior orchestrator hire?',
+    answer:
+      'At Series A in Toronto, expect to pay competitively for the role. Cheap senior judgement does not exist; the trade-off is whether you pay for it full-time or buy it fractional. Underpaying a senior hire usually means you got a junior hire with a fancy title.',
+  },
+  {
+    question: 'Can I just have my agency be the marketing function?',
+    answer:
+      'For early-stage startups, often yes, and we run engagements that look exactly like this: Stratezik functions as the outsourced marketing org, with the founder owning the voice and key decisions. It is the cheapest version of the AI-native shape because it bypasses the hire entirely.',
+  },
+  {
+    question: 'How do I know if a candidate is genuinely senior?',
+    answer:
+      'Watch for opinions, defended with reasoning, and a willingness to disagree with you in the interview. Junior-shaped candidates agree with everything you say; senior-shaped ones push back where they think you are wrong, respectfully and with substance.',
+  },
+]
+
 export const aiNativeGtmPart3Faq = [
   {
     question: 'What AI tools should a startup actually use for marketing in 2026?',
