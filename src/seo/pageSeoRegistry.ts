@@ -125,7 +125,7 @@ function blogPostSeo(post: (typeof blogPosts)[number]): RouteSeoConfig {
     path: `/blog/${post.slug}`,
     title: `${post.title} | Stratezik Blog`,
     description: post.description,
-    articleAuthor: author?.name ?? 'Didar Sampson',
+    articleAuthor: author?.name ?? 'Shah Md. Rifat',
     ogType: 'article',
     ogImageUrl: `${SITE_ORIGIN}${sharePath}`,
     ogImageWidth: dims.width,

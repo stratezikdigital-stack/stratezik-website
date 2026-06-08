@@ -24,17 +24,15 @@ export type Author = {
  */
 export const authors: Author[] = [
   {
-    slug: 'didar-sampson',
-    name: 'Didar Sampson',
-    jobTitle: 'Creative Juggler',
-    bio: 'Creative Juggler at Stratezik Digital Inc, a Toronto digital marketing agency. Works hands-on across technical SEO, answer-engine optimisation, paid search, and growth analytics for startups and SMBs across the GTA and Canada.',
-    imagePath: '/branding/author-didar-sampson.png',
-    email: 'dave@stratezik.com',
-    sameAs: ['https://www.linkedin.com/company/stratezik/'],
+    slug: 'shah-md-rifat',
+    name: 'Shah Md. Rifat',
+    jobTitle: 'Content Writer',
+    bio: 'Content writer at Stratezik Digital Inc, a Toronto digital marketing agency. Covers SEO, answer-engine optimisation, AI-native GTM, and growth strategy for startups and SMBs across the GTA and Canada.',
+    sameAs: ['https://www.linkedin.com/in/shah-md-rifat-737874144/'],
   },
 ]
 
-const DEFAULT_AUTHOR_SLUG = 'didar-sampson'
+const DEFAULT_AUTHOR_SLUG = 'shah-md-rifat'
 
 export function getAuthorBySlug(slug?: string): Author | undefined {
   const target = slug ?? DEFAULT_AUTHOR_SLUG

@@ -41,6 +41,11 @@
       "permanent": true
     },
     {
+      "source": "/authors/didar-sampson",
+      "destination": "https://www.stratezik.com/authors/shah-md-rifat",
+      "permanent": true
+    },
+    {
       "source": "/sample-page/",
       "destination": "https://www.stratezik.com/",
       "permanent": true
