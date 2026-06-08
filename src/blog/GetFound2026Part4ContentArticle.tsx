@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part4ContentFaq } from './postFaqs'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
@@ -108,23 +110,14 @@ export default function GetFound2026Part4ContentArticle() {
       <p className="mt-6 text-ink-700 leading-relaxed">
         We steward interviews, transcripts, edits, multimedia capture, structured data overlays, plus paid amplification once offers prove
         defensible.&nbsp;
-        <a href="mailto:dave@stratezik.com?subject=Content%20strategy%202026" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           the homepage contact lane
         </Link>{' '}
         launches the conversation fastest.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gf-part4-faq-heading">
         <h2 id="gf-part4-faq-heading" className="font-display text-display-3 text-ink">

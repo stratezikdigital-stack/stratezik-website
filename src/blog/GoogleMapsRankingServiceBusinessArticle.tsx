@@ -1,3 +1,4 @@
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { googleMapsRankingServiceBusinessFaq } from './postFaqs'
 
@@ -198,9 +199,7 @@ export default function GoogleMapsRankingServiceBusinessArticle() {
         </Link>
         <p className="mt-6 text-sm text-cream/60">
           Email{' '}
-          <a href="mailto:dave@stratezik.com?subject=GBP%20audit" className="text-gold hover:text-cream">
-            dave@stratezik.com
-          </a>
+          <BlogStratezikContactLink className="text-gold hover:text-cream">contact form</BlogStratezikContactLink>
           {' · '}
           <Link to="/careers" className="text-gold hover:text-cream underline">
             Careers

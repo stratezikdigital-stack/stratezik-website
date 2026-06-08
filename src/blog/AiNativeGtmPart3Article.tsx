@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart3Faq } from './postFaqs'
 import AiNativeGtmSeriesNav from './AiNativeGtmSeriesNav'
@@ -277,23 +279,10 @@ export default function AiNativeGtmPart3Article() {
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
         If you are mid-decision on your stack and not sure what to invest in next, that is a concrete strategy call we run.
-        Email{' '}
-        <a
-          href="mailto:dave@stratezik.com?subject=Startup%20AI%20stack%20strategy"
-          className="text-oxblood underline underline-offset-2"
-        >
-          dave@stratezik.com
-        </a>{' '}
-        and we will tell you, honestly, where your next marginal dollar of impact actually lives.
+        Use our <BlogStratezikContactLink>contact form</BlogStratezikContactLink> and we will tell you, honestly, where your
+        next marginal dollar of impact actually lives.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gtm-part3-faq-heading">
         <h2 id="gtm-part3-faq-heading" className="font-display text-display-3 text-ink">

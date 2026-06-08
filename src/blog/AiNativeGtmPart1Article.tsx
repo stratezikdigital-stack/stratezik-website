@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart1Faq } from './postFaqs'
 import AiNativeGtmSeriesNav from './AiNativeGtmSeriesNav'
@@ -288,20 +290,10 @@ export default function AiNativeGtmPart1Article() {
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
         If you are mid-decision on how to structure your marketing function, that is exactly the conversation we run with
-        founders. Email{' '}
-        <a href="mailto:dave@stratezik.com?subject=AI-native%20GTM" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        founders. Use our <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         and we will tell you, honestly, where AI-native is the right answer and where it is not.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gtm-part1-faq-heading">
         <h2 id="gtm-part1-faq-heading" className="font-display text-display-3 text-ink">

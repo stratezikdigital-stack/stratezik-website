@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
-    "build": "node ./node_modules/typescript/bin/tsc && node ./node_modules/vite/bin/vite.js build && node ./node_modules/tsx/dist/cli.mjs --tsconfig scripts/tsconfig.prerender.json scripts/postbuild-seo.ts",
+    "build": "node ./node_modules/tsx/dist/cli.mjs scripts/check-blog-author.ts && node ./node_modules/typescript/bin/tsc && node ./node_modules/vite/bin/vite.js build && node ./node_modules/tsx/dist/cli.mjs --tsconfig scripts/tsconfig.prerender.json scripts/postbuild-seo.ts",
+    "check:blog-author": "node ./node_modules/tsx/dist/cli.mjs scripts/check-blog-author.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "node ./node_modules/vite/bin/vite.js preview",
     "seo:postbuild": "node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts"

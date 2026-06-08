@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
 import { getFound2026Part1BrandFaq } from './postFaqs'
@@ -135,18 +137,8 @@ export default function GetFound2026Part1BrandArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We align positioning, onsite architecture, GBP, organic authority, assistants, then paid amplification for GTA operators who want
-        one accountable programme. Ping{' '}
-        <a
-          href="mailto:dave@stratezik.com?subject=Get%20Found%202026%20brand%20foundation"
-          className="text-oxblood underline underline-offset-2"
-        >
-          dave@stratezik.com
-        </a>{' '}
-        or open{' '}
-        <Link to="/#contact" className="text-oxblood underline underline-offset-2">
-          our homepage contact lane
-        </Link>{' '}
-        once your differentiation test is drafted; we tighten language, rollout templates, then hand off cleanly to technical SEO work.
+        one accountable programme. Use our <BlogStratezikContactLink>contact form</BlogStratezikContactLink> once your
+        differentiation test is drafted; we tighten language, rollout templates, then hand off cleanly to technical SEO work.
       </p>
       <p className="mt-10 text-ink-700 leading-relaxed">
         Ready for mechanics? Continue to{' '}
@@ -155,14 +147,7 @@ export default function GetFound2026Part1BrandArticle() {
         </Link>
         .
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <GetFound2026SeriesNav currentSlug="get-found-2026-brand-positioning" variant="bottom" />
 

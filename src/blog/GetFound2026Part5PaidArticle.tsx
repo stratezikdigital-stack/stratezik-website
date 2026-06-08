@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part5PaidFaq } from './postFaqs'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
@@ -150,23 +152,14 @@ export default function GetFound2026Part5PaidArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We architect paid programmes alongside the organic and AI readiness work this series described.&nbsp;
-        <a href="mailto:dave@stratezik.com?subject=Paid%20performance%202026" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           the homepage contact lane
         </Link>{' '}
         is the fastest path to a candid audit.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gf-part5-faq-heading">
         <h2 id="gf-part5-faq-heading" className="font-display text-display-3 text-ink">

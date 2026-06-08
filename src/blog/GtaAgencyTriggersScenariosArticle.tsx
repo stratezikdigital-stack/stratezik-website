@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { gtaAgencyTriggersScenariosFaq } from './postFaqs'
@@ -278,10 +279,7 @@ export default function GtaAgencyTriggersScenariosArticle() {
         </span>
       </Link>
       <p className="mt-6 text-sm text-ink-600">
-        Or email{' '}
-        <a href="mailto:dave@stratezik.com?subject=GTA%20marketing%20audit" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
+        Or use our <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>
         .
       </p>
 

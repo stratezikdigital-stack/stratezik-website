@@ -1,7 +1,8 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { getAuthorBySlug } from '../seo/authors'
+import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { blogPosts } from '../blog/posts'
+import { getAuthorBySlug } from '../seo/authors'
 
 const AuthorPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -36,17 +37,9 @@ const AuthorPage = () => {
           transition={{ duration: 0.55 }}
           className="max-w-[720px]"
         >
-          {author.imagePath ? (
-            <figure className="mb-8 w-28 h-28 md:w-32 md:h-32 border border-ink/10 overflow-hidden m-0">
-              <img
-                src={author.imagePath}
-                alt={author.name}
-                width={256}
-                height={256}
-                className="w-full h-full object-cover object-top"
-              />
-            </figure>
-          ) : null}
+          <div className="mb-8">
+            <AuthorHeadshot author={author} sizeClassName="w-28 h-28 md:w-32 md:h-32" linkToAuthorPage={false} />
+          </div>
           <h1 className="font-display text-display-3 md:text-[clamp(2.25rem,5vw,3.25rem)] text-ink leading-[1.05] tracking-[-0.035em]">
             {author.name}
           </h1>

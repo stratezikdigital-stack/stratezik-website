@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
 import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
@@ -43,14 +44,17 @@ const BlogPostPage = () => {
             {post.title}
           </h1>
           <p className="lead mt-8 text-ink-700">{post.description}</p>
-          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-400">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-400">
             {author && (
               <>
-                <span>
-                  By{' '}
-                  <Link to={`/authors/${author.slug}`} className="text-ink hover:text-oxblood transition-colors">
-                    {author.name}
-                  </Link>
+                <span className="inline-flex items-center gap-3">
+                  <AuthorHeadshot author={author} sizeClassName="w-9 h-9" />
+                  <span>
+                    By{' '}
+                    <Link to={`/authors/${author.slug}`} className="text-ink hover:text-oxblood transition-colors">
+                      {author.name}
+                    </Link>
+                  </span>
                 </span>
                 <span aria-hidden className="hidden sm:inline text-ink-300">
                   |

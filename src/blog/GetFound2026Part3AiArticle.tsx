@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part3AiFaq } from './postFaqs'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
@@ -143,23 +145,14 @@ export default function GetFound2026Part3AiArticle() {
       <p className="mt-6 text-ink-700 leading-relaxed">
         We marry assistant audits with schema implementation, GBP depth, and the paid overlays that amplify proof once copy is
         defensible.&nbsp;
-        <a href="mailto:dave@stratezik.com?subject=AI%20search%20visibility%20audit" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           the homepage contact lane
         </Link>{' '}
         both reach us quickly.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gf-part3-faq-heading">
         <h2 id="gf-part3-faq-heading" className="font-display text-display-3 text-ink">

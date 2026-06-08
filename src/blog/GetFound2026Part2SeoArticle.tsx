@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
 import { getFound2026Part2SeoFaq } from './postFaqs'
@@ -154,31 +156,15 @@ export default function GetFound2026Part2SeoArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We sequence technical remediation, topical authority clusters, GBP alignment, instrumentation, assistant audits, performance media as
-        one accountable programme instead of departmental silos. Email{' '}
-        <a
-          href="mailto:dave@stratezik.com?subject=Get%20Found%202026%20SEO%20bedrock"
-          className="text-oxblood underline underline-offset-2"
-        >
-          dave@stratezik.com
-        </a>{' '}
-        or use{' '}
-        <Link to="/#contact" className="text-oxblood underline underline-offset-2">
-          homepage contact
-        </Link>{' '}
-        for a GTA audit that aligns fanout, crawl health, backlinks, indexing, then hands off cleanly to{' '}
+        one accountable programme instead of departmental silos. Use our{' '}
+        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> for a GTA audit that aligns fanout, crawl health,
+        backlinks, indexing, then hands off cleanly to{' '}
         <Link to="/blog/get-found-2026-ai-search-visibility" className="text-oxblood underline underline-offset-2">
           AI search optimisation
         </Link>
         .
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <GetFound2026SeriesNav currentSlug="get-found-2026-seo-organic-search" variant="bottom" />
 

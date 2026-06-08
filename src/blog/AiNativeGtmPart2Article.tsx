@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart2Faq } from './postFaqs'
 import AiNativeGtmSeriesNav from './AiNativeGtmSeriesNav'
@@ -284,23 +286,11 @@ export default function AiNativeGtmPart2Article() {
           Answer Engine Optimisation child service
         </Link>
         , and we run our own visibility through the same approach. If you want to know exactly where your startup stands in AI
-        search right now, that is a concrete audit we run. Email{' '}
-        <a
-          href="mailto:dave@stratezik.com?subject=Startup%20AEO%20audit"
-          className="text-oxblood underline underline-offset-2"
-        >
-          dave@stratezik.com
-        </a>{' '}
-        and we will tell you what you would need to do to win the next twelve months in your category.
+        search right now, that is a concrete audit we run. Use our{' '}
+        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> and we will tell you what you would need to do to
+        win the next twelve months in your category.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="gtm-part2-faq-heading">
         <h2 id="gtm-part2-faq-heading" className="font-display text-display-3 text-ink">

@@ -29,9 +29,10 @@ When the **google-search-console** MCP is enabled and work touches **existing UR
 When the user asks to **write, publish, or ship** a blog post in this repo, the agent **must** complete the full technical SEO pass before calling the task done:
 
 1. Add or update `src/blog/posts.ts`, article TSX, and `postFaqs.ts` as needed.
-2. Run **`npm run build`** (triggers prerender, `public/sitemap.xml`, and `public/llms-full.txt`).
-3. Confirm `dist/blog/{slug}/index.html` exists and grep title/canonical from that file.
-4. Commit (and push when the user asks) so Vercel deploys prerendered HTML.
+2. Article TSX: use **`BlogAuthorSignoff`** (closing byline) and **`BlogStratezikContactLink`** (contact CTAs). Never paste author names, addresses, or `mailto:` into article bodies — identity lives in `src/seo/authors.ts`.
+3. Run **`npm run build`** (runs `check-blog-author`, then prerender, `public/sitemap.xml`, and `public/llms-full.txt`).
+4. Confirm `dist/blog/{slug}/index.html` exists; grep title/canonical **and** closing byline author name (must match `authors.ts`, not stale copy).
+5. Commit (and push when the user asks) so Vercel deploys prerendered HTML.
 
 **Never** tell the user to run the build themselves unless they explicitly asked for copy-only or a draft with no repo changes. **`posts.ts` alone is not “published”** until build has run and artifacts are committed.
 

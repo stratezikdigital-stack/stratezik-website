@@ -1,3 +1,5 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { chatgptRecommendationPlaybookFaq } from './postFaqs'
 
@@ -277,23 +279,14 @@ export default function GetRecommendedByChatGPTPlaybookArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We assemble these programmes for GTA operators alongside paid acquisition and GBP execution. Reach{' '}
-        <a href="mailto:dave@stratezik.com?subject=ChatGPT%20recommendations%20audit" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           the contact lane on our homepage
         </Link>{' '}
         for a conversational visibility audit keyed to real buyer prompts.
       </p>
-      <p className="mt-10 text-ink-700 leading-relaxed">
-        <strong className="text-ink">Dave</strong>
-        <br />
-        Stratezik · 2466 Eglinton Ave E, Toronto ON M1K 5J8 ·{' '}
-        <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>
-      </p>
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="chatgpt-rec-faq-heading">
         <h2 id="chatgpt-rec-faq-heading" className="font-display text-display-3 text-ink">

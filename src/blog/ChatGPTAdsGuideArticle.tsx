@@ -1,3 +1,4 @@
+import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { chatgptAdsGuideFaq } from './postFaqs'
@@ -369,10 +370,7 @@ export default function ChatGPTAdsGuideArticle() {
         about assistive surfaces, not only a keyword auction traditionalist.
       </p>
       <p className="mt-6 text-ink-700 leading-relaxed">
-        If you want a blunt-fit review for your offer, email{' '}
-        <a href="mailto:dave@stratezik.com?subject=ChatGPT%20Ads%20fit" className="text-oxblood underline underline-offset-2">
-          dave@stratezik.com
-        </a>{' '}
+        If you want a blunt-fit review for your offer, use our <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           book time via our contact form

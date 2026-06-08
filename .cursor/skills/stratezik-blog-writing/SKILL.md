@@ -65,6 +65,22 @@ Match the pattern of the **Insectica** post:
 - Body copy: `text-ink-700 leading-relaxed`; leads slightly larger; **bold** for KPIs and pivotal phrases, not whole sentences.
 - Keep **paragraphs** default; use lists only for snapshots, tactics worth scanning, or FAQs, not for every section.
 
+## Author byline and contact CTAs (single source of truth)
+
+**Never hardcode** author names, job titles, LinkedIn URLs, office addresses, or `mailto:` links inside `*Article.tsx` files.
+
+| Need | Use | Registry |
+|------|-----|----------|
+| Header byline + headshot | Automatic via `BlogPostPage` + `AuthorHeadshot` + `posts.ts` `authorSlug` | `src/seo/authors.ts` (`imagePath`) |
+| Closing sign-off before FAQ | `<BlogAuthorSignoff />` (includes headshot) | `src/blog/BlogAuthorSignoff.tsx` → `getAuthorBySlug()` |
+| “Email us / contact” CTA in body | `<BlogStratezikContactLink>contact form</BlogStratezikContactLink>` | `src/blog/BlogStratezikContactLink.tsx` → `/#contact-form` |
+
+**Changing the default blog author** = edit `src/seo/authors.ts` and `posts.ts` only. Do **not** grep-and-replace names across article TSX.
+
+**Long-form pillar posts** (series explainers, playbooks with FAQ sections): end the main narrative with `<BlogAuthorSignoff />` immediately before the FAQ `<section>`. Case studies may use a CTA card instead if that matches the archetype.
+
+**Release gate:** `npm run build` runs `scripts/check-blog-author.ts`, which fails on `Dave`, `dave@stratezik.com`, `mailto:`, or hardcoded `2466 Eglinton` in `src/blog/*Article.tsx`.
+
 ## `posts.ts` / SEO adjunct
 
 - **Descriptions**: One honest sentence + concrete outcome or angle; no em dash.
@@ -72,6 +88,7 @@ Match the pattern of the **Insectica** post:
 
 ## Quick self-check before shipping
 
+- [ ] No hardcoded author name, address, or `mailto:` in article TSX (`BlogAuthorSignoff` / `BlogStratezikContactLink` only).
 - [ ] Zero `—`, `&mdash;`, and no en dash used as prose punctuation.
 - [ ] Opens with something **specific**, not a generic industry preamble.
 - [ ] Every bold metric or dramatic claim traceable to **source or engagement fact**.

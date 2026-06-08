@@ -25,6 +25,7 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Client hydration | `src/seo/RouteSeoManager.tsx` | Mirrors registry on SPA navigation |
 | Build prerender | `scripts/postbuild-seo.ts` | Writes `dist/{route}/index.html` + `sitemap.xml` + `llms-full.txt` |
 | Blog data | `src/blog/posts.ts` | Slug, dates, description, keywords, `shareImagePath`, `authorSlug`, FAQs |
+| Blog author UI | `src/blog/BlogAuthorSignoff.tsx`, `BlogStratezikContactLink.tsx` | Closing byline + contact CTA; **must not** hardcode names/mailto in article TSX |
 | Article schema | `src/blog/buildArticleJsonLd.ts` | Article + FAQPage + BreadcrumbList `@graph`; Person author |
 | Services data | `src/services/services.ts` (metadata) + `src/services/serviceContent.ts` (raw md bodies, browser-only) | Slug, title, meta, keywords, `serviceType`, `faqEntities` |
 | Service schema | `src/services/buildServiceJsonLd.ts` | Service + FAQPage + BreadcrumbList; hub = CollectionPage + ItemList; `areaServed` Toronto/Scarborough/GTA/Canada (GEO) |
@@ -46,6 +47,7 @@ Copy and complete:
 ```
 SEO release gate:
 - [ ] Route in pageSeoRegistry (or posts.ts for blog)
+- [ ] Blog articles: `<BlogAuthorSignoff />` + `<BlogStratezikContactLink>` only — no hardcoded author names or `mailto:` in `*Article.tsx` (`npm run check:blog-author`)
 - [ ] npm run build succeeds (postbuild prerender + sitemap)
 - [ ] curl -s URL | grep -E '<title>|canonical|og:title' shows ROUTE values (not homepage)
 - [ ] dist/blog/{slug}/index.html exists for new blog slug
