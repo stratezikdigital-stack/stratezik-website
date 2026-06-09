@@ -15,6 +15,7 @@ import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
 import AiNativeGtmPart2Article from './AiNativeGtmPart2Article'
 import AiNativeGtmPart3Article from './AiNativeGtmPart3Article'
 import AiNativeGtmPart4Article from './AiNativeGtmPart4Article'
+import OldSeoToAgentReadyArticle from './OldSeoToAgentReadyArticle'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -32,9 +33,29 @@ import {
   aiNativeGtmPart2Faq,
   aiNativeGtmPart3Faq,
   aiNativeGtmPart4Faq,
+  oldSeoToAgentReadyFaq,
 } from './postFaqs'
 
 export const blogPosts: BlogPostDefinition[] = [
+  {
+    slug: 'old-seo-to-agent-ready-seo-2026',
+    title: 'The Shift From Old SEO to Agent-Ready SEO in 2026',
+    description:
+      'How Toronto teams move from keyword-era SEO to agent-ready content: answer-first pages, provenance, structured data, and citations that survive AI summaries.',
+    datePublished: '2026-06-08',
+    dateModified: '2026-06-08',
+    keywords: [
+      'agent-ready SEO',
+      'old SEO vs new SEO 2026',
+      'answer engine optimisation',
+      'AI citations SEO',
+      'Toronto SEO AEO',
+      'topical authority SEO',
+      'structured data SEO 2026',
+    ],
+    faqEntities: oldSeoToAgentReadyFaq,
+    Component: OldSeoToAgentReadyArticle,
+  },
   {
     slug: 'ai-native-gtm-build-from-day-1',
     title: 'AI-Native GTM Part 1: Build the Function From Day 1',

@@ -1,5 +1,33 @@
 /** FAQ blocks mirrored in JSON-LD (`faqEntities`) and on-page FAQ sections. */
 
+export const oldSeoToAgentReadyFaq = [
+  {
+    question: 'What is agent-ready SEO in 2026?',
+    answer:
+      'Agent-ready SEO is the practice of structuring web content so both search engines and AI assistants can extract accurate answers, verify provenance, and cite your pages in summaries. It keeps classic SEO fundamentals (crawlability, intent, links) but adds answer-first copy, visible authorship, honest structured data, and measurement beyond raw traffic.',
+  },
+  {
+    question: 'Is traditional keyword SEO dead in 2026?',
+    answer:
+      'No. Keywords still reveal intent. The shift is that matching keywords alone is insufficient when assistants answer queries without sending clicks. Pages need a clear one-line answer, topical depth, and trust signals machines can evaluate.',
+  },
+  {
+    question: 'Do backlinks still matter for AI search citations?',
+    answer:
+      'Yes, but quality and context matter more than raw count. Contextual mentions from reputable publishers help models and search systems assess trust. Link schemes and irrelevant volume help less than they once did.',
+  },
+  {
+    question: 'How should Toronto businesses measure SEO when AI answers queries?',
+    answer:
+      'Track classic Search Console metrics plus assisted conversions, branded assistant mentions where you can observe them, and citation checks on priority queries in ChatGPT, Perplexity, and Google AI Overviews. Tie reporting to pipeline outcomes, not sessions alone.',
+  },
+  {
+    question: 'What is the first move from old SEO to agent-ready content?',
+    answer:
+      'Pick your highest-intent money page, add a factual answer sentence at the top, align headings to real questions, add a visible FAQ that matches schema, and fix entity consistency across site, Google Business Profile, and contact data before publishing more volume.',
+  },
+]
+
 export const googleMapsRankingServiceBusinessFaq = [
   {
     question: 'What is the most important ranking factor on Google Maps for a local service business?',

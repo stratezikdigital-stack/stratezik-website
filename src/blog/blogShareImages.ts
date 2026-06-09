@@ -16,6 +16,7 @@ const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
   'ai-native-gtm-cited-by-chatgpt': '/branding/blog-og-chatgpt-recommendations.png',
   'ai-native-gtm-agent-stack-by-stage': '/services/ai-agents.png',
   'ai-native-gtm-marketing-hire-2026': '/services/ai-agents.png',
+  'old-seo-to-agent-ready-seo-2026': '/services/seo-aeo.png',
 }
 
 export function getBlogShareImagePath(slug: string): string {
