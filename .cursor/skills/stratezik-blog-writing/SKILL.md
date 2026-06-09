@@ -28,6 +28,44 @@ Write for **operators** (founders, marketing leads, gritty local SMBs), not text
 
 **Canadian / site spelling** where it matches shipped copy: *optimisation*, *programmes*, *behaviour*, *catalogue* when appropriate; not enforced US spellings unless the surrounding file already uses US.
 
+## GEO authority (Toronto · Scarborough · GTA)
+
+Stratezik’s commercial GEO is **Toronto and Scarborough first**, then **GTA**, then **Canada**. Blogs compound entity signals for local discovery and AEO; they do **not** replace GBP, `areaServed` schema, or NAP consistency on service pages.
+
+**Do not** keyword-stuff city names into every heading or repeat “Toronto Scarborough GTA” in a footer block. Search and answer engines reward **scoped, truthful locality** tied to the reader’s intent.
+
+### Pick a tier before drafting
+
+| Tier | When to use | Title / meta | Body | `posts.ts` `keywords[]` |
+|------|-------------|--------------|------|-------------------------|
+| **A · Hyper-local** | Post targets one neighbourhood or “agency near me” intent (e.g. Scarborough triggers) | Include primary geo in **title** or **description** where honest | **Scarborough** + **Toronto** + **GTA** in lead, examples, and ≥2 FAQs; name real corridors (Eglinton, STC, etc.) only when accurate | 2–3 geo phrases (`digital marketing agency Scarborough`, `GTA SMB marketing`) |
+| **B · GTA operator** | Advice for founders/SMBs in the region but not one borough (GTM series, Get Found, AEO Toronto) | **Toronto** or **GTA** in title or description | **Toronto/GTA** in cold open + at least one later section; optional neighbourhood vignette | ≥1 of `Toronto …`, `GTA …` |
+| **C · Universal pillar** | National/global topic (old SEO → agent-ready, ChatGPT ads) | Geo optional in title; prefer **GTA/Toronto in meta description** if the post feeds local pipeline | **One** explicit local-application block (H2 or strong paragraph): “For Toronto and GTA operators…” + link to a **Tier A/B** sibling post | ≥1 geo keyword; rest topical |
+
+### Placement that reads natural (best-fit slots)
+
+1. **Cold open (lead)** — who this is for (`Toronto marketing teams`, `GTA service businesses`).
+2. **Answer-first aside** — scope the definitional answer (“For Toronto businesses, this means…”).
+3. **Examples section** — local service or startup vignette (trades, clinics, SaaS with GTA customers).
+4. **FAQ answers** — at least one Q scoped to Toronto/GTA when Tier B or C.
+5. **Internal links** — mesh to hyper-local posts (`/blog/when-hire-digital-marketing-agency-scarborough-gta`), `/blog/answer-engine-optimisation-toronto`, and relevant `/services/seo-aeo/local-seo` or `/services/google-business-profile`.
+6. **`posts.ts` description** — one geo anchor when Tier B/C and the post supports local leads.
+
+### What to avoid
+
+- Renaming a universal H1 to “… in Toronto” when the SERP intent is not local (hurts relevance).
+- Identical geo boilerplate appended to every article (duplicate thin blocks).
+- Claiming Scarborough-specific facts on posts that are not Scarborough-focused.
+- More than **one** neighbourhood name per paragraph unless the post is a local case study.
+
+### Quick geo self-check
+
+- [ ] Tier A/B/C chosen and matches search intent.
+- [ ] Primary geo appears in **lead** or **aside** (all tiers except narrow national news).
+- [ ] Tier A: Scarborough + Toronto visible; Tier B: Toronto or GTA ≥2× in body; Tier C: one dedicated local-application section + geo in meta or keywords.
+- [ ] ≥1 internal link to a GTA/local sibling post or local service page.
+- [ ] FAQ/schema copy matches visible geo scope (no “Toronto” in schema only).
+
 ## Hard bans (punctuation and “AI voice”)
 
 - **No em dash** (`—`) and **no** `&mdash;`. Do not use en dash as a sentence glue either.
@@ -88,6 +126,7 @@ Match the pattern of the **Insectica** post:
 
 ## Quick self-check before shipping
 
+- [ ] GEO tier applied; Toronto/Scarborough/GTA placed per table above (not stuffed).
 - [ ] No hardcoded author name, address, or `mailto:` in article TSX (`BlogAuthorSignoff` / `BlogStratezikContactLink` only).
 - [ ] Zero `—`, `&mdash;`, and no en dash used as prose punctuation.
 - [ ] Opens with something **specific**, not a generic industry preamble.

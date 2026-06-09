@@ -20,5 +20,6 @@ Skip (2) or (3) **only** if the user **explicitly** narrows scope (example: “r
 
 4. Keep **`public/sitemap.xml`** and **`posts.ts`** aligned when URLs or dates change.
 5. **Author/contact in article TSX:** `<BlogAuthorSignoff />` and `<BlogStratezikContactLink>` only — never hardcode names or `mailto:`. `npm run build` enforces via `scripts/check-blog-author.ts`.
+6. **GEO authority:** assign tier A/B/C per `stratezik-blog-writing` § GEO authority; place Toronto/Scarborough/GTA in best-fit slots (lead, aside, local H2, FAQ, `keywords[]`) — never blanket city-stuff every post.
 
 **Default:** the user should not need to `@` skills for routine blog ship work when this rule is active; **you** open those three `SKILL.md` files at task start.

@@ -220,7 +220,8 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 
 - [ ] **Title (`post.title`)**: dominant intent, distinct vs other posts; length sensible for SERP display; honest vs body.
 - [ ] **Meta description (`post.description`)**: tight value prop + differentiation; aligned with first screen of content.
-- [ ] **Keywords (`keywords[]`)**: 5–8 phrases reflecting content and queries; no stuffing in body.
+- [ ] **GEO scope** (see **`stratezik-blog-writing` § GEO authority**): tier A/B/C assigned; Toronto/Scarborough/GTA in title, meta, body, or FAQ per tier; internal link to at least one local service URL or GTA blog sibling when the post feeds local pipeline.
+- [ ] **Keywords (`keywords[]`)**: 5–8 phrases reflecting content and queries; include 1–2 geo phrases when Tier A or B (or Tier C with local-application section); no stuffing in body.
 - [ ] **Heading outline**: `h2`/`h3` cover SERP sub-questions; no skipped levels inside article body.
 - [ ] **Intro**: answers who/for what in two to three sentences (humans + extractors).
 - [ ] **Internal links**: mesh to services, portfolio/case proof, contact, or sibling posts with descriptive anchors.
@@ -230,6 +231,7 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 ### Checklist: AEO
 
 - [ ] **Definition**: early block or aside answering “what is / how does this apply” when intent warrants it.
+- [ ] **Local extractability**: for GTA-facing posts, definitional or FAQ sentences should be quotable with explicit scope (“For Toronto service businesses…”) so assistants do not generalize to the wrong market.
 - [ ] **Atomic facts**: one stat or date per sentence; scope explicit (geo, vertical).
 - [ ] **Quotability**: at least one passage that could be cited without missing context.
 - [ ] **Consistency**: numbers in prose match FAQ/schema and executive snapshot if present.
@@ -253,7 +255,8 @@ After this audit, **`stratezik-blog-writing`** merges SEO-required additions whi
 
 - For **published articles** and **`posts.ts`**, run **`stratezik-blog-seo-pipeline`** or hand off explicitly to **`stratezik-blog-writing`** after your brief (see that skill’s “Pair with SEO/AEO” section).
 - Respect shipped voice rules from **`stratezik-blog-writing`**: no long-dash punctuation as prose glue; Canadian spelling where the site uses it.
-- Prefer **Toronto / GTA / Canada** specificity when the asset targets local operators.
+- **GEO authority ladder**: hyper-local posts earn **Scarborough + Toronto**; regional pillars earn **Toronto/GTA** in lead + local-application section; universal pillars earn **meta/keywords + one GTA paragraph**, not city-stuffed titles. Full placement rules: **`stratezik-blog-writing` § GEO authority**.
+- Prefer **Toronto / Scarborough / GTA / Canada** specificity when the asset targets local operators; align claims with GBP and `organization.ts` / service `areaServed`.
 - Tie recommendations to **measurable engagement outcomes**, not vanity rankings alone.
 
 When platform guidance conflicts with legacy SEO folklore, **follow primary documentation** and explain the trade in one sentence.

@@ -86,12 +86,13 @@ Use **Chain A** for net-new posts. Use **Chain B** when the user drops in mostly
 Keep this compact in chat or a scratch note:
 
 - Intent + 3 to 6 supporting queries  
+- **GEO tier** (A hyper-local / B GTA operator / C universal) + where Toronto/Scarborough/GTA land (title, meta, lead, FAQ, local H2)  
 - Title + meta description suggestion  
 - H2 list with one-line “job” per section  
-- Links: internal URLs + suggested anchor phrasing  
+- Links: internal URLs + suggested anchor phrasing (include ≥1 local service or GTA blog sibling when tier B/C feeds local pipeline)  
 - Schema: types and which copy blocks they mirror  
 - Stats/facts to cite with source URLs  
-- AEO: required definitional sentence or aside question
+- AEO: required definitional sentence or aside question (scoped to geo when tier A/B)
 
 ## If Search Console MCP is enabled
 
