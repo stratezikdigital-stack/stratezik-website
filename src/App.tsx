@@ -14,6 +14,7 @@ import CareerPage from './components/CareerPage'
 import BlogPage from './components/BlogPage'
 import BlogPostPage from './components/BlogPostPage'
 import AuthorPage from './components/AuthorPage'
+import AeoCheckerPage from './components/AeoCheckerPage'
 import ServicePage from './components/ServicePage'
 import Footer from './components/Footer'
 import { SmoothScroll } from './three/world/SmoothScroll'
@@ -110,6 +111,7 @@ function AppShell() {
                 }
               />
               <Route path="/careers" element={<CareerPage />} />
+              <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/services/:slug" element={<ServicePage />} />
               <Route path="/services/:slug/:child" element={<ServicePage />} />

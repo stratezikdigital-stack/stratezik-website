@@ -96,6 +96,42 @@ export const CAREERS_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+export const AEO_CHECKER_SEO: RouteSeoConfig = {
+  path: '/aeo-checker',
+  title: 'AEO Readiness Checker | Free 20-Point Website Test | Stratezik',
+  description:
+    'Free AEO readiness test for your website. Score your site on AI crawler access, schema, answer-first copy, llms.txt, and more — benchmarked against 50 funded Toronto startups.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: 1024,
+  ogImageHeight: 625,
+  ogImageAlt: 'Stratezik AEO Readiness Checker',
+  keywords: [
+    'AEO readiness test',
+    'answer engine optimization',
+    'website audit',
+    'AI crawler access',
+    'Organization schema',
+    'llms.txt',
+    'Toronto startups',
+    'Stratezik',
+  ],
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Stratezik AEO Readiness Checker',
+    url: `${SITE_ORIGIN}/aeo-checker`,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CAD' },
+    provider: { '@type': 'Organization', name: 'Stratezik', url: SITE_ORIGIN },
+    description:
+      'Free 20-point AEO readiness test. Machine-verified checks for AI crawler access, SSR, entity alignment, schema, answer-first copy, llms.txt, and pricing transparency.',
+  },
+  sitemapPriority: 0.9,
+  sitemapChangefreq: 'weekly',
+}
+
 export const BLOG_INDEX_SEO: RouteSeoConfig = {
   path: '/blog',
   title: 'Blog | Stratezik: Toronto SEO, PPC & Answer Engine Insights',
@@ -216,6 +252,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
   return [
     HOME_SEO,
     CAREERS_SEO,
+    AEO_CHECKER_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),
     ...serviceChildren.map(serviceChildPageSeo),

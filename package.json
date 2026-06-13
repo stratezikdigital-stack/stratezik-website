@@ -12,6 +12,7 @@
     "seo:postbuild": "node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "@react-three/drei": "^9.114.3",
     "@react-three/fiber": "^8.17.10",
     "framer-motion": "^10.16.5",
@@ -26,6 +27,7 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@types/node": "^22.10.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

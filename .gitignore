@@ -46,3 +46,4 @@ coverage/
 *.mp4
 *.avi
 *.mkv
+.vercel
