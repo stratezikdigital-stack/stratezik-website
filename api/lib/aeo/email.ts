@@ -83,8 +83,8 @@ export function buildReportEmailHtml(result: AeoScanResult, name?: string): stri
       </p>
     </div>
     <p style="font-size:12px;color:#94a3b8;text-align:center;margin:20px 0 0;">
-      Stratezik Digital · Toronto, ON · You received this because you requested an AEO report at stratezik.com and consented to follow-up.
-      Reply "unsubscribe" any time to stop hearing from us.
+      Stratezik Digital · Toronto, ON · You received this because you requested an AEO report at stratezik.com and agreed to receive commercial electronic messages from us.
+      Unsubscribe any time by replying &ldquo;unsubscribe&rdquo; or contacting us.
     </p>
   </div>
 </body>

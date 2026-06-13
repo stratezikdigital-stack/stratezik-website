@@ -33,8 +33,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (!consent) {
     return res.status(400).json({
-      error:
-        'Please tick the consent box so we can email you the report (Canadian anti-spam law requires it).',
+        error:
+          'Please confirm you agree to receive your report and related commercial messages from Stratezik (CASL).',
     })
   }
   if (!rateLimit(`lead-email:${email}`, 5, 24 * 60 * 60 * 1000)) {

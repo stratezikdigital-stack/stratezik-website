@@ -48,6 +48,16 @@ interface Criterion {
 
 type Phase = 'input' | 'scanning' | 'topline' | 'breakdown'
 
+const CONSENT_LABEL = (
+  <>
+    I agree to receive commercial electronic messages from Stratezik Digital Inc., including my AEO
+    readiness report, marketing communications about digital marketing, SEO, answer-engine
+    optimization (AEO), and related services, plus newsletters, insights, and promotional offers. I
+    understand I can withdraw my consent and unsubscribe at any time (reply &ldquo;unsubscribe&rdquo;
+    or contact us). Required under Canada&rsquo;s anti-spam legislation (CASL).
+  </>
+)
+
 const inputClass =
   'flex-1 border border-ink/20 bg-cream-50 px-4 py-3 text-ink placeholder-ink-300 outline-none focus:border-oxblood transition-colors'
 const btnPrimary =
@@ -79,11 +89,13 @@ export default function AeoCheckerPage() {
     []
   )
 
-  async function handleScan(e: FormEvent) {
-    e.preventDefault()
+  async function runScan(scanUrl: string) {
     setError('')
     setPhase('scanning')
     setStepIdx(0)
+    setCriteria(null)
+    setEmailSent(false)
+    setLeadError('')
     stepTimer.current = setInterval(
       () => setStepIdx((i) => Math.min(i + 1, CHECK_STEPS.length - 1)),
       3200
@@ -92,11 +104,12 @@ export default function AeoCheckerPage() {
       const res = await fetch('/api/aeo-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url: scanUrl }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Scan failed. Try again.')
       setTopline(data)
+      setUrl(data.domain)
       setPhase('topline')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Scan failed. Try again.')
@@ -104,6 +117,42 @@ export default function AeoCheckerPage() {
     } finally {
       if (stepTimer.current) clearInterval(stepTimer.current)
     }
+  }
+
+  async function handleScan(e: FormEvent) {
+    e.preventDefault()
+    await runScan(url)
+  }
+
+  function startNewScan() {
+    setTopline(null)
+    setCriteria(null)
+    setError('')
+    setLeadError('')
+    setEmailSent(false)
+    setConsent(false)
+    setUrl('')
+    setPhase('input')
+  }
+
+  function rescanCurrent() {
+    const domain = topline?.domain ?? url
+    if (domain) void runScan(domain)
+  }
+
+  function ScanAgainActions({ showRescan = true }: { showRescan?: boolean }) {
+    return (
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        {showRescan && (topline?.domain || url) ? (
+          <button type="button" onClick={rescanCurrent} className={btnSecondary}>
+            Rescan {topline?.domain ?? url}
+          </button>
+        ) : null}
+        <button type="button" onClick={startNewScan} className={btnSecondary}>
+          Scan another site
+        </button>
+      </div>
+    )
   }
 
   async function handleLead(e: FormEvent) {
@@ -192,20 +241,28 @@ export default function AeoCheckerPage() {
         {(phase === 'topline' || phase === 'breakdown') && topline && (
           <section className="border-t border-ink/15 pt-10">
             {topline.total === 'unverifiable' ? (
-              <div className={`${cardClass} border-gold/40 bg-cream-50`}>
+              <div className={`mt-6 ${cardClass} border-gold/40 bg-cream-50`}>
                 <h2 className="font-display text-2xl text-ink">We couldn’t scan {topline.domain}</h2>
                 <p className="mt-4 text-ink-600 leading-relaxed">
                   Fewer than five of the eight criteria were checkable. That usually means a CDN or
                   firewall is blocking automated visitors — which is itself an AEO problem. If our
                   scanner can’t read your site, AI crawlers likely can’t either.
                 </p>
-                <a href={BOOK_URL} className={`${btnPrimary} mt-6`}>
-                  Book a call
-                </a>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <a href={BOOK_URL} className={btnPrimary}>
+                    Book a call
+                  </a>
+                  <button type="button" onClick={rescanCurrent} className={btnSecondary}>
+                    Rescan {topline.domain}
+                  </button>
+                  <button type="button" onClick={startNewScan} className={btnSecondary}>
+                    Scan another site
+                  </button>
+                </div>
               </div>
             ) : (
               <>
-                <div className={cardClass}>
+                <div className={`mt-6 ${cardClass}`}>
                   <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-400">
                     {topline.domain}
                   </p>
@@ -251,6 +308,7 @@ export default function AeoCheckerPage() {
                     </div>
                   </div>
                 </div>
+                <ScanAgainActions />
 
                 {phase === 'topline' && (
                   <form onSubmit={handleLead} className={`mt-6 ${cardClass} border-oxblood/20`}>
@@ -287,10 +345,7 @@ export default function AeoCheckerPage() {
                         required
                         className="mt-1 h-4 w-4 border-ink/30 accent-oxblood"
                       />
-                      <span>
-                        Yes, email me my report and occasional AEO insights from Stratezik. I can
-                        withdraw consent any time. (Required under Canada’s anti-spam legislation.)
-                      </span>
+                      <span>{CONSENT_LABEL}</span>
                     </label>
                     {leadError && <p className="mt-3 font-mono text-sm text-oxblood">{leadError}</p>}
                   </form>
@@ -354,6 +409,7 @@ export default function AeoCheckerPage() {
                       Read the full audit report
                     </a>
                   </div>
+                  <ScanAgainActions />
                 </div>
               </div>
             )}
