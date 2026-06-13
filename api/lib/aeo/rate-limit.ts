@@ -22,7 +22,17 @@ export function rateLimit(key: string, max: number, windowMs: number): boolean {
   return true
 }
 
-export function clientIp(req: Request): string {
-  const fwd = req.headers.get('x-forwarded-for')
-  return fwd ? fwd.split(',')[0].trim() : 'unknown'
+type HeaderSource =
+  | Request
+  | { headers?: Record<string, string | string[] | undefined> }
+
+export function clientIp(req: HeaderSource): string {
+  if ('headers' in req && typeof (req.headers as Headers).get === 'function') {
+    const fwd = (req.headers as Headers).get('x-forwarded-for')
+    return fwd ? fwd.split(',')[0].trim() : 'unknown'
+  }
+  const hdrs = (req as { headers?: Record<string, string | string[] | undefined> }).headers ?? {}
+  const fwd = hdrs['x-forwarded-for']
+  const val = Array.isArray(fwd) ? fwd[0] : fwd
+  return typeof val === 'string' && val.length > 0 ? val.split(',')[0].trim() : 'unknown'
 }

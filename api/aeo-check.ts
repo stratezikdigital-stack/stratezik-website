@@ -1,11 +1,7 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './lib/aeo/scan.js'
 import { rateLimit, clientIp } from './lib/aeo/rate-limit.js'
 import { createAdminClient } from './lib/aeo/supabase-admin.js'
-
-export const config = {
-  runtime: 'nodejs',
-  maxDuration: 90,
-}
 
 const CACHE_HOURS = 24
 
@@ -22,43 +18,29 @@ function topline(scan: AeoScanResult, scanId: string) {
   }
 }
 
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  })
-}
-
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, 405)
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const ip = clientIp(req)
   if (!rateLimit(`scan:${ip}`, 5, 60 * 60 * 1000)) {
-    return json({ error: 'Too many scans from this address. Try again in an hour.' }, 429)
+    return res.status(429).json({ error: 'Too many scans from this address. Try again in an hour.' })
   }
 
-  let url: unknown
-  try {
-    ;({ url } = await req.json())
-  } catch {
-    return json({ error: 'Invalid request body' }, 400)
-  }
-
+  const url = (req.body as { url?: unknown } | undefined)?.url
   const domain = typeof url === 'string' ? normaliseDomain(url) : null
   if (!domain) {
-    return json(
-      { error: 'That doesn’t look like a valid website address. Try something like "example.com".' },
-      400
-    )
+    return res.status(400).json({
+      error: 'That doesn’t look like a valid website address. Try something like "example.com".',
+    })
   }
 
   let supabase
   try {
     supabase = createAdminClient()
   } catch {
-    return json({ error: 'Scanner is not configured yet. Please try again later.' }, 503)
+    return res.status(503).json({ error: 'Scanner is not configured yet. Please try again later.' })
   }
 
   const since = new Date(Date.now() - CACHE_HOURS * 60 * 60 * 1000).toISOString()
@@ -72,7 +54,7 @@ export default async function handler(req: Request): Promise<Response> {
     .maybeSingle()
 
   if (cached) {
-    return json(topline(cached.result as AeoScanResult, cached.id))
+    return res.status(200).json(topline(cached.result as AeoScanResult, cached.id))
   }
 
   const scan = await runAeoScan(domain)
@@ -90,8 +72,8 @@ export default async function handler(req: Request): Promise<Response> {
 
   if (insertError || !inserted) {
     console.error('[aeo-check] failed to store scan:', insertError)
-    return json({ error: 'Something went wrong storing your scan. Try again.' }, 500)
+    return res.status(500).json({ error: 'Something went wrong storing your scan. Try again.' })
   }
 
-  return json(topline(scan, inserted.id))
+  return res.status(200).json(topline(scan, inserted.id))
 }

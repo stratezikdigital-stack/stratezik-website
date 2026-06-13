@@ -1,36 +1,26 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { rateLimit, clientIp } from './lib/aeo/rate-limit.js'
 import { createAdminClient } from './lib/aeo/supabase-admin.js'
 import { sendReportEmail } from './lib/aeo/email.js'
 import type { AeoScanResult } from './lib/aeo/scan.js'
 
-export const config = {
-  runtime: 'nodejs',
-}
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  })
-}
-
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, 405)
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const ip = clientIp(req)
   if (!rateLimit(`lead:${ip}`, 10, 60 * 60 * 1000)) {
-    return json({ error: 'Too many requests. Try again later.' }, 429)
+    return res.status(429).json({ error: 'Too many requests. Try again later.' })
   }
 
-  let body: { scanId?: unknown; email?: unknown; name?: unknown; consent?: unknown }
-  try {
-    body = await req.json()
-  } catch {
-    return json({ error: 'Invalid request body' }, 400)
+  const body = (req.body ?? {}) as {
+    scanId?: unknown
+    email?: unknown
+    name?: unknown
+    consent?: unknown
   }
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
@@ -39,26 +29,23 @@ export default async function handler(req: Request): Promise<Response> {
   const consent = body.consent === true
 
   if (!scanId || !EMAIL_RE.test(email)) {
-    return json({ error: 'A valid email is required.' }, 400)
+    return res.status(400).json({ error: 'A valid email is required.' })
   }
   if (!consent) {
-    return json(
-      {
-        error:
-          'Please tick the consent box so we can email you the report (Canadian anti-spam law requires it).',
-      },
-      400
-    )
+    return res.status(400).json({
+      error:
+        'Please tick the consent box so we can email you the report (Canadian anti-spam law requires it).',
+    })
   }
   if (!rateLimit(`lead-email:${email}`, 5, 24 * 60 * 60 * 1000)) {
-    return json({ error: 'Too many reports requested for this email today.' }, 429)
+    return res.status(429).json({ error: 'Too many reports requested for this email today.' })
   }
 
   let supabase
   try {
     supabase = createAdminClient()
   } catch {
-    return json({ error: 'Lead capture is not configured yet. Please try again later.' }, 503)
+    return res.status(503).json({ error: 'Lead capture is not configured yet. Please try again later.' })
   }
 
   const { data: scanRow } = await supabase
@@ -68,7 +55,7 @@ export default async function handler(req: Request): Promise<Response> {
     .maybeSingle()
 
   if (!scanRow) {
-    return json({ error: 'Scan not found — run the check again.' }, 404)
+    return res.status(404).json({ error: 'Scan not found — run the check again.' })
   }
 
   const scan = scanRow.result as AeoScanResult
@@ -84,12 +71,12 @@ export default async function handler(req: Request): Promise<Response> {
   })
   if (leadError) {
     console.error('[aeo-lead] failed to store lead:', leadError)
-    return json({ error: 'Something went wrong. Try again.' }, 500)
+    return res.status(500).json({ error: 'Something went wrong. Try again.' })
   }
 
   const emailResult = await sendReportEmail(email, scan, name)
 
-  return json({
+  return res.status(200).json({
     criteria: scan.criteria,
     emailSent: emailResult.sent,
   })
