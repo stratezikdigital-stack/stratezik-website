@@ -132,6 +132,41 @@ export const AEO_CHECKER_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'weekly',
 }
 
+export const TORONTO_AUDIT_SEO: RouteSeoConfig = {
+  path: '/toronto-startup-website-audit-2026',
+  title: 'Toronto Startup Website Audit 2026 | AEO Research | Stratezik',
+  description:
+    'Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20 — defaults pass, deliberate criteria fail. Run the same free test on your site.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: 1024,
+  ogImageHeight: 625,
+  ogImageAlt: 'Toronto Startup Website Audit 2026 — Stratezik',
+  keywords: [
+    'Toronto startup website audit',
+    'AEO readiness',
+    'answer engine optimization',
+    'Toronto startups',
+    'website audit 2026',
+    'Stratezik',
+  ],
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Toronto Startup Website Audit 2026',
+    description:
+      'Research report: 50 funded Toronto startups scored on the 20-Point AEO Readiness Test. Median 10.75/20.',
+    url: `${SITE_ORIGIN}/toronto-startup-website-audit-2026`,
+    author: { '@type': 'Organization', name: 'Stratezik', url: SITE_ORIGIN },
+    publisher: { '@type': 'Organization', name: 'Stratezik', url: SITE_ORIGIN },
+    datePublished: '2026-06-01',
+    inLanguage: 'en-CA',
+  },
+  datePublished: '2026-06-01',
+  sitemapPriority: 0.88,
+  sitemapChangefreq: 'monthly',
+}
+
 export const BLOG_INDEX_SEO: RouteSeoConfig = {
   path: '/blog',
   title: 'Blog | Stratezik: Toronto SEO, PPC & Answer Engine Insights',
@@ -253,6 +288,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     HOME_SEO,
     CAREERS_SEO,
     AEO_CHECKER_SEO,
+    TORONTO_AUDIT_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),
     ...serviceChildren.map(serviceChildPageSeo),

@@ -1,5 +1,6 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart2Faq } from './postFaqs'
 import AiNativeGtmSeriesNav from './AiNativeGtmSeriesNav'
@@ -275,18 +276,15 @@ export default function AiNativeGtmPart2Article() {
         , we cover the agent stack that pays back at each funding stage: what to build, what to buy, and what to skip.
       </p>
 
-      <h2 className="mt-16 font-display text-display-3 text-ink">Where Stratezik fits</h2>
+      <AeoCheckerCta
+        variant="inline"
+        source="blog-ai-native-gtm-part2"
+        headline="See exactly where your startup stands in AI search"
+        body="Run the free 20-Point AEO Readiness Test — machine-verified checks benchmarked against 50 funded Toronto startups."
+        className="mt-8"
+      />
       <p className="mt-6 text-ink-700 leading-relaxed">
-        This is where Stratezik does its best work for founders. We treat AEO as a core service through our{' '}
-        <Link to="/services/seo-aeo" className="text-oxblood underline underline-offset-2">
-          SEO and AEO offering
-        </Link>{' '}
-        and our{' '}
-        <Link to="/services/seo-aeo/answer-engine-optimization" className="text-oxblood underline underline-offset-2">
-          Answer Engine Optimisation child service
-        </Link>
-        , and we run our own visibility through the same approach. If you want to know exactly where your startup stands in AI
-        search right now, that is a concrete audit we run. Use our{' '}
+        Want a scoped audit and roadmap? Use our{' '}
         <BlogStratezikContactLink>contact form</BlogStratezikContactLink> and we will tell you what you would need to do to
         win the next twelve months in your category.
       </p>

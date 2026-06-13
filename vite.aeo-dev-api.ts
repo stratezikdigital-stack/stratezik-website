@@ -136,11 +136,13 @@ export function aeoDevApiPlugin(): Plugin {
               email?: unknown
               name?: unknown
               consent?: unknown
+              source?: unknown
             }
             const scanId = typeof body.scanId === 'string' ? body.scanId : ''
             const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
             const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : undefined
             const consent = body.consent === true
+            const source = typeof body.source === 'string' ? body.source.trim().slice(0, 120) : null
 
             if (!scanId || !EMAIL_RE.test(email)) {
               return sendJson(res, 400, { error: 'A valid email is required.' })
@@ -181,6 +183,7 @@ export function aeoDevApiPlugin(): Plugin {
               score: scanRow.total,
               sub_scores: Object.fromEntries(scan.criteria.map((c) => [c.key, c.score])),
               consent,
+              source: typeof body.source === 'string' ? body.source.trim().slice(0, 120) : null,
             })
             if (leadError) {
               console.error('[aeo-lead:dev]', leadError)

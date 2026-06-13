@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS aeo_leads (
   score       NUMERIC(4,2),                 -- NULL when scan was unverifiable
   sub_scores  JSONB NOT NULL DEFAULT '{}',  -- { criterion_key: score | "unverifiable" }
   consent     BOOLEAN NOT NULL DEFAULT FALSE, -- CASL express consent, as ticked
+  source      TEXT,                         -- utm_source / CTA attribution slug
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

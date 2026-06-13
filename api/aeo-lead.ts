@@ -21,12 +21,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     email?: unknown
     name?: unknown
     consent?: unknown
+    source?: unknown
   }
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
   const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : undefined
   const consent = body.consent === true
+  const source = typeof body.source === 'string' ? body.source.trim().slice(0, 120) : null
 
   if (!scanId || !EMAIL_RE.test(email)) {
     return res.status(400).json({ error: 'A valid email is required.' })
@@ -68,6 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     score: scanRow.total,
     sub_scores: Object.fromEntries(scan.criteria.map((c) => [c.key, c.score])),
     consent,
+    source,
   })
   if (leadError) {
     console.error('[aeo-lead] failed to store lead:', leadError)

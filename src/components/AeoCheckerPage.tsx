@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { resolveLeadSource } from '../aeo/checkerLinks'
 
-const REPORT_URL = 'https://www.stratezik.com/toronto-startup-website-audit-2026'
+const REPORT_URL = '/toronto-startup-website-audit-2026'
 const BOOK_URL = '/#contact'
 
 const CHECK_STEPS = [
@@ -80,6 +82,14 @@ export default function AeoCheckerPage() {
   const [leadBusy, setLeadBusy] = useState(false)
   const [leadError, setLeadError] = useState('')
   const [emailSent, setEmailSent] = useState(false)
+  const [leadSource, setLeadSource] = useState<string | null>(null)
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const prefill = searchParams.get('url')?.trim()
+    if (prefill) setUrl(prefill)
+    setLeadSource(resolveLeadSource(searchParams))
+  }, [searchParams])
 
   const stepTimer = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(
@@ -164,7 +174,7 @@ export default function AeoCheckerPage() {
       const res = await fetch('/api/aeo-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scanId: topline.scanId, email, name, consent }),
+        body: JSON.stringify({ scanId: topline.scanId, email, name, consent, source: leadSource }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Something went wrong. Try again.')
@@ -405,9 +415,9 @@ export default function AeoCheckerPage() {
                     <a href={BOOK_URL} className={btnPrimary}>
                       Book a call
                     </a>
-                    <a href={REPORT_URL} className={btnSecondary}>
+                    <Link to={REPORT_URL} className={btnSecondary}>
                       Read the full audit report
-                    </a>
+                    </Link>
                   </div>
                   <ScanAgainActions />
                 </div>
@@ -418,9 +428,9 @@ export default function AeoCheckerPage() {
 
         <footer className="mt-20 hairline pt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
           Stratezik Digital · Toronto, ON ·{' '}
-          <a href={REPORT_URL} className="text-ink-500 hover:text-oxblood transition-colors">
+          <Link to={REPORT_URL} className="text-ink-500 hover:text-oxblood transition-colors">
             Toronto Startup Website Audit 2026
-          </a>
+          </Link>
         </footer>
       </div>
     </div>

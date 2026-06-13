@@ -1,5 +1,6 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
 import { chatgptRecommendationPlaybookFaq } from './postFaqs'
 
@@ -276,14 +277,16 @@ export default function GetRecommendedByChatGPTPlaybookArticle() {
         <li>Record baseline answers for ten customer questions across assistants.</li>
       </ol>
 
-      <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
+      <AeoCheckerCta
+        variant="banner"
+        source="blog-chatgpt-playbook"
+        headline="Run the checklist against your live site"
+        body="Our free AEO Readiness Checker scores crawler access, schema, answer-first copy, llms.txt, and more — benchmarked against 50 funded Toronto startups."
+        className="mt-10"
+      />
       <p className="mt-6 text-ink-700 leading-relaxed">
-        We assemble these programmes for GTA operators alongside paid acquisition and GBP execution. Reach{' '}
+        Want hands-on help? Reach our{' '}
         <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
-        or{' '}
-        <Link to="/#contact" className="text-oxblood underline underline-offset-2">
-          the contact lane on our homepage
-        </Link>{' '}
         for a conversational visibility audit keyed to real buyer prompts.
       </p>
       <BlogAuthorSignoff />

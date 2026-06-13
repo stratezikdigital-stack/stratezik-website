@@ -1,5 +1,6 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
 import { oldSeoToAgentReadyFaq } from './postFaqs'
 
@@ -276,10 +277,17 @@ export default function OldSeoToAgentReadyArticle() {
         </Link>{' '}
         service.
       </p>
+      <AeoCheckerCta
+        variant="inline"
+        source="blog-old-seo-agent-ready"
+        headline="Where does your site sit on the agent-ready spectrum?"
+        body="Run the free 20-Point AEO Readiness Test — the same machine-verified checks from our Toronto startup audit. Topline score in ~20 seconds."
+        className="mt-10"
+      />
       <p className="mt-6 text-ink-700 leading-relaxed">
-        If you want a blunt read on where your site sits on the old-to-agent-ready spectrum, use our{' '}
-        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> for a free strategy consultation. We will tell you
-        what to fix first and what can wait.
+        Want a human read on priorities? Use our{' '}
+        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> for a free strategy consultation — we will tell
+        you what to fix first and what can wait.
       </p>
       <BlogAuthorSignoff />
 

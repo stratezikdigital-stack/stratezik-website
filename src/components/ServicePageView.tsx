@@ -4,6 +4,7 @@ import { usePrerenderBodies, type PrerenderBodies } from '../prerender/Prerender
 import { getServiceBySlug, getServiceChild } from '../services/services'
 import { SERVICE_HERO_AI_LABEL, getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
 import { AiAgentsOrgFeature } from './aiAgents/AiAgentsOrgFeature'
+import { AeoCheckerCta } from './AeoCheckerCta'
 import { Markdown } from './Markdown'
 
 /** Home contact form anchor — handled by ScrollToHash in App.tsx. */
@@ -116,6 +117,11 @@ export function ServicePageView({ clientBodies }: ServicePageViewProps) {
       : parentService!.primaryKeyword
   const heroAlt = heroImage ? serviceHeroImageAlt(heroAltBase) : heroAltBase
   const introParas = intro.split(/\n{2,}/).filter(Boolean)
+  const isAeoSurface =
+    (!isChild && parentService?.slug === 'seo-aeo') ||
+    (isChild && slug === 'seo-aeo' && child === 'answer-engine-optimization')
+  const aeoSource =
+    isChild && slug === 'seo-aeo' ? `service-${slug}-${child}` : 'service-seo-aeo'
 
   return (
     <article className="min-h-screen bg-cream pb-24">
@@ -230,6 +236,17 @@ export function ServicePageView({ clientBodies }: ServicePageViewProps) {
       </header>
 
       {!isHub && !isChild && parentService?.slug === 'ai-agents' ? <AiAgentsOrgFeature /> : null}
+
+      {isAeoSurface ? (
+        <div className="container-custom px-6 md:px-12 mt-12 md:mt-16">
+          <AeoCheckerCta
+            variant="inline"
+            source={aeoSource}
+            headline="Benchmark your site against funded Toronto startups"
+            body="Run the free 20-Point AEO Readiness Test — same machine-verified checks as our June 2026 audit. Topline score in ~20 seconds."
+          />
+        </div>
+      ) : null}
 
       <div className="container-custom px-6 md:px-12 mt-16 md:mt-20">
         <div className="border-t border-ink/10 pt-12">

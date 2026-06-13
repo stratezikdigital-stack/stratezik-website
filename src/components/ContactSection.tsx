@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
@@ -86,6 +87,16 @@ export default function ContactSection() {
               <p className="lead mt-6 max-w-2xl">
                 Share goals, timelines, and constraints. We&rsquo;ll reply within one business day and,
                 if there&rsquo;s a fit, book a focused 30-minute call, no obligation.
+              </p>
+              <p className="mt-5 text-ink-600 leading-relaxed max-w-2xl">
+                Not ready to talk?{' '}
+                <Link
+                  to="/aeo-checker?utm_source=home-contact&utm_medium=cta"
+                  className="text-oxblood underline underline-offset-2 hover:text-ink transition-colors"
+                >
+                  Check your free AEO readiness score
+                </Link>{' '}
+                first — ~20 seconds, no signup for your topline result.
               </p>
             </div>
           </motion.header>

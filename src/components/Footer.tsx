@@ -50,6 +50,8 @@ const Footer = () => {
       links: [
         { name: 'About', href: `${baseUrl}/#about` },
         { name: 'Blog', href: '/blog' },
+        { name: 'AEO Readiness Checker', href: '/aeo-checker?utm_source=footer&utm_medium=cta' },
+        { name: 'Toronto Startup Audit 2026', href: '/toronto-startup-website-audit-2026' },
         { name: 'Careers', href: '/careers' },
         { name: 'Capstone work', href: `${baseUrl}/#portfolio` },
       ],

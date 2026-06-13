@@ -1,4 +1,5 @@
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
 import { answerEngineTorontoFaq } from './postFaqs'
 
@@ -253,44 +254,22 @@ export default function AnswerEngineTorontoArticle() {
         </Link>
       </p>
 
-      <div className="mt-16 p-8 md:p-10 bg-ink text-cream border border-ink/10">
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">Consultation</p>
-        <h2 className="mt-4 font-display text-2xl md:text-3xl tracking-tight leading-snug">
-          Book a free AEO audit with Stratezik
-        </h2>
-        <p className="mt-5 text-cream/85 leading-relaxed">
-          <Link to="/" className="text-gold hover:text-cream underline underline-offset-4">
-            Stratezik
-          </Link>{' '}
-          runs Toronto programmes across Search, Maps, and AI surfaces via coordinated{' '}
-          <Link to="/#services" className="text-gold hover:text-cream underline underline-offset-4">
-            SEO/AEO strategy
-          </Link>
-          , backed by north of <strong>$10M</strong> in historical annual paid spend plus organic grunt work we still touch weekly.
-        </p>
-        <p className="mt-4 text-cream/85 leading-relaxed">
-          Audits walk content, schema, GBP alignment, and where rivals snag citations inside assistants today.
-        </p>
-        <Link
-          to="/#contact"
-          data-cursor="cta"
-          data-cursor-text="Open"
-          className="mt-8 inline-flex items-center gap-3 bg-cream text-ink px-7 py-3.5 font-medium hover:bg-gold hover:text-ink transition-colors"
-        >
-          Book your free AEO audit
-          <span aria-hidden className="font-mono">
-            &rarr;
-          </span>
+      <AeoCheckerCta
+        variant="banner"
+        source="blog-answer-engine-toronto"
+        headline="Benchmark your site against 50 funded Toronto startups"
+        body="Run the free 20-Point AEO Readiness Test — machine-verified, ~20 seconds. See your defaults vs deliberate split before you book a call."
+        className="mt-16"
+      />
+      <p className="mt-6 text-ink-700 leading-relaxed">
+        Prefer a human walkthrough? Use our{' '}
+        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
+        or{' '}
+        <Link to="/#contact" className="text-oxblood underline underline-offset-2">
+          book a consultation
         </Link>
-        <p className="mt-6 text-sm text-cream/60">
-          Email{' '}
-          <BlogStratezikContactLink className="text-gold hover:text-cream">contact form</BlogStratezikContactLink>{' '}
-          ·{' '}
-          <Link to="/careers" className="text-gold hover:text-cream underline">
-            Careers
-          </Link>
-        </p>
-      </div>
+        .
+      </p>
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="article-faq-heading">
         <h2 id="article-faq-heading" className="font-display text-display-3 text-ink">
