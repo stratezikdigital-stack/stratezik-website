@@ -1,4 +1,13 @@
 {
+  "functions": {
+    "api/aeo-check.ts": {
+      "maxDuration": 90,
+      "includeFiles": "api/lib/**"
+    },
+    "api/aeo-lead.ts": {
+      "includeFiles": "api/lib/**"
+    }
+  },
   "redirects": [
     {
       "source": "/wp-sitemap.xml",

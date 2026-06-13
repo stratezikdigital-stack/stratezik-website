@@ -1,5 +1,5 @@
-import type { AeoScanResult } from './scan'
-import { BENCHMARK } from './scan'
+import type { AeoScanResult } from './scan.js'
+import { BENCHMARK } from './scan.js'
 
 const REPORT_URL = 'https://www.stratezik.com/toronto-startup-website-audit-2026'
 const BOOK_URL = 'https://www.stratezik.com/#contact'
