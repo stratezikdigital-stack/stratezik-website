@@ -1,7 +1,7 @@
-import { rateLimit, clientIp } from '../src/aeo/rate-limit'
-import { createAdminClient } from '../src/aeo/supabase-admin'
-import { sendReportEmail } from '../src/aeo/email'
-import type { AeoScanResult } from '../src/aeo/scan'
+import { rateLimit, clientIp } from './lib/aeo/rate-limit'
+import { createAdminClient } from './lib/aeo/supabase-admin'
+import { sendReportEmail } from './lib/aeo/email'
+import type { AeoScanResult } from './lib/aeo/scan'
 
 export const config = {
   runtime: 'nodejs',

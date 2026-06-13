@@ -1,6 +1,6 @@
-import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from '../src/aeo/scan'
-import { rateLimit, clientIp } from '../src/aeo/rate-limit'
-import { createAdminClient } from '../src/aeo/supabase-admin'
+import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './lib/aeo/scan'
+import { rateLimit, clientIp } from './lib/aeo/rate-limit'
+import { createAdminClient } from './lib/aeo/supabase-admin'
 
 export const config = {
   runtime: 'nodejs',

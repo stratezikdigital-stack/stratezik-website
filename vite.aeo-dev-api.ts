@@ -1,9 +1,9 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
-import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './src/aeo/scan'
-import { rateLimit, clientIp } from './src/aeo/rate-limit'
-import { createAdminClient } from './src/aeo/supabase-admin'
-import { sendReportEmail } from './src/aeo/email'
+import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './api/lib/aeo/scan'
+import { rateLimit, clientIp } from './api/lib/aeo/rate-limit'
+import { createAdminClient } from './api/lib/aeo/supabase-admin'
+import { sendReportEmail } from './api/lib/aeo/email'
 
 const CACHE_HOURS = 24
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
