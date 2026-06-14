@@ -47,7 +47,7 @@ export const BENCHMARK = {
   n: 50,
 }
 
-async function get(
+export async function get(
   url: string,
   timeoutMs = 20000
 ): Promise<{ ok: boolean; status: number; text: string }> {
@@ -64,7 +64,7 @@ async function get(
   }
 }
 
-function stripHtml(html: string): string {
+export function stripHtml(html: string): string {
   return html
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -75,7 +75,7 @@ function stripHtml(html: string): string {
     .trim()
 }
 
-function extractJsonLd(html: string): unknown[] {
+export function extractJsonLd(html: string): unknown[] {
   const out: unknown[] = []
   const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
   let m
@@ -91,7 +91,7 @@ function extractJsonLd(html: string): unknown[] {
   return out
 }
 
-function hasType(items: unknown[], types: string[]): boolean {
+export function hasType(items: unknown[], types: string[]): boolean {
   return items.some((i) => {
     const t = (i as Record<string, unknown>)?.['@type']
     const list = Array.isArray(t) ? t : [t]

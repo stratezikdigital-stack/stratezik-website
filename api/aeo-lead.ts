@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { rateLimit, clientIp } from './lib/aeo/rate-limit.js'
 import { createAdminClient } from './lib/aeo/supabase-admin.js'
 import { sendReportEmail } from './lib/aeo/email.js'
+import { appendAeoLeadToSheet } from './lib/aeo/sheets.js'
 import type { AeoScanResult } from './lib/aeo/scan.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -76,6 +77,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.error('[aeo-lead] failed to store lead:', leadError)
     return res.status(500).json({ error: 'Something went wrong. Try again.' })
   }
+
+  void appendAeoLeadToSheet({
+    email,
+    name,
+    domain: scanRow.domain,
+    score: scanRow.total,
+    source,
+    consent,
+    groupAPct: scan.groupA.pct,
+    groupBPct: scan.groupB.pct,
+  })
 
   const emailResult = await sendReportEmail(email, scan, name)
 

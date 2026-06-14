@@ -44,9 +44,30 @@
 
 ## 📊 **What You'll See in Google Sheets**
 
+### Contact form (Sheet1)
+
 | Timestamp | Name | Email | Company | Message | Source |
 |-----------|------|-------|---------|---------|--------|
 | 2024-01-15 10:30:00 | John Doe | john@example.com | ABC Corp | Looking for marketing help | stratezik.com |
+
+### AEO Readiness Checker (`AEO Readiness List` tab)
+
+Uses a **separate** Apps Script project (`google-apps-script-aeo-leads.js`) so contact-form and AEO issues are easy to isolate.
+
+| Timestamp | Name | Email | Domain | Score (/20) | Group A % | Group B % | Source | Consent |
+|-----------|------|-------|--------|-------------|-----------|-----------|--------|---------|
+
+#### AEO setup (one-time)
+
+1. [Google Apps Script](https://script.google.com) → **New project** → name it **Stratezik AEO Leads**
+2. Paste `google-apps-script-aeo-leads.js` → **Save**
+3. Run **`setupAeoReadinessSheet`** once (optional — headers are created on first lead)
+4. Run **`sendTestEmail`** once and approve MailApp permissions
+5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
+6. Add to Vercel (Production + Development): `GOOGLE_AEO_LEADS_WEBHOOK_URL` = that URL
+7. Redeploy the site; submit a test lead on `/aeo-checker` and confirm the row appears
+
+If AEO rows stop appearing, check **Stratezik AEO Leads** in Apps Script (not the contact-form project).
 
 ## 🔧 **Alternative: Use Formspree (Easier)**
 

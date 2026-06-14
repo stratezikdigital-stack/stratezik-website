@@ -173,3 +173,17 @@
     scroll-behavior: auto;
   }
 }
+
+@media print {
+  #aeo-report {
+    background: white !important;
+    color: black !important;
+  }
+  #aeo-report * {
+    color: black !important;
+    border-color: #ccc !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

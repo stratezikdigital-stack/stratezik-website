@@ -6,6 +6,21 @@
     },
     "api/aeo-lead.ts": {
       "includeFiles": "api/lib/**"
+    },
+    "api/aeo-checkout.ts": {
+      "includeFiles": "api/lib/**"
+    },
+    "api/aeo-unlock.ts": {
+      "maxDuration": 120,
+      "includeFiles": "api/lib/**"
+    },
+    "api/aeo-sitemap-unlock.ts": {
+      "maxDuration": 150,
+      "includeFiles": "api/lib/**"
+    },
+    "api/aeo-sitemap.ts": {
+      "maxDuration": 120,
+      "includeFiles": "api/lib/**"
     }
   },
   "redirects": [

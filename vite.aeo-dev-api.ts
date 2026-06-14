@@ -4,6 +4,7 @@ import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './ap
 import { rateLimit, clientIp } from './api/lib/aeo/rate-limit'
 import { createAdminClient } from './api/lib/aeo/supabase-admin'
 import { sendReportEmail } from './api/lib/aeo/email'
+import { appendAeoLeadToSheet } from './api/lib/aeo/sheets'
 
 const CACHE_HOURS = 24
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -58,7 +59,7 @@ export function aeoDevApiPlugin(): Plugin {
 
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ?? ''
-        if (!url.startsWith('/api/aeo-check') && !url.startsWith('/api/aeo-lead')) {
+        if (!url.startsWith('/api/aeo-')) {
           return next()
         }
 
@@ -190,8 +191,31 @@ export function aeoDevApiPlugin(): Plugin {
               return sendJson(res, 500, { error: 'Something went wrong. Try again.' })
             }
 
+            void appendAeoLeadToSheet({
+              email,
+              name,
+              domain: scanRow.domain,
+              score: scanRow.total,
+              source,
+              consent,
+              groupAPct: scan.groupA.pct,
+              groupBPct: scan.groupB.pct,
+            })
+
             const emailResult = await sendReportEmail(email, scan, name)
             return sendJson(res, 200, { criteria: scan.criteria, emailSent: emailResult.sent })
+          }
+
+          if (url.startsWith('/api/aeo-checkout') && req.method === 'POST') {
+            return sendJson(res, 503, { error: 'Stripe checkout runs on Vercel preview/production. Deploy or use stratezik-web locally for paid flow testing.' })
+          }
+          if (
+            (url.startsWith('/api/aeo-unlock') ||
+              url.startsWith('/api/aeo-sitemap-unlock') ||
+              url.startsWith('/api/aeo-sitemap')) &&
+            req.method === 'POST'
+          ) {
+            return sendJson(res, 503, { error: 'Paid unlock routes require Vercel deployment (long-running serverless).' })
           }
 
           return sendJson(res, 405, { error: 'Method not allowed' })

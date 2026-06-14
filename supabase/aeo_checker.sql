@@ -36,3 +36,32 @@ ALTER TABLE aeo_leads ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX IF NOT EXISTS idx_aeo_leads_email ON aeo_leads(email);
 CREATE INDEX IF NOT EXISTS idx_aeo_leads_created ON aeo_leads(created_at DESC);
+
+-- ─── Paid deep scans (AI visibility + competitors + citations) ───────────────
+CREATE TABLE IF NOT EXISTS aeo_deep_scans (
+  id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  scan_id            UUID REFERENCES aeo_scans(id) ON DELETE SET NULL,
+  stripe_session_id  TEXT NOT NULL UNIQUE,
+  email              TEXT,
+  domain             TEXT NOT NULL,
+  result             JSONB NOT NULL,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE aeo_deep_scans ENABLE ROW LEVEL SECURITY;
+CREATE INDEX IF NOT EXISTS idx_aeo_deep_scans_session ON aeo_deep_scans(stripe_session_id);
+CREATE INDEX IF NOT EXISTS idx_aeo_deep_scans_email ON aeo_deep_scans(email);
+
+-- ─── Paid full-site audits (sitemap-wide GEO crawl) ────────────────────────
+CREATE TABLE IF NOT EXISTS aeo_sitemap_audits (
+  id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  stripe_session_id  TEXT NOT NULL UNIQUE,
+  email              TEXT,
+  domain             TEXT NOT NULL,
+  result             JSONB NOT NULL,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE aeo_sitemap_audits ENABLE ROW LEVEL SECURITY;
+CREATE INDEX IF NOT EXISTS idx_aeo_sitemap_session ON aeo_sitemap_audits(stripe_session_id);
+CREATE INDEX IF NOT EXISTS idx_aeo_sitemap_domain ON aeo_sitemap_audits(domain);

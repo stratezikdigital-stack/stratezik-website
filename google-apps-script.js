@@ -5,16 +5,18 @@
 // Google Apps Script. After editing here you MUST paste it into the Apps Script
 // project and create a NEW deployment (Deploy -> Manage deployments -> Edit ->
 // New version) for changes to take effect on the live site.
+//
+// AEO checker leads use a SEPARATE script: google-apps-script-aeo-leads.js
 
 // Where new-lead notification emails are sent.
 var LEAD_NOTIFICATION_EMAIL = 'stratezikdigital@gmail.com';
 var LEADS_SPREADSHEET_URL =
   'https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit';
 
-/** Append a lead to the sheet and send a notification email. */
+/** Append a contact-form lead to Sheet1 and send a notification email. */
 function recordLead(data) {
   var spreadsheet = SpreadsheetApp.openByUrl(LEADS_SPREADSHEET_URL);
-  var sheet = spreadsheet.getActiveSheet();
+  var sheet = spreadsheet.getSheetByName('Sheet1') || spreadsheet.getSheets()[0];
   var timestamp = new Date();
 
   sheet.appendRow([
@@ -26,7 +28,6 @@ function recordLead(data) {
     data.source || 'Website Form',
   ]);
 
-  // Notify the team of every submission.
   try {
     MailApp.sendEmail({
       to: LEAD_NOTIFICATION_EMAIL,
@@ -42,7 +43,6 @@ function recordLead(data) {
         'Received: ' + timestamp + '\n',
     });
   } catch (mailError) {
-    // Don't fail the submission if the email quota/permission hiccups.
     console.error('Lead email failed: ' + mailError.toString());
   }
 }
@@ -99,30 +99,21 @@ function doGet(e) {
 
 /**
  * Run this ONCE from the Apps Script editor (select sendTestEmail -> Run).
- * It does two things:
- *   1) Triggers the Google authorization prompt for the "send email" scope
- *      (MailApp). The web app runs as you, so you must grant this once or
- *      emails are silently skipped even though sheet rows are still written.
- *   2) Sends a test email to confirm delivery (check inbox AND spam).
  * After it succeeds, redeploy: Deploy -> Manage deployments -> Edit (pencil)
  * -> Version: New version -> Deploy.
  */
 function sendTestEmail() {
   MailApp.sendEmail({
     to: LEAD_NOTIFICATION_EMAIL,
-    subject: 'Stratezik lead notifications — test',
-    body: 'If you can read this, lead notification emails are working. ' + new Date(),
+    subject: 'Stratezik contact form — test',
+    body: 'If you can read this, contact-form notification emails are working. ' + new Date(),
   });
   Logger.log('Test email sent to ' + LEAD_NOTIFICATION_EMAIL + '. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
 }
 
-// Setup function to create headers in the sheet
 function setupSheet() {
-  var spreadsheet = SpreadsheetApp.getActiveSheet
-    ? SpreadsheetApp.openByUrl(LEADS_SPREADSHEET_URL)
-    : SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = spreadsheet.getActiveSheet();
-
+  var spreadsheet = SpreadsheetApp.openByUrl(LEADS_SPREADSHEET_URL);
+  var sheet = spreadsheet.getSheetByName('Sheet1') || spreadsheet.getSheets()[0];
   var headers = ['Timestamp', 'Name', 'Email', 'Company', 'Message', 'Source'];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
