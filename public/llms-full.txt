@@ -9,6 +9,18 @@
 - [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](https://www.stratezik.com/careers): Toronto team hiring
 
+## Free tools (2)
+
+### AEO Readiness Checker: Free 20-Point Website Test
+- URL: https://www.stratezik.com/aeo-checker
+- Summary: Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).
+- Updated: 2026-06-14
+
+### Toronto Startup Website Audit 2026 | AEO Research
+- URL: https://www.stratezik.com/toronto-startup-website-audit-2026
+- Summary: Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20. Defaults pass; deliberate criteria fail. Run the same free test on your site.
+- Updated: 2026-06-01
+
 ## Services (8)
 
 Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.

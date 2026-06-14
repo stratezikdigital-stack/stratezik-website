@@ -130,6 +130,9 @@ async function main(): Promise<void> {
   console.log(`[seo] sitemap.xml (${configs.length} URLs)`)
 
   const blogPosts = configs.filter((c) => c.path.startsWith('/blog/') && c.path !== '/blog')
+  const toolPages = configs.filter((c) =>
+    ['/aeo-checker', '/toronto-startup-website-audit-2026'].includes(c.path),
+  )
   const llmsFull = `# Stratezik — extended LLM index
 
 > Toronto digital marketing agency. Canonical site: ${SITE_ORIGIN}
@@ -140,6 +143,15 @@ async function main(): Promise<void> {
 - [Services hub](${SITE_ORIGIN}/services): All digital marketing services in Toronto and the GTA
 - [Blog index](${SITE_ORIGIN}/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](${SITE_ORIGIN}/careers): Toronto team hiring
+
+## Free tools (${toolPages.length})
+
+${toolPages
+  .map(
+    (page) =>
+      `### ${page.title.replace(/\s*\|\s*Stratezik.*$/, '').trim()}\n- URL: ${SITE_ORIGIN}${page.path}\n- Summary: ${page.description}\n- Updated: ${page.dateModified ?? page.datePublished ?? 'n/a'}`,
+  )
+  .join('\n\n')}
 
 ## Services (${serviceDefs.length})
 
@@ -197,6 +209,12 @@ ${blogPosts
           url: `${SITE_ORIGIN}/services/${c.parentSlug}/${c.slug}`,
           summary: c.metaDescription,
         })),
+    }))
+    context.tools = toolPages.map((page) => ({
+      name: page.title.replace(/\s*\|\s*Stratezik.*$/, '').trim(),
+      url: `${SITE_ORIGIN}${page.path}`,
+      summary: page.description,
+      type: page.path === '/aeo-checker' ? 'AEO readiness checker' : 'Research report',
     }))
     context.generated = new Date().toISOString().slice(0, 10)
     const json = `${JSON.stringify(context, null, 2)}\n`

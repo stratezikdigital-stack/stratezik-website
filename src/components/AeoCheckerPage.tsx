@@ -9,8 +9,9 @@
 // measure the cause (can you be?) AND the symptom — then hand you the fix list.
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { resolveLeadSource } from '../aeo/checkerLinks'
+import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
 import type { DeepScanResult } from '../aeo/deep-scan.types'
 import type { SitemapAudit } from '../aeo/sitemap.types'
 
@@ -364,6 +365,13 @@ export default function AeoCheckerPage() {
   return (
     <main className="min-h-screen bg-cream pb-24">
       <div className="container-custom mx-auto max-w-5xl px-6 md:px-12 pt-8 md:pt-12">
+      <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
+        <Link to="/" className="hover:text-oxblood transition-colors">
+          Home
+        </Link>
+        <span className="mx-2 text-ink-300">/</span>
+        <span className="text-ink-600">AEO Readiness Checker</span>
+      </nav>
       <header className="mb-14 md:mb-16">
         <div className="editorial-label">Free tool</div>
         <div className="hairline mt-3 pt-3 editorial-label">20-Point AEO Readiness Test</div>
@@ -375,10 +383,12 @@ export default function AeoCheckerPage() {
             Can AI engines actually see and cite your website?
           </h1>
           <p className="lead mt-8 max-w-2xl">
-            Most AEO tools tell you whether you’re <em>winning</em> in AI search today. We tell you{' '}
-            <strong>why</strong>, and exactly what to fix. Start with the{' '}
-            <strong>20-Point AEO Readiness Test</strong>, the same machine-verified test from our
-            audit of 50 funded Toronto startups (median: <strong>10.75/20</strong>).
+            <strong>Answer engine optimisation (AEO)</strong> is how you make your site quotable in
+            AI assistants, not just rankable in blue links. Most AEO tools tell you whether you’re{' '}
+            <em>winning</em> in AI search today. We tell you <strong>why</strong>, and exactly what to
+            fix. Start with the <strong>20-Point AEO Readiness Test</strong>, the same
+            machine-verified test from our audit of 50 funded Toronto startups (median:{' '}
+            <strong>10.75/20</strong>).
           </p>
         </>
       )}
@@ -710,6 +720,8 @@ export default function AeoCheckerPage() {
       )}
 
       {phase === 'sitemap' && sitemapAudit && <SitemapDashboard audit={sitemapAudit} />}
+
+      <CheckerFaqSection />
 
       <footer className="mt-16 hairline pt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
         Stratezik Digital · Toronto, ON · The 20-Point AEO Readiness Test is from the{' '}
@@ -1059,6 +1071,36 @@ function SitemapDashboard({ audit }: { audit: SitemapAudit }) {
       </div>
 
       <DealCta />
+    </section>
+  )
+}
+
+function CheckerFaqSection() {
+  return (
+    <section id="aeo-checker-faq" className="mt-16 border-t border-ink/15 pt-12" aria-labelledby="aeo-faq-heading">
+      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">FAQ</p>
+      <h2 id="aeo-faq-heading" className="mt-2 font-display text-2xl text-ink sm:text-3xl">
+        AEO readiness checker: common questions
+      </h2>
+      <dl className="mt-8 space-y-6">
+        {AEO_CHECKER_FAQS.map((item) => (
+          <div key={item.question} className="border border-ink/12 bg-cream-50 p-6">
+            <dt className="font-display text-lg text-ink">{item.question}</dt>
+            <dd className="mt-3 text-ink-600 leading-relaxed">{item.answer}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-8 text-sm text-ink-500">
+        Research behind the benchmark:{' '}
+        <Link to={REPORT_URL} className="text-oxblood underline underline-offset-2 hover:text-ink">
+          Toronto Startup Website Audit 2026
+        </Link>
+        . Need help implementing fixes?{' '}
+        <a href={BOOK_URL} className="text-oxblood underline underline-offset-2 hover:text-ink">
+          Book a call
+        </a>
+        .
+      </p>
     </section>
   )
 }

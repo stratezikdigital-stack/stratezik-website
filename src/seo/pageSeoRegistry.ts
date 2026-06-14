@@ -4,6 +4,7 @@ import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/bui
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
+import { buildAeoCheckerJsonLd } from './buildAeoCheckerJsonLd'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
@@ -98,37 +99,33 @@ export const CAREERS_SEO: RouteSeoConfig = {
 
 export const AEO_CHECKER_SEO: RouteSeoConfig = {
   path: '/aeo-checker',
-  title: 'AEO Readiness Checker | Free 20-Point Website Test | Stratezik',
+  title: 'AEO Readiness Checker: Free 20-Point Website Test | Stratezik',
   description:
-    'Free AEO readiness test for your website. Score your site on AI crawler access, schema, answer-first copy, llms.txt, and more — benchmarked against 50 funded Toronto startups.',
+    'Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).',
   ogType: 'website',
-  ogImageUrl: DEFAULT_OG_IMAGE,
-  ogImageWidth: 1024,
-  ogImageHeight: 625,
-  ogImageAlt: 'Stratezik AEO Readiness Checker',
+  ogImageUrl: `${SITE_ORIGIN}/services/seo-aeo.png`,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik AEO Readiness Checker: free 20-point website test',
   keywords: [
     'AEO readiness test',
+    'AEO checker',
+    'free AEO audit',
     'answer engine optimization',
-    'website audit',
-    'AI crawler access',
-    'Organization schema',
-    'llms.txt',
+    'answer engine optimisation',
+    'AI visibility test',
+    'website AI audit',
+    'llms.txt checker',
+    'Organization schema audit',
+    'ChatGPT citation readiness',
+    'Toronto AEO',
     'Toronto startups',
     'Stratezik',
   ],
-  jsonLd: {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Stratezik AEO Readiness Checker',
-    url: `${SITE_ORIGIN}/aeo-checker`,
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Web',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CAD' },
-    provider: { '@type': 'Organization', name: 'Stratezik', url: SITE_ORIGIN },
-    description:
-      'Free 20-point AEO readiness test. Machine-verified checks for AI crawler access, SSR, entity alignment, schema, answer-first copy, llms.txt, and pricing transparency.',
-  },
-  sitemapPriority: 0.9,
+  jsonLd: buildAeoCheckerJsonLd(),
+  datePublished: '2026-06-01',
+  dateModified: '2026-06-14',
+  sitemapPriority: 0.92,
   sitemapChangefreq: 'weekly',
 }
 
@@ -136,7 +133,7 @@ export const TORONTO_AUDIT_SEO: RouteSeoConfig = {
   path: '/toronto-startup-website-audit-2026',
   title: 'Toronto Startup Website Audit 2026 | AEO Research | Stratezik',
   description:
-    'Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20 — defaults pass, deliberate criteria fail. Run the same free test on your site.',
+    'Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20. Defaults pass; deliberate criteria fail. Run the same free test on your site.',
   ogType: 'website',
   ogImageUrl: DEFAULT_OG_IMAGE,
   ogImageWidth: 1024,

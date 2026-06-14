@@ -253,5 +253,19 @@
         }
       ]
     }
+  ],
+  "tools": [
+    {
+      "name": "AEO Readiness Checker: Free 20-Point Website Test",
+      "url": "https://www.stratezik.com/aeo-checker",
+      "summary": "Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).",
+      "type": "AEO readiness checker"
+    },
+    {
+      "name": "Toronto Startup Website Audit 2026 | AEO Research",
+      "url": "https://www.stratezik.com/toronto-startup-website-audit-2026",
+      "summary": "Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20. Defaults pass; deliberate criteria fail. Run the same free test on your site.",
+      "type": "Research report"
+    }
   ]
 }
