@@ -1,25 +1,7 @@
 {
   "functions": {
-    "api/aeo-check.ts": {
-      "maxDuration": 90,
-      "includeFiles": "api/lib/**"
-    },
-    "api/aeo-lead.ts": {
-      "includeFiles": "api/lib/**"
-    },
-    "api/aeo-checkout.ts": {
-      "includeFiles": "api/lib/**"
-    },
-    "api/aeo-unlock.ts": {
-      "maxDuration": 120,
-      "includeFiles": "api/lib/**"
-    },
-    "api/aeo-sitemap-unlock.ts": {
+    "api/aeo.ts": {
       "maxDuration": 150,
-      "includeFiles": "api/lib/**"
-    },
-    "api/aeo-sitemap.ts": {
-      "maxDuration": 120,
       "includeFiles": "api/lib/**"
     }
   },
@@ -319,6 +301,12 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/aeo-check", "destination": "/api/aeo?action=check" },
+    { "source": "/api/aeo-lead", "destination": "/api/aeo?action=lead" },
+    { "source": "/api/aeo-checkout", "destination": "/api/aeo?action=checkout" },
+    { "source": "/api/aeo-unlock", "destination": "/api/aeo?action=unlock" },
+    { "source": "/api/aeo-sitemap", "destination": "/api/aeo?action=sitemap" },
+    { "source": "/api/aeo-sitemap-unlock", "destination": "/api/aeo?action=sitemap-unlock" },
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
