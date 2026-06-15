@@ -69,6 +69,24 @@ Uses a **separate** Apps Script project (`google-apps-script-aeo-leads.js`) so c
 
 If AEO rows stop appearing, check **Stratezik AEO Leads** in Apps Script (not the contact-form project).
 
+### $3,000 Growth Credit (`Marketing Credit` tab)
+
+Uses a **separate** Apps Script project (`google-apps-script-growth-credit.js`). Does **not** write to Sheet1 or duplicate contact-form emails.
+
+| Timestamp | First Name | Last Name | Business Name | Email | Phone | Business Type | Source |
+|-----------|------------|-----------|---------------|-------|-------|---------------|--------|
+
+#### Growth Credit setup (one-time)
+
+1. [Google Apps Script](https://script.google.com) → **New project** → name it **Stratezik Growth Credit Leads**
+2. Paste `google-apps-script-growth-credit.js` → **Save**
+3. Run **`setupMarketingCreditSheet`** once (creates/headers the **Marketing Credit** tab — rename an existing empty tab to match if needed)
+4. Run **`sendTestEmail`** once and approve MailApp permissions
+5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
+6. Add to Vercel (Production, Preview, Development): `VITE_GROWTH_CREDIT_WEBHOOK_URL` = that URL
+7. For local dev, add the same to `.env.local` in the project root
+8. Redeploy; submit a test on `/growth-credit` and confirm the row appears only on **Marketing Credit**
+
 ## 🔧 **Alternative: Use Formspree (Easier)**
 
 If you prefer a simpler solution:

@@ -51,6 +51,7 @@ const Footer = () => {
         { name: 'About', href: `${baseUrl}/#about` },
         { name: 'Blog', href: '/blog' },
         { name: 'AEO Readiness Checker', href: '/aeo-checker?utm_source=footer&utm_medium=cta' },
+        { name: '$3,000 Growth Credit', href: '/growth-credit?utm_source=footer&utm_medium=cta' },
         { name: 'Toronto Startup Audit 2026', href: '/toronto-startup-website-audit-2026' },
         { name: 'Careers', href: '/careers' },
         { name: 'Capstone work', href: `${baseUrl}/#portfolio` },
@@ -174,6 +175,10 @@ const Footer = () => {
           <span className="mx-3 text-cream/25">&middot;</span>
           <Link to="/blog" className="hover:text-cream transition-colors">
             Blog
+          </Link>
+          <span className="mx-3 text-cream/25">&middot;</span>
+          <Link to="/growth-credit" className="hover:text-cream transition-colors">
+            Growth Credit
           </Link>
           <span className="mx-3 text-cream/25">&middot;</span>
           <Link to="/careers" className="hover:text-cream transition-colors">

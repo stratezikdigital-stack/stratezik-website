@@ -7,6 +7,7 @@
 // New version) for changes to take effect on the live site.
 //
 // AEO checker leads use a SEPARATE script: google-apps-script-aeo-leads.js
+// Growth Credit leads use a SEPARATE script: google-apps-script-growth-credit.js
 
 // Where new-lead notification emails are sent.
 var LEAD_NOTIFICATION_EMAIL = 'stratezikdigital@gmail.com';

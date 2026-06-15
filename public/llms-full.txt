@@ -9,7 +9,7 @@
 - [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](https://www.stratezik.com/careers): Toronto team hiring
 
-## Free tools (2)
+## Free tools & offers (3)
 
 ### AEO Readiness Checker: Free 20-Point Website Test
 - URL: https://www.stratezik.com/aeo-checker
@@ -20,6 +20,11 @@
 - URL: https://www.stratezik.com/toronto-startup-website-audit-2026
 - Summary: Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20. Defaults pass; deliberate criteria fail. Run the same free test on your site.
 - Updated: 2026-06-01
+
+### $3,000 Growth Credit for Canadian SMBs
+- URL: https://www.stratezik.com/growth-credit
+- Summary: Qualifying Canadian startups and SMBs can apply $3,000 in Stratezik Growth Credits against onboarding. Free 20-minute growth assessment. Local search, paid ads, delivery platforms.
+- Updated: 2026-06-15
 
 ## Services (8)
 

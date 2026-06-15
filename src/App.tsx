@@ -16,6 +16,8 @@ import BlogPostPage from './components/BlogPostPage'
 import AuthorPage from './components/AuthorPage'
 import AeoCheckerPage from './components/AeoCheckerPage'
 import TorontoStartupAuditPage from './components/TorontoStartupAuditPage'
+import GrowthCreditPage from './components/GrowthCreditPage'
+import { GrowthCreditHomeBanner } from './components/GrowthCreditHomeBanner'
 import ServicePage from './components/ServicePage'
 import Footer from './components/Footer'
 import { SmoothScroll } from './three/world/SmoothScroll'
@@ -92,6 +94,7 @@ function AppShell() {
                       ]}
                     />
                     <ServicesSection />
+                    <GrowthCreditHomeBanner />
                     <NotationMarquee
                       variant="light"
                       lines={[
@@ -114,6 +117,7 @@ function AppShell() {
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
+              <Route path="/growth-credit" element={<GrowthCreditPage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/services/:slug" element={<ServicePage />} />
               <Route path="/services/:slug/:child" element={<ServicePage />} />

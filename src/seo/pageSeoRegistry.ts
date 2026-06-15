@@ -5,6 +5,7 @@ import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { buildAeoCheckerJsonLd } from './buildAeoCheckerJsonLd'
+import { buildGrowthCreditJsonLd } from './buildGrowthCreditJsonLd'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
 import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
@@ -164,6 +165,32 @@ export const TORONTO_AUDIT_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+export const GROWTH_CREDIT_SEO: RouteSeoConfig = {
+  path: '/growth-credit',
+  title: '$3,000 Growth Credit for Canadian SMBs | Stratezik Digital',
+  description:
+    'Qualifying Canadian startups and SMBs can apply $3,000 in Stratezik Growth Credits against onboarding. Free 20-minute growth assessment. Local search, paid ads, delivery platforms.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik $3,000 Growth Credit for Canadian SMBs',
+  keywords: [
+    'Stratezik growth credit',
+    'marketing credit Canada',
+    'digital marketing offer Toronto',
+    'SMB marketing credit',
+    'startup marketing Canada',
+    'Google Maps marketing Toronto',
+    'restaurant marketing GTA',
+  ],
+  jsonLd: buildGrowthCreditJsonLd(),
+  datePublished: '2026-06-15',
+  dateModified: '2026-06-15',
+  sitemapPriority: 0.9,
+  sitemapChangefreq: 'weekly',
+}
+
 export const BLOG_INDEX_SEO: RouteSeoConfig = {
   path: '/blog',
   title: 'Blog | Stratezik: Toronto SEO, PPC & Answer Engine Insights',
@@ -286,6 +313,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     CAREERS_SEO,
     AEO_CHECKER_SEO,
     TORONTO_AUDIT_SEO,
+    GROWTH_CREDIT_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),
     ...serviceChildren.map(serviceChildPageSeo),

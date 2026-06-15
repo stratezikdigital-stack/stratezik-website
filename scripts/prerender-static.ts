@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { PrerenderApp } from '../src/prerender/PrerenderApp'
 import { loadPrerenderServiceBodies } from './loadPrerenderServiceBodies'
 
-const CONTENT_ROUTE_PREFIXES = ['/blog', '/authors', '/services', '/careers', '/aeo-checker', '/toronto-startup-website-audit-2026']
+const CONTENT_ROUTE_PREFIXES = ['/blog', '/authors', '/services', '/careers', '/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit']
 
 export function shouldPrerenderBody(path: string): boolean {
   if (path === '/') return true

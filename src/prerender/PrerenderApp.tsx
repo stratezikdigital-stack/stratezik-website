@@ -9,6 +9,7 @@ import { ServicePageView } from '../components/ServicePageView'
 import CareerPage from '../components/CareerPage'
 import AeoCheckerPage from '../components/AeoCheckerPage'
 import TorontoStartupAuditPage from '../components/TorontoStartupAuditPage'
+import GrowthCreditPage from '../components/GrowthCreditPage'
 import { PrerenderHomePage } from './PrerenderHomePage'
 import { PrerenderBodiesContext, type PrerenderBodies } from './PrerenderBodiesContext'
 
@@ -30,6 +31,7 @@ export function PrerenderApp({ pathname, bodies }: PrerenderAppProps) {
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
+              <Route path="/growth-credit" element={<GrowthCreditPage />} />
               <Route path="/services" element={<ServicePageView />} />
               <Route path="/services/:slug/:child" element={<ServicePageView />} />
               <Route path="/services/:slug" element={<ServicePageView />} />

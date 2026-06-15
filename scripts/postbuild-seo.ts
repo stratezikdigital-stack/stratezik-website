@@ -131,7 +131,7 @@ async function main(): Promise<void> {
 
   const blogPosts = configs.filter((c) => c.path.startsWith('/blog/') && c.path !== '/blog')
   const toolPages = configs.filter((c) =>
-    ['/aeo-checker', '/toronto-startup-website-audit-2026'].includes(c.path),
+    ['/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit'].includes(c.path),
   )
   const llmsFull = `# Stratezik — extended LLM index
 
@@ -144,7 +144,7 @@ async function main(): Promise<void> {
 - [Blog index](${SITE_ORIGIN}/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](${SITE_ORIGIN}/careers): Toronto team hiring
 
-## Free tools (${toolPages.length})
+## Free tools & offers (${toolPages.length})
 
 ${toolPages
   .map(
@@ -214,7 +214,7 @@ ${blogPosts
       name: page.title.replace(/\s*\|\s*Stratezik.*$/, '').trim(),
       url: `${SITE_ORIGIN}${page.path}`,
       summary: page.description,
-      type: page.path === '/aeo-checker' ? 'AEO readiness checker' : 'Research report',
+      type: page.path === '/aeo-checker' ? 'AEO readiness checker' : page.path === '/growth-credit' ? 'Growth credit offer' : 'Research report',
     }))
     context.generated = new Date().toISOString().slice(0, 10)
     const json = `${JSON.stringify(context, null, 2)}\n`

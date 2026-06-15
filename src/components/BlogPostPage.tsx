@@ -4,6 +4,7 @@ import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
 import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
+import { GrowthCreditCta } from './GrowthCreditCta'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -70,7 +71,19 @@ const BlogPostPage = () => {
         </motion.header>
 
         <div className="mt-14 md:mt-20">
+          <div className="max-w-[720px] mx-auto mb-10">
+            <GrowthCreditCta
+              variant="compact"
+              source={`blog-${post.slug}`}
+              medium="inline"
+              className="border-l-2 border-oxblood/40 pl-5"
+            />
+          </div>
           <Component />
+        </div>
+
+        <div className="max-w-[720px] mx-auto mt-16">
+          <GrowthCreditCta variant="banner" source={`blog-${post.slug}`} medium="banner" />
         </div>
 
         <footer className="max-w-[720px] mx-auto mt-16 pt-10 border-t border-ink/10">

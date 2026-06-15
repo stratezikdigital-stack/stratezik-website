@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { CONTACT_FORM_WEBHOOK_URL } from '../constants/contactFormWebhook'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
@@ -42,10 +43,7 @@ export default function ContactSection() {
         message: formData.message,
         source: 'stratezik.com',
       })
-      await fetch(
-        `https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec?${params}`,
-        { method: 'GET', mode: 'no-cors' },
-      )
+      await fetch(`${CONTACT_FORM_WEBHOOK_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
       setIsSubmitted(true)
       setFormData({ name: '', email: '', company: '', message: '' })
     } catch (err) {

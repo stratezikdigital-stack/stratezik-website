@@ -62,7 +62,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-06-14",
+  "generated": "2026-06-15",
   "articles": [
     {
       "title": "The Shift From Old SEO to Agent-Ready SEO in 2026",
@@ -266,6 +266,12 @@
       "url": "https://www.stratezik.com/toronto-startup-website-audit-2026",
       "summary": "Machine-verified audit of 50 funded Toronto startup websites. Median AEO readiness score 10.75/20. Defaults pass; deliberate criteria fail. Run the same free test on your site.",
       "type": "Research report"
+    },
+    {
+      "name": "$3,000 Growth Credit for Canadian SMBs",
+      "url": "https://www.stratezik.com/growth-credit",
+      "summary": "Qualifying Canadian startups and SMBs can apply $3,000 in Stratezik Growth Credits against onboarding. Free 20-minute growth assessment. Local search, paid ads, delivery platforms.",
+      "type": "Growth credit offer"
     }
   ]
 }

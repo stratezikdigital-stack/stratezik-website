@@ -3,6 +3,7 @@ import { services } from '../services/services'
 import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
 import LatestInsightsSection from '../components/LatestInsightsSection'
 import { HomeFaqSection } from '../components/HomeFaqSection'
+import { GrowthCreditHomeBanner } from '../components/GrowthCreditHomeBanner'
 
 const QUOTE_HREF = '/#contact-form'
 
@@ -90,6 +91,8 @@ export function PrerenderHomePage() {
           </ul>
         </div>
       </section>
+
+      <GrowthCreditHomeBanner />
 
       <LatestInsightsSection />
       <HomeFaqSection />
