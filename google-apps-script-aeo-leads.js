@@ -5,8 +5,10 @@
 // After editing here: paste into Apps Script -> Save -> Deploy -> New version.
 //
 // Set GOOGLE_AEO_LEADS_WEBHOOK_URL in Vercel to the deployed /exec URL.
+//
+// Sheet logging only — the visitor report email is sent by the site (Resend).
+// Contact-form leads still use google-apps-script.js for new-lead notifications.
 
-var LEAD_NOTIFICATION_EMAIL = 'stratezikdigital@gmail.com';
 var LEADS_SPREADSHEET_URL =
   'https://docs.google.com/spreadsheets/d/1k2EUMWerUGFaxIRGxioI1IVAlJi7xPPDs8grAzrCPnQ/edit';
 var AEO_SHEET_NAME = 'AEO Readiness List';
@@ -69,7 +71,7 @@ function parseLeadData(e, isPost) {
   };
 }
 
-/** Append an AEO Readiness Checker lead and notify the team. */
+/** Append an AEO Readiness Checker lead to the spreadsheet. */
 function recordAeoLead(data) {
   var sheet = getOrCreateAeoSheet();
   var timestamp = new Date();
@@ -85,30 +87,6 @@ function recordAeoLead(data) {
     data.source || 'aeo-checker',
     data.consent || '',
   ]);
-
-  try {
-    MailApp.sendEmail({
-      to: LEAD_NOTIFICATION_EMAIL,
-      replyTo: data.email || LEAD_NOTIFICATION_EMAIL,
-      subject:
-        'AEO checker lead — ' +
-        (data.domain || 'unknown domain') +
-        (data.score ? ' (' + data.score + '/20)' : ''),
-      body:
-        'New AEO Readiness Checker lead on stratezik.com.\n\n' +
-        'Name: ' + (data.name || '(not provided)') + '\n' +
-        'Email: ' + (data.email || '(not provided)') + '\n' +
-        'Domain: ' + (data.domain || '(not provided)') + '\n' +
-        'Score: ' + (data.score || '(unverifiable)') + '\n' +
-        'Group A %: ' + (data.group_a || '—') + '\n' +
-        'Group B %: ' + (data.group_b || '—') + '\n' +
-        'Source: ' + (data.source || 'aeo-checker') + '\n' +
-        'Consent: ' + (data.consent || 'no') + '\n' +
-        'Received: ' + timestamp + '\n',
-    });
-  } catch (mailError) {
-    console.error('AEO lead email failed: ' + mailError.toString());
-  }
 }
 
 function doGet(e) {
@@ -143,14 +121,3 @@ function setupAeoReadinessSheet() {
   Logger.log('AEO Readiness List sheet is ready.');
 }
 
-/**
- * Run once to authorize MailApp, then redeploy a new web-app version.
- */
-function sendTestEmail() {
-  MailApp.sendEmail({
-    to: LEAD_NOTIFICATION_EMAIL,
-    subject: 'Stratezik AEO checker leads — test',
-    body: 'If you can read this, AEO lead notification emails are working. ' + new Date(),
-  });
-  Logger.log('Test email sent to ' + LEAD_NOTIFICATION_EMAIL + '. Remaining daily quota: ' + MailApp.getRemainingDailyQuota());
-}
