@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
@@ -52,6 +53,8 @@ export default function GetFound2026Part1BrandArticle() {
           for a GTA programme that aligns spend with the storyline you intend to compound.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Foundation: positioning before tactics</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

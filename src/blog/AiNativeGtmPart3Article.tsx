@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart3Faq } from './postFaqs'
@@ -49,6 +50,8 @@ export default function AiNativeGtmPart3Article() {
         </h2>
         <p className="mt-4 text-ink-700 leading-relaxed">{aiNativeGtmPart3Faq[0].answer}</p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">The principle behind the stack</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

@@ -1,4 +1,5 @@
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
 import { answerEngineTorontoFaq } from './postFaqs'
@@ -78,6 +79,8 @@ export default function AnswerEngineTorontoArticle() {
           .
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">How large is AI search in 2025 and 2026?</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

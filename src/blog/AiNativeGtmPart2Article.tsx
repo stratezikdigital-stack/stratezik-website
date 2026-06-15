@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
@@ -62,6 +63,8 @@ export default function AiNativeGtmPart2Article() {
           .
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">The window: what the data actually shows</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

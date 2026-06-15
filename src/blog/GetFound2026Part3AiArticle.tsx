@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part3AiFaq } from './postFaqs'
@@ -64,6 +65,8 @@ export default function GetFound2026Part3AiArticle() {
           , where crisp answers compound into repeatable demand.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Answer engine optimisation, citations, and corroboration</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

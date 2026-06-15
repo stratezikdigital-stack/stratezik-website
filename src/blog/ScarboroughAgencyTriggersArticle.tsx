@@ -1,4 +1,5 @@
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
 import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { scarboroughAgencyTriggersFaq } from './postFaqs'
@@ -72,6 +73,8 @@ export default function ScarboroughAgencyTriggersArticle() {
           before blaming ads alone.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Ten triggers that push SMBs to call an agency</h2>
 

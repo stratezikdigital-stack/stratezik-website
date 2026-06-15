@@ -1,4 +1,5 @@
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
 import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { chatgptAdsGuideFaq } from './postFaqs'
@@ -80,6 +81,8 @@ export default function ChatGPTAdsGuideArticle() {
           .
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">What ChatGPT Ads actually is (and what it is not)</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

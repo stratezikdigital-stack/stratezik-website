@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part5PaidFaq } from './postFaqs'
@@ -59,6 +60,8 @@ export default function GetFound2026Part5PaidArticle() {
           cold curiosity.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Paid social rewards creative discipline and sequencing</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

@@ -1,4 +1,5 @@
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
 import { googleMapsRankingServiceBusinessFaq } from './postFaqs'
 
@@ -72,6 +73,8 @@ export default function GoogleMapsRankingServiceBusinessArticle() {
           .
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Why reviews are not usually the whole problem</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

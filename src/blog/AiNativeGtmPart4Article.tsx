@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { aiNativeGtmPart4Faq } from './postFaqs'
@@ -53,6 +54,8 @@ export default function AiNativeGtmPart4Article() {
         </h2>
         <p className="mt-4 text-ink-700 leading-relaxed">{aiNativeGtmPart4Faq[0].answer}</p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Why the old hiring shape stops working</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import type { LucideIcon } from 'lucide-react'
 import {
   CalendarRange,
@@ -343,6 +344,8 @@ export default function InsecticaCaseStudyArticle() {
         </Link>
         .
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="insectica-faq-heading">
         <h2 id="insectica-faq-heading" className="font-display text-display-3 text-ink">

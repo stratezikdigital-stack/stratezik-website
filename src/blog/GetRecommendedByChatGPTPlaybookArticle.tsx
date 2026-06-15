@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
@@ -66,6 +67,8 @@ export default function GetRecommendedByChatGPTPlaybookArticle() {
           . Organic recommendations still come down to crawlability, structure, corroboration, and authority proxies.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">A different scoreboard than Google</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import { getFound2026Part4ContentFaq } from './postFaqs'
@@ -55,6 +56,8 @@ export default function GetFound2026Part4ContentArticle() {
           booking.
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Founder-led voice is the hardest moat</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

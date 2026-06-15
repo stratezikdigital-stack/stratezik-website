@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { AeoCheckerCta } from '../components/AeoCheckerCta'
 import { Link } from 'react-router-dom'
@@ -42,6 +43,8 @@ export default function OldSeoToAgentReadyArticle() {
         </h2>
         <p className="mt-4 text-ink-700 leading-relaxed">{oldSeoToAgentReadyFaq[0].answer}</p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Old SEO vs agent-ready SEO at a glance</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
 import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { gtaAgencyTriggersScenariosFaq } from './postFaqs'
@@ -60,6 +61,8 @@ export default function GtaAgencyTriggersScenariosArticle() {
         </h2>
         <p className="mt-4 text-ink-700 leading-relaxed">{faq[0].answer}</p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Ten triggers, ten GTA scenarios</h2>
 

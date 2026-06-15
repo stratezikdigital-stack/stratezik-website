@@ -1,4 +1,5 @@
 import { BlogAuthorSignoff } from './BlogAuthorSignoff'
+import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { Link } from 'react-router-dom'
 import GetFound2026SeriesNav from './GetFound2026SeriesNav'
@@ -57,6 +58,8 @@ export default function GetFound2026Part2SeoArticle() {
           .
         </p>
       </aside>
+
+      <BlogGrowthCreditMidPromo />
 
       <h2 className="mt-16 font-display text-display-3 text-ink">
         Macro context: search platforms still marry classic craft with conversational layers
