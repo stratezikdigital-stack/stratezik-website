@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { rateLimit, clientIp } from '../aeo/rate-limit.js'
-import { createAdminClient } from '../aeo/supabase-admin.js'
+import { rateLimit, clientIp } from '../../api/lib/aeo/rate-limit.js'
+import { createAdminClient } from '../../api/lib/aeo/supabase-admin.js'
 import { sendDeliveryEmail } from './email.js'
 import { loadGuide, splitAtIndustries } from './guide.js'
 import { mintToken, verifyToken } from './token.js'

@@ -2,13 +2,7 @@
   "functions": {
     "api/aeo.ts": {
       "maxDuration": 150,
-      "includeFiles": "api/lib/**"
-    },
-    "api/guide-lead.ts": {
-      "includeFiles": "api/lib/**,content/**,src/cheatsheet/**"
-    },
-    "api/guide-access.ts": {
-      "includeFiles": "api/lib/**,content/**,src/cheatsheet/**"
+      "includeFiles": "api/lib/**,server/cheatsheet/**,content/**,src/cheatsheet/**"
     }
   },
   "redirects": [
@@ -323,6 +317,8 @@
     { "source": "/api/aeo-unlock", "destination": "/api/aeo?action=unlock" },
     { "source": "/api/aeo-sitemap", "destination": "/api/aeo?action=sitemap" },
     { "source": "/api/aeo-sitemap-unlock", "destination": "/api/aeo?action=sitemap-unlock" },
+    { "source": "/api/guide-lead", "destination": "/api/aeo?action=guide-lead" },
+    { "source": "/api/guide-access", "destination": "/api/aeo?action=guide-access" },
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"

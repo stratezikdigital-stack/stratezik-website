@@ -4,7 +4,7 @@ import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './ap
 import { rateLimit, clientIp } from './api/lib/aeo/rate-limit'
 import { createAdminClient } from './api/lib/aeo/supabase-admin'
 import { sendReportEmail } from './api/lib/aeo/email'
-import { handleGuideLead, handleGuideAccess } from './api/lib/cheatsheet/handlers'
+import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
 
 const CACHE_HOURS = 24
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/

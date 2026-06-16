@@ -1,8 +1,8 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { parseGuideFromRaw, type LoadedGuide } from '../../../src/cheatsheet/guideParser.js'
+import { parseGuideFromRaw, type LoadedGuide } from '../../src/cheatsheet/guideParser.js'
 
-export { splitAtIndustries } from '../../../src/cheatsheet/guideParser.js'
+export { splitAtIndustries } from '../../src/cheatsheet/guideParser.js'
 
 let cache: LoadedGuide | null = null
 

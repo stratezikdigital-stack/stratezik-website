@@ -7,6 +7,7 @@ import {
   handleSitemapUnlock,
   handleUnlock,
 } from './lib/aeo/handlers.js'
+import { handleGuideAccess, handleGuideLead } from '../server/cheatsheet/handlers.js'
 
 /** Map legacy /api/aeo-* paths and ?action= query to a single handler key. */
 function resolveAction(req: VercelRequest): string | null {
@@ -21,16 +22,26 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/aeo-unlock': 'unlock',
     '/api/aeo-sitemap': 'sitemap',
     '/api/aeo-sitemap-unlock': 'sitemap-unlock',
+    '/api/guide-lead': 'guide-lead',
+    '/api/guide-access': 'guide-access',
   }
   return legacy[path] ?? null
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const action = resolveAction(req)
+
+  if (action === 'guide-access' && req.method === 'GET') {
+    return handleGuideAccess(req, res)
+  }
+  if (action === 'guide-lead' && req.method === 'POST') {
+    return handleGuideLead(req, res)
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const action = resolveAction(req)
   switch (action) {
     case 'check':
       return handleCheck(req, res)
