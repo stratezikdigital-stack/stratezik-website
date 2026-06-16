@@ -1,3 +1,4 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
@@ -550,8 +551,14 @@ export default function ChatGPTAdsGuideArticle() {
           <a href={`${SITE}/sitemap.xml`} className="text-oxblood hover:text-ink underline">
             {SITE}/sitemap.xml
           </a>
+          {' · '}
+          <Link to="/services/paid-search" className="text-oxblood hover:text-ink underline">
+            Paid search services
+          </Link>
         </p>
       </section>
+
+      <BlogAuthorSignoff />
     </div>
   )
 }

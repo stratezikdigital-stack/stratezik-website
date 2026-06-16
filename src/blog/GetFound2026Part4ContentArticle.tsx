@@ -112,7 +112,11 @@ export default function GetFound2026Part4ContentArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We steward interviews, transcripts, edits, multimedia capture, structured data overlays, plus paid amplification once offers prove
-        defensible.&nbsp;
+        defensible through{' '}
+        <Link to="/services/social-media-marketing" className="text-oxblood underline underline-offset-2">
+          social and content programmes
+        </Link>
+        .&nbsp;
         <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">

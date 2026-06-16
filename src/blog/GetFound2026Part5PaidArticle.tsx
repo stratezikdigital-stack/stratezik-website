@@ -154,7 +154,11 @@ export default function GetFound2026Part5PaidArticle() {
 
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
-        We architect paid programmes alongside the organic and AI readiness work this series described.&nbsp;
+        We architect paid programmes alongside the organic and AI readiness work this series described through{' '}
+        <Link to="/services/paid-search" className="text-oxblood underline underline-offset-2">
+          paid search and performance media
+        </Link>
+        .&nbsp;
         <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">

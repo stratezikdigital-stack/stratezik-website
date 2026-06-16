@@ -368,7 +368,7 @@ export default function InsecticaCaseStudyArticle() {
         </h2>
         <p className="mt-5 text-cream/85 leading-relaxed">
           Bring us an aggressive local-services mandate and we pair{' '}
-          <Link to="/#portfolio" className="text-gold hover:text-cream underline">
+          <Link to="/services/paid-search" className="text-gold hover:text-cream underline">
             paid precision
           </Link>{' '}
           with listings hygiene plus honest creative so you rent fewer leads long term.

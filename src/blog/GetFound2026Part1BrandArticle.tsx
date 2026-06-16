@@ -141,7 +141,11 @@ export default function GetFound2026Part1BrandArticle() {
       <p className="mt-6 text-ink-700 leading-relaxed">
         We align positioning, onsite architecture, GBP, organic authority, assistants, then paid amplification for GTA operators who want
         one accountable programme. Use our <BlogStratezikContactLink>contact form</BlogStratezikContactLink> once your
-        differentiation test is drafted; we tighten language, rollout templates, then hand off cleanly to technical SEO work.
+        differentiation test is drafted; we tighten language, rollout templates through our{' '}
+        <Link to="/services/brand-strategy" className="text-oxblood underline underline-offset-2">
+          brand strategy work
+        </Link>
+        , then hand off cleanly to technical SEO work.
       </p>
       <p className="mt-10 text-ink-700 leading-relaxed">
         Ready for mechanics? Continue to{' '}

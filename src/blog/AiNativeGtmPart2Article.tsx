@@ -288,8 +288,11 @@ export default function AiNativeGtmPart2Article() {
       />
       <p className="mt-6 text-ink-700 leading-relaxed">
         Want a scoped audit and roadmap? Use our{' '}
-        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> and we will tell you what you would need to do to
-        win the next twelve months in your category.
+        <BlogStratezikContactLink>contact form</BlogStratezikContactLink> or our{' '}
+        <Link to="/services/seo-aeo/answer-engine-optimization" className="text-oxblood underline underline-offset-2">
+          answer engine optimisation programme
+        </Link>{' '}
+        and we will tell you what you would need to do to win the next twelve months in your category.
       </p>
       <BlogAuthorSignoff />
 

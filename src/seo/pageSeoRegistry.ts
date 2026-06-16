@@ -98,6 +98,53 @@ export const CAREERS_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+export const PRIVACY_SEO: RouteSeoConfig = {
+  path: '/privacy',
+  title: 'Privacy Notice | Stratezik Digital',
+  description:
+    'How Stratezik Digital collects, uses, and protects personal information under PIPEDA, CASL, Law 25, GDPR, and CPRA. Cookies, marketing consent, and your privacy rights.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik Digital Privacy Notice',
+  keywords: [
+    'Stratezik privacy policy',
+    'PIPEDA privacy notice',
+    'CASL consent',
+    'cookie policy Canada',
+    'Law 25 Quebec privacy',
+    'digital marketing agency privacy',
+  ],
+  datePublished: '2026-06-16',
+  dateModified: '2026-06-16',
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${SITE_ORIGIN}/privacy#webpage`,
+        name: 'Privacy Notice',
+        description:
+          'Stratezik Digital privacy notice covering data collection, CASL marketing consent, cookies, and privacy rights.',
+        url: `${SITE_ORIGIN}/privacy`,
+        inLanguage: 'en-CA',
+        isPartOf: { '@type': 'WebSite', '@id': `${SITE_ORIGIN}/#website`, name: 'Stratezik', url: SITE_ORIGIN },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${SITE_ORIGIN}/privacy#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_ORIGIN}/` },
+          { '@type': 'ListItem', position: 2, name: 'Privacy Notice', item: `${SITE_ORIGIN}/privacy` },
+        ],
+      },
+    ],
+  },
+  sitemapPriority: 0.5,
+  sitemapChangefreq: 'monthly',
+}
+
 export const AEO_CHECKER_SEO: RouteSeoConfig = {
   path: '/aeo-checker',
   title: 'AEO Readiness Checker: Free 20-Point Website Test | Stratezik',
@@ -311,6 +358,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
   return [
     HOME_SEO,
     CAREERS_SEO,
+    PRIVACY_SEO,
     AEO_CHECKER_SEO,
     TORONTO_AUDIT_SEO,
     GROWTH_CREDIT_SEO,

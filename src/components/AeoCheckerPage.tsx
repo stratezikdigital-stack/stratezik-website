@@ -535,17 +535,21 @@ export default function AeoCheckerPage() {
                       {leadBusy ? 'Sending…' : 'Send my report'}
                     </button>
                   </div>
-                  <label className="mt-4 flex items-start gap-2.5 text-sm text-ink-600">
+                  <label className="mt-4 flex items-start gap-2.5 text-sm text-ink-700">
                     <input
                       type="checkbox"
                       checked={consent}
                       onChange={(e) => setConsent(e.target.checked)}
                       required
-                      className="mt-0.5 h-4 w-4 border-ink/20 accent-oxblood"
+                      className="mt-0.5 h-4 w-4 border-ink/20 accent-oxblood shrink-0"
                     />
                     <span>
-                      Yes, email me my report and occasional AEO insights from Stratezik. I can
-                      withdraw consent any time. (Required under Canada’s anti-spam legislation.)
+                      I agree Stratezik may email my report and related messages about services and insights for my
+                      business, as described in our{' '}
+                      <Link to="/privacy" className="text-oxblood underline underline-offset-2">
+                        Privacy Notice
+                      </Link>
+                      . I can unsubscribe anytime. (Required under Canada&apos;s anti-spam legislation.)
                     </span>
                   </label>
                   {leadError && <p className="mt-3 text-sm text-oxblood">{leadError}</p>}

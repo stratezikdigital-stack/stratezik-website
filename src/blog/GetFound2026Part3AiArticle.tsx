@@ -147,7 +147,11 @@ export default function GetFound2026Part3AiArticle() {
       <h2 className="mt-16 font-display text-display-3 text-ink">Partnering with Stratezik</h2>
       <p className="mt-6 text-ink-700 leading-relaxed">
         We marry assistant audits with schema implementation, GBP depth, and the paid overlays that amplify proof once copy is
-        defensible.&nbsp;
+        defensible through our{' '}
+        <Link to="/services/seo-aeo/answer-engine-optimization" className="text-oxblood underline underline-offset-2">
+          answer engine optimisation work
+        </Link>
+        .&nbsp;
         <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
         or{' '}
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">

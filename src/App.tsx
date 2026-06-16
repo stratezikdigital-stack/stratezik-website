@@ -17,9 +17,11 @@ import AuthorPage from './components/AuthorPage'
 import AeoCheckerPage from './components/AeoCheckerPage'
 import TorontoStartupAuditPage from './components/TorontoStartupAuditPage'
 import GrowthCreditPage from './components/GrowthCreditPage'
+import PrivacyPage from './components/PrivacyPage'
 import { GrowthCreditHomeBanner } from './components/GrowthCreditHomeBanner'
 import ServicePage from './components/ServicePage'
 import Footer from './components/Footer'
+import { CookieConsentBanner } from './components/CookieConsentBanner'
 import { SmoothScroll } from './three/world/SmoothScroll'
 import { getLenis } from './three/world/lenisRef'
 import { WorldCanvas } from './three/world/WorldCanvas'
@@ -115,6 +117,7 @@ function AppShell() {
                 }
               />
               <Route path="/careers" element={<CareerPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
@@ -127,6 +130,7 @@ function AppShell() {
             </Routes>
           </main>
           <Footer />
+          <CookieConsentBanner />
         </div>
       </SmoothScroll>
     </>

@@ -54,6 +54,7 @@ const Footer = () => {
         { name: '$3,000 Growth Credit', href: '/growth-credit?utm_source=footer&utm_medium=cta' },
         { name: 'Toronto Startup Audit 2026', href: '/toronto-startup-website-audit-2026' },
         { name: 'Careers', href: '/careers' },
+        { name: 'Privacy Notice', href: '/privacy' },
         { name: 'Capstone work', href: `${baseUrl}/#portfolio` },
       ],
     },
@@ -183,6 +184,10 @@ const Footer = () => {
           <span className="mx-3 text-cream/25">&middot;</span>
           <Link to="/careers" className="hover:text-cream transition-colors">
             Careers
+          </Link>
+          <span className="mx-3 text-cream/25">&middot;</span>
+          <Link to="/privacy" className="hover:text-cream transition-colors">
+            Privacy
           </Link>
         </div>
 

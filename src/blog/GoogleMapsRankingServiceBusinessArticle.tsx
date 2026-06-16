@@ -1,3 +1,4 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
@@ -258,8 +259,15 @@ export default function GoogleMapsRankingServiceBusinessArticle() {
               Stratezik sitemap
             </a>
           </li>
+          <li>
+            <Link to="/services/google-business-profile" className="text-oxblood hover:text-ink underline">
+              Google Business Profile management
+            </Link>
+          </li>
         </ul>
       </section>
+
+      <BlogAuthorSignoff />
     </div>
   )
 }

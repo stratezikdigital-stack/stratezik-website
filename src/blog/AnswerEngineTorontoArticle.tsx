@@ -1,3 +1,4 @@
+import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { AeoCheckerCta } from '../components/AeoCheckerCta'
@@ -271,8 +272,14 @@ export default function AnswerEngineTorontoArticle() {
         <Link to="/#contact" className="text-oxblood underline underline-offset-2">
           book a consultation
         </Link>
+        . For a scoped Toronto AEO programme, see our{' '}
+        <Link to="/services/seo-aeo/answer-engine-optimization" className="text-oxblood underline underline-offset-2">
+          answer engine optimisation service
+        </Link>
         .
       </p>
+
+      <BlogAuthorSignoff />
 
       <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="article-faq-heading">
         <h2 id="article-faq-heading" className="font-display text-display-3 text-ink">

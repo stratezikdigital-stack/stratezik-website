@@ -290,7 +290,11 @@ export default function GetRecommendedByChatGPTPlaybookArticle() {
       <p className="mt-6 text-ink-700 leading-relaxed">
         Want hands-on help? Reach our{' '}
         <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>{' '}
-        for a conversational visibility audit keyed to real buyer prompts.
+        for a conversational visibility audit keyed to real buyer prompts, or explore our{' '}
+        <Link to="/services/seo-aeo/answer-engine-optimization" className="text-oxblood underline underline-offset-2">
+          AEO service lane
+        </Link>
+        .
       </p>
       <BlogAuthorSignoff />
 

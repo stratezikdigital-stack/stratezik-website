@@ -7,6 +7,16 @@
   },
   "redirects": [
     {
+      "source": "/privacy-policy/",
+      "destination": "https://www.stratezik.com/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "https://www.stratezik.com/privacy",
+      "permanent": true
+    },
+    {
       "source": "/wp-sitemap.xml",
       "destination": "https://www.stratezik.com/sitemap.xml",
       "permanent": true
@@ -411,6 +421,19 @@
     },
     {
       "source": "/aeo-checker",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/privacy",
       "headers": [
         {
           "key": "Cache-Control",

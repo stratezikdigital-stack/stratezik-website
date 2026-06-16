@@ -161,7 +161,11 @@ export default function GetFound2026Part2SeoArticle() {
         We sequence technical remediation, topical authority clusters, GBP alignment, instrumentation, assistant audits, performance media as
         one accountable programme instead of departmental silos. Use our{' '}
         <BlogStratezikContactLink>contact form</BlogStratezikContactLink> for a GTA audit that aligns fanout, crawl health,
-        backlinks, indexing, then hands off cleanly to{' '}
+        backlinks, indexing through our{' '}
+        <Link to="/services/seo-aeo" className="text-oxblood underline underline-offset-2">
+          SEO and AEO programme
+        </Link>
+        , then hands off cleanly to{' '}
         <Link to="/blog/get-found-2026-ai-search-visibility" className="text-oxblood underline underline-offset-2">
           AI search optimisation
         </Link>
