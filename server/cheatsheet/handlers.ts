@@ -3,6 +3,7 @@ import { rateLimit, clientIp } from '../../api/lib/aeo/rate-limit.js'
 import { createAdminClient } from '../../api/lib/aeo/supabase-admin.js'
 import { sendDeliveryEmail } from './email.js'
 import { loadGuide, splitAtIndustries } from './guide.js'
+import { appendChatGptLeadToSheet } from './sheets.js'
 import { mintToken, verifyToken } from './token.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -96,6 +97,15 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
     to: email,
     firstName: firstName || undefined,
     guideUrl: `${appOrigin()}${guideUrl}&utm_source=email&utm_medium=delivery&utm_campaign=chatgpt-ads-cheat-sheet`,
+  })
+
+  void appendChatGptLeadToSheet({
+    email,
+    firstName: firstName || undefined,
+    vertical,
+    source: SOURCE,
+    consent,
+    emailSent: emailResult.sent,
   })
 
   return res.status(200).json({ ok: true, guideUrl, emailSent: emailResult.sent })

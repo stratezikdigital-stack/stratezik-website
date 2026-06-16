@@ -69,6 +69,23 @@ Uses a **separate** Apps Script project (`google-apps-script-aeo-leads.js`) so c
 
 If AEO rows stop appearing, check **Stratezik AEO Leads** in Apps Script (not the contact-form project).
 
+### ChatGPT Ads Cheat Sheet (`ChatGpt Leads` tab)
+
+Uses a **separate** Apps Script project (`google-apps-script-chatgpt-leads.js`).
+
+| Timestamp | First Name | Email | Vertical | Consent | Source | Delivery Email Sent |
+|-----------|------------|-------|----------|---------|--------|---------------------|
+
+#### ChatGPT cheat sheet setup (one-time)
+
+1. [Google Apps Script](https://script.google.com) → **New project** → name it **Stratezik ChatGpt Leads**
+2. Paste `google-apps-script-chatgpt-leads.js` → **Save**
+3. Run **`setupChatGptLeadsSheet`** once (creates/headers the **ChatGpt Leads** tab — rename an existing empty tab to match if needed)
+4. Run **`sendTestEmail`** once and approve MailApp permissions
+5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
+6. Add to Vercel (Production + Development): `GOOGLE_CHATGPT_LEADS_WEBHOOK_URL` = that URL
+7. Redeploy the site; submit a test on `/chatgpt-ads-cheat-sheet` and confirm the row appears on **ChatGpt Leads**
+
 ### $3,000 Growth Credit (`Marketing Credit` tab)
 
 Uses a **separate** Apps Script project (`google-apps-script-growth-credit.js`). Does **not** write to Sheet1 or duplicate contact-form emails.
