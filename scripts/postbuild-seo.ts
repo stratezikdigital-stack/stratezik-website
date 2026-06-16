@@ -89,6 +89,7 @@ function latestDate(configs: ReturnType<typeof getAllRouteSeoConfigs>): string {
 
 function generateSitemap(configs: ReturnType<typeof getAllRouteSeoConfigs>): string {
   const urls = configs
+    .filter((config) => config.includeInSitemap !== false)
     .map((config) => {
       const loc = config.path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${config.path}`
       const lastmod = config.dateModified ?? config.datePublished ?? latestDate(configs)
@@ -131,7 +132,7 @@ async function main(): Promise<void> {
 
   const blogPosts = configs.filter((c) => c.path.startsWith('/blog/') && c.path !== '/blog')
   const toolPages = configs.filter((c) =>
-    ['/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit'].includes(c.path),
+    ['/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet'].includes(c.path),
   )
   const llmsFull = `# Stratezik — extended LLM index
 

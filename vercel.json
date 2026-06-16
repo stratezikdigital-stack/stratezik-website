@@ -3,6 +3,12 @@
     "api/aeo.ts": {
       "maxDuration": 150,
       "includeFiles": "api/lib/**"
+    },
+    "api/guide-lead.ts": {
+      "includeFiles": "api/lib/**,content/**,src/cheatsheet/**"
+    },
+    "api/guide-access.ts": {
+      "includeFiles": "api/lib/**,content/**,src/cheatsheet/**"
     }
   },
   "redirects": [
@@ -429,6 +435,32 @@
         {
           "key": "CDN-Cache-Control",
           "value": "max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/chatgpt-ads-cheat-sheet",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/chatgpt-ads-cheat-sheet/guide",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
         }
       ]
     },

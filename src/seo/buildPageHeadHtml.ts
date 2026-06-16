@@ -71,7 +71,9 @@ export function buildRouteHeadHtml(config: RouteSeoConfig): string {
   lines.push(
     metaLine('meta', {
       name: 'robots',
-      content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      content:
+        config.robots ??
+        'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     }),
   )
 

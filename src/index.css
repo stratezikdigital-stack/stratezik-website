@@ -196,6 +196,85 @@
   .aeo-status-fail {
     @apply border border-oxblood/35 bg-oxblood/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase text-oxblood-700;
   }
+
+  /* Long-form markdown — matches stratezik-web cheat sheet / guide prose */
+  .prose {
+    @apply max-w-none text-ink-700;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    @apply font-display text-ink font-normal;
+  }
+
+  .prose strong {
+    @apply text-ink;
+  }
+
+  .prose code {
+    @apply rounded-none bg-cream-200 px-1 py-0.5 font-mono text-sm text-ink;
+  }
+
+  .prose code::before,
+  .prose code::after {
+    content: '';
+  }
+
+  .prose pre {
+    @apply border border-ink/15 bg-cream-50 p-4;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose a {
+    @apply text-oxblood underline-offset-2 hover:text-oxblood-400;
+  }
+
+  /* Peek + guide: editorial scale, not site hero display sizes */
+  .cheatsheet-prose {
+    @apply prose prose-lg max-w-none;
+  }
+
+  .cheatsheet-prose :where(h1):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply text-[1.75rem] md:text-[2rem] leading-[1.15] tracking-[-0.02em] mt-0 mb-6;
+  }
+
+  .cheatsheet-prose :where(h2):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply text-xl md:text-2xl leading-snug tracking-[-0.015em] mt-12 mb-4;
+  }
+
+  .cheatsheet-prose :where(h3):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply text-lg md:text-xl mt-8 mb-3;
+  }
+
+  .cheatsheet-prose :where(p):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply leading-[1.7];
+  }
+
+  .cheatsheet-prose :where(hr):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply border-ink/15 my-10;
+  }
+
+  .cheatsheet-prose :where(table):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply my-8 w-full border-collapse text-sm;
+  }
+
+  .cheatsheet-prose :where(th):not(:where([class~='not-prose'], [class~='not-prose'] *)),
+  .cheatsheet-prose :where(td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply border border-ink/15 px-3 py-2.5 align-top;
+  }
+
+  .cheatsheet-prose :where(thead th):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply bg-cream-200/60 font-medium text-ink;
+  }
+
+  .cheatsheet-prose :where(ul > li):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply leading-relaxed;
+  }
 }
 
 @keyframes marquee {
@@ -220,11 +299,13 @@
 }
 
 @media print {
-  #aeo-report {
+  #aeo-report,
+  #cheat-sheet-guide {
     background: white !important;
     color: black !important;
   }
-  #aeo-report * {
+  #aeo-report *,
+  #cheat-sheet-guide * {
     color: black !important;
     border-color: #ccc !important;
   }

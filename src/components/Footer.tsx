@@ -51,6 +51,7 @@ const Footer = () => {
         { name: 'About', href: `${baseUrl}/#about` },
         { name: 'Blog', href: '/blog' },
         { name: 'AEO Readiness Checker', href: '/aeo-checker?utm_source=footer&utm_medium=cta' },
+        { name: 'ChatGPT Ads Cheat Sheet', href: '/chatgpt-ads-cheat-sheet?utm_source=footer&utm_medium=cta' },
         { name: '$3,000 Growth Credit', href: '/growth-credit?utm_source=footer&utm_medium=cta' },
         { name: 'Toronto Startup Audit 2026', href: '/toronto-startup-website-audit-2026' },
         { name: 'Careers', href: '/careers' },

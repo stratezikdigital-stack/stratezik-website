@@ -3,10 +3,11 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { PrerenderApp } from '../src/prerender/PrerenderApp'
 import { loadPrerenderServiceBodies } from './loadPrerenderServiceBodies'
 
-const CONTENT_ROUTE_PREFIXES = ['/blog', '/authors', '/services', '/careers', '/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit']
+const CONTENT_ROUTE_PREFIXES = ['/blog', '/authors', '/services', '/careers', '/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet']
 
 export function shouldPrerenderBody(path: string): boolean {
   if (path === '/') return true
+  if (path.startsWith('/chatgpt-ads-cheat-sheet/guide')) return false
   return CONTENT_ROUTE_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))
 }
 

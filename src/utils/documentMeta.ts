@@ -58,6 +58,7 @@ export type ApplyPageMetaArgs = {
   datePublished?: string
   dateModified?: string
   keywords?: string[]
+  robots?: string
 }
 
 /** Apply meta from the central route registry (preferred). */
@@ -74,6 +75,7 @@ export function applyRouteSeo(config: RouteSeoConfig): () => void {
     datePublished: config.datePublished,
     dateModified: config.dateModified,
     keywords: config.keywords,
+    robots: config.robots,
   })
 }
 
@@ -86,6 +88,11 @@ export function applyPageMeta(args: ApplyPageMetaArgs): () => void {
   const keywordsSnap = args.keywords?.length
     ? setMeta('meta[name="keywords"]', args.keywords.join(', '))
     : { el: null as HTMLMetaElement | null, prev: null as string | null }
+
+  const robotsSnap = setMeta(
+    'meta[name="robots"]',
+    args.robots ?? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  )
 
   const canonicalSnap = setCanonical(url)
 
@@ -149,6 +156,7 @@ export function applyPageMeta(args: ApplyPageMetaArgs): () => void {
       if (keywordsSnap.prev === null) keywordsSnap.el.removeAttribute('content')
       else keywordsSnap.el.setAttribute('content', keywordsSnap.prev)
     }
+    if (robotsSnap.el && robotsSnap.prev !== null) robotsSnap.el.setAttribute('content', robotsSnap.prev)
     if (canonicalSnap.el) {
       if (canonicalSnap.prev === null) canonicalSnap.el.remove()
       else canonicalSnap.el.setAttribute('href', canonicalSnap.prev)

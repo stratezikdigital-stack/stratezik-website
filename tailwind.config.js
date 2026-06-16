@@ -75,6 +75,17 @@ export default {
         'slide-up': 'slideUp 0.5s ease-out',
         'marquee': 'marquee 40s linear infinite',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': '#2a2722',
+            '--tw-prose-headings': '#0d0c0a',
+            '--tw-prose-links': '#7a1f1f',
+            '--tw-prose-code': '#0d0c0a',
+            '--tw-prose-pre-bg': '#faf6ec',
+          },
+        },
+      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
@@ -91,5 +102,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }

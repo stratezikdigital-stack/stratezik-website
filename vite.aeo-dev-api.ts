@@ -4,7 +4,7 @@ import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './ap
 import { rateLimit, clientIp } from './api/lib/aeo/rate-limit'
 import { createAdminClient } from './api/lib/aeo/supabase-admin'
 import { sendReportEmail } from './api/lib/aeo/email'
-import { appendAeoLeadToSheet } from './api/lib/aeo/sheets'
+import { handleGuideLead, handleGuideAccess } from './api/lib/cheatsheet/handlers'
 
 const CACHE_HOURS = 24
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -59,6 +59,58 @@ export function aeoDevApiPlugin(): Plugin {
 
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ?? ''
+
+        if (url.startsWith('/api/guide-lead') && req.method === 'POST') {
+          try {
+            const body = await readJsonBody(req)
+            const pseudoReq = {
+              method: 'POST',
+              body,
+              headers: req.headers,
+              query: {},
+            } as unknown as import('@vercel/node').VercelRequest
+            const pseudoRes = {
+              status(code: number) {
+                res.statusCode = code
+                return this
+              },
+              json(payload: unknown) {
+                sendJson(res, res.statusCode || 200, payload)
+              },
+            } as unknown as import('@vercel/node').VercelResponse
+            await handleGuideLead(pseudoReq, pseudoRes)
+            return
+          } catch (err) {
+            console.error('[guide-lead:dev]', err)
+            return sendJson(res, 500, { error: 'Server error' })
+          }
+        }
+
+        if (url.startsWith('/api/guide-access') && req.method === 'GET') {
+          try {
+            const k = new URL(url, 'http://localhost').searchParams.get('k') ?? ''
+            const pseudoReq = {
+              method: 'GET',
+              query: { k },
+              headers: req.headers,
+            } as unknown as import('@vercel/node').VercelRequest
+            const pseudoRes = {
+              status(code: number) {
+                res.statusCode = code
+                return this
+              },
+              json(payload: unknown) {
+                sendJson(res, res.statusCode || 200, payload)
+              },
+            } as unknown as import('@vercel/node').VercelResponse
+            await handleGuideAccess(pseudoReq, pseudoRes)
+            return
+          } catch (err) {
+            console.error('[guide-access:dev]', err)
+            return sendJson(res, 500, { error: 'Server error' })
+          }
+        }
+
         if (!url.startsWith('/api/aeo-')) {
           return next()
         }

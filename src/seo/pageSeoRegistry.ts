@@ -5,6 +5,7 @@ import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { buildAeoCheckerJsonLd } from './buildAeoCheckerJsonLd'
+import { buildCheatSheetJsonLd, buildCheatSheetGuideJsonLd } from './buildCheatSheetJsonLd'
 import { buildGrowthCreditJsonLd } from './buildGrowthCreditJsonLd'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
@@ -37,6 +38,10 @@ export type RouteSeoConfig = {
   extraJsonLd?: { id: string; data: unknown }[]
   sitemapPriority: number
   sitemapChangefreq: 'weekly' | 'monthly'
+  /** When false, omitted from sitemap.xml (e.g. gated guide). Default true. */
+  includeInSitemap?: boolean
+  /** robots meta content; default is index,follow with max snippet hints. */
+  robots?: string
   /** Person name for article:author meta (blogs only). */
   articleAuthor?: string
 }
@@ -212,6 +217,52 @@ export const TORONTO_AUDIT_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+const CHATGPT_CHEAT_OG = `${SITE_ORIGIN}/branding/blog-og-chatgpt-ads.png`
+
+export const CHATGPT_CHEAT_SHEET_SEO: RouteSeoConfig = {
+  path: '/chatgpt-ads-cheat-sheet',
+  title: 'ChatGPT Ads Cheat Sheet (2026): Free Optimization Playbook | Stratezik',
+  description:
+    'Free ChatGPT Ads cheat sheet from a Toronto agency running the channel. Context hints, bid-floor testing, ~10× cheaper clicks vs Google Search, CTR plays, landing pages, and tracking — sourced from practitioners spending real budgets.',
+  ogType: 'website',
+  ogImageUrl: CHATGPT_CHEAT_OG,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'ChatGPT Ads Cheat Sheet — Stratezik free optimization playbook',
+  keywords: [
+    'ChatGPT Ads cheat sheet',
+    'ChatGPT Ads optimization',
+    'ChatGPT advertising playbook',
+    'context hints ChatGPT Ads',
+    'ChatGPT Ads Canada',
+    'ChatGPT Ads agency Toronto',
+    'paid search ChatGPT',
+    'early window advertising',
+    'Stratezik',
+  ],
+  jsonLd: buildCheatSheetJsonLd(),
+  datePublished: '2026-06-12',
+  dateModified: '2026-06-12',
+  sitemapPriority: 0.93,
+  sitemapChangefreq: 'weekly',
+}
+
+export const CHATGPT_CHEAT_SHEET_GUIDE_SEO: RouteSeoConfig = {
+  path: '/chatgpt-ads-cheat-sheet/guide',
+  title: 'ChatGPT Ads Cheat Sheet — Full Guide | Stratezik',
+  description: 'Gated web version of the ChatGPT Ads optimization playbook.',
+  ogType: 'website',
+  ogImageUrl: CHATGPT_CHEAT_OG,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'ChatGPT Ads Cheat Sheet guide',
+  jsonLd: buildCheatSheetGuideJsonLd(),
+  robots: 'noindex, nofollow',
+  includeInSitemap: false,
+  sitemapPriority: 0,
+  sitemapChangefreq: 'monthly',
+}
+
 export const GROWTH_CREDIT_SEO: RouteSeoConfig = {
   path: '/growth-credit',
   title: '$3,000 Growth Credit for Canadian SMBs | Stratezik Digital',
@@ -361,6 +412,8 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     PRIVACY_SEO,
     AEO_CHECKER_SEO,
     TORONTO_AUDIT_SEO,
+    CHATGPT_CHEAT_SHEET_SEO,
+    CHATGPT_CHEAT_SHEET_GUIDE_SEO,
     GROWTH_CREDIT_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),

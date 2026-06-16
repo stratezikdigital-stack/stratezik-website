@@ -11,6 +11,8 @@ import LatestInsightsSection from './components/LatestInsightsSection'
 import { HomeFaqSection } from './components/HomeFaqSection'
 import ContactSection from './components/ContactSection'
 import CareerPage from './components/CareerPage'
+import CheatSheetLandingPage from './components/CheatSheetLandingPage'
+import CheatSheetGuidePage from './components/CheatSheetGuidePage'
 import BlogPage from './components/BlogPage'
 import BlogPostPage from './components/BlogPostPage'
 import AuthorPage from './components/AuthorPage'
@@ -64,21 +66,26 @@ function ScrollToHash() {
 function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const [loaded, setLoaded] = useState(false)
+  const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+  const [loaded, setLoaded] = useState(isCheatSheet)
+
+  useEffect(() => {
+    if (isCheatSheet) setLoaded(true)
+  }, [isCheatSheet])
 
   return (
     <>
       <RouteSeoManager />
-      <Loader onDone={() => setLoaded(true)} />
-      <CustomCursor />
+      {!isCheatSheet && <Loader onDone={() => setLoaded(true)} />}
+      {!isCheatSheet && <CustomCursor />}
       <SmoothScroll>
         <ScrollToTop />
         <ScrollToHash />
         {isHome ? <WorldCanvas /> : null}
         {isHome && loaded ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
-          <Navbar />
-          <main className="pt-36">
+          {!isCheatSheet && <Navbar />}
+          <main className={isCheatSheet ? '' : 'pt-36'}>
             <Routes>
               <Route
                 path="/"
@@ -121,6 +128,8 @@ function AppShell() {
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
+              <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
+              <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/services/:slug" element={<ServicePage />} />
               <Route path="/services/:slug/:child" element={<ServicePage />} />
@@ -129,8 +138,8 @@ function AppShell() {
               <Route path="/authors/:slug" element={<AuthorPage />} />
             </Routes>
           </main>
-          <Footer />
-          <CookieConsentBanner />
+          {!isCheatSheet && <Footer />}
+          {!isCheatSheet && <CookieConsentBanner />}
         </div>
       </SmoothScroll>
     </>

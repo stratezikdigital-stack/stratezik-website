@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react'
 
 export type PrerenderBodies = {
   servicesHub: string
+  cheatSheetPeek?: string
   serviceBodies: Record<string, string>
   serviceChildBodies: Record<string, string>
 }
