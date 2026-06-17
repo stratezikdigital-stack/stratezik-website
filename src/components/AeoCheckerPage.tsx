@@ -10,6 +10,8 @@
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { FormProtectionFields } from './spam/FormProtectionFields'
+import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveLeadSource } from '../aeo/checkerLinks'
 import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
 import type { DeepScanResult } from '../aeo/deep-scan.types'
@@ -222,6 +224,8 @@ export default function AeoCheckerPage() {
   const [deepBase, setDeepBase] = useState<BaseTopline | null>(null)
   const [sitemapAudit, setSitemapAudit] = useState<SitemapAudit | null>(null)
   const [unlockStep, setUnlockStep] = useState(0)
+  const [turnstileKey, setTurnstileKey] = useState(0)
+  const protection = useFormProtection()
 
   const stepTimer = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(() => () => { if (stepTimer.current) clearInterval(stepTimer.current) }, [])
@@ -286,6 +290,10 @@ export default function AeoCheckerPage() {
 
   async function handleScan(e: FormEvent) {
     e.preventDefault()
+    if (!protection.canSubmit) {
+      setError('Please complete the security check and try again.')
+      return
+    }
     setError('')
     setPhase('scanning')
     setStepIdx(0)
@@ -297,15 +305,24 @@ export default function AeoCheckerPage() {
       const res = await fetch('/api/aeo-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({
+          url,
+          ...protection.spamPayload(),
+          website: protection.honeypot,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Scan failed. Try again.')
       setTopline(data)
       setPhase('topline')
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Scan failed. Try again.')
       setPhase('input')
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
     } finally {
       if (stepTimer.current) clearInterval(stepTimer.current)
     }
@@ -314,21 +331,38 @@ export default function AeoCheckerPage() {
   async function handleLead(e: FormEvent) {
     e.preventDefault()
     if (!topline) return
+    if (!protection.canSubmit) {
+      setLeadError('Please complete the security check and try again.')
+      return
+    }
     setLeadError('')
     setLeadBusy(true)
     try {
       const res = await fetch('/api/aeo-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scanId: topline.scanId, email, name, consent, source: leadSource }),
+        body: JSON.stringify({
+          scanId: topline.scanId,
+          email,
+          name,
+          consent,
+          source: leadSource,
+          ...protection.spamPayload(),
+          website: protection.honeypot,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Something went wrong. Try again.')
       setCriteria(data.criteria)
       setEmailSent(data.emailSent)
       setPhase('breakdown')
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     } catch (err) {
       setLeadError(err instanceof Error ? err.message : 'Something went wrong. Try again.')
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
     } finally {
       setLeadBusy(false)
     }
@@ -336,6 +370,10 @@ export default function AeoCheckerPage() {
 
   async function handleCheckout(product: 'report' | 'sitemap') {
     if (!topline) return
+    if (!protection.canSubmit) {
+      setError('Please complete the security check and try again.')
+      return
+    }
     setCheckoutBusy(product)
     setError('')
     try {
@@ -351,6 +389,8 @@ export default function AeoCheckerPage() {
             .split(/[,\s]+/)
             .map((s) => s.trim())
             .filter(Boolean),
+          ...protection.spamPayload(),
+          website: protection.honeypot,
         }),
       })
       const data = await res.json()
@@ -395,7 +435,7 @@ export default function AeoCheckerPage() {
 
       {phase === 'input' && (
         <>
-          <form onSubmit={handleScan} className="mt-10 border-t border-ink/15 pt-10">
+          <form onSubmit={handleScan} className="relative mt-10 border-t border-ink/15 pt-10">
             <div className="flex flex-col gap-3 sm:flex-row">
               <input
                 type="text"
@@ -405,10 +445,18 @@ export default function AeoCheckerPage() {
                 required
                 className={inputClass}
               />
-              <button type="submit" className={btnPrimary}>
+              <button type="submit" disabled={!protection.canSubmit} className={btnPrimary}>
                 Check my score
               </button>
             </div>
+            <FormProtectionFields
+              turnstileSiteKey={protection.turnstileSiteKey}
+              onTurnstileSuccess={protection.setTurnstileToken}
+              onTurnstileExpire={protection.resetTurnstile}
+              turnstileResetKey={turnstileKey}
+              honeypotValue={protection.honeypot}
+              onHoneypotChange={protection.setHoneypot}
+            />
             {error && <p className="mt-3 font-mono text-sm text-oxblood">{error}</p>}
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
               Free · ~20 seconds · No signup for your topline score
@@ -531,10 +579,18 @@ export default function AeoCheckerPage() {
                       required
                       className={`${inputSm} flex-1`}
                     />
-                    <button type="submit" disabled={leadBusy} className={btnPrimary}>
+                    <button type="submit" disabled={leadBusy || !protection.canSubmit} className={btnPrimary}>
                       {leadBusy ? 'Sending…' : 'Send my report'}
                     </button>
                   </div>
+                  <FormProtectionFields
+                    turnstileSiteKey={protection.turnstileSiteKey}
+                    onTurnstileSuccess={protection.setTurnstileToken}
+                    onTurnstileExpire={protection.resetTurnstile}
+                    turnstileResetKey={turnstileKey}
+                    honeypotValue={protection.honeypot}
+                    onHoneypotChange={protection.setHoneypot}
+                  />
                   <label className="mt-4 flex items-start gap-2.5 text-sm text-ink-700">
                     <input
                       type="checkbox"
@@ -651,6 +707,15 @@ export default function AeoCheckerPage() {
                     </p>
                   </div>
 
+                  <FormProtectionFields
+                    turnstileSiteKey={protection.turnstileSiteKey}
+                    onTurnstileSuccess={protection.setTurnstileToken}
+                    onTurnstileExpire={protection.resetTurnstile}
+                    turnstileResetKey={turnstileKey}
+                    honeypotValue={protection.honeypot}
+                    onHoneypotChange={protection.setHoneypot}
+                  />
+
                   {/* $10 vs $49 — value comparison */}
                   <div className="mt-6 grid items-stretch gap-4 lg:grid-cols-2">
                     <PlanCard
@@ -667,7 +732,7 @@ export default function AeoCheckerPage() {
                       ]}
                       cta={checkoutBusy === 'report' ? 'Starting checkout…' : `Run it on my site for ${PRICE}`}
                       onClick={() => handleCheckout('report')}
-                      disabled={checkoutBusy !== ''}
+                      disabled={checkoutBusy !== '' || !protection.canSubmit}
                       highlight
                     />
                     <PlanCard
@@ -685,7 +750,7 @@ export default function AeoCheckerPage() {
                       ]}
                       cta={checkoutBusy === 'sitemap' ? 'Starting checkout…' : `Audit my whole site for ${SITEMAP_PRICE}`}
                       onClick={() => handleCheckout('sitemap')}
-                      disabled={checkoutBusy !== ''}
+                      disabled={checkoutBusy !== '' || !protection.canSubmit}
                     />
                   </div>
                   {error && <p className="mt-3 text-center text-sm text-oxblood">{error}</p>}

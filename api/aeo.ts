@@ -7,6 +7,7 @@ import {
   handleSitemapUnlock,
   handleUnlock,
 } from './lib/aeo/handlers.js'
+import { handleContact, handleFormToken, handleGrowthCredit } from './lib/forms/handlers.js'
 import { handleGuideAccess, handleGuideLead } from '../server/cheatsheet/handlers.js'
 
 /** Map legacy /api/aeo-* paths and ?action= query to a single handler key. */
@@ -24,6 +25,9 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/aeo-sitemap-unlock': 'sitemap-unlock',
     '/api/guide-lead': 'guide-lead',
     '/api/guide-access': 'guide-access',
+    '/api/form-token': 'form-token',
+    '/api/contact': 'contact',
+    '/api/growth-credit': 'growth-credit',
   }
   return legacy[path] ?? null
 }
@@ -31,11 +35,20 @@ function resolveAction(req: VercelRequest): string | null {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const action = resolveAction(req)
 
+  if (action === 'form-token' && req.method === 'GET') {
+    return handleFormToken(req, res)
+  }
   if (action === 'guide-access' && req.method === 'GET') {
     return handleGuideAccess(req, res)
   }
   if (action === 'guide-lead' && req.method === 'POST') {
     return handleGuideLead(req, res)
+  }
+  if (action === 'contact' && req.method === 'POST') {
+    return handleContact(req, res)
+  }
+  if (action === 'growth-credit' && req.method === 'POST') {
+    return handleGrowthCredit(req, res)
   }
 
   if (req.method !== 'POST') {

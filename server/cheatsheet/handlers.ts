@@ -1,12 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { rateLimit, clientIp } from '../../api/lib/aeo/rate-limit.js'
 import { createAdminClient } from '../../api/lib/aeo/supabase-admin.js'
+import { enforceSpamGuards } from '../../api/lib/spam/validate.js'
 import { sendDeliveryEmail } from './email.js'
 import { loadGuide, splitAtIndustries } from './guide.js'
 import { appendChatGptLeadToSheet } from './sheets.js'
 import { mintToken, verifyToken } from './token.js'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const VERTICALS = [
   'beauty',
   'ecommerce',
@@ -31,48 +30,46 @@ function appOrigin(): string {
 }
 
 export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
-  const pseudoReq = new Request('http://localhost', {
-    headers: Object.fromEntries(
-      Object.entries(req.headers).map(([k, v]) => [k, Array.isArray(v) ? v.join(', ') : String(v ?? '')]),
-    ),
-  })
-  const ip = clientIp(pseudoReq)
-
-  if (!rateLimit(`guide-lead:${ip}`, 10, 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many requests. Try again in a bit.' })
-  }
-
   const body = (req.body ?? {}) as {
     email?: unknown
     firstName?: unknown
     vertical?: unknown
     consent?: unknown
     company?: unknown
+    formToken?: unknown
+    turnstileToken?: unknown
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+    bucket: 'guide-lead',
+    maxPerIp: 10,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'company',
+    email,
+    silentHoneypotResponse: { ok: true, guideUrl: '/chatgpt-ads-cheat-sheet', emailSent: false },
+  })
+  if (!allowed) return
+
   const firstName = typeof body.firstName === 'string' ? body.firstName.trim().slice(0, 80) : ''
   const vertical =
     typeof body.vertical === 'string' && VERTICALS.includes(body.vertical) ? body.vertical : null
   const consent = body.consent === true
-  const honeypot = typeof body.company === 'string' ? body.company.trim() : ''
 
-  if (honeypot) {
-    return res.status(200).json({ ok: true, guideUrl: '/chatgpt-ads-cheat-sheet', emailSent: false })
-  }
-
-  if (!EMAIL_RE.test(email)) {
-    return res.status(400).json({ error: 'Please enter a valid email.' })
-  }
   if (!consent) {
     return res.status(400).json({
       error:
         'Please tick the consent box so we can send the cheat sheet (Canadian anti-spam law requires it).',
     })
   }
-  if (!rateLimit(`guide-email:${email}`, 5, 24 * 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'This email has requested the guide a few times today already.' })
+  if (!vertical) {
+    return res.status(400).json({ error: 'Please select your industry.' })
   }
+
+  const ip =
+    typeof req.headers['x-forwarded-for'] === 'string'
+      ? req.headers['x-forwarded-for'].split(',')[0].trim()
+      : 'unknown'
 
   const token = mintToken()
   const guideUrl = `/chatgpt-ads-cheat-sheet/guide?k=${encodeURIComponent(token)}`

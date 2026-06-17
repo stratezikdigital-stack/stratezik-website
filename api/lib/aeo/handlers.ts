@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './scan.js'
-import { rateLimit, clientIp } from './rate-limit.js'
+import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
 import { createAdminClient } from './supabase-admin.js'
 import { sendReportEmail } from './email.js'
 import { appendAeoLeadToSheet } from './sheets.js'
@@ -14,7 +14,6 @@ import {
 import { runDeepScan, type DeepScanResult } from './deep-scan.js'
 import { runSitemapAudit, type SitemapAudit } from './sitemap.js'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const CACHE_HOURS = 24
 const MAX_SITEMAP_PAGES = 25
 
@@ -45,12 +44,16 @@ function topline(scan: AeoScanResult, scanId: string) {
 }
 
 export async function handleCheck(req: VercelRequest, res: VercelResponse) {
-  const ip = clientIp(req)
-  if (!rateLimit(`scan:${ip}`, 5, 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many scans from this address. Try again in an hour.' })
-  }
+  const body = (req.body ?? {}) as Record<string, unknown>
+  const allowed = await enforceSpamGuards(req, res, body, {
+    bucket: 'aeo-scan',
+    maxPerIp: 5,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+  })
+  if (!allowed) return
 
-  const url = (req.body as { url?: unknown } | undefined)?.url
+  const url = body.url
   const domain = typeof url === 'string' ? normaliseDomain(url) : null
   if (!domain) {
     return res.status(400).json({
@@ -100,26 +103,33 @@ export async function handleCheck(req: VercelRequest, res: VercelResponse) {
 }
 
 export async function handleLead(req: VercelRequest, res: VercelResponse) {
-  const ip = clientIp(req)
-  if (!rateLimit(`lead:${ip}`, 10, 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many requests. Try again later.' })
-  }
-
   const body = (req.body ?? {}) as {
     scanId?: unknown
     email?: unknown
     name?: unknown
     consent?: unknown
     source?: unknown
+    website?: unknown
+    formToken?: unknown
+    turnstileToken?: unknown
   }
 
-  const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+    bucket: 'aeo-lead',
+    maxPerIp: 10,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+    email,
+  })
+  if (!allowed) return
+
+  const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : undefined
   const consent = body.consent === true
   const source = typeof body.source === 'string' ? body.source.trim().slice(0, 120) : null
 
-  if (!scanId || !EMAIL_RE.test(email)) {
+  if (!scanId) {
     return res.status(400).json({ error: 'A valid email is required.' })
   }
   if (!consent) {
@@ -127,9 +137,6 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
       error:
         'Please confirm you agree to receive your report and related commercial messages from Stratezik (CASL).',
     })
-  }
-  if (!rateLimit(`lead-email:${email}`, 5, 24 * 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many reports requested for this email today.' })
   }
 
   let supabase
@@ -185,18 +192,26 @@ export async function handleCheckout(req: VercelRequest, res: VercelResponse) {
     return res.status(503).json({ error: 'Payments are not configured yet.' })
   }
 
-  const ip = clientIp(req)
-  if (!rateLimit(`checkout:${ip}`, 10, 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many requests. Try again later.' })
-  }
-
   const body = (req.body ?? {}) as {
     scanId?: unknown
     email?: unknown
     product?: unknown
     domain?: unknown
     competitors?: unknown
+    website?: unknown
+    formToken?: unknown
+    turnstileToken?: unknown
   }
+
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+    bucket: 'aeo-checkout',
+    maxPerIp: 10,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+    email,
+  })
+  if (!allowed) return
 
   const product: AeoProduct = body.product === 'sitemap' ? 'sitemap' : 'report'
   const competitors = Array.isArray(body.competitors)
@@ -208,7 +223,6 @@ export async function handleCheckout(req: VercelRequest, res: VercelResponse) {
         .join(',')
         .slice(0, 450)
     : ''
-  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({ error: 'A valid email is required.' })
   }
@@ -344,13 +358,17 @@ export async function handleUnlock(req: VercelRequest, res: VercelResponse) {
 }
 
 export async function handleSitemap(req: VercelRequest, res: VercelResponse) {
-  const ip = clientIp(req)
-  if (!rateLimit(`sitemap:${ip}`, 3, 60 * 60 * 1000)) {
-    return res.status(429).json({ error: 'Too many full-site audits from this address. Try again in an hour.' })
-  }
+  const body = (req.body ?? {}) as Record<string, unknown>
+  const allowed = await enforceSpamGuards(req, res, body, {
+    bucket: 'aeo-sitemap',
+    maxPerIp: 3,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+  })
+  if (!allowed) return
 
-  const body = (req.body ?? {}) as { url?: unknown }
-  const domain = typeof body.url === 'string' ? normaliseDomain(body.url) : null
+  const url = body.url
+  const domain = typeof url === 'string' ? normaliseDomain(url) : null
   if (!domain) {
     return res.status(400).json({ error: 'That doesn’t look like a valid website address.' })
   }

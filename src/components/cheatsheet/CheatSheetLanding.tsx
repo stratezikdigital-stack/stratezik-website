@@ -2,6 +2,8 @@ import { useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { FormProtectionFields } from '../spam/FormProtectionFields'
+import { useFormProtection } from '../../lib/spam/useFormProtection'
 import { CheatSheetHeader } from './CheatSheetHeader'
 
 interface Tile {
@@ -69,6 +71,8 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
   const [error, setError] = useState('')
   const [guideUrl, setGuideUrl] = useState('')
   const [emailSent, setEmailSent] = useState(false)
+  const [turnstileKey, setTurnstileKey] = useState(0)
+  const protection = useFormProtection()
 
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
@@ -79,12 +83,23 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
       setError('Please tick the consent box so we can send the cheat sheet.')
       return
     }
+    if (!protection.canSubmit) {
+      setError('Please complete the security check and try again.')
+      return
+    }
     setStatus('loading')
     try {
       const res = await fetch('/api/guide-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, firstName, vertical, consent, company }),
+        body: JSON.stringify({
+          email,
+          firstName,
+          vertical,
+          consent,
+          company,
+          ...protection.spamPayload(),
+        }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -99,9 +114,14 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
         event: 'guide_lead',
         guide: 'chatgpt-ads-cheat-sheet',
       })
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     } catch {
       setError('Network error. Try again.')
       setStatus('idle')
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
     }
   }
 
@@ -238,15 +258,14 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
               industry plays, the 30-60-90 plan — is in the full guide. Tell us where to send it.
             </p>
 
-            <input
-              type="text"
-              name="company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            <FormProtectionFields
+              turnstileSiteKey={protection.turnstileSiteKey}
+              onTurnstileSuccess={protection.setTurnstileToken}
+              onTurnstileExpire={protection.resetTurnstile}
+              turnstileResetKey={turnstileKey}
+              honeypotName="company"
+              honeypotValue={company}
+              onHoneypotChange={setCompany}
             />
 
             <div className="mt-5 flex flex-col gap-3">
@@ -303,7 +322,21 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
 
             {error && <p className="mt-4 font-mono text-sm text-oxblood">{error}</p>}
 
-            <button type="submit" disabled={status === 'loading'} className="btn-primary mt-6 w-full sm:w-auto">
+            <FormProtectionFields
+              turnstileSiteKey={protection.turnstileSiteKey}
+              onTurnstileSuccess={protection.setTurnstileToken}
+              onTurnstileExpire={protection.resetTurnstile}
+              turnstileResetKey={turnstileKey}
+              honeypotName="company"
+              honeypotValue={company}
+              onHoneypotChange={setCompany}
+            />
+
+            <button
+              type="submit"
+              disabled={status === 'loading' || !protection.canSubmit}
+              className="btn-primary mt-6 w-full sm:w-auto"
+            >
               {status === 'loading' ? 'Sending…' : 'Send me the cheat sheet'}
             </button>
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">

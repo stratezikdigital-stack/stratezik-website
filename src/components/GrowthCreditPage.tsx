@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { GROWTH_CREDIT_WEBHOOK_URL } from '../constants/growthCreditWebhook'
+import { FormProtectionFields } from './spam/FormProtectionFields'
+import { useFormProtection } from '../lib/spam/useFormProtection'
 import { GROWTH_CREDIT_FAQS } from '../growth-credit/growthCreditFaqs'
 
 const CTA_LABEL = 'Claim your credit'
@@ -67,34 +68,48 @@ export default function GrowthCreditPage() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const [turnstileKey, setTurnstileKey] = useState(0)
   const [openFaq, setOpenFaq] = useState(0)
+  const protection = useFormProtection()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!GROWTH_CREDIT_WEBHOOK_URL) {
-      alert('Lead capture is not configured yet. Email dave@stratezik.com or call 437 525 4772.')
+    if (!protection.canSubmit) {
+      setSubmitError('Please complete the security check and try again.')
       return
     }
+    setSubmitError('')
     setSubmitting(true)
     try {
-      const params = new URLSearchParams({
-        first_name: form.firstName,
-        last_name: form.lastName,
-        business: form.business,
-        email: form.email,
-        phone: form.phone,
-        business_type: form.businessType,
-        source: 'growth-credit',
+      const res = await fetch('/api/growth-credit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          ...protection.spamPayload(),
+          website: protection.honeypot,
+        }),
       })
-      await fetch(`${GROWTH_CREDIT_WEBHOOK_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
+      const data = (await res.json()) as { error?: string }
+      if (!res.ok) {
+        throw new Error(data.error || 'Submission failed')
+      }
       setSubmitted(true)
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     } catch (err) {
       console.error('[growth-credit] form error:', err)
-      alert('Sorry, something went wrong. Email dave@stratezik.com or call 437 525 4772.')
+      setSubmitError(
+        err instanceof Error ? err.message : 'Sorry, something went wrong. Email dave@stratezik.com or call 437 525 4772.',
+      )
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
     } finally {
       setSubmitting(false)
     }
@@ -299,7 +314,7 @@ export default function GrowthCreditPage() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <form onSubmit={handleSubmit} className="relative space-y-4" noValidate>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="gc-first" className="editorial-label block mb-2">
@@ -399,9 +414,18 @@ export default function GrowthCreditPage() {
                       ))}
                     </select>
                   </div>
+                  <FormProtectionFields
+                    turnstileSiteKey={protection.turnstileSiteKey}
+                    onTurnstileSuccess={protection.setTurnstileToken}
+                    onTurnstileExpire={protection.resetTurnstile}
+                    turnstileResetKey={turnstileKey}
+                    honeypotValue={protection.honeypot}
+                    onHoneypotChange={protection.setHoneypot}
+                  />
+                  {submitError && <p className="font-mono text-sm text-oxblood">{submitError}</p>}
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !protection.canSubmit}
                     className="w-full mt-2 bg-ink text-cream py-3.5 font-medium hover:bg-oxblood transition-colors disabled:opacity-60"
                   >
                     {submitting ? 'Sending…' : CTA_LABEL}

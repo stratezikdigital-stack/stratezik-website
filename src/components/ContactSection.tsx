@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { CONTACT_FORM_WEBHOOK_URL } from '../constants/contactFormWebhook'
+import { FormProtectionFields } from './spam/FormProtectionFields'
+import { useFormProtection } from '../lib/spam/useFormProtection'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
 
@@ -23,6 +24,9 @@ export default function ContactSection() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const [turnstileKey, setTurnstileKey] = useState(0)
+  const protection = useFormProtection()
 
   useEffect(() => {
     setResigned(isSubmitted)
@@ -34,21 +38,38 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!protection.canSubmit) {
+      setSubmitError('Please complete the security check and try again.')
+      return
+    }
+    setSubmitError('')
     setIsSubmitting(true)
     try {
-      const params = new URLSearchParams({
-        name: formData.name,
-        email: formData.email,
-        company: formData.company,
-        message: formData.message,
-        source: 'stratezik.com',
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          ...protection.spamPayload(),
+          fax: protection.honeypot,
+        }),
       })
-      await fetch(`${CONTACT_FORM_WEBHOOK_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
+      const data = (await res.json()) as { error?: string }
+      if (!res.ok) {
+        throw new Error(data.error || 'Submission failed')
+      }
       setIsSubmitted(true)
       setFormData({ name: '', email: '', company: '', message: '' })
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     } catch (err) {
       console.error('Form submission error:', err)
-      alert('Sorry, there was an error submitting your form. Please try again or contact us directly.')
+      setSubmitError(
+        err instanceof Error ? err.message : 'Sorry, there was an error. Try again or email dave@stratezik.com.',
+      )
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
     } finally {
       setIsSubmitting(false)
     }
@@ -145,7 +166,7 @@ export default function ContactSection() {
                   </div>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="relative space-y-5">
                   <div className="grid md:grid-cols-2 gap-5">
                     <Field
                       id="name"
@@ -184,11 +205,25 @@ export default function ContactSection() {
                     onChange={handleInputChange}
                   />
 
+                  <FormProtectionFields
+                    turnstileSiteKey={protection.turnstileSiteKey}
+                    onTurnstileSuccess={protection.setTurnstileToken}
+                    onTurnstileExpire={protection.resetTurnstile}
+                    turnstileResetKey={turnstileKey}
+                    honeypotName="fax"
+                    honeypotValue={protection.honeypot}
+                    onHoneypotChange={protection.setHoneypot}
+                  />
+
+                  {submitError && (
+                    <p className="font-mono text-sm text-oxblood">{submitError}</p>
+                  )}
+
                   <button
                     type="submit"
                     data-cursor="cta"
                     data-cursor-text="Send"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !protection.canSubmit}
                     className="w-full mt-2 inline-flex items-center justify-center gap-3 bg-ink text-cream py-5 font-medium tracking-wide hover:bg-oxblood transition-colors disabled:opacity-50"
                   >
                     {isSubmitting ? (
