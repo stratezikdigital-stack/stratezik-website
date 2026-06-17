@@ -82,7 +82,7 @@ Match the pattern of the **AEO Toronto** piece:
 2. **Early definitional block**: A bordered **aside** (or equivalent) whose `h2` is phrased like a **real search question**. Answer in tight prose; wire **named links** (Google docs, ChatGPT, Perplexity, GBP, etc.) into the definition, not a naked URL list.
 3. **H2 sections**: Titles are **specific claims or questions** (“How large is…”, “The 83% gap…”), not “Overview” / “Introduction”.
 4. **Body paragraphs**: When vendors disagree (methodology, sample bias), **say so** and tell the reader which slice matters for GTA / trades / wallet-out intent.
-5. **Internal links**: One natural CTA per section where it fits (`Link` to `/#services`, `/#contact`, blog sibling), no billboard paragraphs.
+5. **Internal links**: One natural CTA per section where it fits (`Link` to `/#services`, `/#contact`, blog sibling, **free tools**), no billboard paragraphs. When the section discusses AI visibility, schema, or answer engines, inline-link [AEO Readiness Checker](/aeo-checker?utm_source=blog-{slug}&utm_medium=inline). When it discusses ChatGPT Ads or OpenAI advertising, inline-link [ChatGPT Ads Cheat Sheet](/chatgpt-ads-cheat-sheet?utm_source=blog-{slug}&utm_medium=inline). See **`stratezik-seo-aeo` §9** for full rules and UTM patterns.
 
 **Sources**: Prefer primary studies, Google Search Central, Schema.org, or obviously authoritative vendors; linked **on the anchor phrase**, not `(source)` dumps.
 
@@ -132,4 +132,5 @@ Match the pattern of the **Insectica** post:
 - [ ] Opens with something **specific**, not a generic industry preamble.
 - [ ] Every bold metric or dramatic claim traceable to **source or engagement fact**.
 - [ ] Archetype matches: pillar (aside + contested stats + internal links) vs case study (snapshot + figures + phased `·` headings).
+- [ ] **Free tools**: topic-relevant inline links to `/aeo-checker` and/or `/chatgpt-ads-cheat-sheet` (not footer-only); UTMs on external-facing links.
 - [ ] If committing to repo: **`npm run build` run by agent**; sitemap and `llms-full.txt` updated (see **`stratezik-seo-master`**).

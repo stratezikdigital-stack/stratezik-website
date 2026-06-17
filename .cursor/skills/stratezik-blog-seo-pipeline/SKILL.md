@@ -52,7 +52,7 @@ When the user asks to **write, publish, or ship** a blog post in this repo, the 
    Draft or revise copy using the SEO brief as **constraints**. Apply archetype (pillar vs case study), voice bans, punctuation rules, and JSX layout habits. Do **not** discard SEO decisions without fixing a concrete conflict (e.g., misleading title).
 
 4. **`stratezik-seo-aeo`** again (short pass)  
-   Re-check: intent still clear in title and opening, headings map to outline, internal links present, FAQ/schema matches visible copy, AEO “single paragraph citation” test, no accidental noindex/canonical issues called out for implementers.
+   Re-check: intent still clear in title and opening, headings map to outline, internal links present, **free tools inline links** placed per §9, FAQ/schema matches visible copy, AEO “single paragraph citation” test, no accidental noindex/canonical issues called out for implementers.
 
 5. **`stratezik-blog-writing`** final skim  
    Tighten rhythm; ensure no banned punctuation or generic AI cadence crept in during SEO edits.
@@ -90,6 +90,7 @@ Keep this compact in chat or a scratch note:
 - Title + meta description suggestion  
 - H2 list with one-line “job” per section  
 - Links: internal URLs + suggested anchor phrasing (include ≥1 local service or GTA blog sibling when tier B/C feeds local pipeline)  
+- **Free tools links**: which of `/aeo-checker`, `/chatgpt-ads-cheat-sheet`, `/growth-credit` deserve **inline** anchors in which sections + UTM `utm_source` / `utm_medium=inline` (see **`stratezik-seo-aeo` §9**)  
 - Schema: types and which copy blocks they mirror  
 - Stats/facts to cite with source URLs  
 - AEO: required definitional sentence or aside question (scoped to geo when tier A/B)

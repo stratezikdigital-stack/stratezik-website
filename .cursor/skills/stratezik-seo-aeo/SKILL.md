@@ -8,7 +8,8 @@ description: >-
   Profile, internal linking, Core Web Vitals, reviewing user-supplied blog
   drafts before publish, or any stratezik.com property where organic discovery
   and answer surfaces matter. For implementation (prerender, registry, sitemap,
-  llms.txt), use stratezik-seo-master. When Search Console MCP data should drive
+  llms.txt), use stratezik-seo-master. Promote free tools (/aeo-checker,
+  /chatgpt-ads-cheat-sheet, /free-tools) via inline contextual links per §9.
   the brief, pair with stratezik-gsc-intelligence first. For full posts with
   editorial voice, use stratezik-blog-seo-pipeline so briefs or audits hand off
   to stratezik-blog-writing.
@@ -94,7 +95,7 @@ Use as an audit spine; tailor depth to the stack (Vercel-hosted SPA with **build
 - [ ] **Intro paragraph**: states what the page solves and for whom (humans and extractors).
 - [ ] **Body**: satisfies intent comprehensively for the query class; updates when facts or regulations change.
 - [ ] **Images**: descriptive filenames and alt where helpful; compression sane.
-- [ ] **Internal links**: descriptive anchors; hub-and-spoke between related services, proof (case studies), and conversions (contact).
+- [ ] **Internal links**: descriptive anchors; hub-and-spoke between related services, proof (case studies), conversions (contact), and **free tools** (see §9).
 
 ### Duplicate and thin content
 
@@ -106,6 +107,7 @@ Use as an audit spine; tailor depth to the stack (Vercel-hosted SPA with **build
 ## 3. Structured data and rich results
 
 - Pick types that **truthfully match** the page: `Organization`, `LocalBusiness` where applicable, `WebSite`, `BreadcrumbList`, `FAQPage`, `Article`, `Service`, `Product` only when honest.
+- **`Dataset`**: when declaring benchmark or research data (e.g. Toronto AEO benchmark on `/aeo-checker`), include **`license`** (URL), **`isAccessibleForFree`**, **`datePublished`**, and **`creator`**. GSC flags missing `license` as non-critical. Default for Stratezik-published public benchmarks: `https://creativecommons.org/licenses/by/4.0/`.
 - **JSON-LD** preferred for consistency with current examples in Search Central.
 - Validate with **Rich Results Test** and monitor **GSC enhancements**.
 - Keep FAQ answers aligned with visible content; avoid contradictory schema.
@@ -169,7 +171,7 @@ Always separate **technical indexation** issues from **relevance** issues before
 
 - [ ] Primary intent stated in title, H1, and opening graf.
 - [ ] Unique value versus existing SERP (why this page exists).
-- [ ] Internal links to next steps (service, case proof, contact).
+- [ ] Internal links to next steps (service, case proof, contact, **free tools** where editorially fit).
 - [ ] Schema matches visible content.
 - [ ] No conflicting canonical or noindex surprises.
 - [ ] Metrics or claims sourced or qualified (avoid stale stats).
@@ -224,7 +226,7 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 - [ ] **Keywords (`keywords[]`)**: 5–8 phrases reflecting content and queries; include 1–2 geo phrases when Tier A or B (or Tier C with local-application section); no stuffing in body.
 - [ ] **Heading outline**: `h2`/`h3` cover SERP sub-questions; no skipped levels inside article body.
 - [ ] **Intro**: answers who/for what in two to three sentences (humans + extractors).
-- [ ] **Internal links**: mesh to services, portfolio/case proof, contact, or sibling posts with descriptive anchors.
+- [ ] **Internal links**: mesh to services, portfolio/case proof, contact, sibling posts, and **free tools** with descriptive inline anchors (see §9).
 - [ ] **Images**: `alt` where they carry information; compress large assets.
 - [ ] **Outbound citations**: stats and claims tied to linked sources where applicable.
 
@@ -248,6 +250,37 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 - [ ] **Distribution**: ethical amplification (newsletter, LinkedIn, partners): supports discovery and mentions, not a prerequisite for going live.
 
 After this audit, **`stratezik-blog-writing`** merges SEO-required additions while preserving voice and punctuation rules unless an SEO requirement explicitly overrides (rare).
+
+---
+
+## 9. Free Tools distribution (internal linking)
+
+**Hub:** `/free-tools` — canonical index of lead magnets. Registry: `FREE_TOOLS_SEO` in `pageSeoRegistry.ts`; cards in `src/free-tools/tools.ts`.
+
+**Priority tools to link in prose** (inline contextual hyperlinks, not footer dumps):
+
+| Tool | Path | Link when the copy discusses… |
+|------|------|-------------------------------|
+| **AEO Readiness Checker** | `/aeo-checker` | AI visibility, answer engines, schema, llms.txt, crawlability, ChatGPT/Perplexity citations, Toronto startup audit benchmark |
+| **ChatGPT Ads Cheat Sheet** | `/chatgpt-ads-cheat-sheet` | ChatGPT Ads, context hints, early-window paid social, conversational landing pages, OpenAI advertising |
+| **$3,000 Growth Credit** | `/growth-credit` | Toronto-area SMB offers, local search + paid + delivery onboarding credit |
+| **Hub (optional)** | `/free-tools` | “our free tools,” tool roundups, nav/footer — not every mention |
+
+### Inline linking rules
+
+- **Prefer in-sentence anchors** inside the paragraph where the tool is relevant: e.g. “Run the [20-Point AEO Readiness Test](/aeo-checker?utm_source=blog-{slug}&utm_medium=inline)” — not a standalone CTA block unless the section is explicitly a promo.
+- **Minimum on publish**: every new **pillar** or **refresh** that touches AEO/AI search should include ≥1 inline link to `/aeo-checker`; every post on **ChatGPT Ads** should include ≥1 inline link to `/chatgpt-ads-cheat-sheet`. Cross-link the other tool when both topics appear in one article.
+- **UTM pattern**: `?utm_source={page-slug}&utm_medium=inline` (blog), `utm_medium=card` (hub cards), `utm_medium=cta` (nav/footer). Keep slugs truthful (`blog-chatgpt-ads`, `services-seo-aeo`, `chatgpt-cheat-sheet-guide`).
+- **Reusable components** (use before inventing new promos): `BlogCheatSheetMidPromo`, `AeoCheckerCta`, `BlogDiscoveryHub` sibling links.
+- **Do not** keyword-stuff tool names; one natural link per section is enough.
+- **Gated guides** (`/chatgpt-ads-cheat-sheet/guide`) stay `noindex` — link the **landing** URL in indexable content.
+
+### Lead-magnet pages (SEO/AEO notes)
+
+- Immersive funnels hide site nav/footer/cookie/loader (`App.tsx` cheat-sheet routes).
+- Landing = indexable + full registry/JSON-LD/FAQ/sitemap; gated guide = `noindex, nofollow`.
+- Lead capture: Supabase (`guide_leads`) + optional Google Sheets webhook per tool (`GOOGLE_*_WEBHOOK_URL`); see `GOOGLE_SHEETS_SETUP.md`.
+- PDF = browser print (`window.print()` + `.no-print` chrome); no hosted PDF file required.
 
 ---
 

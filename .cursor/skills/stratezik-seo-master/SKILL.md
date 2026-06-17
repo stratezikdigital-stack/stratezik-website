@@ -33,8 +33,17 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Organization entity | `src/seo/organization.ts` | Shared publisher node: `sameAs`, `knowsAbout`, `foundingDate` |
 | Author entities | `src/seo/authors.ts` + `src/components/AuthorPage.tsx` | Person + ProfilePage schema, `/authors/{slug}` pages |
 | AEO files | `public/llms.txt`, generated `llms-full.txt`, `public/llm-context.json` | Machine-readable site index + structured brand facts |
+| Free tools hub | `src/free-tools/tools.ts`, `src/components/FreeToolsPage.tsx`, `FREE_TOOLS_SEO` | Lead-magnet index; add new tools to `FREE_TOOLS[]` + registry |
+| Lead magnets | `src/components/cheatsheet/*`, `server/cheatsheet/*`, `content/*.md` | Immersive landing + gated guide; API via `api/aeo.ts` actions `guide-lead` / `guide-access` |
+| Sheets webhooks | `google-apps-script-*.js`, env `GOOGLE_*_WEBHOOK_URL` | Per-tool Apps Script → spreadsheet tab; see `GOOGLE_SHEETS_SETUP.md` |
 
 **Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts only need `posts.ts` — registry maps them automatically.
+
+**Rule (free tools):** New lead magnets get a dedicated landing route, registry entry, `FREE_TOOLS[]` card, inline-link guidance in **`stratezik-seo-aeo` §9**, and (if email-gated) Supabase table + optional Sheets script. Nav points to `/free-tools`, not individual tools.
+
+**Rule (Vercel Hobby):** Max **12** serverless functions. Never add standalone files under `api/lib/` as routes — helpers live in `server/` (e.g. `server/cheatsheet/`). Fold new API actions into `api/aeo.ts` with rewrites in `vercel.json`; verify function count after `vercel build --prod`.
+
+**Rule (immersive funnels):** Routes under `/chatgpt-ads-cheat-sheet` (and future similar) skip site `Navbar`/`Footer`/cookie/loader in `App.tsx`. Use unified brand lockup (`/branding/stratezik-lockup.png`), shared `CheatSheetHeader`.
 
 **Rule (services):** Keep service *metadata* (`services.ts`) free of Vite `?raw` imports — `postbuild-seo.ts` imports the registry chain under Node/tsx, which cannot resolve `*.md?raw`. Raw markdown bodies live in `serviceContent.ts` (browser-only, imported by `ServicePage`). Never give the markdown renderer a link to a route that is not in `serviceRoutePaths` / the registry; it strips unresolved internal links to plain text to avoid broken links / soft 404s.
 
@@ -56,6 +65,8 @@ SEO release gate:
 - [ ] FAQ visible copy matches postFaqs.ts / faqEntities
 - [ ] shareImagePath set; blog-og-* images are 1200×630
 - [ ] Internal links from ≥1 existing post (when editorially fit)
+- [ ] Free tools: ≥1 inline contextual link to `/aeo-checker` and/or `/chatgpt-ads-cheat-sheet` when topic matches (`stratezik-seo-aeo` §9)
+- [ ] `Dataset` schema includes `license` URL when used (AEO benchmark)
 ```
 
 ## Adding a blog post
@@ -69,9 +80,24 @@ SEO release gate:
 
 ## Adding a non-blog page
 
-1. Add React route in `App.tsx`.
+1. Add React route in `App.tsx` (+ `PrerenderApp.tsx` if prerendered).
 2. Add `RouteSeoConfig` in `pageSeoRegistry.ts` with full meta + jsonLd.
-3. Build and curl-verify as above.
+3. If lead magnet: add to `src/free-tools/tools.ts`, wire lead API + Sheets if needed, add `vercel.json` headers (gated routes `noindex`).
+4. Build and curl-verify as above.
+
+## Adding a lead magnet (checklist)
+
+```
+Lead magnet release gate:
+- [ ] Landing route indexable; gated/token URL noindex (vercel.json headers + registry robots)
+- [ ] FREE_TOOLS[] card + breadcrumb parent → /free-tools where applicable
+- [ ] JSON-LD: WebPage + FAQPage (+ DigitalDocument/HowTo if honest)
+- [ ] Inline promo component or ≥1 sibling blog link with utm_medium=inline
+- [ ] API: single aeo.ts action (not new api/*.ts file); helpers in server/
+- [ ] Supabase migration SQL if storing leads; Sheets script + Vercel env if sheet sync
+- [ ] Immersive chrome: no site nav/footer on funnel routes
+- [ ] npm run build; function count ≤12 on Hobby
+```
 
 ## Adding a service page
 
@@ -166,6 +192,9 @@ curl -sS "https://www.stratezik.com/llm-context.json" | head
 | FAQ schema mismatch | Sync `postFaqs.ts` with on-page FAQ |
 | Broken diagram on blog | Asset path must be `/illustrations/...` not `/blog/...` |
 | Duplicate FAQ on wrong URL | Do not inject home FAQ outside `/`; use registry only |
+| Vercel deploy fails: 12 functions | Move `api/lib/*` helpers to `server/`; merge endpoints into `api/aeo.ts` |
+| GSC Dataset: missing license | Add `license` URL to Dataset node in JSON-LD builder |
+| Logo misaligned on cheat sheet | Use `/branding/stratezik-lockup.png`, not favicon + wordmark stitch |
 
 ## Pairing
 
