@@ -10,9 +10,10 @@ description: >-
   and answer surfaces matter. For implementation (prerender, registry, sitemap,
   llms.txt), use stratezik-seo-master. Promote free tools (/aeo-checker,
   /chatgpt-ads-cheat-sheet, /free-tools) via inline contextual links per §9.
-  the brief, pair with stratezik-gsc-intelligence first. For full posts with
-  editorial voice, use stratezik-blog-seo-pipeline so briefs or audits hand off
-  to stratezik-blog-writing.
+  When Search Console MCP data should drive the brief, pair with
+  stratezik-gsc-intelligence first. For full posts with editorial voice, use
+  stratezik-blog-seo-pipeline so briefs or audits hand off to
+  stratezik-blog-writing.
 ---
 
 # Stratezik SEO and AEO playbook
