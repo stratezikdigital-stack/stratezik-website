@@ -3,7 +3,6 @@ import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
-import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { gtaAgencyTriggersScenariosFaq } from './postFaqs'
 
 const faq = gtaAgencyTriggersScenariosFaq
@@ -286,8 +285,6 @@ export default function GtaAgencyTriggersScenariosArticle() {
         Or use our <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>
         .
       </p>
-
-      <BlogDiscoveryHub />
 
       <BlogAuthorSignoff />
 

@@ -2,7 +2,6 @@ import { BlogAuthorSignoff } from './BlogAuthorSignoff'
 import { BlogStratezikContactLink } from './BlogStratezikContactLink'
 import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import { Link } from 'react-router-dom'
-import { BlogDiscoveryHub } from './BlogDiscoveryHub'
 import { scarboroughAgencyTriggersFaq } from './postFaqs'
 
 const faq = scarboroughAgencyTriggersFaq
@@ -227,8 +226,6 @@ export default function ScarboroughAgencyTriggersArticle() {
         Or use our <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">contact form</BlogStratezikContactLink>
         .
       </p>
-
-      <BlogDiscoveryHub />
 
       <BlogAuthorSignoff />
 

@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AuthorHeadshot } from '../blog/AuthorHeadshot'
+import { BlogDiscoveryHub } from '../blog/BlogDiscoveryHub'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
 import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
@@ -73,9 +74,10 @@ const BlogPostPage = () => {
         </div>
 
         <footer className="max-w-[720px] mx-auto mt-16 pt-10 border-t border-ink/10">
+          <BlogDiscoveryHub excludeSlug={post.slug} heading="More from the Stratezik blog" />
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink"
+            className="mt-10 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood hover:text-ink"
           >
             &larr; All posts
           </Link>
