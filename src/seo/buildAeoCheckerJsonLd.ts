@@ -119,6 +119,9 @@ export function buildAeoCheckerJsonLd() {
       url: `${SITE_ORIGIN}/toronto-startup-website-audit-2026`,
       creator: organizationNode,
       variableMeasured: 'AEO readiness score (0-20)',
+      datePublished: '2026-06-01',
+      isAccessibleForFree: true,
+      license: 'https://creativecommons.org/licenses/by/4.0/',
     },
     buildAeoCheckerBreadcrumbJsonLd(),
     {
