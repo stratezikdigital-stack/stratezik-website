@@ -9,7 +9,7 @@
 - [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](https://www.stratezik.com/careers): Toronto team hiring
 
-## Free tools & offers (4)
+## Free tools & offers (5)
 
 ### AEO Readiness Checker: Free 20-Point Website Test
 - URL: https://www.stratezik.com/aeo-checker
@@ -25,6 +25,11 @@
 - URL: https://www.stratezik.com/chatgpt-ads-cheat-sheet
 - Summary: Free ChatGPT Ads cheat sheet from a Toronto agency running the channel. Context hints, bid-floor testing, ~10× cheaper clicks vs Google Search, CTR plays, landing pages, and tracking — sourced from practitioners spending real budgets.
 - Updated: 2026-06-12
+
+### Free Marketing Tools | AEO Checker & ChatGPT Ads Playbook
+- URL: https://www.stratezik.com/free-tools
+- Summary: Free marketing tools from Stratezik Toronto: 20-point AEO Readiness Checker, ChatGPT Ads Cheat Sheet, and $3,000 Growth Credit for qualifying Canadian businesses.
+- Updated: 2026-06-16
 
 ### $3,000 Growth Credit for Canadian SMBs
 - URL: https://www.stratezik.com/growth-credit

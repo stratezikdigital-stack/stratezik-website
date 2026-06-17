@@ -6,6 +6,7 @@ import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { buildAeoCheckerJsonLd } from './buildAeoCheckerJsonLd'
 import { buildCheatSheetJsonLd, buildCheatSheetGuideJsonLd } from './buildCheatSheetJsonLd'
+import { buildFreeToolsJsonLd } from './buildFreeToolsJsonLd'
 import { buildGrowthCreditJsonLd } from './buildGrowthCreditJsonLd'
 import { serviceChildren, services, servicesHub } from '../services/services'
 import { buildServiceChildJsonLd, buildServiceJsonLd, buildServicesHubJsonLd } from '../services/buildServiceJsonLd'
@@ -263,6 +264,32 @@ export const CHATGPT_CHEAT_SHEET_GUIDE_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+export const FREE_TOOLS_SEO: RouteSeoConfig = {
+  path: '/free-tools',
+  title: 'Free Marketing Tools | AEO Checker & ChatGPT Ads Playbook | Stratezik',
+  description:
+    'Free marketing tools from Stratezik Toronto: 20-point AEO Readiness Checker, ChatGPT Ads Cheat Sheet, and $3,000 Growth Credit for qualifying Canadian businesses.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik free marketing tools hub',
+  keywords: [
+    'free marketing tools',
+    'AEO checker free',
+    'ChatGPT Ads cheat sheet',
+    'Toronto marketing tools',
+    'free SEO audit Canada',
+    'answer engine optimization test',
+    'Stratezik free tools',
+  ],
+  jsonLd: buildFreeToolsJsonLd(),
+  datePublished: '2026-06-16',
+  dateModified: '2026-06-16',
+  sitemapPriority: 0.92,
+  sitemapChangefreq: 'weekly',
+}
+
 export const GROWTH_CREDIT_SEO: RouteSeoConfig = {
   path: '/growth-credit',
   title: '$3,000 Growth Credit for Canadian SMBs | Stratezik Digital',
@@ -414,6 +441,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     TORONTO_AUDIT_SEO,
     CHATGPT_CHEAT_SHEET_SEO,
     CHATGPT_CHEAT_SHEET_GUIDE_SEO,
+    FREE_TOOLS_SEO,
     GROWTH_CREDIT_SEO,
     SERVICES_HUB_SEO,
     ...services.map(servicePageSeo),

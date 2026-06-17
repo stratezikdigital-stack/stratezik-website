@@ -19,6 +19,7 @@ import AuthorPage from './components/AuthorPage'
 import AeoCheckerPage from './components/AeoCheckerPage'
 import TorontoStartupAuditPage from './components/TorontoStartupAuditPage'
 import GrowthCreditPage from './components/GrowthCreditPage'
+import FreeToolsPage from './components/FreeToolsPage'
 import PrivacyPage from './components/PrivacyPage'
 import { GrowthCreditHomeBanner } from './components/GrowthCreditHomeBanner'
 import ServicePage from './components/ServicePage'
@@ -128,6 +129,7 @@ function AppShell() {
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
+              <Route path="/free-tools" element={<FreeToolsPage />} />
               <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
               <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
               <Route path="/services" element={<ServicePage />} />

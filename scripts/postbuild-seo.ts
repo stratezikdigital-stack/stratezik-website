@@ -132,7 +132,7 @@ async function main(): Promise<void> {
 
   const blogPosts = configs.filter((c) => c.path.startsWith('/blog/') && c.path !== '/blog')
   const toolPages = configs.filter((c) =>
-    ['/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet'].includes(c.path),
+    ['/aeo-checker', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet', '/free-tools'].includes(c.path),
   )
   const llmsFull = `# Stratezik — extended LLM index
 

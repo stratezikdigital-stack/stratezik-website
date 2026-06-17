@@ -10,6 +10,7 @@ import CareerPage from '../components/CareerPage'
 import AeoCheckerPage from '../components/AeoCheckerPage'
 import TorontoStartupAuditPage from '../components/TorontoStartupAuditPage'
 import GrowthCreditPage from '../components/GrowthCreditPage'
+import FreeToolsPage from '../components/FreeToolsPage'
 import CheatSheetLandingPage from '../components/CheatSheetLandingPage'
 import CheatSheetGuidePage from '../components/CheatSheetGuidePage'
 import PrivacyPage from '../components/PrivacyPage'
@@ -36,6 +37,7 @@ export function PrerenderApp({ pathname, bodies }: PrerenderAppProps) {
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
+              <Route path="/free-tools" element={<FreeToolsPage />} />
               <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
               <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
               <Route path="/services" element={<ServicePageView />} />

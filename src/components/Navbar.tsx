@@ -158,12 +158,12 @@ const Navbar = () => {
                 Blog
               </Link>
               <Link
-                to="/aeo-checker?utm_source=nav&utm_medium=cta"
+                to="/free-tools?utm_source=nav&utm_medium=cta"
                 data-cursor="cta"
-                data-cursor-text="Score"
+                data-cursor-text="Tools"
                 className="font-display text-[1.05rem] tracking-tight text-oxblood hover:text-ink transition-colors"
               >
-                Free AEO score
+                Free Tools
               </Link>
               <Link
                 to="/careers"
@@ -229,11 +229,11 @@ const Navbar = () => {
                   Blog
                 </Link>
                 <Link
-                  to="/aeo-checker?utm_source=nav&utm_medium=cta"
+                  to="/free-tools?utm_source=nav&utm_medium=cta"
                   className="block px-2 py-2 font-display text-lg text-oxblood hover:text-ink"
                   onClick={() => setIsOpen(false)}
                 >
-                  Free AEO score
+                  Free Tools
                 </Link>
                 <Link
                   to="/careers"

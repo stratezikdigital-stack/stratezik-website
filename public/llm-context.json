@@ -62,7 +62,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-06-16",
+  "generated": "2026-06-17",
   "articles": [
     {
       "title": "The Shift From Old SEO to Agent-Ready SEO in 2026",
@@ -271,6 +271,12 @@
       "name": "ChatGPT Ads Cheat Sheet (2026): Free Optimization Playbook",
       "url": "https://www.stratezik.com/chatgpt-ads-cheat-sheet",
       "summary": "Free ChatGPT Ads cheat sheet from a Toronto agency running the channel. Context hints, bid-floor testing, ~10× cheaper clicks vs Google Search, CTR plays, landing pages, and tracking — sourced from practitioners spending real budgets.",
+      "type": "Research report"
+    },
+    {
+      "name": "Free Marketing Tools | AEO Checker & ChatGPT Ads Playbook",
+      "url": "https://www.stratezik.com/free-tools",
+      "summary": "Free marketing tools from Stratezik Toronto: 20-point AEO Readiness Checker, ChatGPT Ads Cheat Sheet, and $3,000 Growth Credit for qualifying Canadian businesses.",
       "type": "Research report"
     },
     {
