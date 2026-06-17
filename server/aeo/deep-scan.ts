@@ -146,7 +146,7 @@ Homepage: ${snippet}
 
 ${count} queries, one per line:`,
       temperature: 0.3,
-      maxTokens: 300,
+      maxOutputTokens: 300,
     })
     return text
       .split('\n')
@@ -166,7 +166,7 @@ async function answerAsAiEngine(query: string): Promise<string> {
         'You are an AI assistant answering a user who is researching options. Recommend specific real companies, products, or providers by name where appropriate — exactly as ChatGPT or Perplexity would. Be concrete and name names. Keep it under 150 words.',
       prompt: query,
       temperature: 0,
-      maxTokens: 400,
+      maxOutputTokens: 400,
     })
     return text
   } catch {
@@ -232,7 +232,7 @@ What they do: ${snippet.slice(0, 300)}
 
 List up to ${count} of their closest direct competitors as bare domains, one per line:`,
       temperature: 0,
-      maxTokens: 120,
+      maxOutputTokens: 120,
     })
     return text
       .split('\n')
@@ -431,7 +431,7 @@ ${baseline}
 Target page content:
 ${mainText.slice(0, 1600)}`,
       temperature: 0,
-      maxTokens: 40,
+      maxOutputTokens: 40,
     })
     const m = text.match(/level\s*([012])\s*:?\s*(.*)/i)
     if (m) {
@@ -479,7 +479,7 @@ ${snippet}
 
 Number only:`,
       temperature: 0,
-      maxTokens: 5,
+      maxOutputTokens: 5,
     })
     const m = out.match(/[012]/)
     return m ? Number(m[0]) : 'unverifiable'

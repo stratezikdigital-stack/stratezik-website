@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { createAdminClient } from '../../api/lib/aeo/supabase-admin.js'
-import { enforceSpamGuards } from '../../api/lib/spam/validate.js'
+import { createAdminClient } from '../aeo/supabase-admin.js'
+import { enforceSpamGuards } from '../spam/validate.js'
 import { sendDeliveryEmail } from './email.js'
 import { loadGuide, splitAtIndustries } from './guide.js'
 import { appendChatGptLeadToSheet } from './sheets.js'

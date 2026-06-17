@@ -6,8 +6,8 @@ import {
   handleSitemap,
   handleSitemapUnlock,
   handleUnlock,
-} from './lib/aeo/handlers.js'
-import { handleContact, handleFormToken, handleGrowthCredit } from './lib/forms/handlers.js'
+} from '../server/aeo/handlers.js'
+import { handleContact, handleFormToken, handleGrowthCredit } from '../server/forms/handlers.js'
 import { handleGuideAccess, handleGuideLead } from '../server/cheatsheet/handlers.js'
 
 /** Map legacy /api/aeo-* paths and ?action= query to a single handler key. */

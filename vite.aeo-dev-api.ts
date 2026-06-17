@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
-import { handleCheck, handleLead } from './api/lib/aeo/handlers'
-import { handleContact, handleFormToken, handleGrowthCredit } from './api/lib/forms/handlers'
+import { handleCheck, handleLead } from './server/aeo/handlers'
+import { handleContact, handleFormToken, handleGrowthCredit } from './server/forms/handlers'
 import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
 
 function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {

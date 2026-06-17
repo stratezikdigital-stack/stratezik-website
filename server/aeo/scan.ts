@@ -33,6 +33,8 @@ export interface AeoScanResult {
   groupA: GroupSplit
   groupB: GroupSplit
   companyName: string
+  /** First ~500 chars of stripped homepage copy (for deep-scan buyer queries). */
+  snippet: string
 }
 
 export const BENCHMARK = {
@@ -209,7 +211,15 @@ const LABELS: Record<string, { label: string; group: 'A' | 'B' }> = {
   pricing_schema: { label: 'Pricing transparency + Product/Service schema', group: 'B' },
 }
 
-export async function runAeoScan(domain: string): Promise<AeoScanResult> {
+export type AeoScanOptions = {
+  skipEntityAlignment?: boolean
+  skipAnswerFirst?: boolean
+}
+
+export async function runAeoScan(
+  domain: string,
+  options: AeoScanOptions = {},
+): Promise<AeoScanResult> {
   const base = `https://${domain}`
 
   const sub: Record<string, SubScore> = {
@@ -322,27 +332,31 @@ export async function runAeoScan(domain: string): Promise<AeoScanResult> {
     ev.llms_txt = 'no llms.txt found'
   }
 
-  const li = await tavilyHits(`"${companyName}" site:linkedin.com/company`)
-  const cb = await tavilyHits(`"${companyName}" site:crunchbase.com/organization`)
-  if (li.count > 0 || cb.count > 0) {
-    let score = 0
-    if (li.count > 0) score += 1.0
-    if (cb.count > 0) score += 1.0
-    if ((li.content + cb.content).toLowerCase().includes(domain.toLowerCase())) score += 0.5
-    sub.entity_alignment = score
-    ev.entity_alignment = `LinkedIn: ${li.count > 0 ? 'found' : 'not found'}, Crunchbase: ${cb.count > 0 ? 'found' : 'not found'}`
-  } else if (process.env.TAVILY_API_KEY) {
-    sub.entity_alignment = 0
-    ev.entity_alignment = `no LinkedIn company page or Crunchbase profile surfaced for "${companyName}"`
-  } else {
-    ev.entity_alignment = 'search-index check unavailable'
+  if (!options.skipEntityAlignment) {
+    const li = await tavilyHits(`"${companyName}" site:linkedin.com/company`)
+    const cb = await tavilyHits(`"${companyName}" site:crunchbase.com/organization`)
+    if (li.count > 0 || cb.count > 0) {
+      let score = 0
+      if (li.count > 0) score += 1.0
+      if (cb.count > 0) score += 1.0
+      if ((li.content + cb.content).toLowerCase().includes(domain.toLowerCase())) score += 0.5
+      sub.entity_alignment = score
+      ev.entity_alignment = `LinkedIn: ${li.count > 0 ? 'found' : 'not found'}, Crunchbase: ${cb.count > 0 ? 'found' : 'not found'}`
+    } else if (process.env.TAVILY_API_KEY) {
+      sub.entity_alignment = 0
+      ev.entity_alignment = `no LinkedIn company page or Crunchbase profile surfaced for "${companyName}"`
+    } else {
+      ev.entity_alignment = 'search-index check unavailable'
+    }
   }
 
-  sub.answer_first = await judgeAnswerFirst(snippet)
-  ev.answer_first =
-    sub.answer_first === 'unverifiable'
-      ? 'not enough visible homepage text to judge'
-      : `first ~500 chars of homepage copy scored ${sub.answer_first}/2.5`
+  if (!options.skipAnswerFirst) {
+    sub.answer_first = await judgeAnswerFirst(snippet)
+    ev.answer_first =
+      sub.answer_first === 'unverifiable'
+        ? 'not enough visible homepage text to judge'
+        : `first ~500 chars of homepage copy scored ${sub.answer_first}/2.5`
+  }
 
   const criteria: CriterionResult[] = Object.keys(LABELS).map((key) => {
     const score = sub[key]
@@ -387,5 +401,6 @@ export async function runAeoScan(domain: string): Promise<AeoScanResult> {
     groupA: splitFor('A'),
     groupB: splitFor('B'),
     companyName,
+    snippet,
   }
 }

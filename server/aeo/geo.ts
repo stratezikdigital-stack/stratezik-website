@@ -212,7 +212,7 @@ async function entityPredicateScanner(mainText: string): Promise<GeoScanner> {
           'You extract a knowledge triplet (Subject | predicate | object) that an AI would map from company copy — e.g. "Acme | automates | client prospecting for dentists". If the copy is too abstract or vague to map a concrete predicate and object, output exactly "UNCLEAR". Output only the triplet or UNCLEAR.',
         prompt: opening,
         temperature: 0,
-        maxTokens: 40,
+        maxOutputTokens: 40,
       })
       triplet = text.trim()
     } catch {

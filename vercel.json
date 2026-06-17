@@ -2,7 +2,7 @@
   "functions": {
     "api/aeo.ts": {
       "maxDuration": 150,
-      "includeFiles": "api/lib/**,server/cheatsheet/**,content/**,src/cheatsheet/**"
+      "includeFiles": "server/**,content/**,src/cheatsheet/**"
     }
   },
   "redirects": [

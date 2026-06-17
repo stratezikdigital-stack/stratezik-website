@@ -1,4 +1,4 @@
-// Frontend-only types mirroring api/lib/aeo/deep-scan.ts (UI display)
+// Frontend-only types mirroring server/aeo/deep-scan.ts (UI display)
 
 export interface VisibilityQueryResult {
   query: string
