@@ -275,6 +275,57 @@
   .cheatsheet-prose :where(ul > li):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
     @apply leading-relaxed;
   }
+
+  /* Immersive cheat sheet shell (landing + gated guide) */
+  .cheatsheet-shell {
+    @apply bg-cream;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 100% -10%, rgba(122, 31, 31, 0.06), transparent 55%),
+      linear-gradient(180deg, #faf6ec 0%, #f4ede1 32%, #f4ede1 100%);
+  }
+
+  .cheatsheet-top-rail {
+    @apply bg-ink text-center font-mono text-[10px] uppercase tracking-[0.28em] text-cream/75 py-2;
+  }
+
+  .cheatsheet-header {
+    @apply sticky top-0 z-40 border-b border-ink/10 bg-cream/90 backdrop-blur-md;
+  }
+
+  .cheatsheet-landing-hero {
+    @apply relative;
+  }
+
+  .cheatsheet-landing-hero::after {
+    content: '';
+    @apply pointer-events-none absolute -right-4 top-0 h-40 w-40 rounded-full opacity-[0.35];
+    background: radial-gradient(circle, rgba(122, 31, 31, 0.12) 0%, transparent 70%);
+  }
+
+  .cheatsheet-guide-hero {
+    @apply relative border-b border-ink/10 pb-8;
+  }
+
+  .cheatsheet-guide-hero::before {
+    content: '';
+    @apply absolute bottom-0 left-0 top-0 w-1 bg-oxblood;
+  }
+
+  .cheatsheet-reading-surface {
+    @apply md:rounded-sm md:border md:border-ink/10 md:bg-cream-50/90 md:p-8 md:shadow-[0_20px_50px_-40px_rgba(13,12,10,0.45)];
+  }
+
+  .cheatsheet-reading-surface .cheatsheet-prose :where(h1):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    @apply font-display text-[2rem] md:text-[2.35rem] leading-[1.08] tracking-[-0.03em] text-ink;
+  }
+
+  .cheatsheet-pdf-btn {
+    @apply rounded-none border border-ink/15 bg-cream-50/80 px-3 py-2 hover:border-oxblood/40 hover:bg-oxblood-50/30;
+  }
+
+  .cheatsheet-industry .card-editorial {
+    @apply transition-shadow duration-300;
+  }
 }
 
 @keyframes marquee {

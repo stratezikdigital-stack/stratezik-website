@@ -13,7 +13,7 @@ function MetricRow({ label, value }: { label: string; value: string }) {
 function Panel({ ind }: { ind: Industry }) {
   const tier = TIERS[ind.tier]
   return (
-    <div className="card-editorial">
+    <div className="card-editorial border-ink/12 bg-cream shadow-[0_12px_40px_-24px_rgba(13,12,10,0.35)]">
       <div className="flex items-center gap-3">
         <ind.icon className="h-5 w-5 text-ink-500" strokeWidth={1.6} aria-hidden />
         <h3 className="font-display text-2xl text-ink">{ind.name}</h3>
@@ -60,7 +60,7 @@ export function IndustrySelector() {
   const active = INDUSTRIES.find((i) => i.id === selected) ?? INDUSTRIES[0]
 
   return (
-    <div className="not-prose my-8 grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="not-prose cheatsheet-industry my-10 grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-8">
       <div className="flex flex-col gap-2">
         {INDUSTRIES.map((ind) => {
           const tier = TIERS[ind.tier]
@@ -71,10 +71,10 @@ export function IndustrySelector() {
               type="button"
               onClick={() => setSelected(ind.id)}
               aria-pressed={isActive}
-              className={`flex items-center gap-3 border px-4 py-3 text-left transition-colors ${
+              className={`flex items-center gap-3 border px-4 py-3.5 text-left transition-all duration-200 ${
                 isActive
-                  ? 'border-oxblood bg-oxblood-50/50'
-                  : 'border-ink/15 bg-cream-50 hover:border-ink/30'
+                  ? 'border-oxblood bg-oxblood-50/60 shadow-[inset_3px_0_0_#7a1f1f]'
+                  : 'border-ink/12 bg-cream hover:border-ink/25 hover:bg-cream-50'
               }`}
             >
               <ind.icon className="h-[18px] w-[18px] shrink-0 text-ink-500" strokeWidth={1.6} aria-hidden />

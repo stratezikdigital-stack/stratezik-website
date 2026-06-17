@@ -2,7 +2,7 @@ import { useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { CheatSheetLogo } from './CheatSheetLogo'
+import { CheatSheetHeader } from './CheatSheetHeader'
 
 interface Tile {
   stat: string
@@ -106,22 +106,22 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
   }
 
   return (
-    <main className="min-h-screen bg-cream">
-      <div className="container-custom mx-auto flex max-w-5xl items-center justify-between px-6 py-5 md:px-10">
-        <Link to="/" className="text-ink">
-          <CheatSheetLogo />
-        </Link>
-        <Link
-          to="/services/paid-search"
-          className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500 hover:text-oxblood"
-        >
-          Paid Search →
-        </Link>
-      </div>
+    <main className="cheatsheet-shell min-h-screen">
+      <CheatSheetHeader
+        maxWidth="max-w-5xl"
+        trailing={
+          <Link
+            to="/services/paid-search"
+            className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500 transition-colors hover:text-oxblood"
+          >
+            Paid Search →
+          </Link>
+        }
+      />
 
-      <section className="container-custom mx-auto max-w-5xl px-6 pt-10 md:px-10 md:pt-16">
+      <section className="cheatsheet-landing-hero container-custom mx-auto max-w-5xl px-6 pt-10 md:px-10 md:pt-14">
         <div className="editorial-label">Free cheat sheet · Toronto’s most forward ChatGPT Ads agency</div>
-        <h1 className="mt-5 max-w-4xl font-display text-display-3 leading-[1.02] tracking-[-0.035em] text-ink">
+        <h1 className="mt-5 max-w-4xl font-display text-display-3 leading-[1.02] tracking-[-0.035em] text-ink md:text-[3.5rem]">
           ChatGPT Ads is Google Ads in 2002. The window is open.
         </h1>
         <p className="lead mt-7 max-w-2xl">
