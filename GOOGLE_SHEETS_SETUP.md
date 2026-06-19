@@ -100,7 +100,7 @@ Uses a **separate** Apps Script project (`google-apps-script-growth-credit.js`).
 3. Run **`setupMarketingCreditSheet`** once (creates/headers the **Marketing Credit** tab — rename an existing empty tab to match if needed)
 4. Run **`sendTestEmail`** once and approve MailApp permissions
 5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
-6. Add to Vercel (Production, Preview, Development): `VITE_GROWTH_CREDIT_WEBHOOK_URL` = that URL
+6. Add to Vercel (Production, Preview, Development): `GOOGLE_GROWTH_CREDIT_WEBHOOK_URL` = that URL (server-only — do **not** use `VITE_` prefix)
 7. For local dev, add the same to `.env.local` in the project root
 8. Redeploy; submit a test on `/growth-credit` and confirm the row appears only on **Marketing Credit**
 

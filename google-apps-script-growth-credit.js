@@ -4,7 +4,7 @@
 // Writes to the "Marketing Credit" tab in Stratezik Leads spreadsheet.
 // After editing here: paste into Apps Script -> Save -> Deploy -> New version.
 //
-// Set VITE_GROWTH_CREDIT_WEBHOOK_URL in Vercel (and .env.local for dev) to the deployed /exec URL.
+// Set GOOGLE_GROWTH_CREDIT_WEBHOOK_URL in Vercel (server-only; not VITE_) to the deployed /exec URL.
 //
 // One row + one admin email per submission. Does NOT touch Sheet1 (homepage contact form).
 

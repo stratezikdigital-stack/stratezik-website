@@ -1,9 +1,11 @@
 import { SITE_ORIGIN } from './siteConfig'
+import { GOOGLE_BUSINESS_PROFILE_URL, LINKEDIN_COMPANY_URL, YOUTUBE_CHANNEL_URL } from '../constants/externalLinks'
 
 export const ORG_SAME_AS = [
   `${SITE_ORIGIN}/blog`,
-  'https://www.linkedin.com/company/stratezik/',
-  'https://share.google/VEBDLnS7ZRK7cxRV9',
+  LINKEDIN_COMPANY_URL,
+  YOUTUBE_CHANNEL_URL,
+  GOOGLE_BUSINESS_PROFILE_URL,
 ]
 
 export const ORG_KNOWS_ABOUT = [
