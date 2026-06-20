@@ -92,6 +92,44 @@ export const chatgptAdsGuideFaq = [
   },
 ]
 
+export const chatgptAdsTorontoIndustriesFaq = [
+  {
+    question: 'Are ChatGPT ads already live for Toronto buyers?',
+    answer:
+      'Yes. In a June 2026 study of 90 high-intent GTA buying questions, sponsored ads appeared on 43 queries (48%). Canada is a launch market at ads.openai.com. The gap is local participation: only one of 43 observed ads was from a business advertising in its own category.',
+  },
+  {
+    question: 'Is ChatGPT advertising available in Canada?',
+    answer:
+      'Yes. ChatGPT Ads are live in the US, Canada, Australia, and New Zealand. Toronto and GTA businesses can run campaigns today through OpenAI\'s Ads Manager at ads.openai.com, with no minimum spend.',
+  },
+  {
+    question: 'How much do ChatGPT ads cost in Canada?',
+    answer:
+      'Pricing is set by auction, on a cost-per-thousand-impressions (CPM) or cost-per-click (CPC) basis. In our own campaigns we have run a $35 CPM against a $250 Google Search comparison, with roughly 10x cheaper clicks once higher click-through is factored in. Costs are low today because the auction is uncrowded, especially at the local level.',
+  },
+  {
+    question: 'Can a small Toronto business afford to advertise on ChatGPT?',
+    answer:
+      'Yes, and the timing favours small businesses. There is no minimum spend, the interface is simpler than most ad platforms, and in several local categories (fitness, pest control, electrical, dental, auto, movers) there are currently no other advertisers to outbid. A modest test budget can put you in the only ad slot under high-intent questions in your market.',
+  },
+  {
+    question: 'Which Toronto industries should advertise on ChatGPT first?',
+    answer:
+      'Based on our 90-query study, the clearest opportunities are the categories with high intent and zero or minimal current advertisers: fitness, pest control, electricians, dental, optometry, auto repair, and movers. Saturated categories (B2B SaaS, travel, finance) are still viable with tightly targeted, locally specific campaigns.',
+  },
+  {
+    question: 'How is advertising on ChatGPT different from Google Ads?',
+    answer:
+      'ChatGPT has no keyword targeting. You write plain-language context hints describing the conversations where your business fits, and the system matches your ad to the live conversation. Ads appear as a sponsored card below the answer, at the moment of decision. It is closer to answering a question than bidding on a keyword.',
+  },
+  {
+    question: 'Will my business show up in ChatGPT answers without advertising?',
+    answer:
+      'Sometimes. In our study, ChatGPT named a specific Toronto business in about 9 of 10 local queries, but the businesses it named changed between runs and rarely matched a second engine. Organic mentions are real but unpredictable. The ad slot is the only placement you can control.',
+  },
+]
+
 export const chatgptRecommendationPlaybookFaq = [
   {
     question: 'How does ChatGPT decide which businesses to recommend?',

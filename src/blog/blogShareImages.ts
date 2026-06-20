@@ -9,6 +9,7 @@ const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
   'get-found-2026-paid-performance': '/services/paid-search.png',
   'get-recommended-by-chatgpt-playbook': '/branding/blog-og-chatgpt-recommendations.png',
   'chatgpt-ads-2026-guide': '/branding/blog-og-chatgpt-ads.png',
+  'chatgpt-ads-toronto-industries': '/branding/blog-og-chatgpt-ads.png',
   'google-maps-ranking-service-business': '/services/google-business-profile-maps.png',
   'insectica-gta-pest-control-scaling-case-study': '/branding/blog-og-insectica-case-study.png',
   'answer-engine-optimisation-toronto': '/services/seo-aeo-local-seo.png',

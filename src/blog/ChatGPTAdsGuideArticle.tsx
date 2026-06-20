@@ -74,8 +74,12 @@ export default function ChatGPTAdsGuideArticle() {
         <p className="mt-4 text-ink-700 leading-relaxed">{chatgptAdsGuideFaq[0].answer}</p>
         <p className="mt-4 text-sm text-ink-600 leading-relaxed">
           Quick answers for skimmers: eligible categories are narrow; minimum spends in reporting are real; ads do not
-          show to Plus, Pro, Business, Enterprise, or Education users. If you need citations inside assistants without
-          buying placements, see our{' '}
+          show to Plus, Pro, Business, Enterprise, or Education users. For who is actually buying ads in Toronto by
+          industry, see our{' '}
+          <Link to="/blog/chatgpt-ads-toronto-industries" className="text-oxblood underline underline-offset-2">
+            90-query Toronto industry study
+          </Link>
+          . If you need citations inside assistants without buying placements, see our{' '}
           <Link to="/blog/answer-engine-optimisation-toronto" className="text-oxblood underline underline-offset-2">
             answer engine optimisation primer
           </Link>

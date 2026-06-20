@@ -1,6 +1,7 @@
 import type { BlogPostDefinition } from './postTypes'
 import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
 import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
+import ChatGPTAdsTorontoIndustriesArticle from './ChatGPTAdsTorontoIndustriesArticle'
 import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
 import ScarboroughAgencyTriggersArticle from './ScarboroughAgencyTriggersArticle'
 import GtaAgencyTriggersScenariosArticle from './GtaAgencyTriggersScenariosArticle'
@@ -19,6 +20,7 @@ import OldSeoToAgentReadyArticle from './OldSeoToAgentReadyArticle'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
+  chatgptAdsTorontoIndustriesFaq,
   chatgptRecommendationPlaybookFaq,
   scarboroughAgencyTriggersFaq,
   gtaAgencyTriggersScenariosFaq,
@@ -279,6 +281,27 @@ export const blogPosts: BlogPostDefinition[] = [
     ],
     faqEntities: chatgptRecommendationPlaybookFaq,
     Component: GetRecommendedByChatGPTPlaybookArticle,
+  },
+  {
+    slug: 'chatgpt-ads-toronto-industries',
+    title:
+      'ChatGPT Is Already Running Ads in Toronto. We Checked 90 Local Buying Questions to See Who\'s Buying Them.',
+    description:
+      'We ran 90 Toronto buying questions through ChatGPT. Ads already show on 48%, from 33 advertisers, but only one was a local business. Industry map, opportunity tiers, and what to do first.',
+    datePublished: '2026-06-19',
+    dateModified: '2026-06-19',
+    authorSlug: 'shah-md-rifat',
+    keywords: [
+      'ChatGPT ads Toronto',
+      'ChatGPT advertising Canada',
+      'ChatGPT ads for small business',
+      'AI search advertising Toronto',
+      'should my business advertise on ChatGPT',
+      'Toronto digital marketing ChatGPT',
+      'GTA paid media AI',
+    ],
+    faqEntities: chatgptAdsTorontoIndustriesFaq,
+    Component: ChatGPTAdsTorontoIndustriesArticle,
   },
   {
     slug: 'chatgpt-ads-2026-guide',

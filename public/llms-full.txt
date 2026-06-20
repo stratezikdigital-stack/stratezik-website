@@ -89,7 +89,7 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
   - [AI strategy consulting Toronto](https://www.stratezik.com/services/ai-agents/ai-strategy): Toronto AI strategy consulting for founders deciding what to automate first. Agent org design, context engineering, and a deployment roadmap from operators.
   - [custom AI agent development Toronto](https://www.stratezik.com/services/ai-agents/agent-development): Toronto custom AI agent build and deployment. End-to-end work from context engineering and tool integration to handoff, by an agency that runs on its own agents.
 
-## Blog articles (17)
+## Blog articles (18)
 
 ### The Shift From Old SEO to Agent-Ready SEO in 2026
 - URL: https://www.stratezik.com/blog/old-seo-to-agent-ready-seo-2026
@@ -168,6 +168,12 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
 - Summary: SOCi visibility stats, citation research, OppAlerts correlations, schema + answer-first tactics, crawler checks, GTA measurement habits, plus honest limits on controlling generative mentions.
 - Published: 2026-05-11
 - Updated: 2026-06-17
+
+### ChatGPT Is Already Running Ads in Toronto. We Checked 90 Local Buying Questions to See Who's Buying Them.
+- URL: https://www.stratezik.com/blog/chatgpt-ads-toronto-industries
+- Summary: We ran 90 Toronto buying questions through ChatGPT. Ads already show on 48%, from 33 advertisers, but only one was a local business. Industry map, opportunity tiers, and what to do first.
+- Published: 2026-06-19
+- Updated: 2026-06-19
 
 ### ChatGPT Ads in 2026: Setup, Costs, and When to Skip It
 - URL: https://www.stratezik.com/blog/chatgpt-ads-2026-guide
