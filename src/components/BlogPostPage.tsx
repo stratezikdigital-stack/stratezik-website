@@ -16,6 +16,8 @@ const BlogPostPage = () => {
   const { Component } = post
   const author = getAuthorBySlug(post.authorSlug)
   const breadcrumbLabel = formatBreadcrumbLabel(post.title)
+  const isResearch = post.layout === 'research'
+  const contentWidth = isResearch ? 'max-w-[960px]' : 'max-w-[720px]'
 
   return (
     <article className="min-h-screen bg-cream pb-24">
@@ -38,8 +40,13 @@ const BlogPostPage = () => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="max-w-[720px]"
+          className={contentWidth}
         >
+          {isResearch ? (
+            <p className="mb-5 inline-flex border border-oxblood/25 bg-oxblood-50/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-oxblood">
+              Original research · Toronto &amp; GTA · June 2026
+            </p>
+          ) : null}
           <h1 className="font-display text-display-3 md:text-[clamp(2.25rem,5vw,3.25rem)] text-ink leading-[1.05] tracking-[-0.035em]">
             {post.title}
           </h1>
@@ -73,7 +80,7 @@ const BlogPostPage = () => {
           <Component />
         </div>
 
-        <footer className="max-w-[720px] mx-auto mt-16 pt-10 border-t border-ink/10">
+        <footer className={`${contentWidth} mx-auto mt-16 pt-10 border-t border-ink/10`}>
           <BlogDiscoveryHub excludeSlug={post.slug} heading="More from the Stratezik blog" />
           <Link
             to="/blog"

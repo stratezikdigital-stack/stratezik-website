@@ -12,6 +12,8 @@ export type BlogPostMeta = {
   shareImagePath?: string
   /** Author registry slug (see src/seo/authors.ts). Defaults to the primary author. */
   authorSlug?: string
+  /** Wider canvas + research chrome for data-heavy pillars. */
+  layout?: 'default' | 'research'
 }
 
 export type BlogPostDefinition = BlogPostMeta & {

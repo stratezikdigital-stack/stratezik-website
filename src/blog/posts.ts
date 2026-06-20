@@ -291,6 +291,7 @@ export const blogPosts: BlogPostDefinition[] = [
     datePublished: '2026-06-19',
     dateModified: '2026-06-19',
     authorSlug: 'shah-md-rifat',
+    layout: 'research',
     keywords: [
       'ChatGPT ads Toronto',
       'ChatGPT advertising Canada',

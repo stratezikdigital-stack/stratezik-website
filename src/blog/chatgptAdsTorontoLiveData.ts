@@ -21,6 +21,55 @@ import {
 
 export type LiveAdTier = 'greenfield' | 'open' | 'filling' | 'saturated'
 
+export type LiveAdTierStyle = {
+  label: string
+  sublabel: string
+  badge: string
+  dot: string
+  meter: string
+  panelRing: string
+  listActive: string
+}
+
+export const LIVE_AD_TIER_STYLES: Record<LiveAdTier, LiveAdTierStyle> = {
+  greenfield: {
+    label: 'Greenfield',
+    sublabel: '0 ads',
+    badge: 'bg-oxblood/10 text-oxblood border-oxblood/25',
+    dot: 'bg-oxblood',
+    meter: 'bg-oxblood',
+    panelRing: 'ring-oxblood/20',
+    listActive: 'border-oxblood bg-oxblood-50/70 shadow-[inset_4px_0_0_#7a1f1f]',
+  },
+  open: {
+    label: 'Open',
+    sublabel: '1 to 2 ads',
+    badge: 'bg-gold/20 text-ink-700 border-gold/40',
+    dot: 'bg-gold',
+    meter: 'bg-gold',
+    panelRing: 'ring-gold/25',
+    listActive: 'border-gold/50 bg-gold/10 shadow-[inset_4px_0_0_#c9a961]',
+  },
+  filling: {
+    label: 'Filling',
+    sublabel: '3 to 4 ads',
+    badge: 'bg-ink/5 text-ink-600 border-ink/15',
+    dot: 'bg-ink-400',
+    meter: 'bg-ink-300',
+    panelRing: 'ring-ink/15',
+    listActive: 'border-ink/30 bg-cream-200/60 shadow-[inset_4px_0_0_#5a554b]',
+  },
+  saturated: {
+    label: 'Saturated',
+    sublabel: '5 of 5 ads',
+    badge: 'bg-ink text-cream border-ink',
+    dot: 'bg-ink',
+    meter: 'bg-ink-600',
+    panelRing: 'ring-ink/25',
+    listActive: 'border-ink bg-ink/[0.06] shadow-[inset_4px_0_0_#0d0c0a]',
+  },
+}
+
 export type LiveAdIndustry = {
   id: string
   name: string
@@ -36,10 +85,10 @@ export const LIVE_AD_TIERS: Record<
   LiveAdTier,
   { label: string; fill: string; text: string; dot: string }
 > = {
-  greenfield: { label: 'Greenfield · 0 ads', fill: '#E1F5EE', text: '#085041', dot: '#0F6E56' },
-  open: { label: 'Open · barely contested', fill: '#E6F1FB', text: '#0C447C', dot: '#185FA5' },
-  filling: { label: 'Filling · rivals arriving', fill: '#FAEEDA', text: '#633806', dot: '#854F0B' },
-  saturated: { label: 'Saturated · by outsiders', fill: '#FAECE7', text: '#993C1D', dot: '#D85A30' },
+  greenfield: { label: 'Greenfield', fill: '#faecec', text: '#7a1f1f', dot: '#7a1f1f' },
+  open: { label: 'Open', fill: '#faf6ec', text: '#5a554b', dot: '#c9a961' },
+  filling: { label: 'Filling', fill: '#ece2cf', text: '#403c34', dot: '#7d7669' },
+  saturated: { label: 'Saturated', fill: '#1a1815', text: '#f4ede1', dot: '#0d0c0a' },
 }
 
 export function liveAdTierOf(ads: number): LiveAdTier {
