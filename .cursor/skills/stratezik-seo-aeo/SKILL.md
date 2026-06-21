@@ -61,7 +61,7 @@ Use as an audit spine; tailor depth to the stack (Vercel-hosted SPA with **build
 - [ ] **Canonical**: single preferred URL per indexable page; self-referencing canonical on indexable pages; HTTP→HTTPS and host consolidation (www vs apex) consistent with live internal links.
 - [ ] **Redirects**: 301 chains minimized; soft 404s eliminated; redirect hop count sane for bots.
 - [ ] **Pagination/filters**: parameters handled (canonical or noindex strategy coherent); infinite states not indexed as duplicates.
-- [ ] **JavaScript rendering**: confirm critical content and links in **initial HTML** where possible; validate **mobile-friendly** and **fetch like Google** equivalents when debugging.
+- **JavaScript rendering**: confirm critical content and links in **initial HTML** where possible; validate **mobile-friendly** and **fetch like Google** equivalents when debugging. For **LLM/AEO citation fetchers**, treat **no-JS HTML as the only guaranteed surface** (see §4 — LLM fetchers don't run JavaScript).
 
 ### Architecture
 
@@ -118,6 +118,31 @@ Use as an audit spine; tailor depth to the stack (Vercel-hosted SPA with **build
 ## 4. AEO (answer engines and AI summaries)
 
 Goal: be **quotable** and **corroborated**, not merely ranked.
+
+### LLM fetchers don't run JavaScript
+
+**Assume major answer-engine fetchers read the first HTML response only** — they do not reliably download your JS bundles or execute React. Empirical tests (e.g. Andre Alpar’s decoy-HTML vs JS-only-content experiment, widely discussed in the SEO/AEO community) show that **ChatGPT, Claude, and Gemini** often report whatever is in raw HTML and **miss content that exists only after client-side render**. Some other fetchers behave differently; do not bet citations on any of them running your SPA.
+
+| Fetcher class | Typical behavior | Stratezik implication |
+|---------------|------------------|------------------------|
+| **Google / Bing (search)** | Often render JS (with limits and delay) | Prerender still helps LCP and guarantees first paint; not a substitute for good HTML |
+| **ChatGPT, Claude, Gemini-class citation fetchers** | Mostly **no JS execution**; may not even request `.js` assets | Facts, definitions, stats, and service claims must live in **initial HTML** or machine-readable files |
+| **Hybrid / research fetchers** (varies by product) | Inconsistent | Same rule: never hide the canonical answer behind hydration |
+
+**Do not:**
+
+- Put cite-worthy facts only in React state, `useEffect` fetches, or lazy-loaded chunks with no prerender body.
+- Serve an empty `#root` shell and expect LLMs to “see” the hydrated page.
+- Use **HTML decoy vs JS reveal** patterns (cloaking) — policy risk and fails on non-JS fetchers anyway.
+
+**Do (Stratezik standard — see `stratezik-seo-master`):**
+
+- Ship **build-time prerender** body HTML in `dist/{route}/index.html` for every indexable URL.
+- Keep **JSON-LD, title, canonical, OG** in the prerendered `<head>` (not client-only).
+- Maintain **`llms.txt`**, generated **`llms-full.txt`**, and **`llm-context.json`** as a structured index for models that prefer summary files.
+- After changes, verify with **`curl -s URL`** (no JS) — the answer you want cited must appear in that output.
+
+**Agent rule:** If a brief or feature puts “the real” AEO copy behind JavaScript, **reject or redesign** — use prerender, static sections, or API-backed HTML at build time instead.
 
 ### Page patterns that travel well
 
@@ -190,12 +215,12 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 
 | Surface | Where it lives |
 |--------|----------------|
-| Post registry, slug, dates, keywords, FAQ entities | `src/blog/posts.ts` plus `BlogPostDefinition` in `src/blog/postTypes.ts` |
+| Post registry, slug, dates, keywords, FAQ entities | `src/blog/postsMeta.ts` + `src/blog/postLoaders.ts` (see `src/blog/posts.ts` merge helper) |
 | Route SEO registry (all pages) | `src/seo/pageSeoRegistry.ts` |
 | Build-time prerender + sitemap + llms-full | `scripts/postbuild-seo.ts` (runs on `npm run build`) |
 | Client navigation meta + JSON-LD | `src/seo/RouteSeoManager.tsx` |
 | Article (+ FAQPage + BreadcrumbList) JSON-LD | `src/blog/buildArticleJsonLd.ts` |
-| Person author + `/authors/{slug}` | `src/seo/authors.ts`, `src/components/AuthorPage.tsx` (set `authorSlug` in `posts.ts`) |
+| Person author + `/authors/{slug}` | `src/seo/authors.ts`, `src/components/AuthorPage.tsx` (set `authorSlug` in `postsMeta.ts`) |
 | Org entity (`sameAs`, `knowsAbout`, `foundingDate`) | `src/seo/organization.ts` + `index.html` schema |
 | Structured brand facts for LLMs | `public/llm-context.json` (regenerated on build) |
 | Title, meta, OG/Twitter, canonical | `src/seo/buildPageHeadHtml.ts` (server) + `applyRouteSeo` (client) |
@@ -237,11 +262,12 @@ Use when the user brings **ready prose** (paste, Doc export, or existing TSX) an
 - [ ] **Local extractability**: for GTA-facing posts, definitional or FAQ sentences should be quotable with explicit scope (“For Toronto service businesses…”) so assistants do not generalize to the wrong market.
 - [ ] **Atomic facts**: one stat or date per sentence; scope explicit (geo, vertical).
 - [ ] **Quotability**: at least one passage that could be cited without missing context.
+- [ ] **No-JS surface**: key claims visible in `curl -s` HTML (not only after React hydrate); see §4.
 - [ ] **Consistency**: numbers in prose match FAQ/schema and executive snapshot if present.
 
 ### Checklist: structured data
 
-- [ ] **Article**: `title`, `description`, `datePublished`, `dateModified`, `keywords`, `inLanguage` consistent with `posts.ts`.
+- [ ] **Article**: `title`, `description`, `datePublished`, `dateModified`, `keywords`, `inLanguage` consistent with `postsMeta.ts`.
 - [ ] **FAQPage**: only if FAQs exist on-page or are mirrored verbatim in-page; no contradiction with article body.
 - [ ] Validate merged **`@graph`** in Rich Results Test.
 

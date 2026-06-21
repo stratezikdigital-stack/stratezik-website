@@ -120,7 +120,7 @@ Lead magnet release gate:
 
 - [ ] **Unique title + meta description** per indexable URL
 - [ ] **Self-referencing canonical** (`https://www.stratezik.com/...`)
-- [ ] **Initial HTML** contains correct meta (postbuild prerender — not JS-only)
+- [ ] **Initial HTML** contains correct meta **and cite-worthy body copy** (postbuild prerender — not JS-only). LLM fetchers typically do not execute JavaScript; verify with `curl -s` without a browser.
 - [ ] **Single H1** per page template
 - [ ] **robots.txt** allows `/`; sitemap URL declared
 - [ ] **sitemap.xml** auto-generated, all indexable routes, accurate `lastmod`
@@ -148,13 +148,35 @@ Lead magnet release gate:
 - [ ] **Static assets** for illustrations under `/public/illustrations/` (not `/blog/*` — SPA rewrite conflict)
 - [ ] **Preview/staging** noindex if ever exposed (production only indexed today)
 
+## LLM fetchers don't run JavaScript
+
+**Policy for stratezik.com:** Answer-engine and assistant fetchers (ChatGPT, Claude, Gemini-class systems, and many research crawlers) **do not reliably run React or download Vite chunks**. They read the **first HTML response** — the same constraint validated in public AEO experiments (decoy HTML vs JS-only “real” content).
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Cite-worthy facts in first byte | `scripts/postbuild-seo.ts` prerenders `#root` body for indexable routes |
+| Meta + schema without hydration | `buildPageHeadHtml.ts` + registry injected at build time |
+| Machine-readable site index | `llms.txt`, `llms-full.txt`, `llm-context.json` |
+| No regression to JS-only content | `check:release-gates` + **`stratezik-web-performance`** (lazy chunks must not replace prerender body) |
+
+**Never ship** indexable pages where definitions, pricing, stats, or service claims exist **only** after client render or lazy import with no prerender equivalent.
+
+**Verify (no browser):**
+
+```bash
+curl -sS "https://www.stratezik.com/blog/{slug}" | grep -i "key phrase you expect cited"
+curl -sS "https://www.stratezik.com/services/seo-aeo" | grep -i "Toronto"
+```
+
+Strategy and audit framing: **`stratezik-seo-aeo` §4**.
+
 ## Roadmap / deliberate decisions (not yet implemented)
 
 These are intentional next steps. Do **not** start them silently — confirm scope with the user, then implement and update this skill.
 
 | Item | Why deferred | Trigger to do it |
 |------|--------------|------------------|
-| **Full SSR/ISR (article body in HTML)** | Current prerender already ships meta + JSON-LD in first packet; body SSR likely means a framework migration (Next.js) | When zero-JS full-text indexing or strict crawl-budget needs justify a migration |
+| **Full SSR/ISR (article body in HTML)** | Build-time prerender already ships full article body in `dist/` for blog and services; further SSR only needed if prerender coverage gaps appear | When a new template ships content JS-only without postbuild body |
 | **`/services/*/*` child focus-area pages** | Phase 1 ships the hub + 8 parent service pages; child routes (e.g. `technical-seo`, `meta-ads`) are Phase 2 content. Parent-page links to them are stripped by the markdown renderer until they exist | When Phase 2 child content is written |
 | **Author E-E-A-T hardening** | `authors.ts` exists; needs real full name, headshot (`imagePath`), and verified personal LinkedIn in `sameAs` | When the author confirms profile details — never fabricate `sameAs` |
 
