@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { getFeaturedBlogPosts } from '../blog/posts'
+import { getFeaturedBlogPosts } from '../blog/postsMeta'
 
 const LatestInsightsSection = () => {
   const posts = getFeaturedBlogPosts(4)

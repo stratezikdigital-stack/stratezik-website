@@ -83,10 +83,10 @@ const Footer = () => {
       <div className="container-custom px-6 md:px-12 pt-20 md:pt-28 pb-12">
         <div className="grid grid-cols-12 gap-4 mb-16">
           <div className="col-span-12 md:col-span-4">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/60">
               Site map
             </div>
-            <div className="mt-2 hairline pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
+            <div className="mt-2 hairline pt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/60">
               Stratezik, Toronto
             </div>
             <p className="mt-6 lead text-cream/70 max-w-md">
@@ -132,7 +132,7 @@ const Footer = () => {
 
           {cols.map((c) => (
             <div key={c.label} className="col-span-6 md:col-span-2 md:col-start-auto">
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/45">
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/60">
                 {c.label}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -211,7 +211,7 @@ const Footer = () => {
           </Link>
         </div>
 
-        <div className="mt-10 hairline border-cream/15 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/45">
+        <div className="mt-10 hairline border-cream/15 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/60">
           <span>&copy; {new Date().getFullYear()} Stratezik, Toronto, Canada</span>
           <span>Integrated channels · accountable measurement · pragmatic creative</span>
         </div>

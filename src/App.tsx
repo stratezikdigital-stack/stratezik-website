@@ -5,15 +5,12 @@ import Navbar from './components/Navbar'
 import HomePage from './components/HomePage'
 import Footer from './components/Footer'
 import { CookieConsentBanner } from './components/CookieConsentBanner'
-import { SmoothScroll } from './three/world/SmoothScroll'
+import { MobileScrollShell } from './components/MobileScrollShell'
 import { getLenis } from './three/world/lenisRef'
-import { WorldCanvas } from './three/world/WorldCanvas'
-import { Loader } from './components/Loader'
-import { CustomCursor } from './components/CustomCursor'
-import { MoveCounterHUD } from './components/MoveCounterHUD'
 import { getIsMobile } from './utils/device'
 import { useIsMobile } from './three/hooks/useIsMobile'
 
+const DesktopExperience = lazy(() => import('./components/DesktopExperience'))
 const CareerPage = lazy(() => import('./components/CareerPage'))
 const PrivacyPage = lazy(() => import('./components/PrivacyPage'))
 const AeoCheckerPage = lazy(() => import('./components/AeoCheckerPage'))
@@ -62,6 +59,44 @@ function ScrollToHash() {
   return null
 }
 
+function AppContent() {
+  const location = useLocation()
+  const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+
+  return (
+    <>
+      <ScrollToTop />
+      <ScrollToHash />
+      <div className="relative z-10 min-h-screen">
+        {!isCheatSheet && <Navbar />}
+        <main className={isCheatSheet ? '' : 'pt-36'}>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/careers" element={<CareerPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/aeo-checker" element={<AeoCheckerPage />} />
+              <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
+              <Route path="/growth-credit" element={<GrowthCreditPage />} />
+              <Route path="/free-tools" element={<FreeToolsPage />} />
+              <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
+              <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
+              <Route path="/services" element={<ServicePage />} />
+              <Route path="/services/:slug" element={<ServicePage />} />
+              <Route path="/services/:slug/:child" element={<ServicePage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/authors/:slug" element={<AuthorPage />} />
+            </Routes>
+          </Suspense>
+        </main>
+        {!isCheatSheet && <Footer />}
+        {!isCheatSheet && <CookieConsentBanner />}
+      </div>
+    </>
+  )
+}
+
 function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
@@ -78,40 +113,21 @@ function AppShell() {
   return (
     <>
       <RouteSeoManager />
-      {showDesktopChrome ? <Loader onDone={() => setLoaded(true)} /> : null}
-      {showDesktopChrome ? <CustomCursor /> : null}
-      <SmoothScroll>
-        <ScrollToTop />
-        <ScrollToHash />
-        {isHome && !mobile && loaded ? <WorldCanvas /> : null}
-        {isHome && loaded && !mobile ? <MoveCounterHUD /> : null}
-        <div className="relative z-10 min-h-screen">
-          {!isCheatSheet && <Navbar />}
-          <main className={isCheatSheet ? '' : 'pt-36'}>
-            <Suspense fallback={<RouteFallback />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/careers" element={<CareerPage />} />
-                <Route path="/privacy" element={<PrivacyPage />} />
-                <Route path="/aeo-checker" element={<AeoCheckerPage />} />
-                <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
-                <Route path="/growth-credit" element={<GrowthCreditPage />} />
-                <Route path="/free-tools" element={<FreeToolsPage />} />
-                <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
-                <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
-                <Route path="/services" element={<ServicePage />} />
-                <Route path="/services/:slug" element={<ServicePage />} />
-                <Route path="/services/:slug/:child" element={<ServicePage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<BlogPostPage />} />
-                <Route path="/authors/:slug" element={<AuthorPage />} />
-              </Routes>
-            </Suspense>
-          </main>
-          {!isCheatSheet && <Footer />}
-          {!isCheatSheet && <CookieConsentBanner />}
-        </div>
-      </SmoothScroll>
+      {showDesktopChrome ? (
+        <Suspense fallback={<AppContent />}>
+          <DesktopExperience
+            isHome={isHome}
+            loaded={loaded}
+            onLoaded={() => setLoaded(true)}
+          >
+            <AppContent />
+          </DesktopExperience>
+        </Suspense>
+      ) : (
+        <MobileScrollShell>
+          <AppContent />
+        </MobileScrollShell>
+      )}
     </>
   )
 }

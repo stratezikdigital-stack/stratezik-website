@@ -6,7 +6,26 @@ export function CookieConsentBanner() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    setVisible(getCookieConsent() === null)
+    if (getCookieConsent() !== null) return undefined
+
+    let cancelled = false
+    const show = () => {
+      if (!cancelled) setVisible(true)
+    }
+
+    // Defer until after typical mobile LCP so the hero paints first.
+    const timeoutId = window.setTimeout(show, 2400)
+    const ric = window.requestIdleCallback
+    let idleId: number | undefined
+    if (ric) {
+      idleId = ric(show, { timeout: 3200 })
+    }
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeoutId)
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId)
+    }
   }, [])
 
   function choose(level: CookieConsentLevel) {

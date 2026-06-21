@@ -57,7 +57,7 @@ export function GrowthCreditCta({
         className={`p-8 md:p-10 bg-oxblood text-cream border border-ink/10 ${className}`}
         aria-label="Stratezik Growth Credit"
       >
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">Limited program</p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold">Limited program</p>
         <h2 className="mt-4 font-display text-2xl md:text-3xl tracking-tight leading-snug">{title}</h2>
         <p className="mt-5 text-cream/90 leading-relaxed">{desc}</p>
         <Link

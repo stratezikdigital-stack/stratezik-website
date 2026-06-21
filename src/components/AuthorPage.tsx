@@ -1,7 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AuthorHeadshot } from '../blog/AuthorHeadshot'
-import { blogPosts } from '../blog/posts'
+import { blogPostsMeta } from '../blog/postsMeta'
 import { getAuthorBySlug } from '../seo/authors'
 
 const AuthorPage = () => {
@@ -12,7 +12,7 @@ const AuthorPage = () => {
     return <Navigate to="/blog" replace />
   }
 
-  const posts = blogPosts.filter((p) => getAuthorBySlug(p.authorSlug)?.slug === author.slug)
+  const posts = blogPostsMeta.filter((p) => getAuthorBySlug(p.authorSlug)?.slug === author.slug)
 
   return (
     <div className="min-h-screen bg-cream pb-24">

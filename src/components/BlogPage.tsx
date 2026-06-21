@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { blogPosts } from '../blog/posts'
+import { blogPostsMeta } from '../blog/postsMeta'
 
 /**
  * Blog index: editorial listing aligned with Plan D typography.
@@ -35,7 +35,7 @@ const BlogPage = () => {
         </motion.header>
 
         <ul className="space-y-0 border-t border-ink/15">
-          {blogPosts.map((post) => (
+          {blogPostsMeta.map((post) => (
             <li key={post.slug} className="border-b border-ink/15">
               <Link
                 to={`/blog/${post.slug}`}
@@ -61,7 +61,7 @@ const BlogPage = () => {
           ))}
         </ul>
 
-        {blogPosts.length === 0 && (
+        {blogPostsMeta.length === 0 && (
           <p className="text-ink-600 font-mono text-sm">New posts are underway. Check back soon.</p>
         )}
       </div>

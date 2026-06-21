@@ -15,16 +15,35 @@ function listHtmlFiles(dir: string): string[] {
   return files
 }
 
+const DEFERRED_STYLE =
+  `<link rel="preload" href="$1" as="style" onload="this.onload=null;this.rel='stylesheet'">`
+
 function fixDeferredStylesheets(html: string): string {
   return html
     .replace(
       /<link rel="stylesheet" href="(\/fonts\/fonts\.css)" media="print" onload="this\.rel='stylesheet'">/g,
-      `<link rel="preload" href="$1" as="style" onload="this.onload=null;this.rel='stylesheet'">`,
+      DEFERRED_STYLE,
     )
     .replace(
       /<link rel="stylesheet" href="(\/fonts\/fonts\.css)" media="print" onload="this\.media='all'">/g,
-      `<link rel="preload" href="$1" as="style" onload="this.onload=null;this.rel='stylesheet'">`,
+      DEFERRED_STYLE,
     )
+    .replace(
+      /<link rel="stylesheet" href="(\/assets\/index-[^"]+\.css)" media="print" onload="this\.media='all'">/g,
+      DEFERRED_STYLE,
+    )
+    .replace(
+      /<link rel="stylesheet" href="(\/assets\/index-[^"]+\.css)" onload="this\.rel='stylesheet'">/g,
+      DEFERRED_STYLE,
+    )
+}
+
+/** Drop eager preloads for chunks that should not ship on mobile first paint. */
+function trimMobileModulePreloads(html: string): string {
+  return html.replace(
+    /<link rel="modulepreload" crossorigin href="\/assets\/(three-vendor|markdown)-[^"]+\.js">\s*/g,
+    '',
+  )
 }
 
 function ensureCriticalFonts(html: string): string {
@@ -54,7 +73,9 @@ export async function optimizeCriticalCss(distDir: string): Promise<void> {
   const htmlFiles = listHtmlFiles(distDir)
   for (const file of htmlFiles) {
     const html = fs.readFileSync(file, 'utf8')
-    const optimized = ensureCriticalFonts(fixDeferredStylesheets(await critters.process(html)))
+    const optimized = trimMobileModulePreloads(
+      ensureCriticalFonts(fixDeferredStylesheets(await critters.process(html))),
+    )
     fs.writeFileSync(file, optimized, 'utf8')
   }
 

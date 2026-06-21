@@ -1,5 +1,5 @@
 import { getBlogShareImagePath } from '../blog/blogShareImages'
-import { blogPosts } from '../blog/posts'
+import { blogPostsMeta } from '../blog/postsMeta'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
@@ -326,12 +326,12 @@ export const BLOG_INDEX_SEO: RouteSeoConfig = {
   ogImageWidth: BRAND_OG_DIMENSIONS.width,
   ogImageHeight: BRAND_OG_DIMENSIONS.height,
   ogImageAlt: 'Stratezik Blog',
-  jsonLd: buildBlogIndexJsonLd(blogPosts),
+  jsonLd: buildBlogIndexJsonLd(blogPostsMeta),
   sitemapPriority: 0.85,
   sitemapChangefreq: 'weekly',
 }
 
-function blogPostSeo(post: (typeof blogPosts)[number]): RouteSeoConfig {
+function blogPostSeo(post: (typeof blogPostsMeta)[number]): RouteSeoConfig {
   const sharePath = post.shareImagePath ?? getBlogShareImagePath(post.slug)
   const dims = ogImageDimensionsForPath(sharePath)
   const jsonLd =
@@ -447,7 +447,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     ...services.map(servicePageSeo),
     ...serviceChildren.map(serviceChildPageSeo),
     BLOG_INDEX_SEO,
-    ...blogPosts.map(blogPostSeo),
+    ...blogPostsMeta.map(blogPostSeo),
     ...authors.map(authorPageSeo),
   ]
 }

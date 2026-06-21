@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { blogPosts } from './posts'
+import { blogPostsMeta } from './postsMeta'
 
 type BlogDiscoveryHubProps = {
   heading?: string
@@ -18,7 +18,7 @@ export function BlogDiscoveryHub({
   excludeSlug,
   limit,
 }: BlogDiscoveryHubProps) {
-  const posts = blogPosts.filter((p) => p.slug !== excludeSlug).slice(0, limit ?? blogPosts.length)
+  const posts = blogPostsMeta.filter((p) => p.slug !== excludeSlug).slice(0, limit ?? blogPostsMeta.length)
 
   return (
     <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="blog-discovery-hub-heading">

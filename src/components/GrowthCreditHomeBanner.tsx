@@ -12,13 +12,13 @@ export function GrowthCreditHomeBanner() {
       <div className="container-custom px-6 md:px-12 py-14 md:py-16">
         <div className="grid grid-cols-12 gap-6 md:gap-8 items-center">
           <div className="col-span-12 md:col-span-4 lg:col-span-3">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold">
               Limited offer
             </p>
             <p className="mt-4 font-display text-[clamp(2.5rem,6vw,4rem)] leading-none tracking-[-0.04em]">
               $3,000
             </p>
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-cream/60">
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-cream/70">
               Growth credit
             </p>
           </div>
