@@ -1,28 +1,8 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { RouteSeoManager } from './seo/RouteSeoManager'
 import Navbar from './components/Navbar'
-import HeroSection from './components/HeroSection'
-import ServicesSection from './components/ServicesSection'
-import StrategyFlow from './components/StrategyFlow'
-import PortfolioSection from './components/PortfolioSection'
-import TestimonialSection from './components/TestimonialSection'
-import LatestInsightsSection from './components/LatestInsightsSection'
-import { HomeFaqSection } from './components/HomeFaqSection'
-import ContactSection from './components/ContactSection'
-import CareerPage from './components/CareerPage'
-import CheatSheetLandingPage from './components/CheatSheetLandingPage'
-import CheatSheetGuidePage from './components/CheatSheetGuidePage'
-import BlogPage from './components/BlogPage'
-import BlogPostPage from './components/BlogPostPage'
-import AuthorPage from './components/AuthorPage'
-import AeoCheckerPage from './components/AeoCheckerPage'
-import TorontoStartupAuditPage from './components/TorontoStartupAuditPage'
-import GrowthCreditPage from './components/GrowthCreditPage'
-import FreeToolsPage from './components/FreeToolsPage'
-import PrivacyPage from './components/PrivacyPage'
-import { GrowthCreditHomeBanner } from './components/GrowthCreditHomeBanner'
-import ServicePage from './components/ServicePage'
+import HomePage from './components/HomePage'
 import Footer from './components/Footer'
 import { CookieConsentBanner } from './components/CookieConsentBanner'
 import { SmoothScroll } from './three/world/SmoothScroll'
@@ -31,9 +11,25 @@ import { WorldCanvas } from './three/world/WorldCanvas'
 import { Loader } from './components/Loader'
 import { CustomCursor } from './components/CustomCursor'
 import { MoveCounterHUD } from './components/MoveCounterHUD'
-import { NotationMarquee } from './components/NotationMarquee'
 import { getIsMobile } from './utils/device'
 import { useIsMobile } from './three/hooks/useIsMobile'
+
+const CareerPage = lazy(() => import('./components/CareerPage'))
+const PrivacyPage = lazy(() => import('./components/PrivacyPage'))
+const AeoCheckerPage = lazy(() => import('./components/AeoCheckerPage'))
+const TorontoStartupAuditPage = lazy(() => import('./components/TorontoStartupAuditPage'))
+const GrowthCreditPage = lazy(() => import('./components/GrowthCreditPage'))
+const FreeToolsPage = lazy(() => import('./components/FreeToolsPage'))
+const CheatSheetLandingPage = lazy(() => import('./components/CheatSheetLandingPage'))
+const CheatSheetGuidePage = lazy(() => import('./components/CheatSheetGuidePage'))
+const ServicePage = lazy(() => import('./components/ServicePage'))
+const BlogPage = lazy(() => import('./components/BlogPage'))
+const BlogPostPage = lazy(() => import('./components/BlogPostPage'))
+const AuthorPage = lazy(() => import('./components/AuthorPage'))
+
+function RouteFallback() {
+  return <div className="min-h-[40vh]" aria-hidden="true" />
+}
 
 /** On route change without a target hash, reset scroll to the top of the page. */
 function ScrollToTop() {
@@ -92,58 +88,25 @@ function AppShell() {
         <div className="relative z-10 min-h-screen">
           {!isCheatSheet && <Navbar />}
           <main className={isCheatSheet ? '' : 'pt-36'}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <HeroSection />
-                    <NotationMarquee
-                      variant="dark"
-                      lines={[
-                        'Toronto digital marketing & growth',
-                        'SEO · PPC · social · conversion · analytics',
-                        'Integrated plans · fewer silos · clearer KPIs',
-                        'SMB & startup budgets · enterprise discipline',
-                        'Stratezik · measurable demand',
-                      ]}
-                    />
-                    <ServicesSection />
-                    <GrowthCreditHomeBanner />
-                    <NotationMarquee
-                      variant="light"
-                      lines={[
-                        'Audience insight before media spend',
-                        'Creative & landing pages built to convert',
-                        'Attribution you can defend in the boardroom',
-                        'Weekly rhythm · monthly reviews · quarterly bets',
-                        'Stratezik',
-                      ]}
-                    />
-                    <StrategyFlow />
-                    <PortfolioSection />
-                    <TestimonialSection />
-                    <LatestInsightsSection />
-                    <HomeFaqSection />
-                    <ContactSection />
-                  </>
-                }
-              />
-              <Route path="/careers" element={<CareerPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/aeo-checker" element={<AeoCheckerPage />} />
-              <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
-              <Route path="/growth-credit" element={<GrowthCreditPage />} />
-              <Route path="/free-tools" element={<FreeToolsPage />} />
-              <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
-              <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
-              <Route path="/services" element={<ServicePage />} />
-              <Route path="/services/:slug" element={<ServicePage />} />
-              <Route path="/services/:slug/:child" element={<ServicePage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogPostPage />} />
-              <Route path="/authors/:slug" element={<AuthorPage />} />
-            </Routes>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/careers" element={<CareerPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/aeo-checker" element={<AeoCheckerPage />} />
+                <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
+                <Route path="/growth-credit" element={<GrowthCreditPage />} />
+                <Route path="/free-tools" element={<FreeToolsPage />} />
+                <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
+                <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
+                <Route path="/services" element={<ServicePage />} />
+                <Route path="/services/:slug" element={<ServicePage />} />
+                <Route path="/services/:slug/:child" element={<ServicePage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:slug" element={<BlogPostPage />} />
+                <Route path="/authors/:slug" element={<AuthorPage />} />
+              </Routes>
+            </Suspense>
           </main>
           {!isCheatSheet && <Footer />}
           {!isCheatSheet && <CookieConsentBanner />}

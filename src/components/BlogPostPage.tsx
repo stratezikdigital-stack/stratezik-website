@@ -1,19 +1,29 @@
+import type { FC } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { BlogDiscoveryHub } from '../blog/BlogDiscoveryHub'
+import { BlogArticleBody } from '../blog/LazyBlogArticle'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
 import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
-const BlogPostPage = () => {
+import { fadeUpProps } from '../utils/motionPresets'
+import { useMotionEnabled } from '../utils/useMotionEnabled'
+
+type BlogPostPageProps = {
+  /** Preloaded article for build-time prerender. */
+  articleComponent?: FC
+}
+
+const BlogPostPage = ({ articleComponent }: BlogPostPageProps) => {
   const { slug } = useParams<{ slug: string }>()
   const post = getPostBySlug(slug)
+  const motionOn = useMotionEnabled()
 
   if (!post) {
     return <Navigate to="/blog" replace />
   }
 
-  const { Component } = post
   const author = getAuthorBySlug(post.authorSlug)
   const breadcrumbLabel = formatBreadcrumbLabel(post.title)
   const isResearch = post.layout === 'research'
@@ -37,9 +47,7 @@ const BlogPostPage = () => {
         </nav>
 
         <motion.header
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
+          {...fadeUpProps(motionOn, 0, 14)}
           className={contentWidth}
         >
           {isResearch ? (
@@ -77,7 +85,7 @@ const BlogPostPage = () => {
         </motion.header>
 
         <div className="mt-14 md:mt-20">
-          <Component />
+          <BlogArticleBody post={post} articleComponent={articleComponent} />
         </div>
 
         <footer className={`${contentWidth} mx-auto mt-16 pt-10 border-t border-ink/10`}>

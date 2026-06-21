@@ -32,6 +32,8 @@ export default defineConfig({
             }
             if (id.includes('framer-motion')) return 'framer'
             if (id.includes('react-router')) return 'router'
+            if (id.includes('@marsidev/react-turnstile')) return 'turnstile'
+            if (id.includes('react-markdown') || id.includes('remark-') || id.includes('micromark')) return 'markdown'
           }
         },
       },

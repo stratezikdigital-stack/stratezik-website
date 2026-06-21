@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { StaticRouter } from 'react-router-dom/server'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from '../components/Navbar'
@@ -20,10 +21,11 @@ import { PrerenderBodiesContext, type PrerenderBodies } from './PrerenderBodiesC
 type PrerenderAppProps = {
   pathname: string
   bodies: PrerenderBodies
+  blogArticleComponent?: FC
 }
 
 /** Slim app shell for build-time HTML (no Three.js, Lenis, or loader). */
-export function PrerenderApp({ pathname, bodies }: PrerenderAppProps) {
+export function PrerenderApp({ pathname, bodies, blogArticleComponent }: PrerenderAppProps) {
   return (
     <PrerenderBodiesContext.Provider value={bodies}>
       <StaticRouter location={pathname}>
@@ -44,7 +46,7 @@ export function PrerenderApp({ pathname, bodies }: PrerenderAppProps) {
               <Route path="/services/:slug/:child" element={<ServicePageView />} />
               <Route path="/services/:slug" element={<ServicePageView />} />
               <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage articleComponent={blogArticleComponent} />} />
               <Route path="/authors/:slug" element={<AuthorPage />} />
             </Routes>
           </main>

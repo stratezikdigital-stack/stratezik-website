@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
+import { inViewProps } from '../utils/motionPresets'
+import { useMotionEnabled } from '../utils/useMotionEnabled'
 
 /**
  * Plan D - Services grid.
@@ -218,13 +220,10 @@ function MiniBoard({ arrows }: { arrows: Opening['arrows'] }) {
   )
 }
 
-function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
+function OpeningCard({ opening, index, motionOn }: { opening: Opening; index: number; motionOn: boolean }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      viewport={{ once: true, margin: '-80px' }}
+      {...inViewProps(motionOn, 30, index * 0.05)}
       data-cursor="glyph"
       data-cursor-glyph={'\u265F'}
       className="group relative bg-cream-50 border border-ink/10 hover:border-ink/30 transition-all duration-700 lift"
@@ -286,16 +285,14 @@ function OpeningCard({ opening, index }: { opening: Opening; index: number }) {
 const ServicesSection = () => {
   const ref = useRef<HTMLElement>(null)
   useSection('services', ref)
+  const motionOn = useMotionEnabled()
 
   return (
     <section id="services" ref={ref} className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         {/* Section heading row: editorial */}
         <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn)}
           className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
           <div className="col-span-12 md:col-span-3">
@@ -331,16 +328,13 @@ const ServicesSection = () => {
         {/* Opening cards grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-ink/10">
           {OPENINGS.map((o, i) => (
-            <OpeningCard key={o.opening} opening={o} index={i} />
+            <OpeningCard key={o.opening} opening={o} index={i} motionOn={motionOn} />
           ))}
         </div>
 
         {/* Seventh discipline masthead: same grid pattern as opening services */}
         <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn)}
           className="grid grid-cols-12 gap-4 mt-24 md:mt-32 mb-10 md:mb-14"
         >
           <div className="col-span-12 md:col-span-3">
@@ -367,10 +361,7 @@ const ServicesSection = () => {
 
         {/* Flagship: full-width band (two OpeningCard columns) */}
         <motion.article
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true, margin: '-60px' }}
+          {...inViewProps(motionOn, 24)}
           data-cursor="glyph"
           data-cursor-glyph={'\u265B'}
           className="relative bg-ink text-cream border border-ink/10 overflow-hidden lift"
@@ -450,10 +441,7 @@ const ServicesSection = () => {
 
         {/* Bottom CTA strip: editorial CTA, no gradient */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn, 20)}
           className="mt-20 md:mt-28 grid grid-cols-12 gap-4"
         >
           <div className="col-span-12 md:col-span-3">

@@ -17,7 +17,7 @@ export type BlogPostMeta = {
 }
 
 export type BlogPostDefinition = BlogPostMeta & {
-  Component: FC
+  loadComponent: () => Promise<{ default: FC }>
   /** Optional FAQ entries for FAQPage JSON-LD */
   faqEntities?: { question: string; answer: string }[]
 }

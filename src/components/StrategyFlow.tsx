@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useSection } from '../three/world/useSection'
+import { inViewProps } from '../utils/motionPresets'
+import { useMotionEnabled } from '../utils/useMotionEnabled'
 
 interface Step {
   step: number
@@ -53,15 +55,13 @@ const STEPS: Step[] = [
 const StrategyFlow = () => {
   const ref = useRef<HTMLElement>(null)
   useSection('flow', ref)
+  const motionOn = useMotionEnabled()
 
   return (
     <section ref={ref} id="strategy" className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn)}
           className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
           <div className="col-span-12 md:col-span-3">
@@ -86,10 +86,7 @@ const StrategyFlow = () => {
           {STEPS.map((s, i) => (
             <motion.div
               key={s.step}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: i * 0.05 }}
-              viewport={{ once: true, margin: '-80px' }}
+              {...inViewProps(motionOn, 16, i * 0.05)}
               className="grid grid-cols-12 gap-4 py-10 md:py-14 border-b border-ink/15 group"
             >
               <div className="col-span-2 md:col-span-1 font-display text-3xl md:text-5xl text-ink-300 group-hover:text-oxblood transition-colors duration-700">
@@ -117,10 +114,7 @@ const StrategyFlow = () => {
 
         {/* Index strip: running results */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn, 20)}
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/15"
         >
           {[

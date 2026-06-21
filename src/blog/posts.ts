@@ -1,22 +1,4 @@
 import type { BlogPostDefinition } from './postTypes'
-import AnswerEngineTorontoArticle from './AnswerEngineTorontoArticle'
-import ChatGPTAdsGuideArticle from './ChatGPTAdsGuideArticle'
-import ChatGPTAdsTorontoIndustriesArticle from './ChatGPTAdsTorontoIndustriesArticle'
-import GetRecommendedByChatGPTPlaybookArticle from './GetRecommendedByChatGPTPlaybookArticle'
-import ScarboroughAgencyTriggersArticle from './ScarboroughAgencyTriggersArticle'
-import GtaAgencyTriggersScenariosArticle from './GtaAgencyTriggersScenariosArticle'
-import GetFound2026Part1BrandArticle from './GetFound2026Part1BrandArticle'
-import GetFound2026Part2SeoArticle from './GetFound2026Part2SeoArticle'
-import GetFound2026Part3AiArticle from './GetFound2026Part3AiArticle'
-import GetFound2026Part4ContentArticle from './GetFound2026Part4ContentArticle'
-import GetFound2026Part5PaidArticle from './GetFound2026Part5PaidArticle'
-import GoogleMapsRankingServiceBusinessArticle from './GoogleMapsRankingServiceBusinessArticle'
-import InsecticaCaseStudyArticle from './InsecticaCaseStudyArticle'
-import AiNativeGtmPart1Article from './AiNativeGtmPart1Article'
-import AiNativeGtmPart2Article from './AiNativeGtmPart2Article'
-import AiNativeGtmPart3Article from './AiNativeGtmPart3Article'
-import AiNativeGtmPart4Article from './AiNativeGtmPart4Article'
-import OldSeoToAgentReadyArticle from './OldSeoToAgentReadyArticle'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -56,7 +38,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'structured data SEO 2026',
     ],
     faqEntities: oldSeoToAgentReadyFaq,
-    Component: OldSeoToAgentReadyArticle,
+    loadComponent: () => import('./OldSeoToAgentReadyArticle'),
   },
   {
     slug: 'ai-native-gtm-build-from-day-1',
@@ -75,7 +57,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik AI agents',
     ],
     faqEntities: aiNativeGtmPart1Faq,
-    Component: AiNativeGtmPart1Article,
+    loadComponent: () => import('./AiNativeGtmPart1Article'),
   },
   {
     slug: 'ai-native-gtm-cited-by-chatgpt',
@@ -94,7 +76,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Toronto founders',
     ],
     faqEntities: aiNativeGtmPart2Faq,
-    Component: AiNativeGtmPart2Article,
+    loadComponent: () => import('./AiNativeGtmPart2Article'),
   },
   {
     slug: 'ai-native-gtm-agent-stack-by-stage',
@@ -113,7 +95,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Toronto founders',
     ],
     faqEntities: aiNativeGtmPart3Faq,
-    Component: AiNativeGtmPart3Article,
+    loadComponent: () => import('./AiNativeGtmPart3Article'),
   },
   {
     slug: 'ai-native-gtm-marketing-hire-2026',
@@ -132,7 +114,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Toronto founders',
     ],
     faqEntities: aiNativeGtmPart4Faq,
-    Component: AiNativeGtmPart4Article,
+    loadComponent: () => import('./AiNativeGtmPart4Article'),
   },
   {
     slug: 'when-hire-digital-marketing-agency-scarborough-gta',
@@ -151,7 +133,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik digital marketing',
     ],
     faqEntities: scarboroughAgencyTriggersFaq,
-    Component: ScarboroughAgencyTriggersArticle,
+    loadComponent: () => import('./ScarboroughAgencyTriggersArticle'),
   },
   {
     slug: 'signs-time-digital-marketing-agency-gta',
@@ -170,7 +152,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Digital',
     ],
     faqEntities: gtaAgencyTriggersScenariosFaq,
-    Component: GtaAgencyTriggersScenariosArticle,
+    loadComponent: () => import('./GtaAgencyTriggersScenariosArticle'),
   },
   {
     slug: 'get-found-2026-brand-positioning',
@@ -188,7 +170,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Toronto marketing foundation',
     ],
     faqEntities: getFound2026Part1BrandFaq,
-    Component: GetFound2026Part1BrandArticle,
+    loadComponent: () => import('./GetFound2026Part1BrandArticle'),
   },
   {
     slug: 'get-found-2026-seo-organic-search',
@@ -206,7 +188,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Get Found 2026',
     ],
     faqEntities: getFound2026Part2SeoFaq,
-    Component: GetFound2026Part2SeoArticle,
+    loadComponent: () => import('./GetFound2026Part2SeoArticle'),
   },
   {
     slug: 'get-found-2026-ai-search-visibility',
@@ -225,7 +207,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Get Found 2026',
     ],
     faqEntities: getFound2026Part3AiFaq,
-    Component: GetFound2026Part3AiArticle,
+    loadComponent: () => import('./GetFound2026Part3AiArticle'),
   },
   {
     slug: 'get-found-2026-content-strategy',
@@ -243,7 +225,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik Get Found 2026',
     ],
     faqEntities: getFound2026Part4ContentFaq,
-    Component: GetFound2026Part4ContentArticle,
+    loadComponent: () => import('./GetFound2026Part4ContentArticle'),
   },
   {
     slug: 'get-found-2026-paid-performance',
@@ -261,7 +243,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Toronto performance marketing',
     ],
     faqEntities: getFound2026Part5PaidFaq,
-    Component: GetFound2026Part5PaidArticle,
+    loadComponent: () => import('./GetFound2026Part5PaidArticle'),
   },
   {
     slug: 'get-recommended-by-chatgpt-playbook',
@@ -280,7 +262,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik generative visibility',
     ],
     faqEntities: chatgptRecommendationPlaybookFaq,
-    Component: GetRecommendedByChatGPTPlaybookArticle,
+    loadComponent: () => import('./GetRecommendedByChatGPTPlaybookArticle'),
   },
   {
     slug: 'chatgpt-ads-toronto-industries',
@@ -302,7 +284,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'GTA paid media AI',
     ],
     faqEntities: chatgptAdsTorontoIndustriesFaq,
-    Component: ChatGPTAdsTorontoIndustriesArticle,
+    loadComponent: () => import('./ChatGPTAdsTorontoIndustriesArticle'),
   },
   {
     slug: 'chatgpt-ads-2026-guide',
@@ -321,7 +303,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik paid media',
     ],
     faqEntities: chatgptAdsGuideFaq,
-    Component: ChatGPTAdsGuideArticle,
+    loadComponent: () => import('./ChatGPTAdsGuideArticle'),
   },
   {
     slug: 'google-maps-ranking-service-business',
@@ -339,7 +321,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik local search',
     ],
     faqEntities: googleMapsRankingServiceBusinessFaq,
-    Component: GoogleMapsRankingServiceBusinessArticle,
+    loadComponent: () => import('./GoogleMapsRankingServiceBusinessArticle'),
   },
   {
     slug: 'insectica-gta-pest-control-scaling-case-study',
@@ -357,7 +339,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Stratezik case study',
     ],
     faqEntities: insecticaCaseStudyFaq,
-    Component: InsecticaCaseStudyArticle,
+    loadComponent: () => import('./InsecticaCaseStudyArticle'),
   },
   {
     slug: 'answer-engine-optimisation-toronto',
@@ -375,7 +357,7 @@ export const blogPosts: BlogPostDefinition[] = [
       'Perplexity search',
     ],
     faqEntities: answerEngineTorontoFaq,
-    Component: AnswerEngineTorontoArticle,
+    loadComponent: () => import('./AnswerEngineTorontoArticle'),
   },
 ]
 

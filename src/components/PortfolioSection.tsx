@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useSection } from '../three/world/useSection'
+import { inViewProps } from '../utils/motionPresets'
+import { useMotionEnabled } from '../utils/useMotionEnabled'
 import { MATCHES, type CaseStudyMode, type MatchAngle } from '../data/caseStudies'
 import CaseStudyModal from './CaseStudyModal'
 
@@ -15,16 +17,14 @@ const PortfolioSection = () => {
   useSection('portfolio', ref)
 
   const [openCase, setOpenCase] = useState<OpenCase | null>(null)
+  const motionOn = useMotionEnabled()
 
   return (
     <section id="portfolio" ref={ref} className="relative py-24 md:py-32 bg-cream">
       <div className="container-custom px-6 md:px-12">
         {/* Editorial header */}
         <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
+          {...inViewProps(motionOn)}
           className="grid grid-cols-12 gap-4 mb-16 md:mb-24"
         >
           <div className="col-span-12 md:col-span-3">
@@ -53,10 +53,7 @@ const PortfolioSection = () => {
           {MATCHES.map((m, i) => (
             <motion.div
               key={m.num}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.04 }}
-              viewport={{ once: true, margin: '-80px' }}
+              {...inViewProps(motionOn, 16, i * 0.04)}
               className="border-b border-ink/15"
             >
               <button

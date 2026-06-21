@@ -12,6 +12,7 @@ import {
   shouldPrerenderBody,
 } from './prerender-static'
 import { pingSearchEngines } from './pingSearchEngines'
+import { optimizeCriticalCss } from './optimize-critical-css'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -56,12 +57,12 @@ function assertHomePrerenderBody(html: string): void {
   }
 }
 
-function writeRouteHtml(baseHtml: string, routePath: string, headFragment: string): void {
+async function writeRouteHtml(baseHtml: string, routePath: string, headFragment: string): Promise<void> {
   let html = replaceSeoBlock(baseHtml, headFragment)
 
   if (shouldPrerenderBody(routePath)) {
     try {
-      const bodyHtml = renderRouteBodyHtml(routePath)
+      const bodyHtml = await renderRouteBodyHtml(routePath)
       html = replaceRootInner(html, bodyHtml)
       console.log(`[seo] body prerendered ${routePath}`)
     } catch (err) {
@@ -121,9 +122,11 @@ async function main(): Promise<void> {
 
   for (const config of configs) {
     const headFragment = buildRouteHeadHtml(config)
-    writeRouteHtml(baseHtml, config.path, headFragment)
+    await writeRouteHtml(baseHtml, config.path, headFragment)
     console.log(`[seo] head prerendered ${config.path}`)
   }
+
+  await optimizeCriticalCss(distDir)
 
   const sitemap = generateSitemap(configs)
   fs.writeFileSync(path.join(rootDir, 'public', 'sitemap.xml'), sitemap, 'utf8')

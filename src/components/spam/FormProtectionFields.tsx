@@ -1,4 +1,4 @@
-import { Turnstile } from '@marsidev/react-turnstile'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 
 type FormProtectionFieldsProps = {
   turnstileSiteKey: string
@@ -11,8 +11,13 @@ type FormProtectionFieldsProps = {
   onHoneypotChange: (value: string) => void
 }
 
+const LazyTurnstile = lazy(() =>
+  import('@marsidev/react-turnstile').then((mod) => ({ default: mod.Turnstile })),
+)
+
 /**
  * Hidden honeypot + Cloudflare Turnstile widget for bot-resistant forms.
+ * Turnstile loads only when the form nears the viewport.
  */
 export function FormProtectionFields({
   turnstileSiteKey,
@@ -23,6 +28,34 @@ export function FormProtectionFields({
   honeypotValue,
   onHoneypotChange,
 }: FormProtectionFieldsProps) {
+  const turnstileSlotRef = useRef<HTMLDivElement>(null)
+  const [activateTurnstile, setActivateTurnstile] = useState(false)
+
+  useEffect(() => {
+    if (!turnstileSiteKey || activateTurnstile) return
+    const el = turnstileSlotRef.current
+    if (!el) return
+
+    const activate = () => setActivateTurnstile(true)
+
+    if (typeof IntersectionObserver === 'undefined') {
+      activate()
+      return
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          activate()
+          io.disconnect()
+        }
+      },
+      { rootMargin: '240px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [turnstileSiteKey, activateTurnstile])
+
   return (
     <>
       <div
@@ -43,14 +76,18 @@ export function FormProtectionFields({
       </div>
 
       {turnstileSiteKey ? (
-        <div className="mt-4 flex justify-start">
-          <Turnstile
-            key={turnstileResetKey}
-            siteKey={turnstileSiteKey}
-            onSuccess={onTurnstileSuccess}
-            onExpire={() => onTurnstileExpire?.()}
-            options={{ theme: 'light', size: 'normal' }}
-          />
+        <div ref={turnstileSlotRef} className="mt-4 flex justify-start min-h-[65px]">
+          {activateTurnstile ? (
+            <Suspense fallback={<div className="h-[65px] w-[300px] bg-cream-50 border border-ink/10" aria-hidden />}>
+              <LazyTurnstile
+                key={turnstileResetKey}
+                siteKey={turnstileSiteKey}
+                onSuccess={onTurnstileSuccess}
+                onExpire={() => onTurnstileExpire?.()}
+                options={{ theme: 'light', size: 'normal' }}
+              />
+            </Suspense>
+          ) : null}
         </div>
       ) : null}
     </>
