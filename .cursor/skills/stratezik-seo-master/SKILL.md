@@ -7,7 +7,8 @@ description: >-
   canonicals, OG/Twitter cards, breadcrumbs, AEO machine-readable files, or
   shipping any new indexable page or blog post. Agent must run npm run build
   automatically when publishing — never defer to the user. Pair with stratezik-seo-aeo for
-  strategy/briefs and stratezik-blog-seo-pipeline for editorial content.
+  strategy/briefs, stratezik-blog-seo-pipeline for editorial content, and
+  stratezik-web-performance for App shell / bundle / LCP work.
 ---
 
 # Stratezik SEO Master
@@ -24,7 +25,12 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Head HTML builder | `src/seo/buildPageHeadHtml.ts` | Server-visible `<head>` fragment |
 | Client hydration | `src/seo/RouteSeoManager.tsx` | Mirrors registry on SPA navigation |
 | Build prerender | `scripts/postbuild-seo.ts` | Writes `dist/{route}/index.html` + `sitemap.xml` + `llms-full.txt` |
-| Blog data | `src/blog/posts.ts` | Slug, dates, description, keywords, `shareImagePath`, `authorSlug`, FAQs |
+| Build asserts | `scripts/postbuild-seo.ts` | **Fails build** on `<noscript>` in prerender; homepage body markers (FAQ, services, footer) |
+| Critical CSS | `scripts/optimize-critical-css.ts` | Critters inline + deferred CSS/fonts on all prerendered HTML |
+| Release gates | `scripts/check-release-gates.ts` | Post-build: no mobile preload of three-vendor/markdown, CSS defer, blog meta split |
+| Blog metadata | `src/blog/postsMeta.ts` | Slug, dates, description, keywords, `authorSlug`, FAQs — **no** dynamic imports |
+| Blog loaders | `src/blog/postLoaders.ts` | `() => import('./Article')` map — blog routes + prerender only |
+| Blog merge | `src/blog/posts.ts` | `getPostBySlug()` joins meta + loader for `BlogPostPage` / prerender |
 | Blog author UI | `src/blog/BlogAuthorSignoff.tsx`, `BlogStratezikContactLink.tsx` | Closing byline + contact CTA; **must not** hardcode names/mailto in article TSX |
 | Article schema | `src/blog/buildArticleJsonLd.ts` | Article + FAQPage + BreadcrumbList `@graph`; Person author |
 | Services data | `src/services/services.ts` (metadata) + `src/services/serviceContent.ts` (raw md bodies, browser-only) | Slug, title, meta, keywords, `serviceType`, `faqEntities` |
@@ -37,7 +43,9 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Lead magnets | `src/components/cheatsheet/*`, `server/cheatsheet/*`, `content/*.md` | Immersive landing + gated guide; API via `api/aeo.ts` actions `guide-lead` / `guide-access` |
 | Sheets webhooks | `google-apps-script-*.js`, env `GOOGLE_*_WEBHOOK_URL` | Per-tool Apps Script → spreadsheet tab; see `GOOGLE_SHEETS_SETUP.md` |
 
-**Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts only need `posts.ts` — registry maps them automatically.
+**Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts need **`postsMeta.ts` + `postLoaders.ts`** — registry reads metadata via `postsMeta` only (never `postLoaders` or `posts.ts` on the SEO import path).
+
+**Rule (build):** Full ship is `npm run build` → prerender + `check:release-gates`. Do not skip postbuild or release gates. After deploy, optional: `bash scripts/verify-live-homepage.sh`.
 
 **Rule (free tools):** New lead magnets get a dedicated landing route, registry entry, `FREE_TOOLS[]` card, inline-link guidance in **`stratezik-seo-aeo` §9**, and (if email-gated) Supabase table + optional Sheets script. Nav points to `/free-tools`, not individual tools.
 
@@ -55,9 +63,9 @@ Copy and complete:
 
 ```
 SEO release gate:
-- [ ] Route in pageSeoRegistry (or posts.ts for blog)
+- [ ] Route in pageSeoRegistry (or postsMeta.ts + postLoaders.ts for blog)
 - [ ] Blog articles: `<BlogAuthorSignoff />` + `<BlogStratezikContactLink>` only — no hardcoded author names or `mailto:` in `*Article.tsx` (`npm run check:blog-author`)
-- [ ] npm run build succeeds (postbuild prerender + sitemap)
+- [ ] npm run build succeeds (postbuild prerender + sitemap + check:release-gates)
 - [ ] curl -s URL | grep -E '<title>|canonical|og:title' shows ROUTE values (not homepage)
 - [ ] dist/blog/{slug}/index.html exists for new blog slug
 - [ ] public/sitemap.xml includes new URL with truthful lastmod
@@ -71,12 +79,13 @@ SEO release gate:
 
 ## Adding a blog post
 
-1. Add entry to `src/blog/posts.ts` (slug, title, description, dates, keywords, shareImagePath, `authorSlug`, faqEntities, Component).
-2. Add FAQ copy to `src/blog/postFaqs.ts` if using FAQ schema.
-3. Set `authorSlug` to a real person in `src/seo/authors.ts`; add a new author there if needed (never invent `sameAs` profiles).
-4. **Agent runs** `npm run build` — do **not** hand-edit `public/sitemap.xml`, `llms-full.txt`, or `llm-context.json` (all generated).
-5. Verify `dist/blog/{slug}/index.html` title, canonical, and Person author; commit generated files with the post.
-6. After deploy, optional: `curl -s https://www.stratezik.com/blog/{slug} | grep -E '<title>|canonical|Person'`
+1. Add metadata to `src/blog/postsMeta.ts` (slug, title, description, dates, keywords, `authorSlug`, faqEntities).
+2. Add matching loader to `src/blog/postLoaders.ts`: `'your-slug': () => import('./YourArticle')`.
+3. Add FAQ copy to `src/blog/postFaqs.ts` if using FAQ schema.
+4. Set `authorSlug` to a real person in `src/seo/authors.ts`; add a new author there if needed (never invent `sameAs` profiles).
+5. **Agent runs** `npm run build` — do **not** hand-edit `public/sitemap.xml`, `llms-full.txt`, or `llm-context.json` (all generated).
+6. Verify `dist/blog/{slug}/index.html` title, canonical, and Person author; commit generated files with the post.
+7. After deploy, optional: `curl -s https://www.stratezik.com/blog/{slug} | grep -E '<title>|canonical|Person'`
 
 ## Adding a non-blog page
 
@@ -165,6 +174,12 @@ Off-page is **operational marketing work**, tracked here as a standing playbook 
 ```bash
 npm run build
 
+# Post-build gates (also run automatically at end of build)
+npm run check:release-gates
+
+# Live homepage prerender smoke
+bash scripts/verify-live-homepage.sh
+
 # Blog post — must show article title, not homepage
 curl -sS "https://www.stratezik.com/blog/chatgpt-ads-2026-guide" | grep -E '<title>|rel="canonical"|og:title|article:published'
 
@@ -188,7 +203,8 @@ curl -sS "https://www.stratezik.com/llm-context.json" | head
 | Symptom | Fix |
 |---------|-----|
 | Social preview shows homepage title | Deploy without postbuild; run full `npm run build` |
-| New post 404 in sitemap | Missing `posts.ts` entry or build not run |
+| New post 404 in sitemap | Missing `postsMeta.ts` / `postLoaders.ts` entry or build not run |
+| check:release-gates fails | See `stratezik-web-performance` — preload/CSS/App import regression |
 | FAQ schema mismatch | Sync `postFaqs.ts` with on-page FAQ |
 | Broken diagram on blog | Asset path must be `/illustrations/...` not `/blog/...` |
 | Duplicate FAQ on wrong URL | Do not inject home FAQ outside `/`; use registry only |
@@ -201,6 +217,7 @@ curl -sS "https://www.stratezik.com/llm-context.json" | head
 - **Strategy / SERP / AEO brief**: `stratezik-seo-aeo`
 - **GSC data scout**: `stratezik-gsc-intelligence`
 - **New blog end-to-end**: `stratezik-blog-seo-pipeline`
+- **App shell / PageSpeed / bundles**: `stratezik-web-performance`
 - **This skill**: implementation, audits, and release gates
 
 ## Reference

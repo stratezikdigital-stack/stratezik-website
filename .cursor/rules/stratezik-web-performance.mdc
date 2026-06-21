@@ -1,0 +1,19 @@
+---
+description: Mandatory performance patterns when editing app shell, Vite, or critical CSS
+globs: src/App.tsx,vite.config.ts,index.html,scripts/optimize-critical-css.ts,scripts/critical-css-constants.ts,scripts/postbuild-seo.ts,src/components/HomePage.tsx,src/components/HomeBelowFoldSections.tsx,src/components/DesktopExperience.tsx,src/components/MobileScrollShell.tsx,src/components/LazyWhenVisible.tsx,src/blog/postsMeta.ts,src/blog/postLoaders.ts
+alwaysApply: false
+---
+
+# Web performance (mandatory)
+
+When **matched files are in context**, read and follow `.cursor/skills/stratezik-web-performance/SKILL.md` before finishing.
+
+## Hard rules (check:release-gates enforces)
+
+1. **App.tsx** — no static imports of `WorldCanvas`, `Loader`, `CustomCursor`, `MoveCounterHUD`, or `SmoothScroll`. Use lazy `DesktopExperience` + `MobileScrollShell`.
+2. **Blog** — metadata in `postsMeta.ts`; dynamic article imports only in `postLoaders.ts`. `pageSeoRegistry.ts` imports `postsMeta` only.
+3. **Build** — run `npm run build` after shell changes; do not hand users “run build yourself” for perf work.
+4. **CSS** — preserve deferred main bundle pattern in `optimize-critical-css.ts`; do not reintroduce blocking `<link rel="stylesheet" href="/assets/index-…">`.
+5. **Homepage** — keep above-fold eager; below-fold via `LazyWhenVisible` unless explicitly scoped otherwise.
+
+Pair with **`stratezik-seo-master`** when changes also affect prerender, sitemap, or registry.
