@@ -32,6 +32,8 @@ import { Loader } from './components/Loader'
 import { CustomCursor } from './components/CustomCursor'
 import { MoveCounterHUD } from './components/MoveCounterHUD'
 import { NotationMarquee } from './components/NotationMarquee'
+import { getIsMobile } from './utils/device'
+import { useIsMobile } from './three/hooks/useIsMobile'
 
 /** On route change without a target hash, reset scroll to the top of the page. */
 function ScrollToTop() {
@@ -68,22 +70,25 @@ function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
-  const [loaded, setLoaded] = useState(isCheatSheet)
+  const mobile = useIsMobile()
+  const [loaded, setLoaded] = useState(() => isCheatSheet || getIsMobile())
 
   useEffect(() => {
-    if (isCheatSheet) setLoaded(true)
-  }, [isCheatSheet])
+    if (isCheatSheet || mobile) setLoaded(true)
+  }, [isCheatSheet, mobile])
+
+  const showDesktopChrome = !isCheatSheet && !mobile
 
   return (
     <>
       <RouteSeoManager />
-      {!isCheatSheet && <Loader onDone={() => setLoaded(true)} />}
-      {!isCheatSheet && <CustomCursor />}
+      {showDesktopChrome ? <Loader onDone={() => setLoaded(true)} /> : null}
+      {showDesktopChrome ? <CustomCursor /> : null}
       <SmoothScroll>
         <ScrollToTop />
         <ScrollToHash />
-        {isHome ? <WorldCanvas /> : null}
-        {isHome && loaded ? <MoveCounterHUD /> : null}
+        {isHome && !mobile && loaded ? <WorldCanvas /> : null}
+        {isHome && loaded && !mobile ? <MoveCounterHUD /> : null}
         <div className="relative z-10 min-h-screen">
           {!isCheatSheet && <Navbar />}
           <main className={isCheatSheet ? '' : 'pt-36'}>

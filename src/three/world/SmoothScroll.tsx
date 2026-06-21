@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import Lenis from 'lenis'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { getIsMobile } from '../../utils/device'
 import { useWorldStore } from './store'
 import { setLenis } from './lenisRef'
 
@@ -18,7 +19,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
   const setProgress = useWorldStore((s) => s.setProgress)
 
   useEffect(() => {
-    if (reduced) {
+    const useNativeScroll = reduced || getIsMobile()
+    if (useNativeScroll) {
       const onScroll = () => {
         const scrollY = window.scrollY
         const limit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)

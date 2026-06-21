@@ -51,25 +51,21 @@ const PortfolioSection = () => {
         {/* Match list: editorial table */}
         <div className="border-t border-ink/15">
           {MATCHES.map((m, i) => (
-            <motion.article
+            <motion.div
               key={m.num}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.04 }}
               viewport={{ once: true, margin: '-80px' }}
-              data-cursor="cta"
-              data-cursor-text="Read"
-              onClick={() => setOpenCase({ num: m.num, mode: m.mode, angle: m.angle })}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  setOpenCase({ num: m.num, mode: m.mode, angle: m.angle })
-                }
-              }}
-              className="group grid grid-cols-12 gap-4 py-8 md:py-10 border-b border-ink/15 hover:bg-cream-50 transition-colors duration-700 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-oxblood"
+              className="border-b border-ink/15"
             >
+              <button
+                type="button"
+                data-cursor="cta"
+                data-cursor-text="Read"
+                onClick={() => setOpenCase({ num: m.num, mode: m.mode, angle: m.angle })}
+                className="group grid w-full grid-cols-12 gap-4 py-8 md:py-10 text-left hover:bg-cream-50 transition-colors duration-700 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-oxblood"
+              >
               {/* Headline + category + body */}
               <div className="col-span-12 md:col-span-7">
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood flex items-center gap-2">
@@ -81,9 +77,9 @@ const PortfolioSection = () => {
                     </>
                   )}
                 </div>
-                <h3 className="mt-1 font-display text-2xl md:text-3xl lg:text-4xl text-ink leading-[1.05] tracking-[-0.025em] group-hover:translate-x-1 transition-transform duration-700">
+                <span className="mt-1 block font-display text-2xl md:text-3xl lg:text-4xl text-ink leading-[1.05] tracking-[-0.025em] group-hover:translate-x-1 transition-transform duration-700">
                   {m.headline}
-                </h3>
+                </span>
                 <p className="mt-3 text-ink-700 text-sm sm:text-base leading-relaxed max-w-2xl">
                   {m.description}
                 </p>
@@ -109,7 +105,8 @@ const PortfolioSection = () => {
                   <span>{m.opening}</span>
                 </div>
               </div>
-            </motion.article>
+              </button>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { getIsMobile } from '../utils/device'
 
 interface LoaderProps {
   onDone?: () => void
@@ -8,7 +9,7 @@ interface LoaderProps {
 /**
  * Plan D intro loader: ink scrim with sequenced brand glyphs and progress.
  *
- * Skipped under prefers-reduced-motion.
+ * Skipped on mobile/touch and under prefers-reduced-motion so LCP is not blocked.
  */
 export function Loader({ onDone }: LoaderProps) {
   const [percent, setPercent] = useState(0)
@@ -16,13 +17,11 @@ export function Loader({ onDone }: LoaderProps) {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced) {
+    if (reduced || getIsMobile()) {
       setPercent(100)
-      const t = window.setTimeout(() => {
-        setOpen(false)
-        onDone?.()
-      }, 200)
-      return () => window.clearTimeout(t)
+      setOpen(false)
+      onDone?.()
+      return
     }
 
     let cancelled = false

@@ -2,6 +2,8 @@ import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { scrollToContactSection } from '../utils/navigation'
 import { useSection } from '../three/world/useSection'
+import { useIsMobile } from '../three/hooks/useIsMobile'
+import { useReducedMotion } from '../three/hooks/useReducedMotion'
 
 /**
  * Plan D - Editorial hero (Champion's Hall).
@@ -22,6 +24,9 @@ import { useSection } from '../three/world/useSection'
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null)
   useSection('hero', ref)
+  const mobile = useIsMobile()
+  const reduced = useReducedMotion()
+  const animate = !mobile && !reduced
 
   return (
     <section
@@ -33,9 +38,9 @@ const HeroSection = () => {
       <div className="lg:sticky lg:top-0 w-full lg:h-screen flex flex-col">
         {/* Editorial top rule + notation row */}
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
+          initial={animate ? { opacity: 0, y: -8 } : false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.05 }}
+          transition={animate ? { duration: 0.8, delay: 0.05 } : { duration: 0 }}
           className="hairline mx-6 md:mx-12 mt-6 pt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500"
         >
           <span>Intro</span>
@@ -45,14 +50,16 @@ const HeroSection = () => {
         {/* Soft left scrim: keeps headline crisp over 3D world */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cream/85 via-cream/30 to-transparent"
+          className={`pointer-events-none absolute inset-0 ${
+            mobile ? 'bg-cream' : 'bg-gradient-to-r from-cream/85 via-cream/30 to-transparent'
+          }`}
         />
 
         <div className="relative z-10 flex-1 grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-10 px-6 md:px-12 pt-12 md:pt-16 lg:pt-12 pb-24 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
+            initial={animate ? { opacity: 0, y: 28 } : false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={animate ? { duration: 1.1, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
             className="md:col-span-9 lg:col-span-7 max-w-[58rem]"
           >
             <h1 className="font-display text-ink">
@@ -77,9 +84,9 @@ const HeroSection = () => {
             </h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={animate ? { opacity: 0, y: 16 } : false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.9 }}
+              transition={animate ? { delay: 0.45, duration: 0.9 } : { duration: 0 }}
               className="lead mt-8 md:mt-10 max-w-[28rem]"
             >
               We help Toronto startups and SMBs accelerate growth through integrated campaigns that combine{' '}
@@ -89,9 +96,9 @@ const HeroSection = () => {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={animate ? { opacity: 0, y: 16 } : false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.58, duration: 0.7 }}
+              transition={animate ? { delay: 0.58, duration: 0.7 } : { duration: 0 }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <button
@@ -124,9 +131,9 @@ const HeroSection = () => {
             Sits inside its own cream band so the 3D world doesn't bleed
             dark pieces through the editorial type. */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={animate ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
+          transition={animate ? { delay: 0.9, duration: 0.8 } : { duration: 0 }}
           className="relative z-10 bg-cream"
         >
           <div className="hairline mx-6 md:mx-12 mb-0">
