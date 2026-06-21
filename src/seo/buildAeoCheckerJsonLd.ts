@@ -34,7 +34,7 @@ export function buildAeoCheckerJsonLd() {
       inLanguage: 'en-CA',
       primaryImageOfPage: {
         '@type': 'ImageObject',
-        url: `${SITE_ORIGIN}/services/seo-aeo.png`,
+        url: `${SITE_ORIGIN}/services/seo-aeo.webp`,
       },
     },
     {

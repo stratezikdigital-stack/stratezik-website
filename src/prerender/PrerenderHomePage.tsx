@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { services } from '../services/services'
-import { getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
 import LatestInsightsSection from '../components/LatestInsightsSection'
 import { HomeFaqSection } from '../components/HomeFaqSection'
 import { GrowthCreditHomeBanner } from '../components/GrowthCreditHomeBanner'
@@ -66,28 +65,15 @@ export function PrerenderHomePage() {
           </div>
 
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {services.map((service) => {
-              const image = getServiceHeroImage(service.slug)
-              const alt = image ? serviceHeroImageAlt(service.primaryKeyword) : service.primaryKeyword
-              return (
-                <li key={service.slug} className="border border-cream/15 bg-cream/5">
-                  <Link to={`/services/${service.slug}`} className="block p-6 md:p-8 hover:bg-cream/10 transition-colors">
-                    {image ? (
-                      <img
-                        src={image}
-                        alt={alt}
-                        width={700}
-                        height={420}
-                        className="w-full aspect-[5/3] object-cover mb-6 border border-cream/10"
-                      />
-                    ) : null}
-                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">{service.serviceType}</p>
-                    <h3 className="mt-2 font-display text-2xl text-cream tracking-tight">{service.primaryKeyword}</h3>
-                    <p className="mt-4 text-cream/75 leading-relaxed text-sm">{service.metaDescription}</p>
-                  </Link>
-                </li>
-              )
-            })}
+            {services.map((service) => (
+              <li key={service.slug} className="border border-cream/15 bg-cream/5">
+                <Link to={`/services/${service.slug}`} className="block p-6 md:p-8 hover:bg-cream/10 transition-colors">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">{service.serviceType}</p>
+                  <h3 className="mt-2 font-display text-2xl text-cream tracking-tight">{service.primaryKeyword}</h3>
+                  <p className="mt-4 text-cream/75 leading-relaxed text-sm">{service.metaDescription}</p>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </section>

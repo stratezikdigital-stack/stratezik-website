@@ -2,26 +2,43 @@
  * Hero images for /services routes. Keys match parent slugs or `parent/child` for overrides.
  * Child pages without an entry inherit the parent image.
  */
-export const serviceHeroImages: Record<string, string> = {
-  services: '/services/services-hub.png',
-  'paid-search': '/services/paid-search.png',
-  'paid-social': '/services/paid-social.png',
-  'seo-aeo': '/services/seo-aeo.png',
-  'google-business-profile': '/services/google-business-profile.png',
-  'social-media-marketing': '/services/social-media-marketing.png',
-  'brand-strategy': '/services/brand-strategy.png',
-  'web-design': '/services/web-design.png',
-  'ai-agents': '/services/ai-agents.png',
-  'seo-aeo/local-seo': '/services/seo-aeo-local-seo.png',
+const serviceHeroBasenames: Record<string, string> = {
+  services: 'services-hub',
+  'paid-search': 'paid-search',
+  'paid-social': 'paid-social',
+  'seo-aeo': 'seo-aeo',
+  'google-business-profile': 'google-business-profile',
+  'social-media-marketing': 'social-media-marketing',
+  'brand-strategy': 'brand-strategy',
+  'web-design': 'web-design',
+  'ai-agents': 'ai-agents',
+  'seo-aeo/local-seo': 'seo-aeo-local-seo',
 }
 
-export function getServiceHeroImage(parentSlug: string | undefined, childSlug?: string): string | undefined {
-  if (!parentSlug) return serviceHeroImages.services
+export type ServiceHeroSources = {
+  avif: string
+  webp: string
+  png: string
+}
+
+export function getServiceHeroBasename(parentSlug: string | undefined, childSlug?: string): string | undefined {
+  if (!parentSlug) return serviceHeroBasenames.services
   if (childSlug) {
     const childKey = `${parentSlug}/${childSlug}`
-    if (serviceHeroImages[childKey]) return serviceHeroImages[childKey]
+    if (serviceHeroBasenames[childKey]) return serviceHeroBasenames[childKey]
   }
-  return serviceHeroImages[parentSlug]
+  return serviceHeroBasenames[parentSlug]
+}
+
+export function getServiceHeroSources(basename: string): ServiceHeroSources {
+  const base = `/services/${basename}`
+  return { avif: `${base}.avif`, webp: `${base}.webp`, png: `${base}.png` }
+}
+
+/** Preferred lightweight path for OG/meta and simple img fallbacks. */
+export function getServiceHeroImage(parentSlug: string | undefined, childSlug?: string): string | undefined {
+  const basename = getServiceHeroBasename(parentSlug, childSlug)
+  return basename ? getServiceHeroSources(basename).webp : undefined
 }
 
 /** Visible label + alt suffix for AI-generated service hero art. */

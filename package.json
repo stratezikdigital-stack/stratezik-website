@@ -9,7 +9,8 @@
     "check:blog-author": "node ./node_modules/tsx/dist/cli.mjs scripts/check-blog-author.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "node ./node_modules/vite/bin/vite.js preview",
-    "seo:postbuild": "node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts"
+    "seo:postbuild": "node ./node_modules/tsx/dist/cli.mjs scripts/postbuild-seo.ts",
+    "optimize:service-images": "node scripts/optimize-service-images.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.84",
@@ -46,6 +47,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
+    "sharp": "^0.35.2",
     "tailwindcss": "^3.3.5",
     "tsx": "^4.19.4",
     "typescript": "^5.2.2",

@@ -2,7 +2,13 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { usePrerenderBodies, type PrerenderBodies } from '../prerender/PrerenderBodiesContext'
 import { getServiceBySlug, getServiceChild } from '../services/services'
-import { SERVICE_HERO_AI_LABEL, getServiceHeroImage, serviceHeroImageAlt } from '../services/serviceImages'
+import { ServiceHeroImage } from './ServiceHeroImage'
+import {
+  SERVICE_HERO_AI_LABEL,
+  getServiceHeroBasename,
+  getServiceHeroSources,
+  serviceHeroImageAlt,
+} from '../services/serviceImages'
 import { AiAgentsOrgFeature } from './aiAgents/AiAgentsOrgFeature'
 import { AeoCheckerCta } from './AeoCheckerCta'
 import { Markdown } from './Markdown'
@@ -109,13 +115,14 @@ export function ServicePageView({ clientBodies }: ServicePageViewProps) {
   const { title, intro, rest } = splitBody(rawBody)
   const kicker = isHub ? 'All services' : isChild ? childDef!.serviceType : parentService!.serviceType
   const glyphSeed = isChild ? `${slug}-${child}` : parentService?.slug ?? 'services'
-  const heroImage = getServiceHeroImage(isHub ? undefined : slug, isChild ? child : undefined)
+  const heroBasename = getServiceHeroBasename(isHub ? undefined : slug, isChild ? child : undefined)
+  const heroSources = heroBasename ? getServiceHeroSources(heroBasename) : undefined
   const heroAltBase = isHub
     ? 'Stratezik digital marketing services in Toronto and the GTA'
     : isChild
       ? childDef!.primaryKeyword
       : parentService!.primaryKeyword
-  const heroAlt = heroImage ? serviceHeroImageAlt(heroAltBase) : heroAltBase
+  const heroAlt = heroSources ? serviceHeroImageAlt(heroAltBase) : heroAltBase
   const introParas = intro.split(/\n{2,}/).filter(Boolean)
   const isAeoSurface =
     (!isChild && parentService?.slug === 'seo-aeo') ||
@@ -198,13 +205,13 @@ export function ServicePageView({ clientBodies }: ServicePageViewProps) {
             className="col-span-12 lg:col-span-5"
           >
             <figure className="relative bg-cream-50 border border-ink/10 aspect-[5/4] overflow-hidden m-0">
-              {heroImage ? (
+              {heroSources ? (
                 <>
-                  <img
-                    src={heroImage}
+                  <ServiceHeroImage
+                    sources={heroSources}
                     alt={heroAlt}
                     width={1400}
-                    height={1120}
+                    height={933}
                     className="absolute inset-0 w-full h-full object-cover"
                     fetchPriority="high"
                   />
