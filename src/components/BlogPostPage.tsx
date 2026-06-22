@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { BlogDiscoveryHub } from '../blog/BlogDiscoveryHub'
 import { BlogArticleBody } from '../blog/LazyBlogArticle'
+import { BlogAiSummarizeBar } from './BlogAiSummarizeBar'
 import { getPostBySlug } from '../blog/posts'
 import { getAuthorBySlug } from '../seo/authors'
 import { formatBreadcrumbLabel } from '../seo/buildBreadcrumbJsonLd'
@@ -82,6 +83,7 @@ const BlogPostPage = ({ articleComponent }: BlogPostPageProps) => {
             </span>
             <span>Updated {post.dateModified}</span>
           </div>
+          <BlogAiSummarizeBar title={post.title} slug={post.slug} />
         </motion.header>
 
         <div className="mt-14 md:mt-20">
