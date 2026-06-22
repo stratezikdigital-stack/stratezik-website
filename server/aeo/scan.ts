@@ -23,6 +23,19 @@ export interface GroupSplit {
   pct: number | null
 }
 
+export interface CrawlerProbeEntry {
+  bot: string
+  status: number
+  allowed: boolean
+}
+
+export interface CrawlerProbe {
+  total: number
+  allowedCount: number
+  blockedCount: number
+  entries: CrawlerProbeEntry[]
+}
+
 export interface AeoScanResult {
   domain: string
   url: string
@@ -35,6 +48,7 @@ export interface AeoScanResult {
   companyName: string
   /** First ~500 chars of stripped homepage copy (for deep-scan buyer queries). */
   snippet: string
+  crawlerProbe?: CrawlerProbe
 }
 
 export const BENCHMARK = {
@@ -216,6 +230,55 @@ export type AeoScanOptions = {
   skipAnswerFirst?: boolean
 }
 
+const AI_CRAWLER_UAS = [
+  {
+    bot: 'GPTBot (ChatGPT)',
+    ua: 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.1; +https://openai.com/gptbot',
+  },
+  {
+    bot: 'OAI-SearchBot (ChatGPT Search)',
+    ua: 'Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)',
+  },
+  {
+    bot: 'ClaudeBot (Claude)',
+    ua: 'Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)',
+  },
+  {
+    bot: 'PerplexityBot',
+    ua: 'Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)',
+  },
+  {
+    bot: 'CCBot (Common Crawl)',
+    ua: 'CCBot/2.0 (https://commoncrawl.org/faq/)',
+  },
+]
+
+/** Fetch homepage as each major AI crawler — runs only when the main scan is unverifiable. */
+export async function probeAiCrawlers(domain: string): Promise<CrawlerProbe> {
+  const base = `https://${domain}`
+  const entries = await Promise.all(
+    AI_CRAWLER_UAS.map(async ({ bot, ua }) => {
+      try {
+        const res = await fetch(base, {
+          headers: { 'User-Agent': ua, Accept: 'text/html,*/*' },
+          redirect: 'follow',
+          signal: AbortSignal.timeout(12000),
+        })
+        return { bot, status: res.status, allowed: res.ok }
+      } catch {
+        return { bot, status: 0, allowed: false }
+      }
+    }),
+  )
+  const allowedCount = entries.filter((e) => e.allowed).length
+  return {
+    total: entries.length,
+    allowedCount,
+    blockedCount: entries.length - allowedCount,
+    entries,
+  }
+}
+
 export async function runAeoScan(
   domain: string,
   options: AeoScanOptions = {},
@@ -391,6 +454,11 @@ export async function runAeoScan(
     }
   }
 
+  const crawlerProbe =
+    total === 'unverifiable' && !options.skipEntityAlignment
+      ? await probeAiCrawlers(domain)
+      : undefined
+
   return {
     domain,
     url: base,
@@ -402,5 +470,6 @@ export async function runAeoScan(
     groupB: splitFor('B'),
     companyName,
     snippet,
+    crawlerProbe,
   }
 }

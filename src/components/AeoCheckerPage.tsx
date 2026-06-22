@@ -68,6 +68,19 @@ interface GroupSplit {
   pct: number | null
 }
 
+interface CrawlerProbeEntry {
+  bot: string
+  status: number
+  allowed: boolean
+}
+
+interface CrawlerProbe {
+  total: number
+  allowedCount: number
+  blockedCount: number
+  entries: CrawlerProbeEntry[]
+}
+
 interface Topline {
   scanId: string
   domain: string
@@ -83,6 +96,7 @@ interface Topline {
     faqPct: number
     n: number
   }
+  crawlerProbe?: CrawlerProbe
 }
 
 interface Criterion {
@@ -488,20 +502,59 @@ export default function AeoCheckerPage() {
       {(phase === 'topline' || phase === 'breakdown') && topline && (
         <section className="mt-10 border-t border-ink/15 pt-10">
           {topline.total === 'unverifiable' ? (
-            <div className={`${panelAccent}`}>
-              <h2 className="font-display text-xl text-ink">
-                We couldn’t scan {topline.domain}
-              </h2>
-              <p className="mt-3 text-ink-600 leading-relaxed">
-                Fewer than five of the eight criteria were checkable. That usually means a CDN or
-                firewall is blocking automated visitors, which is itself an AEO problem. If our
-                scanner can’t read your site, AI crawlers likely can’t either. That alone is worth
-                a conversation.
-              </p>
-              <a href={BOOK_URL} className={`mt-6 ${btnPrimary}`}>
-                Book a call
-              </a>
-            </div>
+            topline.crawlerProbe && topline.crawlerProbe.blockedCount > 0 ? (
+              <div className={panelInk}>
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-gold/90">
+                  Critical finding
+                </p>
+                <h2 className="mt-3 font-display text-xl md:text-2xl text-cream">
+                  {topline.domain} is blocking AI crawlers
+                </h2>
+                <p className="mt-3 max-w-2xl text-cream/85 leading-relaxed">
+                  {topline.crawlerProbe.blockedCount}/{topline.crawlerProbe.total} AI crawlers blocked
+                  — you are effectively invisible to them.
+                </p>
+                <ul className="mt-5 space-y-2">
+                  {topline.crawlerProbe.entries.map((entry) => (
+                    <li
+                      key={entry.bot}
+                      className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border border-cream/15 bg-cream/5 px-4 py-2.5 text-sm"
+                    >
+                      <span className="text-cream">{entry.bot}</span>
+                      <span
+                        className={
+                          entry.allowed
+                            ? 'font-medium text-green-400'
+                            : 'font-medium text-red-400'
+                        }
+                      >
+                        {entry.allowed
+                          ? '✓ allowed'
+                          : `✗ blocked${entry.status ? ` (${entry.status})` : ''}`}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <a href={BOOK_URL} className={`mt-6 ${btnPrimary}`}>
+                  Fix this — book a call
+                </a>
+              </div>
+            ) : (
+              <div className={`${panelAccent}`}>
+                <h2 className="font-display text-xl text-ink">
+                  We couldn’t scan {topline.domain}
+                </h2>
+                <p className="mt-3 text-ink-600 leading-relaxed">
+                  Fewer than five of the eight criteria were checkable. That usually means a CDN or
+                  firewall is blocking automated visitors, which is itself an AEO problem. If our
+                  scanner can’t read your site, AI crawlers likely can’t either. That alone is worth
+                  a conversation.
+                </p>
+                <a href={BOOK_URL} className={`mt-6 ${btnPrimary}`}>
+                  Book a call
+                </a>
+              </div>
+            )
           ) : (
             <>
               <div className={panelInk}>

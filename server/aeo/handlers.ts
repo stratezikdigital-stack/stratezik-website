@@ -40,6 +40,7 @@ function topline(scan: AeoScanResult, scanId: string) {
     groupB: scan.groupB,
     benchmark: BENCHMARK,
     checkedAt: scan.checkedAt,
+    crawlerProbe: scan.crawlerProbe,
   }
 }
 
