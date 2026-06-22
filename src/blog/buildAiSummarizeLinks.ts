@@ -1,11 +1,10 @@
-import { canonicalUrl } from '../seo/siteConfig'
+import { canonicalUrl, SITE_ORIGIN } from '../seo/siteConfig'
 
 export type AiAssistantId = 'chatgpt' | 'copilot' | 'claude' | 'gemini' | 'perplexity' | 'grok'
 
 export type AiAssistantLink = {
   id: AiAssistantId
   label: string
-  /** Best-effort deep link; may not prefill when opened from an external site. */
   href: string
 }
 
@@ -27,43 +26,66 @@ const ASSISTANT_LABELS: Record<AiAssistantId, string> = {
   grok: 'Grok',
 }
 
-/** Per-platform param names (Gemini/ChatGPT use `prompt`; others often use `q`). */
-const ASSISTANT_URL: Record<AiAssistantId, (encodedPrompt: string) => string> = {
-  chatgpt: (p) => `https://chatgpt.com/?prompt=${p}`,
-  copilot: (p) => `https://copilot.microsoft.com/?q=${p}`,
-  claude: (p) => `https://claude.ai/new?q=${p}`,
-  gemini: (p) => `https://gemini.google.com/app?prompt=${p}`,
-  perplexity: (p) => `https://www.perplexity.ai/search?q=${p}`,
-  grok: (p) => `https://grok.com/?q=${p}`,
-}
+const BLOG_HUB = `${SITE_ORIGIN}/blog`
 
-/** Full prompt copied to clipboard — reliable across all assistants. */
+/** Link-out prompt (single block) — kept under ~1.8k chars for URL limits. */
 export function buildAiSummarizePrompt(title: string, articleUrl: string): string {
   return [
-    'Please read and summarize this Stratezik article for a business reader.',
-    'Include the main takeaways and cite the source URL.',
-    '',
-    `Title: ${title}`,
-    `URL: ${articleUrl}`,
-  ].join('\n')
+    `Summarize the article at ${articleUrl} ("${title}").`,
+    'Highlight 4–5 key takeaways for a business reader.',
+    `Where possible, reference other articles from ${BLOG_HUB} and suggest what to read next.`,
+    `Cite ${articleUrl} as the source.`,
+  ].join(' ')
 }
 
-/** Short prompt for URL deep links (length limits; may not prefill cross-site). */
-export function buildAiSummarizeShortPrompt(title: string, articleUrl: string): string {
-  return `Read and summarize this Stratezik article for a business reader — "${title}": ${articleUrl}`
+function trimPromptForUrl(title: string, articleUrl: string): string {
+  let prompt = buildAiSummarizePrompt(title, articleUrl)
+  if (prompt.length <= 1800) return prompt
+  const shortTitle = title.length > 72 ? `${title.slice(0, 69)}…` : title
+  prompt = buildAiSummarizePrompt(shortTitle, articleUrl)
+  if (prompt.length <= 1800) return prompt
+  return [
+    `Summarize ${articleUrl}. Highlight 4–5 business takeaways.`,
+    `Suggest related reads from ${BLOG_HUB}. Cite the URL.`,
+  ].join(' ')
+}
+
+/** Platform deep-link builders — native <a href> navigation (no JS window.open). */
+function buildAssistantHref(id: AiAssistantId, encodedPrompt: string): string {
+  switch (id) {
+    case 'chatgpt':
+      // hints=search helps ChatGPT fetch/summarize URLs when Search is available.
+      return `https://chatgpt.com/?q=${encodedPrompt}&hints=search&temporary-chat=true`
+    case 'copilot':
+      return `https://copilot.microsoft.com/?q=${encodedPrompt}`
+    case 'claude':
+      return `https://claude.ai/new?q=${encodedPrompt}`
+    case 'gemini':
+      return `https://gemini.google.com/app?prompt=${encodedPrompt}`
+    case 'perplexity':
+      // Perplexity handles URL-style queries well in search mode.
+      return `https://www.perplexity.ai/search?q=${encodedPrompt}`
+    case 'grok':
+      return `https://grok.com/?q=${encodedPrompt}`
+    default: {
+      const _exhaustive: never = id
+      return _exhaustive
+    }
+  }
 }
 
 export function buildAiSummarizeLinks(title: string, articlePath: string): AiAssistantLink[] {
   const articleUrl = canonicalUrl(articlePath)
-  const shortEncoded = encodeURIComponent(buildAiSummarizeShortPrompt(title, articleUrl))
+  const prompt = trimPromptForUrl(title, articleUrl)
+  const encoded = encodeURIComponent(prompt)
 
   return ASSISTANT_ORDER.map((id) => ({
     id,
     label: ASSISTANT_LABELS[id],
-    href: ASSISTANT_URL[id](shortEncoded),
+    href: buildAssistantHref(id, encoded),
   }))
 }
 
 export function getAiSummarizePromptForPost(title: string, articlePath: string): string {
-  return buildAiSummarizePrompt(title, canonicalUrl(articlePath))
+  return trimPromptForUrl(title, canonicalUrl(articlePath))
 }
