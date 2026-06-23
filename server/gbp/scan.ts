@@ -366,5 +366,9 @@ export function topline(scan: GbpScanResult, scanId: string) {
     headline: `You're the ${scan.rankWord} option people see for "${scan.query}" — not in the top 3.`,
     mapsUri: scan.mapsUri,
     checkedAt: scan.checkedAt,
+    topCompetitor: scan.topCompetitor,
+    competitorGaps: scan.competitorGaps,
+    revenueLine: scan.revenueLine,
+    roadmap: scan.roadmap,
   }
 }

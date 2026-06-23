@@ -1,9 +1,10 @@
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveIndustry, sub } from '../gbp/industryEngine'
+import { GbpMapPackIllustration } from './gbp/GbpMapPackIllustration'
 
 const BOOK_URL = '/#contact'
 const ROADMAP_PRICE = '$29'
@@ -31,6 +32,7 @@ const SWITCH_CHIPS = ['Plumber', 'Dentist', 'Restaurant', 'Law firm', 'Hair salo
 
 type Winner = {
   rank: string
+  rankColor: string
   name: string
   rating: string
   reviews: number
@@ -75,6 +77,10 @@ type Topline = {
   gapText: string
   headline: string
   mapsUri: string | null
+  topCompetitor?: string
+  competitorGaps?: CompGap[]
+  revenueLine?: string
+  roadmap?: RoadmapStep[]
   persisted?: boolean
   storageError?: boolean
   storageHint?: string
@@ -96,6 +102,12 @@ function scoreTextClass(score: number): string {
 function scoreStroke(score: number): string {
   const t = scoreTone(score)
   return t === 'good' ? '#7a1f1f' : t === 'mid' ? '#c9a227' : '#a33a2a'
+}
+
+function impactBadge(tag: string, index: number): string {
+  if (index === 0) return 'Quick win · do this first'
+  if (index === 1) return 'Revenue uplift · medium effort'
+  return tag
 }
 
 export default function GbpAuditPage() {
@@ -122,11 +134,12 @@ export default function GbpAuditPage() {
   const [storageWarning, setStorageWarning] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
-  const ctx = useMemo(() => {
-    const cityShort = (city || 'Scarborough').split(',')[0]
-    const trade = topline?.industryDisplay ?? industry
-    return { biz: biz || topline?.businessName || trade, city: cityShort, trade }
-  }, [biz, city, industry, topline])
+  const applyPreview = useCallback((data: Topline) => {
+    setCompGaps(data.competitorGaps ?? null)
+    setRoadmap(data.roadmap ?? null)
+    setRevenueLine(data.revenueLine ?? '')
+    setTopCompetitor(data.topCompetitor ?? '')
+  }, [])
 
   const runScan = useCallback(async () => {
     if (!protection.canSubmit) {
@@ -159,6 +172,7 @@ export default function GbpAuditPage() {
       const data = (await res.json()) as Topline & { error?: string }
       if (!res.ok) throw new Error(data.error ?? 'Scan failed')
       setTopline(data)
+      applyPreview(data)
       setStorageWarning(
         data.storageError
           ? data.storageHint ??
@@ -172,7 +186,7 @@ export default function GbpAuditPage() {
     } finally {
       void protection.refreshFormToken()
     }
-  }, [biz, city, industry, protection])
+  }, [biz, city, industry, protection, applyPreview])
 
   const submitEmail = useCallback(
     async (e: FormEvent) => {
@@ -301,17 +315,49 @@ export default function GbpAuditPage() {
     setPillars(null)
     if (topline && phase === 'results') {
       const r = resolveIndustry(val)
+      const nextCtx = {
+        biz: biz || topline.businessName,
+        city: (city || topline.city).split(',')[0],
+        trade: r.display,
+      }
       setTopline({
         ...topline,
         industry: val,
         industryDisplay: r.display,
+        query: sub(r.d.query, nextCtx),
+        score: r.d.score,
+        grade: r.d.grade,
+        verdict: r.d.verdict,
+        rankNum: r.d.rankNum,
+        rankWord: r.d.rankWord,
+        moneyLine: r.d.moneyLine,
+        youRating: r.d.youRating,
+        youReviews: r.d.youReviews,
+        gapText: r.d.gapText,
+        headline: `You're the ${r.d.rankWord} option people see for "${sub(r.d.query, nextCtx)}" — not in the top 3.`,
+        winners: r.d.winners.map((w) => ({
+          ...w,
+          name: sub(w.name, nextCtx),
+          badge: sub(w.badge, nextCtx),
+        })),
         quickWins: r.d.quickWins.map((q) => ({
           ...q,
-          title: sub(q.title, ctx),
-          lossLine: sub(q.lossLine, ctx),
-          fixText: q.fixText ? sub(q.fixText, ctx) : undefined,
-          where: sub(q.where, ctx),
+          title: sub(q.title, nextCtx),
+          lossLine: sub(q.lossLine, nextCtx),
+          fixText: q.fixText ? sub(q.fixText, nextCtx) : undefined,
+          where: sub(q.where, nextCtx),
         })),
+        topCompetitor: sub(r.d.topCompetitor, nextCtx),
+        competitorGaps: r.d.competitorGaps,
+        revenueLine: sub(r.d.revenueLine, nextCtx),
+        roadmap: r.d.roadmap,
+      })
+      applyPreview({
+        ...topline,
+        topCompetitor: sub(r.d.topCompetitor, nextCtx),
+        competitorGaps: r.d.competitorGaps,
+        revenueLine: sub(r.d.revenueLine, nextCtx),
+        roadmap: r.d.roadmap,
       })
     }
   }
@@ -330,7 +376,7 @@ export default function GbpAuditPage() {
 
   return (
     <main className="min-h-screen bg-cream pb-24">
-      <div className="container-custom mx-auto max-w-5xl px-6 md:px-12 pt-8 md:pt-12">
+      <div className="container-custom mx-auto max-w-[72rem] px-6 md:px-12 pt-8 md:pt-12">
         <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
           <Link to="/" className="hover:text-oxblood transition-colors">
             Home
@@ -441,22 +487,28 @@ export default function GbpAuditPage() {
         )}
 
         {phase === 'results' && topline && (
-          <div>
-            <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-6">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-500">
-                Audit for <span className="text-oxblood">{topline.industryDisplay}</span>
-                {topline.dataSource === 'places' ? ' · live Maps data' : ' · industry template (Places API key missing or no match)'}
-              </p>
+          <div className="animate-[fadeIn_0.5s_ease-out]">
+            <div className="mb-6 flex flex-col gap-4 border-b border-ink/10 pb-6 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-400">
+                  Battle plan · tailored for{' '}
+                  <span className="text-oxblood">{topline.industryDisplay}</span>
+                </p>
+                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">
+                  {topline.dataSource === 'places' ? 'Live Maps data' : 'Industry template'}
+                  {topline.found ? '' : ' · business not matched exactly'}
+                </p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {SWITCH_CHIPS.map((c) => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => switchIndustry(c)}
-                    className={`rounded-sm border px-2.5 py-1 text-xs font-medium transition-colors ${
+                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                       industry === c
-                        ? 'border-oxblood bg-oxblood/10 text-oxblood'
-                        : 'border-ink/15 text-ink-600 hover:border-oxblood'
+                        ? 'border-oxblood bg-oxblood text-cream'
+                        : 'border-ink/15 text-ink-600 hover:border-oxblood hover:text-oxblood'
                     }`}
                   >
                     {c}
@@ -469,9 +521,9 @@ export default function GbpAuditPage() {
               <p className="mb-6 border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-ink-700">{storageWarning}</p>
             ) : null}
 
-            <div className={`${panelInk} grid items-center gap-8 md:grid-cols-[auto_1fr]`}>
-              <div className="relative mx-auto h-36 w-36 shrink-0">
-                <svg viewBox="0 0 120 120" className="h-36 w-36 -rotate-90">
+            <div className={`${panelInk} grid items-center gap-8 rounded-sm p-8 md:grid-cols-[auto_1fr]`}>
+              <div className="relative mx-auto h-36 w-36 shrink-0 md:h-[148px] md:w-[148px]">
+                <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
                   <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(244,237,225,0.2)" strokeWidth="9" />
                   <circle
                     cx="60"
@@ -486,24 +538,33 @@ export default function GbpAuditPage() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-cream">
-                  <span className="font-display text-5xl leading-none">{topline.score}</span>
+                  <span className="font-display text-5xl leading-none md:text-[3.25rem]">{topline.score}</span>
                   <span className="font-mono text-[10px] tracking-widest text-cream/50">/ 100</span>
                 </div>
               </div>
               <div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="font-mono text-xs uppercase tracking-[0.14em] text-gold">
+                  <span
+                    className={`rounded-full border px-3 py-0.5 font-mono text-xs uppercase tracking-[0.12em] ${scoreTextClass(topline.score)} border-current`}
+                  >
                     Grade {topline.grade}
                   </span>
-                  <span className="text-cream/70">{topline.verdict}</span>
+                  <span className="text-cream/75">{topline.verdict}</span>
                 </div>
-                <h2 className="mt-3 font-display text-2xl md:text-3xl text-cream leading-tight">
-                  {topline.headline}
+                <h2 className="mt-3 font-display text-2xl text-cream leading-tight md:text-[2rem]">
+                  You&apos;re the{' '}
+                  <span className="text-gold">{topline.rankWord} option</span> people see for &quot;
+                  {topline.query}&quot; — not in the top 3.
                 </h2>
-                <p className="mt-4 max-w-xl text-cream/85 leading-relaxed">
-                  Roughly <strong className="text-gold">{topline.moneyLine}</strong> are walking past you to
-                  competitors above you every month.
-                </p>
+                <div className="mt-5 inline-flex max-w-xl items-start gap-3 rounded-sm border border-oxblood/35 bg-oxblood/15 px-4 py-3">
+                  <span className="text-xl leading-none" aria-hidden>
+                    📞
+                  </span>
+                  <p className="text-sm leading-relaxed text-cream/90 md:text-[15px]">
+                    Roughly <strong className="text-gold">{topline.moneyLine}</strong> are walking past you to
+                    competitors above you every month.
+                  </p>
+                </div>
                 {topline.mapsUri ? (
                   <a
                     href={topline.mapsUri}
@@ -518,41 +579,66 @@ export default function GbpAuditPage() {
             </div>
 
             <section className="mt-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">01 — Map Pack</p>
-              <h3 className="mt-2 font-display text-2xl text-ink">
-                Who ranks for &quot;{topline.query}&quot;
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
+                01 — What customers actually see
+              </p>
+              <h3 className="mt-2 font-display text-2xl text-ink md:text-[1.65rem]">
+                The Map Pack for &quot;{topline.query}&quot; in {(topline.city || city).split(',')[0]}
               </h3>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div
-                  className="min-h-[240px] rounded-sm border border-ink/10 bg-cream-200/40"
-                  aria-hidden
+              <div className="mt-6 grid gap-4 md:grid-cols-[1fr_1.2fr]">
+                <GbpMapPackIllustration
+                  rankNum={topline.rankNum}
+                  businessName={topline.businessName}
+                  winners={topline.winners}
+                  city={topline.city || city}
                 />
                 <div className="flex flex-col gap-2">
                   {topline.winners.map((w) => (
                     <div
                       key={w.rank}
-                      className="flex items-center gap-3 border border-ink/10 bg-cream-50 px-4 py-3"
+                      className="flex items-center gap-3 border border-ink/10 bg-cream-50 px-4 py-3.5"
                     >
-                      <span className="font-mono text-sm font-bold text-oxblood">{w.rank}</span>
+                      <span
+                        className="grid h-7 w-7 shrink-0 place-items-center rounded-sm font-mono text-[13px] font-bold text-ink"
+                        style={{ background: w.rankColor }}
+                      >
+                        {w.rank}
+                      </span>
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-ink">{w.name}</p>
+                        <p className="font-semibold text-ink">{w.name}</p>
                         <p className="text-xs text-ink-500">{w.badge}</p>
                       </div>
                       <div className="text-right text-sm">
-                        <p className="font-semibold text-ink">★ {w.rating}</p>
+                        <p className="font-semibold text-gold">★ {w.rating}</p>
                         <p className="font-mono text-[10px] text-ink-400">{w.reviews} reviews</p>
                       </div>
                     </div>
                   ))}
-                  <div className="flex items-center gap-3 border border-oxblood/30 bg-oxblood/5 px-4 py-3">
-                    <span className="font-mono text-sm font-bold text-oxblood">{topline.rankNum}</span>
-                    <div className="flex-1">
-                      <p className="font-medium text-ink">
+
+                  {topline.rankNum > 3 && topline.gapText ? (
+                    <div className="flex items-center gap-3 py-1">
+                      <div className="h-px flex-1 bg-ink/15" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-400">
+                        {topline.gapText.replace(/↓/g, '').trim() || 'Below the fold'}
+                      </span>
+                      <div className="h-px flex-1 bg-ink/15" />
+                    </div>
+                  ) : null}
+
+                  <div className="flex items-center gap-3 border border-oxblood/35 bg-oxblood/8 px-4 py-3.5">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-sm border border-oxblood font-mono text-[13px] font-bold text-oxblood">
+                      {topline.rankNum}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-ink">
                         {topline.businessName}{' '}
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">You</span>
+                        <span className="ml-1 rounded-sm border border-oxblood px-1.5 font-mono text-[9px] uppercase tracking-wider text-oxblood">
+                          You
+                        </span>
                       </p>
                       <p className="text-xs text-ink-500">
                         ★ {topline.youRating} · {topline.youReviews} reviews
+                        {topline.rankNum > 3 ? ' · most searchers never scroll this far' : ''}
                       </p>
                     </div>
                   </div>
@@ -561,8 +647,10 @@ export default function GbpAuditPage() {
             </section>
 
             <section className="mt-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">02 — Weekend fixes</p>
-              <h3 className="mt-2 font-display text-2xl text-ink">Three fixes, written for you</h3>
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
+                02 — Fix these first
+              </p>
+              <h3 className="mt-2 font-display text-2xl text-ink md:text-[1.65rem]">Three fixes, written for you</h3>
               <p className="mt-2 max-w-2xl text-ink-600 leading-relaxed">
                 Copy the text, follow where to click in Google Business Profile — no agency required.
               </p>
@@ -571,12 +659,15 @@ export default function GbpAuditPage() {
                   const key = `${industry}-${i}`
                   const fixText = q.fixText ?? ''
                   return (
-                    <article key={key} className={panelNested}>
+                    <article key={key} className={`${panelNested} p-6 md:p-7`}>
                       <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">
+                          Fix {q.n}
+                        </span>
                         <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood bg-oxblood/10 px-2 py-0.5">
                           {q.tag}
                         </span>
-                        <span className="font-mono text-[10px] text-ink-500">{q.impactTag}</span>
+                        <span className="font-mono text-[10px] text-ink-500">{impactBadge(q.impactTag, i)}</span>
                       </div>
                       <h4 className="mt-3 font-display text-xl text-ink">{q.title}</h4>
                       <p className="mt-2 text-sm text-ink-600 leading-relaxed">{q.lossLine}</p>
@@ -597,7 +688,7 @@ export default function GbpAuditPage() {
                           </button>
                         </div>
                       ) : null}
-                      <p className="mt-4 text-sm text-ink-600">
+                      <p className="mt-4 rounded-sm border border-ink/10 bg-cream-100/80 px-3 py-2 text-sm text-ink-600">
                         <strong className="text-ink">Where:</strong> {q.where}
                       </p>
                     </article>
@@ -607,12 +698,12 @@ export default function GbpAuditPage() {
             </section>
 
             {!emailUnlocked && topline.scanId ? (
-              <form onSubmit={submitEmail} className={`${panelAccent} mt-14 grid gap-6 md:grid-cols-[1fr_auto]`}>
+              <form onSubmit={submitEmail} className={`${panelAccent} mt-14 grid gap-6 rounded-sm p-7 md:grid-cols-[1fr_auto]`}>
                 <div>
-                  <h3 className="font-display text-xl text-ink">Unlock your full six-pillar breakdown</h3>
+                  <h3 className="font-display text-xl text-ink md:text-2xl">There are more issues on your profile</h3>
                   <p className="mt-2 max-w-lg text-sm text-ink-600 leading-relaxed">
-                    One email for the complete health score across reputation, engagement, profile completeness,
-                    and more. CASL-compliant — no spam.
+                    Unlock the full six-pillar health score — reputation, engagement, profile completeness, and more.
+                    One email, CASL-compliant, no spam.
                   </p>
                 </div>
                 <div className="flex w-full max-w-sm flex-col gap-3">
@@ -674,26 +765,51 @@ export default function GbpAuditPage() {
               </section>
             ) : null}
 
-            <section className="relative mt-14 overflow-hidden border border-ink/10">
-              <div className={deepUnlocked ? 'p-6 md:p-8' : 'pointer-events-none select-none blur-sm p-6 md:p-8'}>
+            <section className="relative mt-14 overflow-hidden rounded-sm border border-ink/10">
+              <div className="border-b border-ink/10 bg-cream-100/60 px-6 py-4 md:px-8">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">03 — Overtake the pack</p>
+                <h3 className="mt-1 font-display text-xl text-ink md:text-2xl">
+                  Exactly how to overtake the three above you
+                </h3>
+              </div>
+              <div className={deepUnlocked ? 'p-6 md:p-8' : 'pointer-events-none select-none blur-[6px] p-6 md:p-8'}>
                 {compGaps && roadmap ? (
                   <div className="grid gap-8 md:grid-cols-2">
                     <div>
                       <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
                         vs {topCompetitor}
                       </p>
-                      {compGaps.map((c) => (
-                        <div key={c.metric} className="mt-3 text-sm">
-                          <div className="flex justify-between text-ink-700">
-                            <span>{c.metric}</span>
-                            <span className="font-mono text-xs text-ink-400">
-                              you {c.you} · them {c.them}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                      <div className="mt-4 space-y-4">
+                        {compGaps.map((c) => {
+                          const max = Math.max(c.youN, c.themN, 1)
+                          return (
+                            <div key={c.metric}>
+                              <div className="mb-1.5 flex justify-between text-sm text-ink-700">
+                                <span>{c.metric}</span>
+                                <span className="font-mono text-[11px] text-ink-400">
+                                  you {c.you} · them {c.them}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                  <div
+                                    className="h-full rounded-full bg-oxblood/70"
+                                    style={{ width: `${(c.youN / max) * 100}%` }}
+                                  />
+                                </div>
+                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                  <div
+                                    className="h-full rounded-full bg-gold/80"
+                                    style={{ width: `${(c.themN / max) * 100}%` }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
                       {revenueLine ? (
-                        <p className="mt-4 border border-oxblood/20 bg-oxblood/5 p-3 text-sm text-ink-600 leading-relaxed">
+                        <p className="mt-5 border border-oxblood/20 bg-oxblood/5 p-4 text-sm text-ink-600 leading-relaxed">
                           {revenueLine}
                         </p>
                       ) : null}
@@ -701,25 +817,31 @@ export default function GbpAuditPage() {
                     <div>
                       <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">90-day roadmap</p>
                       {roadmap.map((r) => (
-                        <div key={r.weeks} className="mt-4 flex gap-3">
+                        <div key={r.weeks} className="mt-4 flex gap-3 border-t border-ink/10 pt-4 first:mt-3 first:border-t-0 first:pt-0">
                           <span className="shrink-0 font-mono text-[10px] text-oxblood border border-ink/15 px-2 py-1">
                             {r.weeks}
                           </span>
                           <div>
                             <p className="font-medium text-ink">{r.title}</p>
-                            <p className="text-xs text-ink-500">{r.desc}</p>
+                            <p className="text-xs text-ink-500 leading-relaxed">{r.desc}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                ) : null}
+                ) : (
+                  <p className="text-sm text-ink-500">Loading competitor breakdown…</p>
+                )}
               </div>
               {!deepUnlocked ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/85 p-8 text-center backdrop-blur-[2px]">
-                  <h3 className="font-display text-2xl text-ink">Want the full growth plan?</h3>
-                  <p className="mt-2 max-w-md text-sm text-ink-600">
-                    Competitor breakdown + prioritized 90-day roadmap — {ROADMAP_PRICE} CAD.
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/80 p-8 text-center backdrop-blur-[2px]">
+                  <span className="mb-3 text-2xl" aria-hidden>
+                    🔒
+                  </span>
+                  <h3 className="font-display text-2xl text-ink">Want the whole plan done — or done for you?</h3>
+                  <p className="mt-2 max-w-md text-sm text-ink-600 leading-relaxed">
+                    Full competitor breakdown + prioritized 90-day Google Business Profile roadmap — {ROADMAP_PRICE}{' '}
+                    CAD.
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <button
@@ -731,7 +853,7 @@ export default function GbpAuditPage() {
                       {checkoutLoading ? 'Redirecting…' : `Get the roadmap — ${ROADMAP_PRICE}`}
                     </button>
                     <Link to={BOOK_URL} className={btnPrimary}>
-                      Free consult →
+                      Have us do it — free consult →
                     </Link>
                   </div>
                 </div>
