@@ -63,16 +63,14 @@ function ScrollToHash() {
 function AppContent() {
   const location = useLocation()
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
-  const isGbpAudit = location.pathname.startsWith('/gbp-audit')
-  const isStandaloneTool = isCheatSheet || isGbpAudit
 
   return (
     <>
       <ScrollToTop />
       <ScrollToHash />
       <div className="relative z-10 min-h-screen">
-        {!isStandaloneTool && <Navbar />}
-        <main className={isStandaloneTool ? '' : 'pt-36'}>
+        {!isCheatSheet && <Navbar />}
+        <main className={isCheatSheet ? '' : 'pt-36'}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -94,8 +92,8 @@ function AppContent() {
             </Routes>
           </Suspense>
         </main>
-        {!isStandaloneTool && <Footer />}
-        {!isStandaloneTool && <CookieConsentBanner />}
+        {!isCheatSheet && <Footer />}
+        {!isCheatSheet && <CookieConsentBanner />}
       </div>
     </>
   )
@@ -105,16 +103,14 @@ function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
-  const isGbpAudit = location.pathname.startsWith('/gbp-audit')
-  const isStandaloneTool = isCheatSheet || isGbpAudit
   const mobile = useIsMobile()
-  const [loaded, setLoaded] = useState(() => isStandaloneTool || getIsMobile())
+  const [loaded, setLoaded] = useState(() => isCheatSheet || getIsMobile())
 
   useEffect(() => {
-    if (isStandaloneTool || mobile) setLoaded(true)
-  }, [isStandaloneTool, mobile])
+    if (isCheatSheet || mobile) setLoaded(true)
+  }, [isCheatSheet, mobile])
 
-  const showDesktopChrome = !isStandaloneTool && !mobile
+  const showDesktopChrome = !isCheatSheet && !mobile
 
   return (
     <>

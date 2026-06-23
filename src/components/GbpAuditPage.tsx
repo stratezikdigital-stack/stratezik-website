@@ -8,29 +8,29 @@ import { resolveIndustry, sub } from '../gbp/industryEngine'
 const BOOK_URL = '/#contact'
 const ROADMAP_PRICE = '$29'
 
+const inputClass = 'input-editorial w-full'
+const btnPrimary = 'btn-primary w-full disabled:opacity-60'
+const btnSecondary = 'btn-secondary disabled:opacity-60'
+const cardClass = 'card-editorial'
+const panelInk = 'aeo-panel-ink'
+const panelAccent = 'aeo-panel-accent'
+const panelNested = 'aeo-panel-nested'
+
 const EXAMPLE_CHIPS = [
-  { label: '🔧 Plumber', value: 'Plumber' },
-  { label: '❄️ HVAC', value: 'HVAC' },
-  { label: '🦷 Dentist', value: 'Dentist' },
-  { label: '🍽️ Restaurant', value: 'Restaurant' },
-  { label: '💇 Hair salon', value: 'Hair salon' },
-  { label: '🚗 Auto repair', value: 'Auto repair' },
-  { label: '⚖️ Law firm', value: 'Law firm' },
-  { label: '🐛 Pest control', value: 'Pest control' },
+  { label: 'Plumber', value: 'Plumber' },
+  { label: 'HVAC', value: 'HVAC' },
+  { label: 'Dentist', value: 'Dentist' },
+  { label: 'Restaurant', value: 'Restaurant' },
+  { label: 'Hair salon', value: 'Hair salon' },
+  { label: 'Auto repair', value: 'Auto repair' },
+  { label: 'Law firm', value: 'Law firm' },
+  { label: 'Pest control', value: 'Pest control' },
 ]
 
-const SWITCH_CHIPS = [
-  'Plumber',
-  'Dentist',
-  'Restaurant',
-  'Law firm',
-  'Hair salon',
-  'Tutoring centre',
-]
+const SWITCH_CHIPS = ['Plumber', 'Dentist', 'Restaurant', 'Law firm', 'Hair salon', 'Tutoring centre']
 
 type Winner = {
   rank: string
-  rankColor: string
   name: string
   rating: string
   reviews: number
@@ -79,12 +79,20 @@ type Topline = {
 
 type Phase = 'input' | 'scanning' | 'results'
 
-function gradeColor(score: number): string {
-  return score >= 75 ? '#74C28A' : score >= 60 ? '#ECC15B' : '#E8694C'
+function scoreTone(score: number): 'good' | 'mid' | 'low' {
+  if (score >= 75) return 'good'
+  if (score >= 55) return 'mid'
+  return 'low'
 }
 
-function pillarColor(score: number): string {
-  return score >= 70 ? '#74C28A' : score >= 50 ? '#ECC15B' : '#E8694C'
+function scoreTextClass(score: number): string {
+  const t = scoreTone(score)
+  return t === 'good' ? 'text-oxblood' : t === 'mid' ? 'text-gold' : 'text-oxblood-700'
+}
+
+function scoreStroke(score: number): string {
+  const t = scoreTone(score)
+  return t === 'good' ? '#7a1f1f' : t === 'mid' ? '#c9a227' : '#a33a2a'
 }
 
 export default function GbpAuditPage() {
@@ -110,15 +118,6 @@ export default function GbpAuditPage() {
   const [loading, setLoading] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
-  useEffect(() => {
-    document.documentElement.classList.add('gbp-audit-active')
-    document.body.classList.add('gbp-audit-active')
-    return () => {
-      document.documentElement.classList.remove('gbp-audit-active')
-      document.body.classList.remove('gbp-audit-active')
-    }
-  }, [])
-
   const ctx = useMemo(() => {
     const cityShort = (city || 'Scarborough').split(',')[0]
     const trade = topline?.industryDisplay ?? industry
@@ -126,6 +125,10 @@ export default function GbpAuditPage() {
   }, [biz, city, industry, topline])
 
   const runScan = useCallback(async () => {
+    if (!protection.canSubmit) {
+      setError('Complete the bot check below, then try again.')
+      return
+    }
     if (!city.trim()) {
       setError('Enter your city — e.g. Scarborough, ON.')
       return
@@ -272,33 +275,6 @@ export default function GbpAuditPage() {
         })
         const full = (await fullRes.json()) as { pillars?: Pillar[] }
         if (fullRes.ok) setPillars(full.pillars ?? null)
-
-        setTopline((prev) =>
-          prev ??
-          ({
-            scanId,
-            businessName: '',
-            city: '',
-            industry: '',
-            industryDisplay: '',
-            score: 0,
-            grade: '',
-            verdict: '',
-            rankNum: 0,
-            rankWord: '',
-            query: '',
-            found: false,
-            dataSource: 'template',
-            youRating: '',
-            youReviews: 0,
-            moneyLine: '',
-            winners: [],
-            quickWins: [],
-            gapText: '',
-            headline: '',
-            mapsUri: null,
-          } satisfies Topline),
-        )
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Payment unlock failed')
       } finally {
@@ -340,124 +316,137 @@ export default function GbpAuditPage() {
   }
 
   const scoreRing = topline ? 2 * Math.PI * 54 * (1 - topline.score / 100) : 0
-  const gc = topline ? gradeColor(topline.score) : '#E8694C'
 
   return (
-    <div className="gbp-audit-root">
-      <div className="gbp-inner">
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-8">
-          <Link to="/" className="flex items-center gap-3 no-underline text-inherit">
-            <div className="grid h-[30px] w-[30px] place-items-center rounded-md bg-[#F4A23C] font-serif text-xl text-[#16120D]">
-              S
-            </div>
-            <div>
-              <div className="text-[15px] font-bold tracking-tight">Stratezik</div>
-              <div className="mono text-[9.5px] uppercase tracking-[0.16em] text-[#8E8268]">
-                Local Visibility Scan
-              </div>
-            </div>
+    <main className="min-h-screen bg-cream pb-24">
+      <div className="container-custom mx-auto max-w-5xl px-6 md:px-12 pt-8 md:pt-12">
+        <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
+          <Link to="/" className="hover:text-oxblood transition-colors">
+            Home
           </Link>
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="mono text-[11px] text-[#8E8268]">Toronto · Scarborough · GTA</span>
-            <Link
-              to={BOOK_URL}
-              className="rounded-lg border border-[#4A4029] px-4 py-2 text-[13px] font-semibold text-[#F7F1E6] no-underline"
-            >
-              Book a consult
-            </Link>
-          </div>
-        </div>
+          <span className="mx-2 text-ink-300">/</span>
+          <Link to="/free-tools" className="hover:text-oxblood transition-colors">
+            Free Tools
+          </Link>
+          <span className="mx-2 text-ink-300">/</span>
+          <span className="text-ink-600">Local Visibility Scan</span>
+        </nav>
 
         {phase === 'input' && (
-          <div className="gbp-input-grid sz-anim grid items-center gap-12 pt-6 md:grid-cols-2">
-            <div>
-              <div className="mono mb-5 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F4A23C]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#F4A23C] shadow-[0_0_12px_#F4A23C]" />
-                Free · No login · 60 seconds
-              </div>
-              <h1 className="display mb-6 text-[clamp(34px,4.4vw,54px)] font-normal leading-[1.08] tracking-tight">
+          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+            <header>
+              <div className="editorial-label">Stratezik · Toronto &amp; GTA</div>
+              <h1 className="mt-4 font-display text-display-3 md:text-[3rem] text-ink leading-[1.05] tracking-[-0.035em]">
                 Find out why customers pick the shop{' '}
-                <em className="text-[#F4A23C] not-italic">down the street</em> — not you.
+                <span className="text-oxblood">down the street</span> — not you.
               </h1>
-              <p className="mb-6 max-w-[50ch] text-[17.5px] leading-relaxed text-[#CBBFA9]">
-                Whatever you run — a trade, a clinic, a restaurant — this scan shows what&apos;s costing
-                you calls on Google, then gives you fixes in your own words, ready to paste in.
+              <p className="lead mt-8">
+                Free Google Business Profile audit. See your Map Pack gap, get three copy-paste weekend fixes,
+                and unlock a six-pillar score tuned to your industry. No login.
               </p>
-            </div>
-            <div className="panel">
-              <div className="mono mb-4 text-[10.5px] uppercase tracking-[0.14em] text-[#8E8268]">
+              <ul className="mt-6 space-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Live Maps data when available
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Three fixes written for you
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Industry-tailored recommendations
+                </li>
+              </ul>
+            </header>
+
+            <div className={cardClass}>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
                 Scan your Google Business Profile
-              </div>
-              <label className="mb-1.5 block text-[12.5px] font-semibold text-[#CBBFA9]">
-                Business name
-              </label>
+              </p>
+              <label className="mt-5 block text-sm font-medium text-ink-700">Business name</label>
               <input
-                className="mb-4"
+                className={`${inputClass} mt-1.5`}
                 placeholder="e.g. ShieldGuard Pest Control"
                 value={biz}
                 onChange={(e) => setBiz(e.target.value)}
               />
-              <label className="mb-1.5 block text-[12.5px] font-semibold text-[#CBBFA9]">City</label>
+              <label className="mt-4 block text-sm font-medium text-ink-700">City</label>
               <input
-                className="mb-4"
+                className={`${inputClass} mt-1.5`}
                 placeholder="e.g. Scarborough, ON"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              <label className="mb-1.5 block text-[12.5px] font-semibold text-[#CBBFA9]">
-                Your industry <span className="font-normal text-[#8E8268]">— type anything</span>
+              <label className="mt-4 block text-sm font-medium text-ink-700">
+                Your industry <span className="font-normal text-ink-400">— type anything</span>
               </label>
               <input
-                className="mb-2"
+                className={`${inputClass} mt-1.5`}
                 placeholder="e.g. Plumber, Bakery, Law firm…"
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
               />
-              <div className="mb-5 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {EXAMPLE_CHIPS.map((c) => (
-                  <button key={c.value} type="button" className="chip-btn" onClick={() => setIndustry(c.value)}>
+                  <button
+                    key={c.value}
+                    type="button"
+                    onClick={() => setIndustry(c.value)}
+                    className="rounded-sm border border-ink/15 bg-cream px-2.5 py-1 text-xs font-medium text-ink-600 hover:border-oxblood hover:text-oxblood transition-colors"
+                  >
                     {c.label}
                   </button>
                 ))}
               </div>
-              {error ? <p className="mb-3 text-sm text-[#E8694C]">{error}</p> : null}
-              <button type="button" className="btn-primary" onClick={() => void runScan()}>
+              {error ? <p className="mt-4 text-sm text-oxblood">{error}</p> : null}
+              <FormProtectionFields
+                turnstileSiteKey={protection.turnstileSiteKey}
+                onTurnstileSuccess={protection.setTurnstileToken}
+                onTurnstileExpire={protection.resetTurnstile}
+                honeypotValue={protection.honeypot}
+                onHoneypotChange={protection.setHoneypot}
+              />
+              <button
+                type="button"
+                className={`${btnPrimary} mt-4`}
+                disabled={!protection.canSubmit}
+                onClick={() => void runScan()}
+              >
                 Run my free scan →
               </button>
+              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
+                Free · ~60 seconds · No signup for your topline score
+              </p>
             </div>
           </div>
         )}
 
         {phase === 'scanning' && (
-          <div className="flex min-h-[62vh] flex-col items-center justify-center text-center">
-            <div className="relative mb-8 h-[120px] w-[120px]">
-              <div className="absolute inset-0 rounded-full border border-[#3A3122]" />
-              <div
-                className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#F4A23C]"
-                style={{ animation: 'gbpRing 1.05s linear infinite' }}
-              />
-            </div>
-            <div className="display mb-6 text-3xl">Scanning {biz || industry}…</div>
-            <p className="mono text-sm text-[#8E8268]">Pulling Google Maps data & tailoring checks…</p>
+          <div className={`${cardClass} mx-auto max-w-lg text-center`}>
+            <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-2 border-ink/15 border-t-oxblood" />
+            <h2 className="font-display text-2xl text-ink">Scanning {biz || industry}…</h2>
+            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
+              Pulling Google Maps data &amp; tailoring checks
+            </p>
           </div>
         )}
 
         {phase === 'results' && topline && (
-          <div className="sz-anim">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-              <div className="mono text-[11px] uppercase tracking-[0.12em] text-[#8E8268]">
-                Audit for{' '}
-                <span className="text-[#F4A23C]">{topline.industryDisplay}</span>
-                {topline.dataSource === 'places' ? ' · live Maps data' : ' · template (add Places API key)'}
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="mono text-[10.5px] text-[#8E8268]">try another trade:</span>
+          <div>
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-6">
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-500">
+                Audit for <span className="text-oxblood">{topline.industryDisplay}</span>
+                {topline.dataSource === 'places' ? ' · live Maps data' : ' · industry template'}
+              </p>
+              <div className="flex flex-wrap gap-2">
                 {SWITCH_CHIPS.map((c) => (
                   <button
                     key={c}
                     type="button"
-                    className={`switch-pill ${industry === c ? 'active' : ''}`}
                     onClick={() => switchIndustry(c)}
+                    className={`rounded-sm border px-2.5 py-1 text-xs font-medium transition-colors ${
+                      industry === c
+                        ? 'border-oxblood bg-oxblood/10 text-oxblood'
+                        : 'border-ink/15 text-ink-600 hover:border-oxblood'
+                    }`}
                   >
                     {c}
                   </button>
@@ -465,154 +454,162 @@ export default function GbpAuditPage() {
               </div>
             </div>
 
-            <div className="gbp-verdict-grid mb-4 grid items-center gap-10 rounded-[22px] border border-[#4A4029] bg-gradient-to-br from-[#241E16] to-[#1C1710] p-8 md:grid-cols-[auto_1fr]">
-              <div className="relative mx-auto h-[148px] w-[148px] shrink-0">
-                <svg viewBox="0 0 120 120" className="h-[148px] w-[148px] -rotate-90">
-                  <circle cx="60" cy="60" r="54" fill="none" stroke="#3A3122" strokeWidth="9" />
+            <div className={`${panelInk} grid items-center gap-8 md:grid-cols-[auto_1fr]`}>
+              <div className="relative mx-auto h-36 w-36 shrink-0">
+                <svg viewBox="0 0 120 120" className="h-36 w-36 -rotate-90">
+                  <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(244,237,225,0.2)" strokeWidth="9" />
                   <circle
                     cx="60"
                     cy="60"
                     r="54"
                     fill="none"
-                    stroke={gc}
+                    stroke={scoreStroke(topline.score)}
                     strokeWidth="9"
                     strokeLinecap="round"
                     strokeDasharray={339.3}
                     strokeDashoffset={scoreRing}
                   />
                 </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="display text-[52px] leading-none">{topline.score}</div>
-                  <div className="mono mt-0.5 text-[10px] tracking-widest text-[#8E8268]">/ 100</div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-cream">
+                  <span className="font-display text-5xl leading-none">{topline.score}</span>
+                  <span className="font-mono text-[10px] tracking-widest text-cream/50">/ 100</span>
                 </div>
               </div>
               <div>
-                <div className="mb-3 flex flex-wrap items-center gap-3">
-                  <span
-                    className="mono rounded-full border px-3 py-0.5 text-[13px] font-semibold"
-                    style={{ color: gc, borderColor: gc }}
-                  >
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-mono text-xs uppercase tracking-[0.14em] text-gold">
                     Grade {topline.grade}
                   </span>
-                  <span className="text-sm text-[#CBBFA9]">{topline.verdict}</span>
+                  <span className="text-cream/70">{topline.verdict}</span>
                 </div>
-                <h2 className="display mb-3 text-[clamp(26px,3vw,36px)] font-normal leading-tight">
+                <h2 className="mt-3 font-display text-2xl md:text-3xl text-cream leading-tight">
                   {topline.headline}
                 </h2>
-                <div className="inline-flex items-center gap-3 rounded-xl border border-[rgba(232,105,76,0.35)] bg-[rgba(232,105,76,0.1)] px-4 py-3">
-                  <span className="text-2xl">📞</span>
-                  <span className="text-[15px]">
-                    Roughly <strong className="text-[#E8694C]">{topline.moneyLine}</strong> walk past you
-                    monthly.
-                  </span>
-                </div>
+                <p className="mt-4 max-w-xl text-cream/85 leading-relaxed">
+                  Roughly <strong className="text-gold">{topline.moneyLine}</strong> are walking past you to
+                  competitors above you every month.
+                </p>
                 {topline.mapsUri ? (
-                  <p className="mt-3 text-sm">
-                    <a href={topline.mapsUri} target="_blank" rel="noopener noreferrer" className="text-[#F4A23C]">
-                      View listing on Google Maps →
-                    </a>
-                  </p>
+                  <a
+                    href={topline.mapsUri}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.14em] text-gold hover:text-cream"
+                  >
+                    View listing on Google Maps →
+                  </a>
                 ) : null}
               </div>
             </div>
 
-            {/* Map pack */}
-            <h3 className="display mb-4 text-[27px] font-normal">
-              The Map Pack for &quot;{topline.query}&quot;
-            </h3>
-            <div className="gbp-map-grid mb-10 grid gap-4 md:grid-cols-[1fr_1.25fr]">
-              <div className="min-h-[280px] rounded-2xl border border-[#3A3122] bg-[#171c19]" aria-hidden />
-              <div className="flex flex-col gap-2">
-                {topline.winners.map((w) => (
-                  <div
-                    key={w.rank}
-                    className="flex items-center gap-3 rounded-xl border border-[#3A3122] bg-[#211B13] p-4"
-                  >
+            <section className="mt-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">01 — Map Pack</p>
+              <h3 className="mt-2 font-display text-2xl text-ink">
+                Who ranks for &quot;{topline.query}&quot;
+              </h3>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div
+                  className="min-h-[240px] rounded-sm border border-ink/10 bg-cream-200/40"
+                  aria-hidden
+                />
+                <div className="flex flex-col gap-2">
+                  {topline.winners.map((w) => (
                     <div
-                      className="mono grid h-7 w-7 shrink-0 place-items-center rounded-md text-[13px] font-bold text-[#16120D]"
-                      style={{ background: w.rankColor }}
+                      key={w.rank}
+                      className="flex items-center gap-3 border border-ink/10 bg-cream-50 px-4 py-3"
                     >
-                      {w.rank}
+                      <span className="font-mono text-sm font-bold text-oxblood">{w.rank}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-ink">{w.name}</p>
+                        <p className="text-xs text-ink-500">{w.badge}</p>
+                      </div>
+                      <div className="text-right text-sm">
+                        <p className="font-semibold text-ink">★ {w.rating}</p>
+                        <p className="font-mono text-[10px] text-ink-400">{w.reviews} reviews</p>
+                      </div>
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-bold">{w.name}</div>
-                      <div className="text-xs text-[#8E8268]">{w.badge}</div>
+                  ))}
+                  <div className="flex items-center gap-3 border border-oxblood/30 bg-oxblood/5 px-4 py-3">
+                    <span className="font-mono text-sm font-bold text-oxblood">{topline.rankNum}</span>
+                    <div className="flex-1">
+                      <p className="font-medium text-ink">
+                        {topline.businessName}{' '}
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">You</span>
+                      </p>
+                      <p className="text-xs text-ink-500">
+                        ★ {topline.youRating} · {topline.youReviews} reviews
+                      </p>
                     </div>
-                    <div className="text-right text-sm">
-                      <div className="font-bold text-[#F4D03C]">★ {w.rating}</div>
-                      <div className="mono text-[11px] text-[#8E8268]">{w.reviews} reviews</div>
-                    </div>
-                  </div>
-                ))}
-                <div className="flex items-center gap-3 rounded-xl border border-[rgba(232,105,76,0.4)] bg-[rgba(232,105,76,0.07)] p-4">
-                  <div className="mono grid h-7 w-7 shrink-0 place-items-center rounded-md border border-[#E8694C] text-[13px]">
-                    {topline.rankNum}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold">
-                      {topline.businessName}{' '}
-                      <span className="mono ml-1 rounded border border-[#E8694C] px-1.5 text-[10px] text-[#E8694C]">
-                        YOU
-                      </span>
-                    </div>
-                    <div className="text-xs text-[#8E8268]">★ {topline.youRating} · {topline.youReviews} reviews</div>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            {/* Quick wins */}
-            <h3 className="display mb-4 text-[27px] font-normal">Three fixes, written for you. Free.</h3>
-            <div className="mb-10 flex flex-col gap-3">
-              {topline.quickWins.map((q, i) => {
-                const key = `${industry}-${i}`
-                const fixText = q.fixText ?? ''
-                return (
-                  <div key={key} className="rounded-2xl border border-[#3A3122] bg-[#211B13] p-6">
-                    <div className="mono mb-2 text-[10px] text-[#F4A23C]">{q.tag}</div>
-                    <div className="mb-2 text-lg font-bold">{q.title}</div>
-                    <p className="mb-4 text-sm leading-relaxed text-[#CBBFA9]">{q.lossLine}</p>
-                    {q.hasCopy && fixText ? (
-                      <div className="relative mb-4 rounded-xl border border-[#3A3122] bg-[#16120D] p-4">
-                        <pre className="whitespace-pre-wrap pr-24 text-sm leading-relaxed">{fixText}</pre>
-                        <button
-                          type="button"
-                          className="mono absolute right-3 top-3 rounded-lg border border-[#4A4029] bg-[#2A2318] px-3 py-1.5 text-[11px]"
-                          onClick={() => void copyText(key, fixText)}
-                        >
-                          {copiedKey === key ? 'Copied ✓' : 'Copy text'}
-                        </button>
+            <section className="mt-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">02 — Weekend fixes</p>
+              <h3 className="mt-2 font-display text-2xl text-ink">Three fixes, written for you</h3>
+              <p className="mt-2 max-w-2xl text-ink-600 leading-relaxed">
+                Copy the text, follow where to click in Google Business Profile — no agency required.
+              </p>
+              <div className="mt-6 flex flex-col gap-4">
+                {topline.quickWins.map((q, i) => {
+                  const key = `${industry}-${i}`
+                  const fixText = q.fixText ?? ''
+                  return (
+                    <article key={key} className={panelNested}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood bg-oxblood/10 px-2 py-0.5">
+                          {q.tag}
+                        </span>
+                        <span className="font-mono text-[10px] text-ink-500">{q.impactTag}</span>
                       </div>
-                    ) : null}
-                    <p className="text-sm text-[#CBBFA9]">
-                      <strong className="text-[#F7F1E6]">Where:</strong> {q.where}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
+                      <h4 className="mt-3 font-display text-xl text-ink">{q.title}</h4>
+                      <p className="mt-2 text-sm text-ink-600 leading-relaxed">{q.lossLine}</p>
+                      {q.hasCopy && fixText ? (
+                        <div className="relative mt-4 border border-ink/10 bg-cream p-4">
+                          <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400 mb-2">
+                            {q.fixLabel}
+                          </p>
+                          <pre className="whitespace-pre-wrap pr-28 text-sm text-ink-700 leading-relaxed font-sans">
+                            {fixText}
+                          </pre>
+                          <button
+                            type="button"
+                            className="absolute right-3 top-3 rounded-sm border border-ink/20 bg-cream-50 px-3 py-1 font-mono text-[11px] hover:border-oxblood"
+                            onClick={() => void copyText(key, fixText)}
+                          >
+                            {copiedKey === key ? 'Copied ✓' : 'Copy text'}
+                          </button>
+                        </div>
+                      ) : null}
+                      <p className="mt-4 text-sm text-ink-600">
+                        <strong className="text-ink">Where:</strong> {q.where}
+                      </p>
+                    </article>
+                  )
+                })}
+              </div>
+            </section>
 
-            {/* Email gate */}
             {!emailUnlocked ? (
-              <form
-                onSubmit={submitEmail}
-                className="gbp-email-gate mb-10 grid items-center gap-6 rounded-2xl border border-[#4A4029] bg-gradient-to-br from-[#2A2318] to-[#1E1810] p-7 md:grid-cols-[1fr_auto]"
-              >
+              <form onSubmit={submitEmail} className={`${panelAccent} mt-14 grid gap-6 md:grid-cols-[1fr_auto]`}>
                 <div>
-                  <h3 className="display mb-2 text-2xl font-normal">There are more issues on your profile.</h3>
-                  <p className="max-w-lg text-sm leading-relaxed text-[#CBBFA9]">
-                    Get the full 6-pillar breakdown — plus a saved copy of this scan. One email, no spam.
+                  <h3 className="font-display text-xl text-ink">Unlock your full six-pillar breakdown</h3>
+                  <p className="mt-2 max-w-lg text-sm text-ink-600 leading-relaxed">
+                    One email for the complete health score across reputation, engagement, profile completeness,
+                    and more. CASL-compliant — no spam.
                   </p>
                 </div>
-                <div className="flex w-full max-w-xs flex-col gap-2">
+                <div className="flex w-full max-w-sm flex-col gap-3">
                   <input
                     type="email"
                     required
+                    className={inputClass}
                     placeholder="you@business.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <label className="flex items-start gap-2 text-xs text-[#8E8268]">
+                  <label className="flex items-start gap-2 text-xs text-ink-600">
                     <input
                       type="checkbox"
                       checked={consent}
@@ -628,7 +625,7 @@ export default function GbpAuditPage() {
                     honeypotValue={protection.honeypot}
                     onHoneypotChange={protection.setHoneypot}
                   />
-                  <button type="submit" className="btn-primary" disabled={loading || !protection.canSubmit}>
+                  <button type="submit" className={btnPrimary} disabled={loading || !protection.canSubmit}>
                     {loading ? 'Saving…' : 'Unlock the full breakdown'}
                   </button>
                 </div>
@@ -636,68 +633,66 @@ export default function GbpAuditPage() {
             ) : null}
 
             {emailUnlocked && pillars ? (
-              <div className="mb-10">
-                <h3 className="display mb-4 text-[27px] font-normal">Six pillars — where you stand</h3>
-                <div className="gbp-pillar-grid grid gap-3 md:grid-cols-2">
+              <section className="mt-14">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">03 — Health score</p>
+                <h3 className="mt-2 font-display text-2xl text-ink">Six pillars — where you stand</h3>
+                <div className="mt-6 grid gap-3 md:grid-cols-2">
                   {pillars.map((p) => (
-                    <div key={p.name} className="rounded-xl border border-[#3A3122] bg-[#211B13] p-4">
-                      <div className="mb-2 flex justify-between">
-                        <span className="font-bold">
+                    <div key={p.name} className={panelNested}>
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-medium text-ink">
                           {p.name}{' '}
-                          <span className="mono text-[10px] font-normal text-[#8E8268]">· {p.weight}</span>
+                          <span className="font-mono text-[10px] text-ink-400">· {p.weight}</span>
                         </span>
-                        <span className="mono font-semibold" style={{ color: pillarColor(p.score) }}>
-                          {p.score}
-                        </span>
+                        <span className={`font-mono font-semibold ${scoreTextClass(p.score)}`}>{p.score}</span>
                       </div>
-                      <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-[#16120D]">
+                      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-cream-200">
                         <div
-                          className="h-full rounded-full"
-                          style={{ width: `${p.score}%`, background: pillarColor(p.score) }}
+                          className="h-full rounded-full bg-oxblood/80"
+                          style={{ width: `${p.score}%` }}
                         />
                       </div>
-                      <p className="text-xs leading-relaxed text-[#8E8268]">{p.note}</p>
+                      <p className="mt-2 text-xs text-ink-500 leading-relaxed">{p.note}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
             ) : null}
 
-            {/* Paid roadmap */}
-            <div className="relative overflow-hidden rounded-2xl border border-[#4A4029]">
-              <div className={deepUnlocked ? '' : 'pointer-events-none blur-sm'}>
+            <section className="relative mt-14 overflow-hidden border border-ink/10">
+              <div className={deepUnlocked ? 'p-6 md:p-8' : 'pointer-events-none select-none blur-sm p-6 md:p-8'}>
                 {compGaps && roadmap ? (
-                  <div className="grid md:grid-cols-2">
-                    <div className="border-b border-[#3A3122] p-7 md:border-b-0 md:border-r">
-                      <div className="mono mb-4 text-[10.5px] uppercase text-[#8E8268]">
+                  <div className="grid gap-8 md:grid-cols-2">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
                         vs {topCompetitor}
-                      </div>
+                      </p>
                       {compGaps.map((c) => (
-                        <div key={c.metric} className="mb-3 text-sm">
-                          <div className="flex justify-between text-[#CBBFA9]">
+                        <div key={c.metric} className="mt-3 text-sm">
+                          <div className="flex justify-between text-ink-700">
                             <span>{c.metric}</span>
-                            <span className="mono text-[#8E8268]">
+                            <span className="font-mono text-xs text-ink-400">
                               you {c.you} · them {c.them}
                             </span>
                           </div>
                         </div>
                       ))}
                       {revenueLine ? (
-                        <p className="mt-4 rounded-xl border border-[rgba(116,194,138,0.3)] bg-[rgba(116,194,138,0.08)] p-3 text-sm text-[#CBBFA9]">
+                        <p className="mt-4 border border-oxblood/20 bg-oxblood/5 p-3 text-sm text-ink-600 leading-relaxed">
                           {revenueLine}
                         </p>
                       ) : null}
                     </div>
-                    <div className="p-7">
-                      <div className="mono mb-4 text-[10.5px] uppercase text-[#8E8268]">90-day roadmap</div>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">90-day roadmap</p>
                       {roadmap.map((r) => (
-                        <div key={r.weeks} className="mb-4 flex gap-3">
-                          <span className="mono shrink-0 rounded border border-[#4A4029] px-2 py-1 text-[10px] text-[#F4A23C]">
+                        <div key={r.weeks} className="mt-4 flex gap-3">
+                          <span className="shrink-0 font-mono text-[10px] text-oxblood border border-ink/15 px-2 py-1">
                             {r.weeks}
                           </span>
                           <div>
-                            <div className="font-bold">{r.title}</div>
-                            <div className="text-xs text-[#8E8268]">{r.desc}</div>
+                            <p className="font-medium text-ink">{r.title}</p>
+                            <p className="text-xs text-ink-500">{r.desc}</p>
                           </div>
                         </div>
                       ))}
@@ -706,40 +701,40 @@ export default function GbpAuditPage() {
                 ) : null}
               </div>
               {!deepUnlocked ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[rgba(22,18,13,0.55)] to-[rgba(22,18,13,0.92)] p-8 text-center">
-                  <div className="mb-4 text-2xl">🔒</div>
-                  <h3 className="display mb-2 max-w-md text-2xl font-normal">Want the whole plan?</h3>
-                  <p className="mb-5 max-w-md text-sm text-[#CBBFA9]">
-                    Full competitor breakdown and prioritized 90-day roadmap — {ROADMAP_PRICE} CAD.
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/85 p-8 text-center backdrop-blur-[2px]">
+                  <h3 className="font-display text-2xl text-ink">Want the full growth plan?</h3>
+                  <p className="mt-2 max-w-md text-sm text-ink-600">
+                    Competitor breakdown + prioritized 90-day roadmap — {ROADMAP_PRICE} CAD.
                   </p>
-                  <div className="flex flex-wrap justify-center gap-3">
+                  <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <button
                       type="button"
-                      className="rounded-xl border border-[#4A4029] bg-[#2A2318] px-5 py-3 font-bold"
+                      className={btnSecondary}
                       disabled={checkoutLoading}
                       onClick={() => void startCheckout()}
                     >
                       {checkoutLoading ? 'Redirecting…' : `Get the roadmap — ${ROADMAP_PRICE}`}
                     </button>
-                    <Link to={BOOK_URL} className="rounded-xl bg-[#F4A23C] px-5 py-3 font-extrabold text-[#16120D] no-underline">
+                    <Link to={BOOK_URL} className={btnPrimary}>
                       Free consult →
                     </Link>
                   </div>
                 </div>
               ) : null}
-            </div>
+            </section>
 
-            {error ? <p className="mt-4 text-sm text-[#E8694C]">{error}</p> : null}
+            {error ? <p className="mt-6 text-sm text-oxblood">{error}</p> : null}
 
-            <div className="mt-10 border-t border-[#3A3122] pt-8 text-center">
+            <div className="mt-12 border-t border-ink/10 pt-8 text-center">
               <button
                 type="button"
-                className="rounded-lg border border-[#4A4029] px-5 py-2.5 text-sm font-semibold text-[#CBBFA9]"
+                className={btnSecondary}
                 onClick={() => {
                   setPhase('input')
                   setTopline(null)
                   setEmailUnlocked(false)
                   setDeepUnlocked(false)
+                  setError(null)
                 }}
               >
                 ↻ Scan another business
@@ -748,6 +743,6 @@ export default function GbpAuditPage() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   )
 }
