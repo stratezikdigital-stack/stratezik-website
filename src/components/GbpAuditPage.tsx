@@ -75,6 +75,9 @@ type Topline = {
   gapText: string
   headline: string
   mapsUri: string | null
+  persisted?: boolean
+  storageError?: boolean
+  storageHint?: string
 }
 
 type Phase = 'input' | 'scanning' | 'results'
@@ -116,6 +119,7 @@ export default function GbpAuditPage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [storageWarning, setStorageWarning] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   const ctx = useMemo(() => {
@@ -138,6 +142,7 @@ export default function GbpAuditPage() {
     setEmailUnlocked(false)
     setDeepUnlocked(false)
     setPillars(null)
+    setStorageWarning(null)
 
     try {
       const res = await fetch('/api/gbp-check', {
@@ -154,6 +159,12 @@ export default function GbpAuditPage() {
       const data = (await res.json()) as Topline & { error?: string }
       if (!res.ok) throw new Error(data.error ?? 'Scan failed')
       setTopline(data)
+      setStorageWarning(
+        data.storageError
+          ? data.storageHint ??
+              'Results shown, but this scan was not saved — email unlock needs the gbp_scans table in Supabase.'
+          : null,
+      )
       setPhase('results')
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Scan failed')
@@ -434,7 +445,7 @@ export default function GbpAuditPage() {
             <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-6">
               <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-500">
                 Audit for <span className="text-oxblood">{topline.industryDisplay}</span>
-                {topline.dataSource === 'places' ? ' · live Maps data' : ' · industry template'}
+                {topline.dataSource === 'places' ? ' · live Maps data' : ' · industry template (Places API key missing or no match)'}
               </p>
               <div className="flex flex-wrap gap-2">
                 {SWITCH_CHIPS.map((c) => (
@@ -453,6 +464,10 @@ export default function GbpAuditPage() {
                 ))}
               </div>
             </div>
+
+            {storageWarning ? (
+              <p className="mb-6 border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-ink-700">{storageWarning}</p>
+            ) : null}
 
             <div className={`${panelInk} grid items-center gap-8 md:grid-cols-[auto_1fr]`}>
               <div className="relative mx-auto h-36 w-36 shrink-0">
@@ -591,7 +606,7 @@ export default function GbpAuditPage() {
               </div>
             </section>
 
-            {!emailUnlocked ? (
+            {!emailUnlocked && topline.scanId ? (
               <form onSubmit={submitEmail} className={`${panelAccent} mt-14 grid gap-6 md:grid-cols-[1fr_auto]`}>
                 <div>
                   <h3 className="font-display text-xl text-ink">Unlock your full six-pillar breakdown</h3>

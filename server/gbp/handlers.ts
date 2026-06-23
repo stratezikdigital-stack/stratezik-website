@@ -67,10 +67,23 @@ export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
 
   if (error || !inserted) {
     console.error('[gbp/check] store failed:', error)
-    return res.status(500).json({ error: 'Something went wrong storing your scan. Try again.' })
+    const tableMissing =
+      error?.code === 'PGRST205' || error?.message?.includes('gbp_scans')
+    // Return scan results even when storage fails so the tool stays usable
+    return res.status(200).json({
+      ...topline(scan, ''),
+      persisted: false,
+      storageError: true,
+      ...(tableMissing
+        ? {
+            storageHint:
+              'Run supabase/gbp_audit.sql in your Supabase SQL editor (same project as aeo_scans), then scan again for email unlock.',
+          }
+        : {}),
+    })
   }
 
-  return res.status(200).json(topline(scan, inserted.id))
+  return res.status(200).json({ ...topline(scan, inserted.id), persisted: true })
 }
 
 export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
