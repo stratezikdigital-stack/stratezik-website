@@ -128,8 +128,10 @@ const ROADMAP_SCHEMA = {
 const SYSTEM_PROMPT = `You are a senior local SEO strategist at Stratezik, a digital agency. You write a bespoke Google Business Profile (GBP) growth plan for one specific local business, grounded entirely in the audit data you are given.
 
 Rules for everything you write:
-- Use the business's real numbers, real city, and the real competitor names from the data. Never invent competitors, review counts, or statistics that are not derivable from the data.
-- The data includes real review snippets (profileSignals) for the business and its top competitors. Use them: echo the strengths customers praise, address the complaints, and mirror the language real customers use in the description, posts, and Q&A. If a competitor's reviews show what wins in this market, name that edge and how to match it.
+- The input has two parts. "verifiedFacts" is real data from Google and our audit: state it freely and specifically (rating, review count, rank, competitor names and counts, and profileSignals, which tells you the categories, whether a description or phone is set, and real review snippets). "heuristicFocusAreas" and "heuristicPillarScores" are guesses from a generic industry template, NOT observations of THIS business: never state them as fact.
+- Do not assert any specific, unverifiable claim about this business unless it appears in verifiedFacts. Specifically: do NOT say how many photos they have, whether or how recently they have posted, whether they reply to reviews, that a citation or phone number is wrong or outdated, or that messaging is off. If a heuristic points at one of these, frame it conditionally and as a check the owner should make: write "If you are not posting weekly, start" rather than "You have not posted in four months."
+- Use the real review snippets in profileSignals: echo the strengths customers praise, address the complaints, and mirror the language real customers use in the description, posts, and Q&A. If a competitor's reviews show what wins in this market, name that edge and how to match it. If liveDataAvailable is false, rely only on business, city, and industry, and keep everything conditional.
+- Never invent competitors, review counts, or statistics that are not derivable from the data.
 - Be specific and prescriptive. The owner should be able to act on each line today without hiring anyone.
 - Plain, direct English. Never use em dashes. Do not use emojis or special symbols (the plan is also rendered as a PDF with standard fonts). Avoid AI-slop phrasing (no "unlock", "elevate", "in today's fast-paced", "leverage", "game-changer", "supercharge", "delve", "tapestry", "moreover", "furthermore"). Write the way a sharp consultant talks.
 - Ready-to-paste assets (the description, Google posts, Q&A answers, review request scripts) must be final copy the owner pastes verbatim. Do not include placeholders like [your name] unless the owner genuinely must fill it in, and keep those to an absolute minimum.
@@ -154,24 +156,28 @@ function buildScanFacts(scan: GbpScanResult): string {
   }))
   return JSON.stringify(
     {
-      business: scan.businessName,
-      city: scan.city,
-      industry: scan.industryDisplay,
-      searchQuery: scan.query,
-      yourRanking: `${scan.rankWord} (not in the top 3)`,
-      yourScore: scan.score,
-      yourGrade: scan.grade,
-      yourReviews: scan.youReviews,
-      yourRating: scan.youRating,
-      topCompetitor: scan.topCompetitor,
-      competitors,
-      pillarScores: scan.pillars.map((p) => ({ pillar: p.name, score: p.score, note: p.note })),
-      competitorGaps: scan.competitorGaps,
-      knownIssues: scan.quickWins.map((q) => q.title),
-      dataSource: scan.dataSource,
-      // Real Place Details signals (Lever 2). Use the review snippets to ground
-      // the description, posts, and Q&A in what customers actually say.
-      profileSignals: scan.profileSignals ?? null,
+      // VERIFIED — real audit + Google data. State these freely and specifically.
+      verifiedFacts: {
+        business: scan.businessName,
+        city: scan.city,
+        industry: scan.industryDisplay,
+        searchQuery: scan.query,
+        yourRanking: `${scan.rankWord} (not in the top 3)`,
+        ourAuditScore: `${scan.score}/100 (${scan.grade})`,
+        yourReviews: scan.youReviews,
+        yourRating: scan.youRating,
+        topCompetitor: scan.topCompetitor,
+        competitors,
+        competitorComparison: scan.competitorGaps,
+        // Real Place Details (Lever 2): categories, whether a description/phone
+        // is set, and review snippets. Ground copy in what customers say.
+        profileSignals: scan.profileSignals ?? null,
+        liveDataAvailable: scan.dataSource === 'places',
+      },
+      // HEURISTIC — guesses from an industry template, NOT observations of THIS
+      // business. Never state as fact; use only to pick conditional focus areas.
+      heuristicFocusAreas: scan.quickWins.map((q) => q.title),
+      heuristicPillarScores: scan.pillars.map((p) => ({ pillar: p.name, score: p.score })),
     },
     null,
     2,
