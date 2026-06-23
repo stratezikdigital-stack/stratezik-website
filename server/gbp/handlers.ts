@@ -58,7 +58,13 @@ async function emailRoadmapOnce(
     if (!paidRow || paidRow.email_sent_at) return
 
     const pdf = await buildRoadmapPdf(scan, roadmap)
-    const sent = await sendRoadmapEmail({ to: email, businessName: scan.businessName, city: scan.city, pdf })
+    const sent = await sendRoadmapEmail({
+      to: email,
+      businessName: scan.businessName,
+      city: scan.city,
+      scanId,
+      pdf,
+    })
     if (sent) {
       await supabase.from('gbp_paid_roadmaps').update({ email_sent_at: new Date().toISOString() }).eq('id', paidRow.id)
     }

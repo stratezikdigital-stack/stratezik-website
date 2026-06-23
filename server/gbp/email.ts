@@ -10,6 +10,7 @@ type SendRoadmapArgs = {
   to: string
   businessName: string
   city: string
+  scanId: string
   pdf: Uint8Array
 }
 
@@ -30,6 +31,7 @@ export async function sendRoadmapEmail(args: SendRoadmapArgs): Promise<boolean> 
 
   const from = process.env.GBP_ROADMAP_FROM_EMAIL?.trim() || 'Stratezik <reports@stratezik.com>'
   const filename = `GBP-Growth-Plan-${args.businessName.replace(/[^a-z0-9]+/gi, '-')}.pdf`
+  const viewUrl = `https://www.stratezik.com/gbp-audit?plan=${encodeURIComponent(args.scanId)}`
 
   const html = `
     <div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#211f1c;line-height:1.55;max-width:560px">
@@ -38,6 +40,7 @@ export async function sendRoadmapEmail(args: SendRoadmapArgs): Promise<boolean> 
       <p style="color:#5f5a52;margin:0 0 18px">${args.businessName} · ${args.city}</p>
       <p>Your full Google Business Profile growth plan is attached as a PDF. It is built entirely from your own audit: your real competitor gap, the categories and description to paste in, four ready-to-publish posts, eight seeded Q&amp;A pairs, and your review-request scripts.</p>
       <p>Work the Weeks 1-2 list first. Those are the fixes that move you fastest.</p>
+      <p style="margin-top:18px"><a href="${viewUrl}" style="color:#8c2e2e;font-weight:600">View your plan online</a> (copy-paste posts, Q&amp;A, and PDF download).</p>
       <p style="margin-top:22px">Want it done for you instead? Just reply to this email, or book a free consult at <a href="https://www.stratezik.com" style="color:#8c2e2e">stratezik.com</a>.</p>
       <p style="color:#8a857c;font-size:13px;margin-top:24px">— The Stratezik team</p>
     </div>`

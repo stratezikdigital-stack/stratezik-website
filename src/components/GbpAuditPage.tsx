@@ -107,8 +107,6 @@ type Topline = {
 
 type Phase = 'input' | 'scanning' | 'unlocking' | 'results'
 
-const GBP_SCAN_STORAGE_KEY = 'gbpRoadmapScanId'
-
 function applyUnlockPayload(
   data: Topline & { pillars?: Pillar[] },
   setters: {
@@ -240,13 +238,6 @@ export default function GbpAuditPage() {
           : null,
       )
       setPhase('results')
-      if (data.scanId) {
-        try {
-          sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, data.scanId)
-        } catch {
-          /* ignore */
-        }
-      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Scan failed')
       setPhase('input')
@@ -335,11 +326,6 @@ export default function GbpAuditPage() {
       })
       const data = (await res.json()) as { url?: string; error?: string }
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Checkout failed')
-      try {
-        sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, topline.scanId)
-      } catch {
-        /* ignore */
-      }
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed')
@@ -419,11 +405,6 @@ export default function GbpAuditPage() {
           setEmailUnlocked,
           setPhase,
         })
-        try {
-          sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, data.scanId)
-        } catch {
-          /* ignore */
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Payment unlock failed')
         setPhase('input')
@@ -436,26 +417,30 @@ export default function GbpAuditPage() {
     return () => window.clearInterval(timer)
   }, [searchParams, setSearchParams, applyPreview])
 
-  // Return visit after payment when Stripe params were already cleared
+  // Re-open a paid plan only from an explicit link (?plan=scanId), e.g. the email we send after checkout.
+  // Do not auto-restore from browser storage — a hard refresh should show a fresh scan form.
   useEffect(() => {
     if (searchParams.get('session_id')) return
-    let scanId: string | null = null
-    try {
-      scanId = sessionStorage.getItem(GBP_SCAN_STORAGE_KEY)
-    } catch {
-      return
-    }
-    if (!scanId || deepUnlocked || phase !== 'input') return
+    const planScanId = searchParams.get('plan')
+    if (!planScanId || deepUnlocked || phase !== 'input') return
+
+    setPhase('unlocking')
+    setUnlockStep(0)
+    setError(null)
+    const timer = window.setInterval(
+      () => setUnlockStep((i) => Math.min(i + 1, UNLOCK_STEPS.length - 1)),
+      2500,
+    )
 
     void (async () => {
       try {
         const res = await fetch('/api/gbp-restore', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scanId }),
+          body: JSON.stringify({ scanId: planScanId }),
         })
         const data = (await res.json()) as Topline & { unlocked?: boolean; pillars?: Pillar[]; error?: string }
-        if (!res.ok || !data.unlocked) return
+        if (!res.ok || !data.unlocked) throw new Error(data.error ?? 'Could not load your plan.')
         applyUnlockPayload(data, {
           setTopline,
           setBiz,
@@ -468,11 +453,17 @@ export default function GbpAuditPage() {
           setEmailUnlocked,
           setPhase,
         })
-      } catch {
-        /* not paid or scan missing — stay on input */
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Could not load your plan.')
+        setPhase('input')
+      } finally {
+        window.clearInterval(timer)
+        setSearchParams({}, { replace: true })
       }
     })()
-  }, [searchParams, deepUnlocked, phase, applyPreview])
+
+    return () => window.clearInterval(timer)
+  }, [searchParams, deepUnlocked, phase, applyPreview, setSearchParams])
 
   const switchIndustry = (val: string) => {
     setIndustry(val)
@@ -1255,10 +1246,17 @@ export default function GbpAuditPage() {
                 onClick={() => {
                   setPhase('input')
                   setTopline(null)
+                  setPillars(null)
+                  setCompGaps(null)
+                  setRoadmap(null)
+                  setRevenueLine('')
+                  setTopCompetitor('')
                   setEmailUnlocked(false)
                   setDeepUnlocked(false)
                   setAiRoadmap(null)
+                  setStorageWarning(null)
                   setError(null)
+                  setSearchParams({}, { replace: true })
                 }}
               >
                 ↻ Scan another business
