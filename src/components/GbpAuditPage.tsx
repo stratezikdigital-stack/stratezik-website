@@ -133,6 +133,7 @@ export default function GbpAuditPage() {
   const [loading, setLoading] = useState(false)
   const [storageWarning, setStorageWarning] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [turnstileKey, setTurnstileKey] = useState(0)
 
   const applyPreview = useCallback((data: Topline) => {
     setCompGaps(data.competitorGaps ?? null)
@@ -184,6 +185,8 @@ export default function GbpAuditPage() {
       setError(e instanceof Error ? e.message : 'Scan failed')
       setPhase('input')
     } finally {
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
       void protection.refreshFormToken()
     }
   }, [biz, city, industry, protection, applyPreview])
@@ -231,6 +234,7 @@ export default function GbpAuditPage() {
       } finally {
         setLoading(false)
         protection.resetTurnstile()
+        setTurnstileKey((k) => k + 1)
         void protection.refreshFormToken()
       }
     },
@@ -238,8 +242,16 @@ export default function GbpAuditPage() {
   )
 
   const startCheckout = useCallback(async () => {
-    if (!topline || !email) {
-      setError('Enter your email above first — we need it to deliver the roadmap.')
+    if (!topline?.scanId) {
+      setError('This scan was not saved — run the check again, then checkout.')
+      return
+    }
+    if (!email.trim()) {
+      setError('Enter your email below — we need it to deliver the roadmap after payment.')
+      return
+    }
+    if (!protection.canSubmit) {
+      setError('Complete the security check below, then try again.')
       return
     }
     setCheckoutLoading(true)
@@ -250,7 +262,7 @@ export default function GbpAuditPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           scanId: topline.scanId,
-          email,
+          email: email.trim(),
           website: protection.honeypot,
           ...protection.spamPayload(),
         }),
@@ -261,6 +273,9 @@ export default function GbpAuditPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed')
       setCheckoutLoading(false)
+      protection.resetTurnstile()
+      setTurnstileKey((k) => k + 1)
+      void protection.refreshFormToken()
     }
   }, [topline, email, protection])
 
@@ -728,6 +743,7 @@ export default function GbpAuditPage() {
                     turnstileSiteKey={protection.turnstileSiteKey}
                     onTurnstileSuccess={protection.setTurnstileToken}
                     onTurnstileExpire={protection.resetTurnstile}
+                    turnstileResetKey={turnstileKey}
                     honeypotValue={protection.honeypot}
                     onHoneypotChange={protection.setHoneypot}
                   />
@@ -843,11 +859,30 @@ export default function GbpAuditPage() {
                     Full competitor breakdown + prioritized 90-day Google Business Profile roadmap — {ROADMAP_PRICE}{' '}
                     CAD.
                   </p>
+                  <div className="mt-5 w-full max-w-sm text-left">
+                    <label className="block text-xs font-medium text-ink-600">Email for your roadmap</label>
+                    <input
+                      type="email"
+                      required
+                      className={`${inputClass} mt-1.5`}
+                      placeholder="you@business.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <FormProtectionFields
+                      turnstileSiteKey={protection.turnstileSiteKey}
+                      onTurnstileSuccess={protection.setTurnstileToken}
+                      onTurnstileExpire={protection.resetTurnstile}
+                      turnstileResetKey={turnstileKey}
+                      honeypotValue={protection.honeypot}
+                      onHoneypotChange={protection.setHoneypot}
+                    />
+                  </div>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <button
                       type="button"
                       className={btnSecondary}
-                      disabled={checkoutLoading}
+                      disabled={checkoutLoading || !protection.canSubmit || !email.trim()}
                       onClick={() => void startCheckout()}
                     >
                       {checkoutLoading ? 'Redirecting…' : `Get the roadmap — ${ROADMAP_PRICE}`}
