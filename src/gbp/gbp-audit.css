@@ -7,6 +7,20 @@
   -webkit-font-smoothing: antialiased;
 }
 
+html.gbp-audit-active,
+body.gbp-audit-active {
+  background: #16120d !important;
+  color: #f7f1e6;
+}
+
+.gbp-audit-root h1,
+.gbp-audit-root h2,
+.gbp-audit-root h3 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: inherit;
+  letter-spacing: -0.01em;
+}
+
 .gbp-audit-root ::selection {
   background: #f4a23c;
   color: #16120d;

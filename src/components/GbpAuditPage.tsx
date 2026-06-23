@@ -110,6 +110,15 @@ export default function GbpAuditPage() {
   const [loading, setLoading] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
+  useEffect(() => {
+    document.documentElement.classList.add('gbp-audit-active')
+    document.body.classList.add('gbp-audit-active')
+    return () => {
+      document.documentElement.classList.remove('gbp-audit-active')
+      document.body.classList.remove('gbp-audit-active')
+    }
+  }, [])
+
   const ctx = useMemo(() => {
     const cityShort = (city || 'Scarborough').split(',')[0]
     const trade = topline?.industryDisplay ?? industry
