@@ -63,7 +63,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-06-22",
+  "generated": "2026-06-23",
   "articles": [
     {
       "title": "The Shift From Old SEO to Agent-Ready SEO in 2026",
@@ -265,6 +265,12 @@
       "url": "https://www.stratezik.com/aeo-checker",
       "summary": "Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).",
       "type": "AEO readiness checker"
+    },
+    {
+      "name": "Local Visibility Scan: Free Google Business Profile Audit",
+      "url": "https://www.stratezik.com/gbp-audit",
+      "summary": "Free GBP audit for Toronto and GTA businesses. See your Map Pack ranking, get three copy-paste weekend fixes, and unlock a 6-pillar local visibility score tuned to your industry.",
+      "type": "Research report"
     },
     {
       "name": "Toronto Startup Website Audit 2026 | AEO Research",

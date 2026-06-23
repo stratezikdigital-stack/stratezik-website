@@ -14,6 +14,7 @@ const DesktopExperience = lazy(() => import('./components/DesktopExperience'))
 const CareerPage = lazy(() => import('./components/CareerPage'))
 const PrivacyPage = lazy(() => import('./components/PrivacyPage'))
 const AeoCheckerPage = lazy(() => import('./components/AeoCheckerPage'))
+const GbpAuditPage = lazy(() => import('./components/GbpAuditPage'))
 const TorontoStartupAuditPage = lazy(() => import('./components/TorontoStartupAuditPage'))
 const GrowthCreditPage = lazy(() => import('./components/GrowthCreditPage'))
 const FreeToolsPage = lazy(() => import('./components/FreeToolsPage'))
@@ -62,20 +63,23 @@ function ScrollToHash() {
 function AppContent() {
   const location = useLocation()
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+  const isGbpAudit = location.pathname.startsWith('/gbp-audit')
+  const isStandaloneTool = isCheatSheet || isGbpAudit
 
   return (
     <>
       <ScrollToTop />
       <ScrollToHash />
       <div className="relative z-10 min-h-screen">
-        {!isCheatSheet && <Navbar />}
-        <main className={isCheatSheet ? '' : 'pt-36'}>
+        {!isStandaloneTool && <Navbar />}
+        <main className={isStandaloneTool ? '' : 'pt-36'}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
+              <Route path="/gbp-audit" element={<GbpAuditPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
               <Route path="/free-tools" element={<FreeToolsPage />} />
@@ -90,8 +94,8 @@ function AppContent() {
             </Routes>
           </Suspense>
         </main>
-        {!isCheatSheet && <Footer />}
-        {!isCheatSheet && <CookieConsentBanner />}
+        {!isStandaloneTool && <Footer />}
+        {!isStandaloneTool && <CookieConsentBanner />}
       </div>
     </>
   )
@@ -101,14 +105,16 @@ function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+  const isGbpAudit = location.pathname.startsWith('/gbp-audit')
+  const isStandaloneTool = isCheatSheet || isGbpAudit
   const mobile = useIsMobile()
-  const [loaded, setLoaded] = useState(() => isCheatSheet || getIsMobile())
+  const [loaded, setLoaded] = useState(() => isStandaloneTool || getIsMobile())
 
   useEffect(() => {
-    if (isCheatSheet || mobile) setLoaded(true)
-  }, [isCheatSheet, mobile])
+    if (isStandaloneTool || mobile) setLoaded(true)
+  }, [isStandaloneTool, mobile])
 
-  const showDesktopChrome = !isCheatSheet && !mobile
+  const showDesktopChrome = !isStandaloneTool && !mobile
 
   return (
     <>

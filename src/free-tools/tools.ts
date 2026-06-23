@@ -12,6 +12,17 @@ export type FreeTool = {
 /** Single source for /free-tools hub cards — add future lead magnets here. */
 export const FREE_TOOLS: FreeTool[] = [
   {
+    slug: 'gbp-audit',
+    title: 'Local Visibility Scan',
+    tagline: 'Google Business Profile audit',
+    description:
+      'See why competitors outrank you on Google Maps. Free score, Map Pack view, three copy-paste weekend fixes, and a 6-pillar breakdown — tuned to your industry.',
+    href: '/gbp-audit?utm_source=free-tools&utm_medium=card',
+    cta: 'Run my free scan',
+    label: 'Local SEO',
+    badge: 'New',
+  },
+  {
     slug: 'aeo-checker',
     title: 'AEO Readiness Checker',
     tagline: '20-point machine-verified test',

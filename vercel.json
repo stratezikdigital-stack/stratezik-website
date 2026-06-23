@@ -3,9 +3,18 @@
     "api/aeo.ts": {
       "maxDuration": 150,
       "includeFiles": "server/**,content/**,src/cheatsheet/**"
+    },
+    "api/gbp.ts": {
+      "maxDuration": 60,
+      "includeFiles": "server/**"
     }
   },
   "redirects": [
+    {
+      "source": "/scan",
+      "destination": "https://www.stratezik.com/gbp-audit",
+      "permanent": true
+    },
     {
       "source": "/privacy-policy/",
       "destination": "https://www.stratezik.com/privacy",
@@ -322,6 +331,11 @@
     { "source": "/api/form-token", "destination": "/api/aeo?action=form-token" },
     { "source": "/api/contact", "destination": "/api/aeo?action=contact" },
     { "source": "/api/growth-credit", "destination": "/api/aeo?action=growth-credit" },
+    { "source": "/api/gbp-check", "destination": "/api/gbp?action=check" },
+    { "source": "/api/gbp-lead", "destination": "/api/gbp?action=lead" },
+    { "source": "/api/gbp-checkout", "destination": "/api/gbp?action=checkout" },
+    { "source": "/api/gbp-unlock", "destination": "/api/gbp?action=unlock" },
+    { "source": "/api/gbp-full", "destination": "/api/gbp?action=full" },
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
@@ -426,6 +440,19 @@
     },
     {
       "source": "/toronto-startup-website-audit-2026",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/gbp-audit",
       "headers": [
         {
           "key": "Cache-Control",

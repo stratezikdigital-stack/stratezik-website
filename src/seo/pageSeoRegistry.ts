@@ -183,6 +183,33 @@ export const AEO_CHECKER_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'weekly',
 }
 
+export const GBP_AUDIT_SEO: RouteSeoConfig = {
+  path: '/gbp-audit',
+  title: 'Local Visibility Scan: Free Google Business Profile Audit | Stratezik',
+  description:
+    'Free GBP audit for Toronto and GTA businesses. See your Map Pack ranking, get three copy-paste weekend fixes, and unlock a 6-pillar local visibility score tuned to your industry.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik Local Visibility Scan — free Google Business Profile audit',
+  keywords: [
+    'Google Business Profile audit',
+    'GBP audit',
+    'local SEO audit',
+    'Google Maps ranking',
+    'Map Pack audit',
+    'Toronto local SEO',
+    'Scarborough GBP',
+    'GTA local visibility',
+    'Stratezik',
+  ],
+  datePublished: '2026-06-22',
+  dateModified: '2026-06-22',
+  sitemapPriority: 0.9,
+  sitemapChangefreq: 'weekly',
+}
+
 export const TORONTO_AUDIT_SEO: RouteSeoConfig = {
   path: '/toronto-startup-website-audit-2026',
   title: 'Toronto Startup Website Audit 2026 | AEO Research | Stratezik',
@@ -438,6 +465,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     CAREERS_SEO,
     PRIVACY_SEO,
     AEO_CHECKER_SEO,
+    GBP_AUDIT_SEO,
     TORONTO_AUDIT_SEO,
     CHATGPT_CHEAT_SHEET_SEO,
     CHATGPT_CHEAT_SHEET_GUIDE_SEO,

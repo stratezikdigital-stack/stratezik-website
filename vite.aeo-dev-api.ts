@@ -1,6 +1,7 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
 import { handleCheck, handleLead } from './server/aeo/handlers'
+import { handleGbpCheck, handleGbpLead } from './server/gbp/handlers'
 import { handleContact, handleFormToken, handleGrowthCredit } from './server/forms/handlers'
 import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
 
@@ -95,6 +96,24 @@ export function aeoDevApiPlugin(): Plugin {
             const k = new URL(url, 'http://localhost').searchParams.get('k') ?? ''
             await handleGuideAccess(
               { method: 'GET', query: { k }, headers: req.headers } as import('@vercel/node').VercelRequest,
+              pseudoResponse(res),
+            )
+            return
+          }
+
+          if (url.startsWith('/api/gbp-check') && req.method === 'POST') {
+            const body = await readJsonBody(req)
+            await handleGbpCheck(
+              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
+              pseudoResponse(res),
+            )
+            return
+          }
+
+          if (url.startsWith('/api/gbp-lead') && req.method === 'POST') {
+            const body = await readJsonBody(req)
+            await handleGbpLead(
+              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
               pseudoResponse(res),
             )
             return

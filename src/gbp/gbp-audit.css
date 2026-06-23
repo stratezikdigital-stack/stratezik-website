@@ -1,0 +1,148 @@
+.gbp-audit-root {
+  min-height: 100vh;
+  background: radial-gradient(120% 90% at 12% -8%, rgba(244, 162, 60, 0.1), transparent 52%),
+    radial-gradient(90% 80% at 100% 0%, rgba(255, 122, 69, 0.06), transparent 48%), #16120d;
+  color: #f7f1e6;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gbp-audit-root ::selection {
+  background: #f4a23c;
+  color: #16120d;
+}
+
+.gbp-audit-root .gbp-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 28px 24px 96px;
+}
+
+.gbp-audit-root input {
+  width: 100%;
+  background: #16120d;
+  border: 1px solid #3a3122;
+  border-radius: 11px;
+  padding: 13px 15px;
+  color: #f7f1e6;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+.gbp-audit-root input:focus {
+  border-color: #f4a23c;
+}
+
+.gbp-audit-root input::placeholder {
+  color: #4a4029;
+}
+
+.gbp-audit-root .chip-btn {
+  background: #16120d;
+  color: #cbbfa9;
+  border: 1px solid #3a3122;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.gbp-audit-root .chip-btn:hover {
+  border-color: #f4a23c;
+  color: #f7f1e6;
+}
+
+.gbp-audit-root .switch-pill {
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #4a4029;
+  background: transparent;
+  color: #cbbfa9;
+}
+
+.gbp-audit-root .switch-pill.active {
+  background: #f4a23c;
+  color: #16120d;
+  border-color: #f4a23c;
+}
+
+.gbp-audit-root .panel {
+  background: linear-gradient(180deg, #241e16, #1e1810);
+  border: 1px solid #4a4029;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.8);
+}
+
+.gbp-audit-root .btn-primary {
+  background: #f4a23c;
+  color: #16120d;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+}
+
+.gbp-audit-root .btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.gbp-audit-root .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.gbp-audit-root .mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.gbp-audit-root .display {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+@keyframes gbpFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gbpRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gbp-audit-root .sz-anim > * {
+  animation: gbpFadeUp 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (max-width: 720px) {
+  .gbp-audit-root .gbp-input-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .gbp-audit-root .gbp-verdict-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .gbp-audit-root .gbp-map-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .gbp-audit-root .gbp-pillar-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .gbp-audit-root .gbp-email-gate {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -24,6 +24,8 @@ export const AEO_REPORT_CURRENCY = (process.env.AEO_REPORT_CURRENCY ?? 'cad').to
 
 export type AeoProduct = 'report' | 'sitemap'
 
+export const GBP_ROADMAP_PRICE_CENTS = Number(process.env.GBP_ROADMAP_PRICE_CENTS ?? '2900')
+
 export function priceFor(product: AeoProduct): number {
   return product === 'sitemap' ? AEO_SITEMAP_PRICE_CENTS : AEO_REPORT_PRICE_CENTS
 }

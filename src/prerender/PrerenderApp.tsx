@@ -9,6 +9,7 @@ import AuthorPage from '../components/AuthorPage'
 import { ServicePageView } from '../components/ServicePageView'
 import CareerPage from '../components/CareerPage'
 import AeoCheckerPage from '../components/AeoCheckerPage'
+import GbpAuditPage from '../components/GbpAuditPage'
 import TorontoStartupAuditPage from '../components/TorontoStartupAuditPage'
 import GrowthCreditPage from '../components/GrowthCreditPage'
 import FreeToolsPage from '../components/FreeToolsPage'
@@ -37,6 +38,7 @@ export function PrerenderApp({ pathname, bodies, blogArticleComponent }: Prerend
               <Route path="/careers" element={<CareerPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/aeo-checker" element={<AeoCheckerPage />} />
+              <Route path="/gbp-audit" element={<GbpAuditPage />} />
               <Route path="/toronto-startup-website-audit-2026" element={<TorontoStartupAuditPage />} />
               <Route path="/growth-credit" element={<GrowthCreditPage />} />
               <Route path="/free-tools" element={<FreeToolsPage />} />

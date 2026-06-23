@@ -9,12 +9,17 @@
 - [Blog index](https://www.stratezik.com/blog): Articles on SEO, AEO, local search, paid media
 - [Careers](https://www.stratezik.com/careers): Toronto team hiring
 
-## Free tools & offers (5)
+## Free tools & offers (6)
 
 ### AEO Readiness Checker: Free 20-Point Website Test
 - URL: https://www.stratezik.com/aeo-checker
 - Summary: Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).
 - Updated: 2026-06-14
+
+### Local Visibility Scan: Free Google Business Profile Audit
+- URL: https://www.stratezik.com/gbp-audit
+- Summary: Free GBP audit for Toronto and GTA businesses. See your Map Pack ranking, get three copy-paste weekend fixes, and unlock a 6-pillar local visibility score tuned to your industry.
+- Updated: 2026-06-22
 
 ### Toronto Startup Website Audit 2026 | AEO Research
 - URL: https://www.stratezik.com/toronto-startup-website-audit-2026
