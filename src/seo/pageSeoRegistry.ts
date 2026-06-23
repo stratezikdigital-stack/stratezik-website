@@ -5,6 +5,7 @@ import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
 import { buildCareersBreadcrumbJsonLd } from './buildBreadcrumbJsonLd'
 import { buildAeoCheckerJsonLd } from './buildAeoCheckerJsonLd'
+import { buildGbpAuditJsonLd } from './buildGbpAuditJsonLd'
 import { buildCheatSheetJsonLd, buildCheatSheetGuideJsonLd } from './buildCheatSheetJsonLd'
 import { buildFreeToolsJsonLd } from './buildFreeToolsJsonLd'
 import { buildGrowthCreditJsonLd } from './buildGrowthCreditJsonLd'
@@ -189,24 +190,27 @@ export const GBP_AUDIT_SEO: RouteSeoConfig = {
   description:
     'Free GBP audit for Toronto and GTA businesses. See your Map Pack ranking, get three copy-paste weekend fixes, and unlock a 6-pillar local visibility score tuned to your industry.',
   ogType: 'website',
-  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageUrl: `${SITE_ORIGIN}/services/google-business-profile.webp`,
   ogImageWidth: BRAND_OG_DIMENSIONS.width,
   ogImageHeight: BRAND_OG_DIMENSIONS.height,
-  ogImageAlt: 'Stratezik Local Visibility Scan — free Google Business Profile audit',
+  ogImageAlt: 'Stratezik Local Visibility Scan — free Google Business Profile audit for Toronto and GTA',
   keywords: [
     'Google Business Profile audit',
     'GBP audit',
     'local SEO audit',
     'Google Maps ranking',
     'Map Pack audit',
+    'local visibility scan',
     'Toronto local SEO',
     'Scarborough GBP',
     'GTA local visibility',
+    'Google Maps near me',
     'Stratezik',
   ],
+  jsonLd: buildGbpAuditJsonLd(),
   datePublished: '2026-06-22',
-  dateModified: '2026-06-22',
-  sitemapPriority: 0.9,
+  dateModified: '2026-06-23',
+  sitemapPriority: 0.92,
   sitemapChangefreq: 'weekly',
 }
 

@@ -246,6 +246,19 @@ function findUserPlace(
   return partial ?? candidates[0] ?? null
 }
 
+function buildRevenueLine(
+  you: PlaceSummary | null,
+  top: PlaceSummary | null,
+  templateLine: string,
+  ctx: { city: string; trade: string },
+): string {
+  if (you && top && top.reviewCount > you.reviewCount) {
+    const gap = top.reviewCount - you.reviewCount
+    return `Closing the ${gap}-review gap with ${top.name} is the difference between page-2 invisible and a top-3 pin. At ${ctx.trade} search volume in ${ctx.city}, that's the local calls you're leaving on the table each month.`
+  }
+  return sub(templateLine, ctx)
+}
+
 export async function runGbpScan(input: {
   businessName: string
   city: string
@@ -335,7 +348,7 @@ export async function runGbpScan(input: {
     pillars,
     quickWins,
     competitorGaps: buildCompGaps(you, competitors[0], template.competitorGaps),
-    revenueLine: sub(template.revenueLine, ctx),
+    revenueLine: buildRevenueLine(you, competitors[0] ?? null, template.revenueLine, ctx),
     roadmap: template.roadmap,
     checkedAt: new Date().toISOString(),
     mapsUri: you?.mapsUri ?? null,

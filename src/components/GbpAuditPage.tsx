@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveIndustry, sub } from '../gbp/industryEngine'
+import { GBP_AUDIT_FAQS } from '../gbp/gbpAuditFaqs'
 import { GbpMapPackIllustration } from './gbp/GbpMapPackIllustration'
 
 const BOOK_URL = '/#contact'
@@ -522,6 +523,23 @@ export default function GbpAuditPage() {
                   <span className="text-oxblood">✓</span> Industry-tailored recommendations
                 </li>
               </ul>
+              <p className="mt-6 text-sm text-ink-600 leading-relaxed">
+                Website AI-ready too?{' '}
+                <Link
+                  to="/aeo-checker?utm_source=gbp-audit&utm_medium=inline"
+                  className="text-oxblood underline underline-offset-2 hover:text-ink"
+                >
+                  Run the AEO Readiness Checker
+                </Link>
+                . Need done-for-you GBP work?{' '}
+                <Link
+                  to="/services/google-business-profile"
+                  className="text-oxblood underline underline-offset-2 hover:text-ink"
+                >
+                  GBP management
+                </Link>
+                .
+              </p>
             </header>
 
             <div className={cardClass}>
@@ -1027,7 +1045,46 @@ export default function GbpAuditPage() {
             </div>
           </div>
         )}
+
+        <GbpFaqSection />
       </div>
     </main>
+  )
+}
+
+function GbpFaqSection() {
+  return (
+    <section id="gbp-audit-faq" className="mt-16 border-t border-ink/15 pt-12" aria-labelledby="gbp-faq-heading">
+      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">FAQ</p>
+      <h2 id="gbp-faq-heading" className="mt-2 font-display text-2xl text-ink sm:text-3xl">
+        Local Visibility Scan: common questions
+      </h2>
+      <dl className="mt-8 space-y-6">
+        {GBP_AUDIT_FAQS.map((item) => (
+          <div key={item.question} className="border border-ink/12 bg-cream-50 p-6">
+            <dt className="font-display text-lg text-ink">{item.question}</dt>
+            <dd className="mt-3 text-ink-600 leading-relaxed">{item.answer}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-8 text-sm text-ink-500 leading-relaxed">
+        More free tools:{' '}
+        <Link to="/free-tools" className="text-oxblood underline underline-offset-2 hover:text-ink">
+          Stratezik free tools hub
+        </Link>
+        . AI website audit:{' '}
+        <Link
+          to="/aeo-checker?utm_source=gbp-audit&utm_medium=faq"
+          className="text-oxblood underline underline-offset-2 hover:text-ink"
+        >
+          AEO Readiness Checker
+        </Link>
+        .{' '}
+        <Link to={BOOK_URL} className="text-oxblood underline underline-offset-2 hover:text-ink">
+          Book a consult
+        </Link>
+        .
+      </p>
+    </section>
   )
 }

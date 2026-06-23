@@ -475,6 +475,16 @@ export default function AeoCheckerPage() {
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
               Free · ~20 seconds · No signup for your topline score
             </p>
+            <p className="mt-4 text-sm text-ink-600 leading-relaxed">
+              Local business on Google Maps?{' '}
+              <Link
+                to="/gbp-audit?utm_source=aeo-checker&utm_medium=inline"
+                className="text-oxblood underline underline-offset-2 hover:text-ink"
+              >
+                Run the Local Visibility Scan
+              </Link>{' '}
+              for Map Pack ranking and GBP fixes.
+            </p>
           </form>
 
           <Storefront />
