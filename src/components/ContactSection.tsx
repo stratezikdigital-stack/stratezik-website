@@ -5,6 +5,7 @@ import { FormProtectionFields } from './spam/FormProtectionFields'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
+import { SocialProfileLinks } from './SocialProfileLinks'
 
 /**
  * Plan D - Contact / consultation section.
@@ -297,6 +298,13 @@ export default function ContactSection() {
                   href="https://maps.google.com/?q=2466+Eglinton+Ave+E,+Toronto"
                 />
                 <Ledger label="Hours" value={'Mon-Fri · 09:00-18:00 ET'} />
+              </div>
+
+              <div className="hairline border-cream/15 mt-8 pt-6">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 mb-4">
+                  Follow Stratezik
+                </div>
+                <SocialProfileLinks />
               </div>
 
               <div className="hairline border-cream/15 mt-8 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-cream/55 leading-7">
