@@ -4,6 +4,7 @@ import {
   handleGbpCheckout,
   handleGbpFull,
   handleGbpLead,
+  handleGbpRestore,
   handleGbpUnlock,
 } from '../server/gbp/handlers.js'
 
@@ -17,6 +18,7 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/gbp-lead': 'lead',
     '/api/gbp-checkout': 'checkout',
     '/api/gbp-unlock': 'unlock',
+    '/api/gbp-restore': 'restore',
     '/api/gbp-full': 'full',
   }
   return legacy[path] ?? null
@@ -37,6 +39,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return handleGbpCheckout(req, res)
     case 'unlock':
       return handleGbpUnlock(req, res)
+    case 'restore':
+      return handleGbpRestore(req, res)
     case 'full':
       return handleGbpFull(req, res)
     default:

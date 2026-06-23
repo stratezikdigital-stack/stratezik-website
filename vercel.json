@@ -335,6 +335,7 @@
     { "source": "/api/gbp-lead", "destination": "/api/gbp?action=lead" },
     { "source": "/api/gbp-checkout", "destination": "/api/gbp?action=checkout" },
     { "source": "/api/gbp-unlock", "destination": "/api/gbp?action=unlock" },
+    { "source": "/api/gbp-restore", "destination": "/api/gbp?action=restore" },
     { "source": "/api/gbp-full", "destination": "/api/gbp?action=full" },
     {
       "source": "/api/(.*)",

@@ -308,10 +308,40 @@ export async function handleGbpUnlock(req: VercelRequest, res: VercelResponse) {
   const scan = scanRow.result as GbpScanResult
   return res.status(200).json({
     unlocked: true,
-    competitorGaps: scan.competitorGaps,
-    revenueLine: scan.revenueLine,
-    roadmap: scan.roadmap,
-    topCompetitor: scan.topCompetitor,
+    ...topline(scan, scanRow.id),
+    pillars: scan.pillars,
+  })
+}
+
+/** Reload a paid roadmap when the user returns without Stripe query params. */
+export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) {
+  const body = (req.body ?? {}) as { scanId?: unknown }
+  const scanId = typeof body.scanId === 'string' ? body.scanId : ''
+  if (!scanId) return res.status(400).json({ error: 'Missing scan id.' })
+
+  const supabase = createAdminClient()
+  const { data: paid } = await supabase
+    .from('gbp_paid_roadmaps')
+    .select('id')
+    .eq('scan_id', scanId)
+    .limit(1)
+    .maybeSingle()
+  if (!paid) {
+    return res.status(404).json({ error: 'No paid roadmap found for this scan.' })
+  }
+
+  const { data: scanRow } = await supabase
+    .from('gbp_scans')
+    .select('id, result')
+    .eq('id', scanId)
+    .maybeSingle()
+  if (!scanRow) return res.status(404).json({ error: 'Scan not found.' })
+
+  const scan = scanRow.result as GbpScanResult
+  return res.status(200).json({
+    unlocked: true,
+    ...topline(scan, scanRow.id),
+    pillars: scan.pillars,
   })
 }
 

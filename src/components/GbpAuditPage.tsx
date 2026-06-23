@@ -86,7 +86,41 @@ type Topline = {
   storageHint?: string
 }
 
-type Phase = 'input' | 'scanning' | 'results'
+type Phase = 'input' | 'scanning' | 'unlocking' | 'results'
+
+const GBP_SCAN_STORAGE_KEY = 'gbpRoadmapScanId'
+
+function applyUnlockPayload(
+  data: Topline & { pillars?: Pillar[] },
+  setters: {
+    setTopline: (v: Topline) => void
+    setBiz: (v: string) => void
+    setCity: (v: string) => void
+    setIndustry: (v: string) => void
+    setPillars: (v: Pillar[] | null) => void
+    applyPreview: (v: Topline) => void
+    setDeepUnlocked: (v: boolean) => void
+    setEmailUnlocked: (v: boolean) => void
+    setPhase: (v: Phase) => void
+  },
+) {
+  setters.setTopline(data)
+  setters.setBiz(data.businessName)
+  setters.setCity(data.city)
+  setters.setIndustry(data.industry)
+  setters.setPillars(data.pillars ?? null)
+  setters.applyPreview(data)
+  setters.setDeepUnlocked(true)
+  setters.setEmailUnlocked(true)
+  setters.setPhase('results')
+}
+
+const UNLOCK_STEPS = [
+  'Payment confirmed — verifying with Stripe…',
+  'Loading your saved scan…',
+  'Unlocking competitor breakdown…',
+  'Preparing your 90-day roadmap…',
+]
 
 function scoreTone(score: number): 'good' | 'mid' | 'low' {
   if (score >= 75) return 'good'
@@ -134,6 +168,7 @@ export default function GbpAuditPage() {
   const [storageWarning, setStorageWarning] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [turnstileKey, setTurnstileKey] = useState(0)
+  const [unlockStep, setUnlockStep] = useState(0)
 
   const applyPreview = useCallback((data: Topline) => {
     setCompGaps(data.competitorGaps ?? null)
@@ -181,6 +216,13 @@ export default function GbpAuditPage() {
           : null,
       )
       setPhase('results')
+      if (data.scanId) {
+        try {
+          sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, data.scanId)
+        } catch {
+          /* ignore */
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Scan failed')
       setPhase('input')
@@ -269,6 +311,11 @@ export default function GbpAuditPage() {
       })
       const data = (await res.json()) as { url?: string; error?: string }
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Checkout failed')
+      try {
+        sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, topline.scanId)
+      } catch {
+        /* ignore */
+      }
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed')
@@ -284,6 +331,14 @@ export default function GbpAuditPage() {
     const scanId = searchParams.get('scanId')
     if (!sessionId || !scanId) return
 
+    setPhase('unlocking')
+    setUnlockStep(0)
+    setError(null)
+    const timer = window.setInterval(
+      () => setUnlockStep((i) => Math.min(i + 1, UNLOCK_STEPS.length - 1)),
+      2500,
+    )
+
     void (async () => {
       try {
         const res = await fetch('/api/gbp-unlock', {
@@ -291,37 +346,77 @@ export default function GbpAuditPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId, scanId }),
         })
-        const data = (await res.json()) as {
+        const data = (await res.json()) as Topline & {
           unlocked?: boolean
-          competitorGaps?: CompGap[]
-          revenueLine?: string
-          roadmap?: RoadmapStep[]
-          topCompetitor?: string
+          pillars?: Pillar[]
           error?: string
         }
-        if (!res.ok) throw new Error(data.error ?? 'Unlock failed')
-        setCompGaps(data.competitorGaps ?? null)
-        setRevenueLine(data.revenueLine ?? '')
-        setRoadmap(data.roadmap ?? null)
-        setTopCompetitor(data.topCompetitor ?? '')
-        setDeepUnlocked(true)
-        setEmailUnlocked(true)
-        setPhase('results')
+        if (!res.ok || !data.unlocked) throw new Error(data.error ?? 'Unlock failed')
 
-        const fullRes = await fetch('/api/gbp-full', {
+        applyUnlockPayload(data, {
+          setTopline,
+          setBiz,
+          setCity,
+          setIndustry,
+          setPillars,
+          applyPreview,
+          setDeepUnlocked,
+          setEmailUnlocked,
+          setPhase,
+        })
+        try {
+          sessionStorage.setItem(GBP_SCAN_STORAGE_KEY, data.scanId)
+        } catch {
+          /* ignore */
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Payment unlock failed')
+        setPhase('input')
+      } finally {
+        window.clearInterval(timer)
+        setSearchParams({}, { replace: true })
+      }
+    })()
+
+    return () => window.clearInterval(timer)
+  }, [searchParams, setSearchParams, applyPreview])
+
+  // Return visit after payment when Stripe params were already cleared
+  useEffect(() => {
+    if (searchParams.get('session_id')) return
+    let scanId: string | null = null
+    try {
+      scanId = sessionStorage.getItem(GBP_SCAN_STORAGE_KEY)
+    } catch {
+      return
+    }
+    if (!scanId || deepUnlocked || phase !== 'input') return
+
+    void (async () => {
+      try {
+        const res = await fetch('/api/gbp-restore', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ scanId }),
         })
-        const full = (await fullRes.json()) as { pillars?: Pillar[] }
-        if (fullRes.ok) setPillars(full.pillars ?? null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Payment unlock failed')
-      } finally {
-        setSearchParams({}, { replace: true })
+        const data = (await res.json()) as Topline & { unlocked?: boolean; pillars?: Pillar[]; error?: string }
+        if (!res.ok || !data.unlocked) return
+        applyUnlockPayload(data, {
+          setTopline,
+          setBiz,
+          setCity,
+          setIndustry,
+          setPillars,
+          applyPreview,
+          setDeepUnlocked,
+          setEmailUnlocked,
+          setPhase,
+        })
+      } catch {
+        /* not paid or scan missing — stay on input */
       }
     })()
-  }, [searchParams, setSearchParams])
+  }, [searchParams, deepUnlocked, phase, applyPreview])
 
   const switchIndustry = (val: string) => {
     setIndustry(val)
@@ -497,6 +592,24 @@ export default function GbpAuditPage() {
             <h2 className="font-display text-2xl text-ink">Scanning {biz || industry}…</h2>
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
               Pulling Google Maps data &amp; tailoring checks
+            </p>
+          </div>
+        )}
+
+        {phase === 'unlocking' && (
+          <div className={`${cardClass} mx-auto max-w-lg`}>
+            <div className="flex items-center gap-3">
+              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-oxblood" />
+              <p className="text-ink-700">{UNLOCK_STEPS[unlockStep]}</p>
+            </div>
+            <div className="mt-5 h-px overflow-hidden bg-ink/10">
+              <div
+                className="h-full bg-oxblood transition-all duration-700"
+                style={{ width: `${((unlockStep + 1) / UNLOCK_STEPS.length) * 90}%` }}
+              />
+            </div>
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
+              Payment confirmed · unlocking your roadmap
             </p>
           </div>
         )}
