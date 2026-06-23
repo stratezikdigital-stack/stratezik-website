@@ -4,8 +4,68 @@ import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
 import { getStripe, stripeConfigured, GBP_ROADMAP_PRICE_CENTS, AEO_REPORT_CURRENCY } from '../aeo/stripe.js'
 import { runGbpScan, topline, type GbpScanResult } from './scan.js'
 import { appendGbpLeadToSheet } from './sheets.js'
+import { generateAiRoadmap, type AiRoadmap } from './roadmap-ai.js'
+import { buildRoadmapPdf } from './pdf.js'
+import { sendRoadmapEmail } from './email.js'
 
 const CACHE_HOURS = 24
+
+type SupabaseAdmin = ReturnType<typeof createAdminClient>
+
+/**
+ * Get the buyer's bespoke AI roadmap, generating and caching it on first call.
+ * Returns null (never throws) so the paid flow falls back to the templated
+ * roadmap rather than blocking the buyer.
+ */
+async function ensureAiRoadmap(
+  supabase: SupabaseAdmin,
+  scanId: string,
+  scan: GbpScanResult,
+): Promise<AiRoadmap | null> {
+  const { data: paidRow } = await supabase
+    .from('gbp_paid_roadmaps')
+    .select('id, ai_roadmap')
+    .eq('scan_id', scanId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (paidRow?.ai_roadmap) return paidRow.ai_roadmap as AiRoadmap
+
+  const roadmap = await generateAiRoadmap(scan)
+  if (roadmap && paidRow?.id) {
+    await supabase.from('gbp_paid_roadmaps').update({ ai_roadmap: roadmap }).eq('id', paidRow.id)
+  }
+  return roadmap
+}
+
+/** Build the PDF and email it once, in the background. Never throws. */
+async function emailRoadmapOnce(
+  supabase: SupabaseAdmin,
+  scanId: string,
+  email: string,
+  scan: GbpScanResult,
+  roadmap: AiRoadmap,
+): Promise<void> {
+  try {
+    const { data: paidRow } = await supabase
+      .from('gbp_paid_roadmaps')
+      .select('id, email_sent_at')
+      .eq('scan_id', scanId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (!paidRow || paidRow.email_sent_at) return
+
+    const pdf = await buildRoadmapPdf(scan, roadmap)
+    const sent = await sendRoadmapEmail({ to: email, businessName: scan.businessName, city: scan.city, pdf })
+    if (sent) {
+      await supabase.from('gbp_paid_roadmaps').update({ email_sent_at: new Date().toISOString() }).eq('id', paidRow.id)
+    }
+  } catch (err) {
+    console.warn('[gbp/roadmap] email step failed:', err)
+  }
+}
 
 export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
@@ -232,7 +292,7 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
             product_data: {
               name: `GBP Growth Roadmap — ${label}`,
               description:
-                'Full competitor breakdown and prioritized 90-day Google Business Profile roadmap.',
+                'Custom AI growth plan: optimized categories and description, 4 ready-to-publish Google posts, 8 seeded Q&A pairs, review-request scripts, and a 90-day roadmap. Delivered as a downloadable and emailed PDF.',
             },
           },
         },
@@ -306,10 +366,17 @@ export async function handleGbpUnlock(req: VercelRequest, res: VercelResponse) {
   }
 
   const scan = scanRow.result as GbpScanResult
+  const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
+  // Email the PDF (await so it completes before the serverless function exits).
+  if (aiRoadmap && email) {
+    await emailRoadmapOnce(supabase, scanRow.id, email, scan, aiRoadmap)
+  }
+
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),
     pillars: scan.pillars,
+    aiRoadmap,
   })
 }
 
@@ -338,11 +405,46 @@ export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) 
   if (!scanRow) return res.status(404).json({ error: 'Scan not found.' })
 
   const scan = scanRow.result as GbpScanResult
+  const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),
     pillars: scan.pillars,
+    aiRoadmap,
   })
+}
+
+/** Stream the paid roadmap PDF for browser download. Requires a paid scan. */
+export async function handleGbpRoadmapPdf(req: VercelRequest, res: VercelResponse) {
+  const body = (req.body ?? {}) as { scanId?: unknown }
+  const scanId = typeof body.scanId === 'string' ? body.scanId : ''
+  if (!scanId) return res.status(400).json({ error: 'Missing scan id.' })
+
+  const supabase = createAdminClient()
+  const { data: paid } = await supabase
+    .from('gbp_paid_roadmaps')
+    .select('id')
+    .eq('scan_id', scanId)
+    .limit(1)
+    .maybeSingle()
+  if (!paid) return res.status(403).json({ error: 'No paid roadmap found for this scan.' })
+
+  const { data: scanRow } = await supabase
+    .from('gbp_scans')
+    .select('id, result')
+    .eq('id', scanId)
+    .maybeSingle()
+  if (!scanRow) return res.status(404).json({ error: 'Scan not found.' })
+
+  const scan = scanRow.result as GbpScanResult
+  const roadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
+  if (!roadmap) return res.status(503).json({ error: 'Roadmap is not ready yet. Try again in a moment.' })
+
+  const pdf = await buildRoadmapPdf(scan, roadmap)
+  const filename = `GBP-Growth-Plan-${scan.businessName.replace(/[^a-z0-9]+/gi, '-')}.pdf`
+  res.setHeader('Content-Type', 'application/pdf')
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
+  return res.status(200).send(Buffer.from(pdf))
 }
 
 export async function handleGbpFull(req: VercelRequest, res: VercelResponse) {

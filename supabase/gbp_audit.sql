@@ -44,8 +44,15 @@ CREATE TABLE IF NOT EXISTS gbp_paid_roadmaps (
   stripe_session_id  TEXT NOT NULL UNIQUE,
   email              TEXT,
   business_name      TEXT NOT NULL,
+  ai_roadmap         JSONB,
+  email_sent_at      TIMESTAMPTZ,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 ALTER TABLE gbp_paid_roadmaps ENABLE ROW LEVEL SECURITY;
 CREATE INDEX IF NOT EXISTS idx_gbp_paid_session ON gbp_paid_roadmaps(stripe_session_id);
+CREATE INDEX IF NOT EXISTS idx_gbp_paid_scan ON gbp_paid_roadmaps(scan_id);
+
+-- If gbp_paid_roadmaps already exists from an earlier version, add the new columns:
+ALTER TABLE gbp_paid_roadmaps ADD COLUMN IF NOT EXISTS ai_roadmap JSONB;
+ALTER TABLE gbp_paid_roadmaps ADD COLUMN IF NOT EXISTS email_sent_at TIMESTAMPTZ;

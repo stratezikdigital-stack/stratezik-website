@@ -5,6 +5,7 @@ import {
   handleGbpFull,
   handleGbpLead,
   handleGbpRestore,
+  handleGbpRoadmapPdf,
   handleGbpUnlock,
 } from '../server/gbp/handlers.js'
 
@@ -20,9 +21,14 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/gbp-unlock': 'unlock',
     '/api/gbp-restore': 'restore',
     '/api/gbp-full': 'full',
+    '/api/gbp-roadmap-pdf': 'roadmap-pdf',
   }
   return legacy[path] ?? null
 }
+
+// The unlock action runs Stripe verify + Claude generation + PDF + email in one
+// request, so it needs headroom. Hobby supports up to 60s with Fluid Compute on.
+export const maxDuration = 60
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const action = resolveAction(req)
@@ -43,6 +49,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return handleGbpRestore(req, res)
     case 'full':
       return handleGbpFull(req, res)
+    case 'roadmap-pdf':
+      return handleGbpRoadmapPdf(req, res)
     default:
       return res.status(404).json({ error: 'Unknown GBP action.' })
   }

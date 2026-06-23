@@ -56,6 +56,23 @@ type Pillar = { name: string; weight: string; score: number; note: string }
 type CompGap = { metric: string; you: string; them: string; youN: number; themN: number }
 type RoadmapStep = { weeks: string; title: string; desc: string }
 
+type AiWeeklyPhase = { weeks: string; title: string; why: string; actions: string[] }
+type AiGooglePost = { week: string; type: string; copy: string }
+type AiQandA = { question: string; answer: string }
+type AiRoadmap = {
+  generatedAt: string
+  model: string
+  summary: string
+  optimizedDescription: string
+  recommendedCategories: { primary: string; secondary: string[] }
+  reviewPlan: { current: number; ninetyDayTarget: number; perWeek: number; note: string }
+  weeklyPlan: AiWeeklyPhase[]
+  googlePosts: AiGooglePost[]
+  qanda: AiQandA[]
+  reviewRequest: { sms: string; email: string }
+  competitorInsight: string
+}
+
 type Topline = {
   scanId: string
   businessName: string
@@ -82,6 +99,7 @@ type Topline = {
   competitorGaps?: CompGap[]
   revenueLine?: string
   roadmap?: RoadmapStep[]
+  aiRoadmap?: AiRoadmap | null
   persisted?: boolean
   storageError?: boolean
   storageHint?: string
@@ -99,6 +117,7 @@ function applyUnlockPayload(
     setCity: (v: string) => void
     setIndustry: (v: string) => void
     setPillars: (v: Pillar[] | null) => void
+    setAiRoadmap: (v: AiRoadmap | null) => void
     applyPreview: (v: Topline) => void
     setDeepUnlocked: (v: boolean) => void
     setEmailUnlocked: (v: boolean) => void
@@ -110,6 +129,7 @@ function applyUnlockPayload(
   setters.setCity(data.city)
   setters.setIndustry(data.industry)
   setters.setPillars(data.pillars ?? null)
+  setters.setAiRoadmap(data.aiRoadmap ?? null)
   setters.applyPreview(data)
   setters.setDeepUnlocked(true)
   setters.setEmailUnlocked(true)
@@ -160,6 +180,8 @@ export default function GbpAuditPage() {
   const [compGaps, setCompGaps] = useState<CompGap[] | null>(null)
   const [revenueLine, setRevenueLine] = useState('')
   const [roadmap, setRoadmap] = useState<RoadmapStep[] | null>(null)
+  const [aiRoadmap, setAiRoadmap] = useState<AiRoadmap | null>(null)
+  const [pdfLoading, setPdfLoading] = useState(false)
   const [topCompetitor, setTopCompetitor] = useState('')
   const [emailUnlocked, setEmailUnlocked] = useState(false)
   const [deepUnlocked, setDeepUnlocked] = useState(false)
@@ -192,6 +214,7 @@ export default function GbpAuditPage() {
     setEmailUnlocked(false)
     setDeepUnlocked(false)
     setPillars(null)
+    setAiRoadmap(null)
     setStorageWarning(null)
 
     try {
@@ -327,6 +350,36 @@ export default function GbpAuditPage() {
     }
   }, [topline, email, protection])
 
+  const downloadPdf = useCallback(async () => {
+    if (!topline?.scanId) return
+    setPdfLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/gbp-roadmap-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scanId: topline.scanId }),
+      })
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string }
+        throw new Error(data.error ?? 'Could not generate the PDF.')
+      }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `GBP-Growth-Plan-${(topline.businessName || 'business').replace(/[^a-z0-9]+/gi, '-')}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not generate the PDF.')
+    } finally {
+      setPdfLoading(false)
+    }
+  }, [topline])
+
   useEffect(() => {
     const sessionId = searchParams.get('session_id')
     const scanId = searchParams.get('scanId')
@@ -360,6 +413,7 @@ export default function GbpAuditPage() {
           setCity,
           setIndustry,
           setPillars,
+          setAiRoadmap,
           applyPreview,
           setDeepUnlocked,
           setEmailUnlocked,
@@ -408,6 +462,7 @@ export default function GbpAuditPage() {
           setCity,
           setIndustry,
           setPillars,
+          setAiRoadmap,
           applyPreview,
           setDeepUnlocked,
           setEmailUnlocked,
@@ -424,6 +479,7 @@ export default function GbpAuditPage() {
     setEmailUnlocked(false)
     setDeepUnlocked(false)
     setPillars(null)
+    setAiRoadmap(null)
     if (topline && phase === 'results') {
       const r = resolveIndustry(val)
       const nextCtx = {
@@ -512,18 +568,7 @@ export default function GbpAuditPage() {
                 Free Google Business Profile audit. See your Map Pack gap, get three copy-paste weekend fixes,
                 and unlock a six-pillar score tuned to your industry. No login.
               </p>
-              <ul className="mt-6 space-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Live Maps data when available
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Three fixes written for you
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Industry-tailored recommendations
-                </li>
-              </ul>
-              <p className="mt-6 text-sm text-ink-600 leading-relaxed">
+              <p className="mt-4 text-sm text-ink-500 leading-relaxed">
                 Website AI-ready too?{' '}
                 <Link
                   to="/aeo-checker?utm_source=gbp-audit&utm_medium=inline"
@@ -540,6 +585,17 @@ export default function GbpAuditPage() {
                 </Link>
                 .
               </p>
+              <ul className="mt-6 space-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Live Maps data when available
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Three fixes written for you
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-oxblood">✓</span> Industry-tailored recommendations
+                </li>
+              </ul>
             </header>
 
             <div className={cardClass}>
@@ -985,10 +1041,11 @@ export default function GbpAuditPage() {
                   <span className="mb-3 text-2xl" aria-hidden>
                     🔒
                   </span>
-                  <h3 className="font-display text-2xl text-ink">Want the whole plan done — or done for you?</h3>
+                  <h3 className="font-display text-2xl text-ink">Get your custom 90-day plan</h3>
                   <p className="mt-2 max-w-md text-sm text-ink-600 leading-relaxed">
-                    Full competitor breakdown + prioritized 90-day Google Business Profile roadmap — {ROADMAP_PRICE}{' '}
-                    CAD.
+                    A bespoke plan built by AI from your own audit: the exact categories and description to paste in,
+                    4 ready-to-publish Google posts, 8 seeded Q&amp;A pairs, your review-request scripts, and a
+                    week-by-week roadmap. Emailed as a PDF and downloadable here. {ROADMAP_PRICE} CAD.
                   </p>
                   <div className="mt-5 w-full max-w-sm text-left">
                     <label className="block text-xs font-medium text-ink-600">Email for your roadmap</label>
@@ -1026,6 +1083,169 @@ export default function GbpAuditPage() {
               ) : null}
             </section>
 
+            {deepUnlocked && aiRoadmap ? (
+              <section className="mt-14 overflow-hidden rounded-sm border border-oxblood/20">
+                <div className="flex flex-wrap items-end justify-between gap-4 border-b border-ink/10 bg-oxblood/5 px-6 py-5 md:px-8">
+                  <div>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
+                      Your bespoke plan
+                    </p>
+                    <h3 className="mt-1 font-display text-xl text-ink md:text-2xl">
+                      Built for {topline?.businessName} from your own audit
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      className={btnSecondary}
+                      disabled={pdfLoading}
+                      onClick={() => void downloadPdf()}
+                    >
+                      {pdfLoading ? 'Preparing PDF…' : '↓ Download the PDF'}
+                    </button>
+                    <p className="mt-1.5 text-[11px] text-ink-400">Also emailed to you.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-10 p-6 md:p-8">
+                  {/* Situation */}
+                  <div>
+                    <p className="text-sm leading-relaxed text-ink-700">{aiRoadmap.summary}</p>
+                    <p className="mt-3 border-l-2 border-oxblood/30 pl-4 text-sm leading-relaxed text-ink-600">
+                      {aiRoadmap.competitorInsight}
+                    </p>
+                  </div>
+
+                  {/* 90-day plan */}
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">Your 90 days</p>
+                    <div className="mt-4 space-y-5">
+                      {aiRoadmap.weeklyPlan.map((phase) => (
+                        <div key={phase.weeks} className="border-t border-ink/10 pt-4 first:border-t-0 first:pt-0">
+                          <div className="flex flex-wrap items-baseline gap-3">
+                            <span className="shrink-0 border border-ink/15 px-2 py-1 font-mono text-[10px] text-oxblood">
+                              {phase.weeks}
+                            </span>
+                            <p className="font-medium text-ink">{phase.title}</p>
+                          </div>
+                          <p className="mt-1.5 text-xs text-ink-500">{phase.why}</p>
+                          <ul className="mt-2 space-y-1.5">
+                            {phase.actions.map((a, i) => (
+                              <li key={i} className="flex gap-2 text-sm text-ink-700">
+                                <span className="text-oxblood">·</span>
+                                <span>{a}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Reviews */}
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">Close the review gap</p>
+                    <p className="mt-3 text-sm text-ink-700">
+                      You have <span className="font-medium text-ink">{aiRoadmap.reviewPlan.current}</span> reviews.
+                      90-day target: <span className="font-medium text-ink">{aiRoadmap.reviewPlan.ninetyDayTarget}</span>{' '}
+                      (about {aiRoadmap.reviewPlan.perWeek}/week). {aiRoadmap.reviewPlan.note}
+                    </p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      {[
+                        { key: 'ai-sms', label: 'Text after every job', text: aiRoadmap.reviewRequest.sms },
+                        { key: 'ai-email', label: 'Or email this', text: aiRoadmap.reviewRequest.email },
+                      ].map((asset) => (
+                        <div key={asset.key} className="border border-ink/10 bg-cream-100/60 p-4">
+                          <div className="mb-2 flex items-center justify-between">
+                            <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">
+                              {asset.label}
+                            </span>
+                            <button
+                              type="button"
+                              className="font-mono text-[10px] uppercase tracking-wider text-ink-400 hover:text-oxblood"
+                              onClick={() => void copyText(asset.key, asset.text)}
+                            >
+                              {copiedKey === asset.key ? 'Copied ✓' : 'Copy'}
+                            </button>
+                          </div>
+                          <p className="whitespace-pre-line text-sm leading-relaxed text-ink-700">{asset.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Profile copy */}
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">Paste these in today</p>
+                    <p className="mt-3 text-sm text-ink-700">
+                      <span className="font-medium text-ink">Primary category:</span>{' '}
+                      {aiRoadmap.recommendedCategories.primary}
+                    </p>
+                    <p className="text-sm text-ink-600">
+                      <span className="font-medium text-ink">Backups:</span>{' '}
+                      {aiRoadmap.recommendedCategories.secondary.join(', ')}
+                    </p>
+                    <div className="mt-4 border border-ink/10 bg-cream-100/60 p-4">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">
+                          Your business description
+                        </span>
+                        <button
+                          type="button"
+                          className="font-mono text-[10px] uppercase tracking-wider text-ink-400 hover:text-oxblood"
+                          onClick={() => void copyText('ai-desc', aiRoadmap.optimizedDescription)}
+                        >
+                          {copiedKey === 'ai-desc' ? 'Copied ✓' : 'Copy'}
+                        </button>
+                      </div>
+                      <p className="text-sm leading-relaxed text-ink-700">{aiRoadmap.optimizedDescription}</p>
+                    </div>
+                  </div>
+
+                  {/* Google posts */}
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
+                      Month one — 4 posts ready to publish
+                    </p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      {aiRoadmap.googlePosts.map((post, i) => (
+                        <div key={i} className="border border-ink/10 bg-cream-100/60 p-4">
+                          <div className="mb-2 flex items-center justify-between">
+                            <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">
+                              {post.week} · {post.type}
+                            </span>
+                            <button
+                              type="button"
+                              className="font-mono text-[10px] uppercase tracking-wider text-ink-400 hover:text-oxblood"
+                              onClick={() => void copyText(`ai-post-${i}`, post.copy)}
+                            >
+                              {copiedKey === `ai-post-${i}` ? 'Copied ✓' : 'Copy'}
+                            </button>
+                          </div>
+                          <p className="whitespace-pre-line text-sm leading-relaxed text-ink-700">{post.copy}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Q&A */}
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
+                      Seed your Q&amp;A — post and answer these yourself
+                    </p>
+                    <div className="mt-4 space-y-4">
+                      {aiRoadmap.qanda.map((qa, i) => (
+                        <div key={i} className="border-t border-ink/10 pt-4 first:border-t-0 first:pt-0">
+                          <p className="text-sm font-medium text-ink">Q. {qa.question}</p>
+                          <p className="mt-1 text-sm leading-relaxed text-ink-600">A. {qa.answer}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
             {error ? <p className="mt-6 text-sm text-oxblood">{error}</p> : null}
 
             <div className="mt-12 border-t border-ink/10 pt-8 text-center">
@@ -1037,6 +1257,7 @@ export default function GbpAuditPage() {
                   setTopline(null)
                   setEmailUnlocked(false)
                   setDeepUnlocked(false)
+                  setAiRoadmap(null)
                   setError(null)
                 }}
               >

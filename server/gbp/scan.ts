@@ -1,5 +1,5 @@
 import { resolveIndustry, sub, titleCase } from './industryEngine.js'
-import { searchPlaces, type PlaceSummary } from './places.js'
+import { searchPlaces, fetchPlaceDetails, type PlaceSummary } from './places.js'
 
 export type GbpWinner = {
   rank: string
@@ -43,6 +43,17 @@ export type GbpRoadmapStep = {
   desc: string
 }
 
+/** Real profile signals from Place Details — grounds the AI roadmap. */
+export type GbpProfileSignal = {
+  name: string
+  reviews: number
+  rating: number | null
+  categoryCount: number
+  hasDescription: boolean
+  hasPhone: boolean
+  recentReviews: string[]
+}
+
 export type GbpScanResult = {
   businessName: string
   city: string
@@ -70,6 +81,7 @@ export type GbpScanResult = {
   roadmap: GbpRoadmapStep[]
   checkedAt: string
   mapsUri: string | null
+  profileSignals?: { you: GbpProfileSignal | null; competitors: GbpProfileSignal[] }
 }
 
 const RANK_COLORS = ['#F4D03C', '#CBBFA9', '#C98A4B']
@@ -175,8 +187,17 @@ function buildWinners(competitors: PlaceSummary[], ctx: { city: string; trade: s
   }))
 }
 
+/**
+ * Real, defensible comparison metrics. We deliberately drop the old "Photos"
+ * row (the Places API caps photo references at 10, so it read "10 vs 10") and
+ * the fake "posts/reply time" metrics, and use only what Place Details truly
+ * returns: review count, rating, category breadth, and whether a description
+ * is set.
+ */
 function buildCompGaps(you: PlaceSummary | null, top: PlaceSummary, template: GbpCompGap[]): GbpCompGap[] {
   if (!you || !top) return template
+  const youCats = you.categoryCount ?? you.types.length
+  const topCats = top.categoryCount ?? top.types.length
   return [
     {
       metric: 'Total reviews',
@@ -186,13 +207,6 @@ function buildCompGaps(you: PlaceSummary | null, top: PlaceSummary, template: Gb
       themN: top.reviewCount,
     },
     {
-      metric: 'Photos',
-      you: String(you.photoCount),
-      them: String(top.photoCount),
-      youN: you.photoCount,
-      themN: top.photoCount,
-    },
-    {
       metric: 'Rating',
       you: you.rating?.toFixed(1) ?? '—',
       them: top.rating?.toFixed(1) ?? '—',
@@ -200,13 +214,62 @@ function buildCompGaps(you: PlaceSummary | null, top: PlaceSummary, template: Gb
       themN: Math.round((top.rating ?? 0) * 20),
     },
     {
-      metric: 'Website linked',
-      you: you.website ? 'yes' : 'no',
-      them: top.website ? 'yes' : 'no',
-      youN: you.website ? 10 : 0,
-      themN: top.website ? 10 : 0,
+      metric: 'Categories',
+      you: String(youCats),
+      them: String(topCats),
+      youN: youCats,
+      themN: topCats,
+    },
+    {
+      metric: 'Description',
+      you: you.hasDescription ? 'yes' : 'no',
+      them: top.hasDescription ? 'yes' : 'no',
+      youN: you.hasDescription ? 10 : 0,
+      themN: top.hasDescription ? 10 : 0,
     },
   ]
+}
+
+function buildRevenueLine(
+  you: PlaceSummary | null,
+  top: PlaceSummary | null,
+  templateLine: string,
+  ctx: { city: string; trade: string },
+): string {
+  if (you && top && top.reviewCount > you.reviewCount) {
+    const gap = top.reviewCount - you.reviewCount
+    return `Closing the ${gap}-review gap with ${top.name} is the difference between page-2 invisible and a top-3 pin. At ${ctx.trade} search volume in ${ctx.city}, that's the local calls you're leaving on the table each month.`
+  }
+  return sub(templateLine, ctx)
+}
+
+/** Merge Place Details into a Text Search summary, keeping summary values where
+ * the detail field is absent or empty. */
+function mergeDetail(p: PlaceSummary, d: Partial<PlaceSummary>): PlaceSummary {
+  const merged: PlaceSummary = { ...p, ...d }
+  if (d.rating == null) merged.rating = p.rating
+  if (!d.reviewCount) merged.reviewCount = p.reviewCount
+  if (!d.types?.length) merged.types = p.types
+  return merged
+}
+
+async function enrichWithDetails(p: PlaceSummary | null): Promise<PlaceSummary | null> {
+  if (!p?.placeId) return p
+  const d = await fetchPlaceDetails(p.placeId)
+  return d ? mergeDetail(p, d) : p
+}
+
+function toProfileSignal(p: PlaceSummary | null): GbpProfileSignal | null {
+  if (!p) return null
+  return {
+    name: p.name,
+    reviews: p.reviewCount,
+    rating: p.rating,
+    categoryCount: p.categoryCount ?? p.types.length,
+    hasDescription: Boolean(p.hasDescription),
+    hasPhone: Boolean(p.hasPhone),
+    recentReviews: (p.reviews ?? []).map((r) => r.text).filter(Boolean).slice(0, 3),
+  }
 }
 
 function weightedScore(pillars: GbpPillar[]): number {
@@ -246,19 +309,6 @@ function findUserPlace(
   return partial ?? candidates[0] ?? null
 }
 
-function buildRevenueLine(
-  you: PlaceSummary | null,
-  top: PlaceSummary | null,
-  templateLine: string,
-  ctx: { city: string; trade: string },
-): string {
-  if (you && top && top.reviewCount > you.reviewCount) {
-    const gap = top.reviewCount - you.reviewCount
-    return `Closing the ${gap}-review gap with ${top.name} is the difference between page-2 invisible and a top-3 pin. At ${ctx.trade} search volume in ${ctx.city}, that's the local calls you're leaving on the table each month.`
-  }
-  return sub(templateLine, ctx)
-}
-
 export async function runGbpScan(input: {
   businessName: string
   city: string
@@ -287,11 +337,24 @@ export async function runGbpScan(input: {
 
   const dataSource = bizResults || packResults ? 'places' : 'template'
   const pack = packResults ?? []
-  const you = businessName
+  const youRaw = businessName
     ? findUserPlace(businessName, bizResults ?? pack)
     : (pack[0] ?? null)
+  const competitorsRaw = pack.filter((p) => p.placeId !== youRaw?.placeId).slice(0, 3)
 
-  const competitors = pack.filter((p) => p.placeId !== you?.placeId).slice(0, 3)
+  // Lever 2: enrich the user + top competitors with Place Details (real
+  // categories, description, phone, and review snippets). Best-effort and run
+  // in parallel. GBP_DETAIL_COMPETITORS caps the per-scan Place Details calls
+  // for cost control (the user's own profile is always enriched).
+  const detailN = Math.max(0, Math.min(3, Number(process.env.GBP_DETAIL_COMPETITORS ?? 3) || 0))
+  const [you, enrichedHead] = await Promise.all([
+    enrichWithDetails(youRaw),
+    Promise.all(competitorsRaw.slice(0, detailN).map((c) => enrichWithDetails(c))),
+  ])
+  const competitors = [
+    ...enrichedHead.filter((c): c is PlaceSummary => Boolean(c)),
+    ...competitorsRaw.slice(detailN),
+  ]
   const winners =
     competitors.length >= 3
       ? buildWinners(competitors, ctx)
@@ -352,6 +415,12 @@ export async function runGbpScan(input: {
     roadmap: template.roadmap,
     checkedAt: new Date().toISOString(),
     mapsUri: you?.mapsUri ?? null,
+    profileSignals: {
+      you: toProfileSignal(you),
+      competitors: competitors
+        .map(toProfileSignal)
+        .filter((s): s is GbpProfileSignal => Boolean(s)),
+    },
   }
 }
 

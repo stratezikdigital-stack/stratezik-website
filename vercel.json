@@ -337,6 +337,7 @@
     { "source": "/api/gbp-unlock", "destination": "/api/gbp?action=unlock" },
     { "source": "/api/gbp-restore", "destination": "/api/gbp?action=restore" },
     { "source": "/api/gbp-full", "destination": "/api/gbp?action=full" },
+    { "source": "/api/gbp-roadmap-pdf", "destination": "/api/gbp?action=roadmap-pdf" },
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
