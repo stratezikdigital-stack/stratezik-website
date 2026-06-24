@@ -8,6 +8,7 @@ import {
   FreeToolSplitBar,
 } from '../free-tools/FreeToolUi'
 import { AEO_SAMPLE } from './aeoSampleData'
+import { SampleReportWatermark } from './SampleReportWatermark'
 
 export { AEO_SAMPLE }
 
@@ -114,10 +115,11 @@ export function AeoSampleDashboard({ locked = false }: { locked?: boolean }) {
   return (
     <FreeToolDashboardChrome
       title={s.domain}
-      subtitle="20-point AEO readiness · machine-verified"
-      badge={locked ? 'Preview' : 'Example'}
+      subtitle="Demo brand only — enter your URL above to generate a live readiness report"
+      badge={locked ? 'Sample · not your scan' : 'Example'}
       darkHeader
     >
+      <SampleReportWatermark>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <FreeToolKpiCard label="Readiness score" value={`${s.total}`} sub={`/${s.max} · median ${s.benchmark}`} accent />
         <FreeToolKpiCard label="Group A (defaults)" value={`${s.groupA.pct}%`} sub={`${s.groupA.earned}/${s.groupA.possible} pts`} />
@@ -159,6 +161,7 @@ export function AeoSampleDashboard({ locked = false }: { locked?: boolean }) {
           </div>
         ))}
       </div>
+      </SampleReportWatermark>
     </FreeToolDashboardChrome>
   )
 }

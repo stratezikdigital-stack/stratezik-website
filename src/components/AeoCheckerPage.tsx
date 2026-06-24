@@ -15,6 +15,7 @@ import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveLeadSource } from '../aeo/checkerLinks'
 import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
 import { AeoCheckerLanding } from './aeo/AeoCheckerLanding'
+import { SampleReportShell } from './aeo/SampleReportWatermark'
 import type { DeepScanResult } from '../aeo/deep-scan.types'
 import type { SitemapAudit } from '../aeo/sitemap.types'
 
@@ -698,24 +699,24 @@ export default function AeoCheckerPage() {
 
               {/* Paid upsell — full report shown openly as a worked sample */}
               <div className="mt-8">
-                <p className="text-xs font-semibold uppercase tracking-wide text-oxblood">
-                  Readiness is half the picture
+                <p className="font-display text-2xl md:text-3xl leading-[1.15] tracking-tight text-ink max-w-3xl">
+                  <span className="text-oxblood">Readiness is half the picture</span>{' '}
+                  <span className="text-ink-600 font-sans text-lg md:text-xl font-normal">
+                    (Get in-depth technical analysis of your AI readiness)
+                  </span>
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-ink">
+                <h2 className="mt-4 text-2xl font-semibold text-ink md:text-[1.65rem]">
                   Here’s exactly what your AI Visibility Report looks like
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm text-ink-500">
                   Below is a full report run on a demo brand: the real thing, nothing hidden.
-                  Readiness says AI <em>can</em> read you; this is whether it <em>does</em>. Want it
-                  for {topline.domain}? Grab your brand’s version at the bottom.
+                  Readiness says AI <em>can</em> read you; this is whether it <em>does</em>.
                 </p>
 
-                {/* Clear sample badge so it's not mistaken for their own data */}
-                <div className="mt-5 border border-oxblood/25 border-b-0 bg-oxblood/8 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
-                  Sample report · demo brand (yours runs on your real data)
-                </div>
-                <div className="border border-ink/15 bg-cream-50 px-2 pb-2 pt-1 sm:px-4">
-                  <DeepReport deep={SAMPLE_DEEP} base={SAMPLE_BASE} preview />
+                <div className="mt-5">
+                  <SampleReportShell domain={topline.domain}>
+                    <DeepReport deep={SAMPLE_DEEP} base={SAMPLE_BASE} preview />
+                  </SampleReportShell>
                 </div>
 
                 {/* Choose your plan + customer-picked competitors */}
