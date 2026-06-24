@@ -275,7 +275,7 @@ export default function GbpAuditPage() {
       e.preventDefault()
       if (!topline || !protection.canSubmit) return
       if (!consent) {
-        setError('Please confirm CASL consent to receive your breakdown.')
+        setError('Please agree to our Privacy Notice to receive your report.')
         return
       }
       setLoading(true)

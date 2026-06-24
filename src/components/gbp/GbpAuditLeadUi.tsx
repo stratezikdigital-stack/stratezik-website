@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { resolveIndustry } from '../../gbp/industryEngine'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
 import { GbpCompetitorBarChart, GbpPillarBarChart, GbpPillarRadarChart, GbpEmailGatePreview } from './GbpAuditCharts'
@@ -393,9 +394,22 @@ export function GbpEmailUnlockGate({
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
           />
-          <label className="flex items-start gap-2 text-xs text-ink-600">
-            <input type="checkbox" checked={consent} onChange={(e) => onConsentChange(e.target.checked)} className="mt-0.5" />
-            I agree to receive my report and related messages from Stratezik (CASL).
+          <label className="flex items-start gap-2.5 text-xs text-ink-600 leading-relaxed">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => onConsentChange(e.target.checked)}
+              required
+              className="mt-0.5 h-4 w-4 shrink-0 border-ink/20 accent-oxblood"
+            />
+            <span>
+              I agree Stratezik may email my report and related messages about services and insights for my business,
+              as described in our{' '}
+              <Link to="/privacy" className="text-oxblood underline underline-offset-2">
+                Privacy Notice
+              </Link>
+              . I can unsubscribe anytime. (Required under Canada&apos;s anti-spam legislation.)
+            </span>
           </label>
           <FormProtectionFields
             turnstileSiteKey={turnstileSiteKey ?? ''}
@@ -405,7 +419,7 @@ export function GbpEmailUnlockGate({
             honeypotValue={honeypot}
             onHoneypotChange={onHoneypotChange}
           />
-          <button type="submit" className={btnPrimary} disabled={loading || !canSubmit}>
+          <button type="submit" className={btnPrimary} disabled={loading || !canSubmit || !consent}>
             {loading ? 'Sending…' : 'Send my full report →'}
           </button>
         </div>

@@ -181,7 +181,7 @@ type GbpAuditLandingProps = {
   onScan: () => void
 }
 
-function ScanFormCard(props: GbpAuditLandingProps) {
+function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inline' }) {
   const {
     cardClass,
     inputClass,
@@ -202,7 +202,78 @@ function ScanFormCard(props: GbpAuditLandingProps) {
     onTurnstileExpire,
     onHoneypotChange,
     onScan,
+    variant = 'stacked',
   } = props
+
+  const chipRow = (
+    <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
+      {exampleChips.slice(0, 6).map((c) => (
+        <button
+          key={c.value}
+          type="button"
+          onClick={() => onIndustryChip(c.value)}
+          className="rounded-sm border border-ink/12 px-2 py-0.5 text-[11px] font-medium text-ink-600 hover:border-oxblood hover:text-oxblood"
+        >
+          {c.label}
+        </button>
+      ))}
+    </div>
+  )
+
+  if (variant === 'inline') {
+    return (
+      <div className={`${cardClass} text-left shadow-[0_12px_40px_-16px_rgba(33,31,28,0.12)]`}>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div>
+            <label className="block text-xs font-medium text-ink-700">Business name</label>
+            <input
+              className={`${inputClass} mt-1`}
+              placeholder="e.g. ShieldGuard Pest Control"
+              value={biz}
+              onChange={(e) => onBizChange(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-ink-700">City</label>
+            <input
+              className={`${inputClass} mt-1`}
+              placeholder="e.g. Scarborough, ON"
+              value={city}
+              onChange={(e) => onCityChange(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-ink-700">Industry</label>
+            <input
+              className={`${inputClass} mt-1`}
+              placeholder="Plumber, Dentist…"
+              value={industry}
+              onChange={(e) => onIndustryChange(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="mt-2">{chipRow}</div>
+        {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <FormProtectionFields
+            turnstileSiteKey={turnstileSiteKey ?? ''}
+            onTurnstileSuccess={onTurnstileSuccess}
+            onTurnstileExpire={onTurnstileExpire}
+            honeypotValue={honeypot}
+            onHoneypotChange={onHoneypotChange}
+          />
+          <button
+            type="button"
+            className={`${btnPrimary} sm:w-auto sm:min-w-[200px] sm:shrink-0`}
+            disabled={!canSubmit}
+            onClick={onScan}
+          >
+            Run my free scan →
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`${cardClass} shadow-[0_20px_50px_-16px_rgba(33,31,28,0.15)]`}>
@@ -229,18 +300,7 @@ function ScanFormCard(props: GbpAuditLandingProps) {
         value={industry}
         onChange={(e) => onIndustryChange(e.target.value)}
       />
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {exampleChips.slice(0, 6).map((c) => (
-          <button
-            key={c.value}
-            type="button"
-            onClick={() => onIndustryChip(c.value)}
-            className="rounded-sm border border-ink/12 px-2 py-0.5 text-[11px] font-medium text-ink-600 hover:border-oxblood hover:text-oxblood"
-          >
-            {c.label}
-          </button>
-        ))}
-      </div>
+      <div className="mt-2">{chipRow}</div>
       {error ? <p className="mt-3 text-sm text-oxblood">{error}</p> : null}
       <FormProtectionFields
         turnstileSiteKey={turnstileSiteKey ?? ''}
@@ -276,7 +336,7 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
           <div>
             <div className="editorial-label text-gold/80">Stratezik · Local Visibility Scan</div>
             <h1 className="mt-4 font-display text-display-3 text-cream leading-[1.04] tracking-[-0.035em] max-w-2xl">
-              The Google Maps audit with{' '}
+              The Google Business Profile audit with{' '}
               <span className="text-gold">charts, competitor gaps,</span> and copy-paste fixes.
             </h1>
             <p className="mt-5 max-w-xl text-cream/70 leading-relaxed text-lg">
@@ -475,8 +535,8 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
           </Link>{' '}
           for your website.
         </p>
-        <div className="mt-8 max-w-sm mx-auto">
-          <ScanFormCard {...props} />
+        <div className="mt-8 max-w-4xl mx-auto">
+          <ScanFormCard {...props} variant="inline" />
         </div>
       </section>
     </div>
