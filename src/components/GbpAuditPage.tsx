@@ -6,6 +6,15 @@ import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveIndustry, sub } from '../gbp/industryEngine'
 import { GBP_AUDIT_FAQS } from '../gbp/gbpAuditFaqs'
 import { GbpMapPackIllustration } from './gbp/GbpMapPackIllustration'
+import {
+  GbpCompetitorPreview,
+  GbpEmailUnlockGate,
+  GbpFixCard,
+  GbpPillarPreview,
+  GbpScanProgress,
+  GBP_SCAN_STEPS,
+} from './gbp/GbpAuditLeadUi'
+import { GbpAuditLanding } from './gbp/GbpAuditLanding'
 
 const BOOK_URL = '/#contact'
 const ROADMAP_PRICE = '$29'
@@ -190,6 +199,19 @@ export default function GbpAuditPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [turnstileKey, setTurnstileKey] = useState(0)
   const [unlockStep, setUnlockStep] = useState(0)
+  const [scanStep, setScanStep] = useState(0)
+
+  useEffect(() => {
+    if (phase !== 'scanning') {
+      setScanStep(0)
+      return
+    }
+    setScanStep(0)
+    const timers = GBP_SCAN_STEPS.map((_, i) =>
+      window.setTimeout(() => setScanStep(i), i * 1400),
+    )
+    return () => timers.forEach(clearTimeout)
+  }, [phase])
 
   const applyPreview = useCallback((data: Topline) => {
     setCompGaps(data.competitorGaps ?? null)
@@ -548,118 +570,30 @@ export default function GbpAuditPage() {
         </nav>
 
         {phase === 'input' && (
-          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-            <header>
-              <div className="editorial-label">Stratezik · Toronto &amp; GTA</div>
-              <h1 className="mt-4 font-display text-display-3 md:text-[3rem] text-ink leading-[1.05] tracking-[-0.035em]">
-                Find out why customers pick the shop{' '}
-                <span className="text-oxblood">down the street</span> — not you.
-              </h1>
-              <p className="lead mt-8">
-                Free Google Business Profile audit. See your Map Pack gap, get three copy-paste weekend fixes,
-                and unlock a six-pillar score tuned to your industry. No login.
-              </p>
-              <p className="mt-4 text-sm text-ink-500 leading-relaxed">
-                Website AI-ready too?{' '}
-                <Link
-                  to="/aeo-checker?utm_source=gbp-audit&utm_medium=inline"
-                  className="text-oxblood underline underline-offset-2 hover:text-ink"
-                >
-                  Run the AEO Readiness Checker
-                </Link>
-                . Need done-for-you GBP work?{' '}
-                <Link
-                  to="/services/google-business-profile"
-                  className="text-oxblood underline underline-offset-2 hover:text-ink"
-                >
-                  GBP management
-                </Link>
-                .
-              </p>
-              <ul className="mt-6 space-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Live Maps data when available
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Three fixes written for you
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-oxblood">✓</span> Industry-tailored recommendations
-                </li>
-              </ul>
-            </header>
-
-            <div className={cardClass}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
-                Scan your Google Business Profile
-              </p>
-              <label className="mt-5 block text-sm font-medium text-ink-700">Business name</label>
-              <input
-                className={`${inputClass} mt-1.5`}
-                placeholder="e.g. ShieldGuard Pest Control"
-                value={biz}
-                onChange={(e) => setBiz(e.target.value)}
-              />
-              <label className="mt-4 block text-sm font-medium text-ink-700">City</label>
-              <input
-                className={`${inputClass} mt-1.5`}
-                placeholder="e.g. Scarborough, ON"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              <label className="mt-4 block text-sm font-medium text-ink-700">
-                Your industry <span className="font-normal text-ink-400">— type anything</span>
-              </label>
-              <input
-                className={`${inputClass} mt-1.5`}
-                placeholder="e.g. Plumber, Bakery, Law firm…"
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
-              />
-              <div className="mt-3 flex flex-wrap gap-2">
-                {EXAMPLE_CHIPS.map((c) => (
-                  <button
-                    key={c.value}
-                    type="button"
-                    onClick={() => setIndustry(c.value)}
-                    className="rounded-sm border border-ink/15 bg-cream px-2.5 py-1 text-xs font-medium text-ink-600 hover:border-oxblood hover:text-oxblood transition-colors"
-                  >
-                    {c.label}
-                  </button>
-                ))}
-              </div>
-              {error ? <p className="mt-4 text-sm text-oxblood">{error}</p> : null}
-              <FormProtectionFields
-                turnstileSiteKey={protection.turnstileSiteKey}
-                onTurnstileSuccess={protection.setTurnstileToken}
-                onTurnstileExpire={protection.resetTurnstile}
-                honeypotValue={protection.honeypot}
-                onHoneypotChange={protection.setHoneypot}
-              />
-              <button
-                type="button"
-                className={`${btnPrimary} mt-4`}
-                disabled={!protection.canSubmit}
-                onClick={() => void runScan()}
-              >
-                Run my free scan →
-              </button>
-              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
-                Free · ~60 seconds · No signup for your topline score
-              </p>
-            </div>
-          </div>
+          <GbpAuditLanding
+            cardClass={cardClass}
+            inputClass={inputClass}
+            btnPrimary={btnPrimary}
+            biz={biz}
+            city={city}
+            industry={industry}
+            error={error}
+            exampleChips={EXAMPLE_CHIPS}
+            canSubmit={protection.canSubmit}
+            turnstileSiteKey={protection.turnstileSiteKey}
+            honeypot={protection.honeypot}
+            onBizChange={setBiz}
+            onCityChange={setCity}
+            onIndustryChange={setIndustry}
+            onIndustryChip={setIndustry}
+            onTurnstileSuccess={protection.setTurnstileToken}
+            onTurnstileExpire={protection.resetTurnstile}
+            onHoneypotChange={protection.setHoneypot}
+            onScan={() => void runScan()}
+          />
         )}
 
-        {phase === 'scanning' && (
-          <div className={`${cardClass} mx-auto max-w-lg text-center`}>
-            <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-2 border-ink/15 border-t-oxblood" />
-            <h2 className="font-display text-2xl text-ink">Scanning {biz || industry}…</h2>
-            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-400">
-              Pulling Google Maps data &amp; tailoring checks
-            </p>
-          </div>
-        )}
+        {phase === 'scanning' && <GbpScanProgress biz={biz} industry={industry} step={scanStep} />}
 
         {phase === 'unlocking' && (
           <div className={`${cardClass} mx-auto max-w-lg`}>
@@ -839,193 +773,142 @@ export default function GbpAuditPage() {
               </div>
             </section>
 
+            {!emailUnlocked ? (
+              <div className="mt-10 rounded-sm border border-oxblood/20 bg-oxblood/5 px-5 py-4 md:px-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-oxblood">Your report · partial</p>
+                <p className="mt-1 text-sm text-ink-700 leading-relaxed">
+                  Below: your personalized dashboard. Fix #1 is unlocked; pillar radar, competitor charts, and Fixes
+                  #2–3 complete after email.
+                </p>
+              </div>
+            ) : null}
+
             <section className="mt-14">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
                 02 — Fix these first
               </p>
               <h3 className="mt-2 font-display text-2xl text-ink md:text-[1.65rem]">Three fixes, written for you</h3>
               <p className="mt-2 max-w-2xl text-ink-600 leading-relaxed">
-                Copy the text, follow where to click in Google Business Profile — no agency required.
+                {emailUnlocked
+                  ? 'Copy the text, follow where to click in Google Business Profile — no agency required.'
+                  : 'Fix #1 is yours now. Email unlocks the copy-paste text for #2 and #3.'}
               </p>
               <div className="mt-6 flex flex-col gap-4">
                 {topline.quickWins.map((q, i) => {
                   const key = `${industry}-${i}`
-                  const fixText = q.fixText ?? ''
+                  const locked = !emailUnlocked && i > 0
                   return (
-                    <article key={key} className={`${panelNested} p-6 md:p-7`}>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">
-                          Fix {q.n}
-                        </span>
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood bg-oxblood/10 px-2 py-0.5">
-                          {q.tag}
-                        </span>
-                        <span className="font-mono text-[10px] text-ink-500">{impactBadge(q.impactTag, i)}</span>
-                      </div>
-                      <h4 className="mt-3 font-display text-xl text-ink">{q.title}</h4>
-                      <p className="mt-2 text-sm text-ink-600 leading-relaxed">{q.lossLine}</p>
-                      {q.hasCopy && fixText ? (
-                        <div className="relative mt-4 border border-ink/10 bg-cream p-4">
-                          <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400 mb-2">
-                            {q.fixLabel}
-                          </p>
-                          <pre className="whitespace-pre-wrap pr-28 text-sm text-ink-700 leading-relaxed font-sans">
-                            {fixText}
-                          </pre>
-                          <button
-                            type="button"
-                            className="absolute right-3 top-3 rounded-sm border border-ink/20 bg-cream-50 px-3 py-1 font-mono text-[11px] hover:border-oxblood"
-                            onClick={() => void copyText(key, fixText)}
-                          >
-                            {copiedKey === key ? 'Copied ✓' : 'Copy text'}
-                          </button>
-                        </div>
-                      ) : null}
-                      <p className="mt-4 rounded-sm border border-ink/10 bg-cream-100/80 px-3 py-2 text-sm text-ink-600">
-                        <strong className="text-ink">Where:</strong> {q.where}
-                      </p>
-                    </article>
+                    <GbpFixCard
+                      key={key}
+                      q={q}
+                      index={i}
+                      locked={locked}
+                      copiedKey={copiedKey}
+                      copyKey={key}
+                      onCopy={copyText}
+                      impactBadge={impactBadge}
+                      panelClass={panelNested}
+                    />
                   )
                 })}
               </div>
             </section>
 
-            {!emailUnlocked && topline.scanId ? (
-              <form onSubmit={submitEmail} className={`${panelAccent} mt-14 grid gap-6 rounded-sm p-7 md:grid-cols-[1fr_auto]`}>
-                <div>
-                  <h3 className="font-display text-xl text-ink md:text-2xl">There are more issues on your profile</h3>
-                  <p className="mt-2 max-w-lg text-sm text-ink-600 leading-relaxed">
-                    Unlock the full six-pillar health score — reputation, engagement, profile completeness, and more.
-                    One email, CASL-compliant, no spam.
+            <section className="mt-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">
+                03 — {emailUnlocked ? 'Health score' : 'Report preview'}
+              </p>
+              <h3 className="mt-2 font-display text-2xl text-ink">
+                {emailUnlocked ? 'Six pillars — where you stand' : 'Six pillars — waiting in your report'}
+              </h3>
+              {!emailUnlocked ? (
+                <p className="mt-2 text-sm text-ink-500">
+                  Names and weights are industry-specific. Scores unlock with your email.
+                </p>
+              ) : null}
+              <div className="mt-6">
+                <GbpPillarPreview
+                  industry={industry}
+                  unlocked={emailUnlocked}
+                  pillars={pillars}
+                  panelClass={panelNested}
+                />
+              </div>
+            </section>
+
+            {(compGaps || topline.competitorGaps) && (
+              <section className="mt-14 rounded-sm border border-ink/10 p-6 md:p-8">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">04 — Competitor gap</p>
+                <h3 className="mt-2 font-display text-2xl text-ink">
+                  vs {topCompetitor || topline.topCompetitor || 'your top competitor'}
+                </h3>
+                {!emailUnlocked ? (
+                  <p className="mt-2 text-sm text-ink-500">Reviews row is live from your scan. Full table unlocks by email.</p>
+                ) : null}
+                <div className="mt-6">
+                  <GbpCompetitorPreview
+                    topCompetitor={topCompetitor || topline.topCompetitor || ''}
+                    compGaps={compGaps ?? topline.competitorGaps ?? null}
+                    unlocked={emailUnlocked}
+                  />
+                </div>
+                {emailUnlocked && revenueLine ? (
+                  <p className="mt-5 border border-oxblood/20 bg-oxblood/5 p-4 text-sm text-ink-600 leading-relaxed">
+                    {revenueLine}
                   </p>
-                </div>
-                <div className="flex w-full max-w-sm flex-col gap-3">
-                  <input
-                    type="email"
-                    required
-                    className={inputClass}
-                    placeholder="you@business.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <label className="flex items-start gap-2 text-xs text-ink-600">
-                    <input
-                      type="checkbox"
-                      checked={consent}
-                      onChange={(e) => setConsent(e.target.checked)}
-                      className="mt-0.5"
-                    />
-                    I agree to receive my report and related messages from Stratezik (CASL).
-                  </label>
-                  <FormProtectionFields
-                    turnstileSiteKey={protection.turnstileSiteKey}
-                    onTurnstileSuccess={protection.setTurnstileToken}
-                    onTurnstileExpire={protection.resetTurnstile}
-                    turnstileResetKey={turnstileKey}
-                    honeypotValue={protection.honeypot}
-                    onHoneypotChange={protection.setHoneypot}
-                  />
-                  <button type="submit" className={btnPrimary} disabled={loading || !protection.canSubmit}>
-                    {loading ? 'Saving…' : 'Unlock the full breakdown'}
-                  </button>
-                </div>
-              </form>
-            ) : null}
-
-            {emailUnlocked && pillars ? (
-              <section className="mt-14">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">03 — Health score</p>
-                <h3 className="mt-2 font-display text-2xl text-ink">Six pillars — where you stand</h3>
-                <div className="mt-6 grid gap-3 md:grid-cols-2">
-                  {pillars.map((p) => (
-                    <div key={p.name} className={panelNested}>
-                      <div className="flex justify-between items-baseline">
-                        <span className="font-medium text-ink">
-                          {p.name}{' '}
-                          <span className="font-mono text-[10px] text-ink-400">· {p.weight}</span>
-                        </span>
-                        <span className={`font-mono font-semibold ${scoreTextClass(p.score)}`}>{p.score}</span>
-                      </div>
-                      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-cream-200">
-                        <div
-                          className="h-full rounded-full bg-oxblood/80"
-                          style={{ width: `${p.score}%` }}
-                        />
-                      </div>
-                      <p className="mt-2 text-xs text-ink-500 leading-relaxed">{p.note}</p>
-                    </div>
-                  ))}
-                </div>
+                ) : null}
               </section>
+            )}
+
+            {topline.scanId ? (
+              <>
+                {error && !emailUnlocked ? <p className="mt-4 text-sm text-oxblood">{error}</p> : null}
+                <GbpEmailUnlockGate
+                email={email}
+                consent={consent}
+                loading={loading}
+                canSubmit={protection.canSubmit}
+                turnstileSiteKey={protection.turnstileSiteKey}
+                turnstileResetKey={turnstileKey}
+                honeypot={protection.honeypot}
+                onEmailChange={setEmail}
+                onConsentChange={setConsent}
+                onTurnstileSuccess={protection.setTurnstileToken}
+                onTurnstileExpire={protection.resetTurnstile}
+                onHoneypotChange={protection.setHoneypot}
+                onSubmit={submitEmail}
+                inputClass={inputClass}
+                btnPrimary={btnPrimary}
+                panelClass={panelAccent}
+                emailUnlocked={emailUnlocked}
+                sticky
+              />
+              </>
             ) : null}
 
+            {error && phase === 'results' && emailUnlocked ? <p className="mt-4 text-sm text-oxblood">{error}</p> : null}
+
+            {emailUnlocked && (roadmap ?? topline.roadmap) ? (
             <section className="relative mt-14 overflow-hidden rounded-sm border border-ink/10">
               <div className="border-b border-ink/10 bg-cream-100/60 px-6 py-4 md:px-8">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">03 — Overtake the pack</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">05 — 90-day plan</p>
                 <h3 className="mt-1 font-display text-xl text-ink md:text-2xl">
-                  Exactly how to overtake the three above you
+                  Your week-by-week roadmap to overtake the pack
                 </h3>
               </div>
-              <div className={deepUnlocked ? 'p-6 md:p-8' : 'pointer-events-none select-none blur-[6px] p-6 md:p-8'}>
-                {compGaps && roadmap ? (
-                  <div className="grid gap-8 md:grid-cols-2">
+              <div className={deepUnlocked ? 'p-6 md:p-8' : 'pointer-events-none select-none blur-[5px] p-6 md:p-8'}>
+                <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">Industry roadmap outline</p>
+                {(roadmap ?? topline.roadmap)?.map((r) => (
+                  <div key={r.weeks} className="mt-4 flex gap-3 border-t border-ink/10 pt-4 first:mt-3 first:border-t-0 first:pt-0">
+                    <span className="shrink-0 font-mono text-[10px] text-oxblood border border-ink/15 px-2 py-1">
+                      {r.weeks}
+                    </span>
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
-                        vs {topCompetitor}
-                      </p>
-                      <div className="mt-4 space-y-4">
-                        {compGaps.map((c) => {
-                          const max = Math.max(c.youN, c.themN, 1)
-                          return (
-                            <div key={c.metric}>
-                              <div className="mb-1.5 flex justify-between text-sm text-ink-700">
-                                <span>{c.metric}</span>
-                                <span className="font-mono text-[11px] text-ink-400">
-                                  you {c.you} · them {c.them}
-                                </span>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
-                                  <div
-                                    className="h-full rounded-full bg-oxblood/70"
-                                    style={{ width: `${(c.youN / max) * 100}%` }}
-                                  />
-                                </div>
-                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
-                                  <div
-                                    className="h-full rounded-full bg-gold/80"
-                                    style={{ width: `${(c.themN / max) * 100}%` }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                      {revenueLine ? (
-                        <p className="mt-5 border border-oxblood/20 bg-oxblood/5 p-4 text-sm text-ink-600 leading-relaxed">
-                          {revenueLine}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div>
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">90-day roadmap</p>
-                      {roadmap.map((r) => (
-                        <div key={r.weeks} className="mt-4 flex gap-3 border-t border-ink/10 pt-4 first:mt-3 first:border-t-0 first:pt-0">
-                          <span className="shrink-0 font-mono text-[10px] text-oxblood border border-ink/15 px-2 py-1">
-                            {r.weeks}
-                          </span>
-                          <div>
-                            <p className="font-medium text-ink">{r.title}</p>
-                            <p className="text-xs text-ink-500 leading-relaxed">{r.desc}</p>
-                          </div>
-                        </div>
-                      ))}
+                      <p className="font-medium text-ink">{r.title}</p>
+                      <p className="text-xs text-ink-500 leading-relaxed">{r.desc}</p>
                     </div>
                   </div>
-                ) : (
-                  <p className="text-sm text-ink-500">Loading competitor breakdown…</p>
-                )}
+                ))}
               </div>
               {!deepUnlocked ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/80 p-8 text-center backdrop-blur-[2px]">
@@ -1034,20 +917,10 @@ export default function GbpAuditPage() {
                   </span>
                   <h3 className="font-display text-2xl text-ink">Get your custom 90-day plan</h3>
                   <p className="mt-2 max-w-md text-sm text-ink-600 leading-relaxed">
-                    A bespoke plan built by AI from your own audit: the exact categories and description to paste in,
-                    4 ready-to-publish Google posts, 8 seeded Q&amp;A pairs, your review-request scripts, and a
-                    week-by-week roadmap. Emailed as a PDF and downloadable here. {ROADMAP_PRICE} CAD.
+                    AI-built from your audit: categories, description, 4 Google posts, 8 Q&amp;A pairs, review scripts,
+                    and a PDF by email. {ROADMAP_PRICE} CAD.
                   </p>
                   <div className="mt-5 w-full max-w-sm text-left">
-                    <label className="block text-xs font-medium text-ink-600">Email for your roadmap</label>
-                    <input
-                      type="email"
-                      required
-                      className={`${inputClass} mt-1.5`}
-                      placeholder="you@business.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
                     <FormProtectionFields
                       turnstileSiteKey={protection.turnstileSiteKey}
                       onTurnstileSuccess={protection.setTurnstileToken}
@@ -1064,7 +937,7 @@ export default function GbpAuditPage() {
                       disabled={checkoutLoading || !protection.canSubmit || !email.trim()}
                       onClick={() => void startCheckout()}
                     >
-                      {checkoutLoading ? 'Redirecting…' : `Get the roadmap — ${ROADMAP_PRICE}`}
+                      {checkoutLoading ? 'Redirecting…' : `Get the AI roadmap — ${ROADMAP_PRICE}`}
                     </button>
                     <Link to={BOOK_URL} className={btnPrimary}>
                       Have us do it — free consult →
@@ -1073,6 +946,7 @@ export default function GbpAuditPage() {
                 </div>
               ) : null}
             </section>
+            ) : null}
 
             {deepUnlocked && aiRoadmap ? (
               <section className="mt-14 overflow-hidden rounded-sm border border-oxblood/20">
