@@ -1,0 +1,57 @@
+---
+description: Lead-gen principles for Stratezik free tools — Prove/Personalize/Preview/Capture. Apply when building tool landings; each tool gets its own layout, not a copy of GBP.
+globs: src/components/**/*.{tsx,ts},src/free-tools/**/*
+alwaysApply: false
+---
+
+# Stratezik free tool design
+
+Free tools are **product demos**, not brochure pages. The visitor should see the deliverable before they convert.
+
+## Core theology (mandatory for every tool)
+
+**Prove → Personalize → Preview → Capture**
+
+1. **Prove** — Show a realistic sample of the deliverable (labelled Preview/Example). Format must match what the tool actually outputs.
+2. **Personalize** — After scan/submit, swap sample data for the user’s real data.
+3. **Preview** — Gate *depth*, not *existence*. Free tier shows real topline + one unlocked slice; blur/lock the rest with clear “email unlocks X”.
+4. **Capture** — Email gate lists exactly what unlocks. Privacy Notice checkbox with link to `/privacy`; disable submit until checked.
+
+These four steps are **non‑negotiable**. Everything else is chosen per tool.
+
+## Do NOT clone one tool’s layout
+
+**Anti-pattern:** Copying GBP’s dark hero + KPI strip + tabbed explorer + unlock tiers on every tool. That makes the site feel like one template duplicated.
+
+**Instead:** Pick layout, hero treatment, and preview format from what the tool *is*:
+
+| Tool | What it is | Visual merit (examples) |
+|------|------------|-------------------------|
+| **GBP audit** | Local ranking dashboard | Map Pack, score ring, pillar radar, competitor bars — `GbpAuditLanding.tsx` |
+| **AEO checker** | Technical diagnostic | Crawler matrix, criterion checklist, Group A/B split, engineer-style fix snippets — not Map Pack charts |
+| **Cheat sheet** | Editorial playbook + stats | Big stat tiles, lever chapters, readable peek prose — not browser-chrome dashboards |
+| **Future tools** | Ask: “What does the user *receive*?” and design the preview around that artifact |
+
+Shared tokens (oxblood, cream, font-display, mono labels) yes. **Same section order and same hero shell, no.**
+
+## Shared utilities (optional, not a template)
+
+`src/components/free-tools/FreeToolUi.tsx` — small primitives only (`FreeToolSectionHeader`, etc.). Use sparingly; prefer tool-specific components in `src/components/{tool}/`.
+
+## Forms
+
+- Scan tools: prominent input (URL / business) where it fits the tool’s metaphor.
+- Email gates: checklist of unlocks + Privacy Notice; compact/inline footer form when the page is long.
+- Never duplicate Turnstile blocks in one form.
+
+## Checklist before ship
+
+- [ ] Theology: prove / personalize / preview / capture all present
+- [ ] Preview format matches this tool’s deliverable (not copied from another tool)
+- [ ] Page looks distinct from sibling tools at a glance
+- [ ] Privacy Notice on every email capture
+- [ ] `npm run build` passes
+
+## Reference (one of several valid patterns)
+
+`src/components/gbp/GbpAuditLanding.tsx` — dashboard-style **local SEO** tool only.

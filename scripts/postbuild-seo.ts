@@ -7,9 +7,12 @@ import { SITE_ORIGIN } from '../src/seo/siteConfig'
 import { ORG_KNOWS_ABOUT, ORG_SAME_AS } from '../src/seo/organization'
 import { serviceChildren as serviceChildDefs, services as serviceDefs } from '../src/services/services'
 import {
+  assertPrerenderBody,
+  shouldPrerenderBody,
+} from './prerenderBodyRoutes'
+import {
   renderRouteBodyHtml,
   replaceRootInner,
-  shouldPrerenderBody,
 } from './prerender-static'
 import { pingSearchEngines } from './pingSearchEngines'
 import { optimizeCriticalCss } from './optimize-critical-css'
@@ -78,6 +81,7 @@ async function writeRouteHtml(baseHtml: string, routePath: string, headFragment:
 
   assertNoNoscript(routePath, html)
   if (routePath === '/') assertHomePrerenderBody(html)
+  assertPrerenderBody(routePath, html)
 
   fs.mkdirSync(path.dirname(outFile), { recursive: true })
   fs.writeFileSync(outFile, html, 'utf8')

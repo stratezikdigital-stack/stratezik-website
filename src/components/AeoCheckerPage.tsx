@@ -8,12 +8,13 @@
 // Positioning throughout: trackers measure the symptom (are you cited?); we
 // measure the cause (can you be?) AND the symptom — then hand you the fix list.
 
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveLeadSource } from '../aeo/checkerLinks'
 import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
+import { AeoCheckerLanding } from './aeo/AeoCheckerLanding'
 import type { DeepScanResult } from '../aeo/deep-scan.types'
 import type { SitemapAudit } from '../aeo/sitemap.types'
 
@@ -418,77 +419,53 @@ export default function AeoCheckerPage() {
 
   return (
     <main className="min-h-screen bg-cream pb-24">
-      <div className="container-custom mx-auto max-w-5xl px-6 md:px-12 pt-8 md:pt-12">
+      <div className="container-custom mx-auto max-w-[72rem] px-6 md:px-12 pt-8 md:pt-12">
       <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
         <Link to="/" className="hover:text-oxblood transition-colors">
           Home
         </Link>
         <span className="mx-2 text-ink-300">/</span>
+        <Link to="/free-tools" className="hover:text-oxblood transition-colors">
+          Free Tools
+        </Link>
+        <span className="mx-2 text-ink-300">/</span>
         <span className="text-ink-600">AEO Readiness Checker</span>
       </nav>
-      <header className="mb-14 md:mb-16">
-        <div className="editorial-label">Free tool</div>
-        <div className="hairline mt-3 pt-3 editorial-label">20-Point AEO Readiness Test</div>
-      </header>
-
-      {phase !== 'deep' && phase !== 'unlocking' && (
-        <>
-          <h1 className="font-display text-display-3 md:text-[3.25rem] text-ink leading-[1.02] tracking-[-0.035em]">
-            Can AI engines actually see and cite your website?
-          </h1>
-          <p className="lead mt-8 max-w-2xl">
-            <strong>Answer engine optimisation (AEO)</strong> is how you make your site quotable in
-            AI assistants, not just rankable in blue links. Most AEO tools tell you whether you’re{' '}
-            <em>winning</em> in AI search today. We tell you <strong>why</strong>, and exactly what to
-            fix. Start with the <strong>20-Point AEO Readiness Test</strong>, the same
-            machine-verified test from our audit of 50 funded Toronto startups (median:{' '}
-            <strong>10.75/20</strong>).
-          </p>
-        </>
-      )}
 
       {phase === 'input' && (
-        <>
-          <form onSubmit={handleScan} className="relative mt-10 border-t border-ink/15 pt-10">
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="yourcompany.com"
-                required
-                className={inputClass}
-              />
-              <button type="submit" disabled={!protection.canSubmit} className={btnPrimary}>
-                Check my score
-              </button>
-            </div>
-            <FormProtectionFields
-              turnstileSiteKey={protection.turnstileSiteKey}
-              onTurnstileSuccess={protection.setTurnstileToken}
-              onTurnstileExpire={protection.resetTurnstile}
-              turnstileResetKey={turnstileKey}
-              honeypotValue={protection.honeypot}
-              onHoneypotChange={protection.setHoneypot}
-            />
-            {error && <p className="mt-3 font-mono text-sm text-oxblood">{error}</p>}
-            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
-              Free · ~20 seconds · No signup for your topline score
-            </p>
-            <p className="mt-4 text-sm text-ink-600 leading-relaxed">
-              Local business on Google Maps?{' '}
-              <Link
-                to="/gbp-audit?utm_source=aeo-checker&utm_medium=inline"
-                className="text-oxblood underline underline-offset-2 hover:text-ink"
-              >
-                Run the Local Visibility Scan
-              </Link>{' '}
-              for Map Pack ranking and GBP fixes.
-            </p>
-          </form>
+        <AeoCheckerLanding
+          url={url}
+          error={error}
+          canSubmit={protection.canSubmit}
+          turnstileSiteKey={protection.turnstileSiteKey}
+          turnstileResetKey={turnstileKey}
+          honeypot={protection.honeypot}
+          inputClass={inputClass}
+          btnPrimary={btnPrimary}
+          cardClass={cardClass}
+          onUrlChange={setUrl}
+          onTurnstileSuccess={protection.setTurnstileToken}
+          onTurnstileExpire={protection.resetTurnstile}
+          onHoneypotChange={protection.setHoneypot}
+          onSubmit={handleScan}
+        />
+      )}
 
-          <Storefront />
-        </>
+      {phase !== 'input' && phase !== 'deep' && phase !== 'unlocking' && (
+        <header className="mb-10 md:mb-12">
+          <div className="editorial-label">Free tool</div>
+          <div className="hairline mt-3 pt-3 editorial-label">20-Point AEO Readiness Test</div>
+          <h1 className="mt-6 font-display text-display-3 md:text-[3.25rem] text-ink leading-[1.02] tracking-[-0.035em]">
+            Can AI engines actually see and cite your website?
+          </h1>
+        </header>
+      )}
+
+      {phase !== 'input' && phase !== 'deep' && phase !== 'unlocking' && phase !== 'scanning' && (
+        <p className="lead max-w-2xl mb-8">
+          <strong>Answer engine optimisation (AEO)</strong> is how you make your site quotable in AI assistants. Start
+          with the <strong>20-Point AEO Readiness Test</strong> (Toronto startup median: <strong>10.75/20</strong>).
+        </p>
       )}
 
       {phase === 'scanning' && (
@@ -1234,123 +1211,6 @@ function CheckerFaqSection() {
         .
       </p>
     </section>
-  )
-}
-
-function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-500">{children}</p>
-  )
-}
-
-function Storefront() {
-  const reveals: [string, string, string][] = [
-    ['📊', 'Your AEO readiness score', 'The 20-point test from our audit of 50 funded Toronto startups, instantly on screen.'],
-    ['👁️', 'Can AI even read you?', 'Whether your content reaches AI crawlers at all, or vanishes behind JavaScript and blocked bots.'],
-    ['💬', 'Are AI engines naming you?', 'We ask AI the questions your buyers ask (without naming you) and check if you come up.'],
-    ['🥊', 'How you beat the competitors you choose', 'Name your rivals and we score them head-to-head on AI-readiness. See exactly where to leapfrog them.'],
-    ['🔍', 'Why specific pages get skipped', 'A page-by-page breakdown of what makes AI quote a page, and what’s stopping yours.'],
-    ['🛠️', 'Your prioritized fix list', 'Not “improve your content.” The specific headings, stats, and structure to change first.'],
-  ]
-  const steps: [string, string][] = [
-    ['Enter your site', 'Drop your URL and email. No signup, no credit card. Your topline score is free.'],
-    ['We read it like AI does', 'In ~20 seconds we run the full diagnostic: crawlers, structure, content, competitors.'],
-    ['You get the fixes', 'A clear breakdown of what’s holding you back in AI search, with the exact changes to make.'],
-  ]
-  return (
-    <div className="mt-16 space-y-16">
-      {/* Why we're different — generic, no brand names */}
-      <div>
-        <Eyebrow>Not another vanity scoreboard</Eyebrow>
-        <h2 className="mt-2 text-2xl font-display font-semibold text-ink sm:text-3xl">
-          Your typical AI-visibility tracker gang stops at a number
-        </h2>
-        <p className="mt-3 max-w-2xl text-ink-500">
-          The usual crowd of AI-tracking tools count how often AI <em>mentions</em> you and hand you
-          a percentage. That’s a scoreboard. It names the symptom, never the cause, and never the
-          fix. We read your pages the way an AI engine does and tell you{' '}
-          <strong className="text-ink-700">exactly why it skips you and what to change.</strong>
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="border border-ink/15 bg-cream-50 p-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">Typical tracker</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-ink-600">
-              <li className="flex gap-2"><span className="text-ink-300">✗</span> “You have 12% AI visibility.”</li>
-              <li className="flex gap-2"><span className="text-ink-300">✗</span> A vanity number, updated monthly.</li>
-              <li className="flex gap-2"><span className="text-ink-300">✗</span> No reason. No fix. Nothing you can act on.</li>
-            </ul>
-          </div>
-          <div className="border border-oxblood/30 bg-cream-50 p-6 ring-1 ring-oxblood/15">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">Stratezik</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-ink-700">
-              <li className="flex gap-2"><span className="text-oxblood">✓</span> “AI skips your pricing page: the tiers are buried in prose.”</li>
-              <li className="flex gap-2"><span className="text-oxblood">✓</span> Page-by-page, written like an engineer’s review.</li>
-              <li className="flex gap-2"><span className="text-oxblood">✓</span> The exact sentence, heading, or table to change, and why.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* What your analysis reveals */}
-      <div>
-        <Eyebrow>What your email unlocks</Eyebrow>
-        <h2 className="mt-2 text-2xl font-display font-semibold text-ink sm:text-3xl">
-          What your free analysis reveals
-        </h2>
-        <p className="mt-3 max-w-2xl text-ink-500">
-          Enter your site and email and we run the full diagnostic stack. Here’s what comes back:
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {reveals.map(([icon, title, body]) => (
-            <div
-              key={title}
-              className="border border-ink/12 bg-cream-50 p-5 transition hover:border-oxblood/35 hover:ring-1 hover:ring-oxblood/15"
-            >
-              <span className="text-2xl" aria-hidden>{icon}</span>
-              <p className="mt-3 text-sm font-semibold text-ink">{title}</p>
-              <p className="mt-1 text-sm text-ink-600 leading-relaxed">{body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* How it works — numbered badges, connected feel */}
-      <div>
-        <Eyebrow>Three steps</Eyebrow>
-        <h2 className="mt-2 text-2xl font-display font-semibold text-ink sm:text-3xl">How it works</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          {steps.map(([title, body], i) => (
-            <div key={title} className="relative border border-ink/15 bg-cream-50 p-6">
-              <span className="flex h-9 w-9 items-center justify-center bg-ink font-display text-sm font-semibold text-cream">
-                {i + 1}
-              </span>
-              <p className="mt-4 text-base font-semibold text-ink">{title}</p>
-              <p className="mt-2 text-sm text-ink-600 leading-relaxed">{body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Why it matters — gradient banner */}
-      <div className={`${panelInk} overflow-hidden`}>
-        <h2 className="font-display text-xl sm:text-2xl text-cream">
-          Your buyers now start in AI, not a list of blue links
-        </h2>
-        <p className="mt-3 max-w-2xl text-cream/85 leading-relaxed">
-          If AI can’t read, understand, and quote your site, you’re invisible at the exact moment a
-          customer is deciding. Most companies are wide open on this. The ones who fix it first win
-          the next decade of search.
-        </p>
-        <button
-          type="button"
-          onClick={() => document.querySelector('input')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-          className="mt-6 inline-flex items-center gap-3 bg-cream px-7 py-3.5 font-medium text-ink transition hover:bg-gold"
-        >
-          Run my free analysis
-          <span aria-hidden className="font-mono">↑</span>
-        </button>
-      </div>
-    </div>
   )
 }
 

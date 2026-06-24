@@ -5,13 +5,7 @@ import { PrerenderApp } from '../src/prerender/PrerenderApp'
 import { getPostBySlug } from '../src/blog/posts'
 import { loadPrerenderServiceBodies } from './loadPrerenderServiceBodies'
 
-const CONTENT_ROUTE_PREFIXES = ['/blog', '/authors', '/services', '/careers', '/aeo-checker', '/gbp-audit', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet']
-
-export function shouldPrerenderBody(path: string): boolean {
-  if (path === '/') return true
-  if (path.startsWith('/chatgpt-ads-cheat-sheet/guide')) return false
-  return CONTENT_ROUTE_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))
-}
+export { shouldPrerenderBody } from './prerenderBodyRoutes'
 
 let cachedBodies: ReturnType<typeof loadPrerenderServiceBodies> | undefined
 

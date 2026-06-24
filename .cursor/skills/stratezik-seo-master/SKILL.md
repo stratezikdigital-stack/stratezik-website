@@ -25,6 +25,8 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Head HTML builder | `src/seo/buildPageHeadHtml.ts` | Server-visible `<head>` fragment |
 | Client hydration | `src/seo/RouteSeoManager.tsx` | Mirrors registry on SPA navigation |
 | Build prerender | `scripts/postbuild-seo.ts` | Writes `dist/{route}/index.html` + `sitemap.xml` + `llms-full.txt` |
+| Body prerender routes | `scripts/prerenderBodyRoutes.ts` | **Single source:** which paths get React HTML in `#root`; build fails if listed route ships empty body |
+| Prerender shell | `src/prerender/PrerenderApp.tsx` | Static routes for SSR markup — must mirror indexable `App.tsx` routes |
 | Build asserts | `scripts/postbuild-seo.ts` | **Fails build** on `<noscript>` in prerender; homepage body markers (FAQ, services, footer) |
 | Critical CSS | `scripts/optimize-critical-css.ts` | Critters inline + deferred CSS/fonts on all prerendered HTML |
 | Release gates | `scripts/check-release-gates.ts` | Post-build: no mobile preload of three-vendor/markdown, CSS defer, blog meta split |
@@ -43,7 +45,7 @@ Own **implementation-grade** SEO for stratezik.com (Vite SPA on Vercel). Strateg
 | Lead magnets | `src/components/cheatsheet/*`, `server/cheatsheet/*`, `content/*.md` | Immersive landing + gated guide; API via `api/aeo.ts` actions `guide-lead` / `guide-access` |
 | Sheets webhooks | `google-apps-script-*.js`, env `GOOGLE_*_WEBHOOK_URL` | Per-tool Apps Script → spreadsheet tab; see `GOOGLE_SHEETS_SETUP.md` |
 
-**Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. Blog posts need **`postsMeta.ts` + `postLoaders.ts`** — registry reads metadata via `postsMeta` only (never `postLoaders` or `posts.ts` on the SEO import path).
+**Rule:** Every new indexable route MUST be added to `getAllRouteSeoConfigs()` in the registry. **Also add the path to `scripts/prerenderBodyRoutes.ts` and `src/prerender/PrerenderApp.tsx`** — `npm run build` fails if `#root` is empty on a prerender-body route. Blog posts need **`postsMeta.ts` + `postLoaders.ts`** — registry reads metadata via `postsMeta` only (never `postLoaders` or `posts.ts` on the SEO import path).
 
 **Rule (build):** Full ship is `npm run build` → prerender + `check:release-gates`. Do not skip postbuild or release gates. After deploy, optional: `bash scripts/verify-live-homepage.sh`.
 
@@ -64,6 +66,7 @@ Copy and complete:
 ```
 SEO release gate:
 - [ ] Route in pageSeoRegistry (or postsMeta.ts + postLoaders.ts for blog)
+- [ ] Route in prerenderBodyRoutes.ts + PrerenderApp.tsx (build fails on empty #root if omitted)
 - [ ] Blog articles: `<BlogAuthorSignoff />` + `<BlogStratezikContactLink>` only — no hardcoded author names or `mailto:` in `*Article.tsx` (`npm run check:blog-author`)
 - [ ] npm run build succeeds (postbuild prerender + sitemap + check:release-gates)
 - [ ] curl -s URL | grep -E '<title>|canonical|og:title' shows ROUTE values (not homepage)
@@ -91,8 +94,9 @@ SEO release gate:
 
 1. Add React route in `App.tsx` (+ `PrerenderApp.tsx` if prerendered).
 2. Add `RouteSeoConfig` in `pageSeoRegistry.ts` with full meta + jsonLd.
-3. If lead magnet: add to `src/free-tools/tools.ts`, wire lead API + Sheets if needed, add `vercel.json` headers (gated routes `noindex`).
-4. Build and curl-verify as above.
+3. Add path to `scripts/prerenderBodyRoutes.ts` (`PRERENDER_BODY_EXACT` or prefix) and matching route in `PrerenderApp.tsx`.
+4. If lead magnet: add to `src/free-tools/tools.ts`, wire lead API + Sheets if needed, add `vercel.json` headers (gated routes `noindex`).
+5. Build and curl-verify as above (`curl -s URL | grep '<h1'` or check `dist/{path}/index.html` #root is non-empty).
 
 ## Adding a lead magnet (checklist)
 
