@@ -69,6 +69,23 @@ Uses a **separate** Apps Script project (`google-apps-script-aeo-leads.js`) so c
 
 If AEO rows stop appearing, check **Stratezik AEO Leads** in Apps Script (not the contact-form project).
 
+### GBP Audit (`GBP Audit` tab)
+
+Uses a **separate** Apps Script project (`google-apps-script-gbp-leads.js`).
+
+| Timestamp | Name | Email | Business | Score | Industry | City | Source | Consent |
+|-----------|------|-------|----------|-------|----------|------|--------|---------|
+
+#### GBP Audit setup (one-time)
+
+1. [Google Apps Script](https://script.google.com) → **New project** → name it **Stratezik GBP Audit Leads**
+2. Paste `google-apps-script-gbp-leads.js` → **Save**
+3. Run **`setupGbpAuditSheet`** once (creates/headers the **GBP Audit** tab — rename an existing empty tab to match if needed)
+4. Run **`sendTestEmail`** once and approve MailApp permissions
+5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
+6. Add to Vercel (Production + Development): `GOOGLE_GBP_LEADS_WEBHOOK_URL` = that URL
+7. Redeploy the site; submit a test email unlock on `/gbp-audit` and confirm the row appears on **GBP Audit** plus notification email to **stratezikdigital@gmail.com**
+
 ### ChatGPT Ads Cheat Sheet (`ChatGpt Leads` tab)
 
 Uses a **separate** Apps Script project (`google-apps-script-chatgpt-leads.js`).
