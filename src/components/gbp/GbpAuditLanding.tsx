@@ -336,8 +336,8 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
           <div>
             <div className="editorial-label text-gold/80">Stratezik · Local Visibility Scan</div>
             <h1 className="mt-4 font-display text-display-3 text-cream leading-[1.04] tracking-[-0.035em] max-w-2xl">
-              The Google Business Profile audit with{' '}
-              <span className="text-gold">charts, competitor gaps,</span> and copy-paste fixes.
+              The Google Business Profile Audit with{' '}
+              <span className="text-gold">ranks, competitor gaps,</span> and actionable fixes.
             </h1>
             <p className="mt-5 max-w-xl text-cream/70 leading-relaxed text-lg">
               See your visibility score, Map Pack position, six-pillar breakdown, and exactly where you lose to the top
