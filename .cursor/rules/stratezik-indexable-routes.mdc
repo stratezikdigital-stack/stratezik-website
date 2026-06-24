@@ -1,0 +1,44 @@
+---
+description: Ship gate for new indexable routes — prerender body, registry, and build verify. Apply when adding or changing pages, routes, or SEO registry entries.
+globs: src/App.tsx,src/prerender/**,src/seo/pageSeoRegistry.ts,scripts/prerenderBodyRoutes.ts,scripts/postbuild-seo.ts,scripts/prerender-static.ts,src/components/**/*Page.tsx,src/free-tools/tools.ts
+alwaysApply: false
+---
+
+# Indexable routes (mandatory)
+
+When **matched files are in context**, any new or changed **indexable** page must ship crawler-visible HTML in `#root`, not title-only SPA shells.
+
+**Source of truth:** `scripts/prerenderBodyRoutes.ts` — do not duplicate route lists elsewhere.
+
+## Four-file checklist (every new indexable route)
+
+1. **`src/App.tsx`** — client route
+2. **`src/prerender/PrerenderApp.tsx`** — same route for build-time SSR markup
+3. **`src/seo/pageSeoRegistry.ts`** — title, description, canonical, JSON-LD, sitemap
+4. **`scripts/prerenderBodyRoutes.ts`** — add to `PRERENDER_BODY_EXACT` or ensure a matching `PRERENDER_BODY_PREFIXES` entry
+
+**Gated / token URLs** (e.g. `/chatgpt-ads-cheat-sheet/guide`): add to `PRERENDER_BODY_EXCLUDE`, set `robots: noindex` in registry + `vercel.json` if applicable — head only, no body prerender.
+
+## Build gate (non-negotiable)
+
+- Agent runs **`npm run build`** before calling the page done — not a manual user step.
+- Postbuild **`assertPrerenderBody`** fails if a prerender-body route ships empty `#root`.
+- Do **not** hand-edit `public/sitemap.xml`, `llms-full.txt`, or `llm-context.json` (generated on build).
+
+## Quick verify
+
+```bash
+npm run build
+# H1 or key copy must appear inside dist/{route}/index.html #root
+grep 'Your expected H1' dist/your-route/index.html
+```
+
+## Pair with other rules/skills
+
+- **`stratezik-seo-master`** — schema, FAQs, blog `postsMeta` + `postLoaders`, release checklist
+- **`stratezik-free-tool-design`** — lead-magnet landings under `src/components/` + `FREE_TOOLS[]`
+- **`stratezik-web-performance`** — App shell lazy loading when touching `App.tsx`
+
+## Anti-pattern
+
+Registry + `PrerenderApp` without `prerenderBodyRoutes` → live page with `<title>` but empty `#root` (AI crawlers see a blank body). This happened on `/free-tools`; the build gate now prevents recurrence.
