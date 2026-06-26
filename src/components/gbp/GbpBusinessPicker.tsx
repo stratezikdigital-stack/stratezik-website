@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 export type BusinessCandidate = {
   placeId: string
   name: string
@@ -23,6 +25,8 @@ export function GbpBusinessPicker({
   selectedPlaceId,
   placesConfigured = true,
   lookupReason,
+  canRunScan = true,
+  turnstileSlot,
   onSelect,
   onConfirm,
   onBack,
@@ -35,6 +39,8 @@ export function GbpBusinessPicker({
   selectedPlaceId: string | null
   placesConfigured?: boolean
   lookupReason?: 'missing_api_key' | 'no_results'
+  canRunScan?: boolean
+  turnstileSlot?: ReactNode
   onSelect: (placeId: string) => void
   onConfirm: () => void
   onBack: () => void
@@ -79,7 +85,7 @@ export function GbpBusinessPicker({
             <button type="button" className="btn-secondary" onClick={onBack}>
               ← Edit search
             </button>
-            <button type="button" className="btn-primary" onClick={onSkip}>
+            <button type="button" className="btn-primary" disabled={!canRunScan} onClick={onSkip}>
               Run scan without a matched listing
             </button>
           </div>
@@ -138,18 +144,27 @@ export function GbpBusinessPicker({
             })}
           </ul>
 
+          {turnstileSlot ? (
+            <div className="mt-6">
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-ink-500">
+                Confirm you&apos;re human — then run the scan
+              </p>
+              {turnstileSlot}
+            </div>
+          ) : null}
+
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <button type="button" className="btn-secondary" onClick={onBack}>
               ← Edit search
             </button>
             <div className="flex flex-wrap gap-3">
-              <button type="button" className="btn-secondary text-sm" onClick={onSkip}>
+              <button type="button" className="btn-secondary text-sm" disabled={!canRunScan} onClick={onSkip}>
                 None of these
               </button>
               <button
                 type="button"
                 className="btn-primary min-w-[200px] disabled:opacity-50"
-                disabled={!selectedPlaceId}
+                disabled={!selectedPlaceId || !canRunScan}
                 onClick={onConfirm}
               >
                 Run scan on this listing →

@@ -213,6 +213,11 @@ export default function GbpAuditPage() {
 
   const runScan = useCallback(
     async (opts?: { placeId?: string; selectedName?: string }) => {
+      if (!protection.canSubmit) {
+        setError('Complete the security check below, then try again.')
+        return
+      }
+
       setError(null)
       setPhase('scanning')
       setDeepUnlocked(false)
@@ -221,6 +226,7 @@ export default function GbpAuditPage() {
       setStorageWarning(null)
 
       try {
+        const formToken = await protection.fetchReadyFormToken()
         const res = await fetch('/api/gbp-check', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -231,7 +237,8 @@ export default function GbpAuditPage() {
             placeId: opts?.placeId,
             selectedName: opts?.selectedName,
             website: protection.honeypot,
-            ...protection.spamPayload(),
+            formToken,
+            turnstileToken: protection.turnstileToken,
           }),
         })
         const data = (await res.json()) as Topline & { error?: string }
@@ -294,10 +301,6 @@ export default function GbpAuditPage() {
   )
 
   const startLookup = useCallback(async () => {
-    if (!protection.canSubmit) {
-      setError('Complete the bot check below, then try again.')
-      return
-    }
     if (!city.trim()) {
       setError('Enter your city — e.g. Scarborough, ON.')
       return
@@ -314,6 +317,10 @@ export default function GbpAuditPage() {
       setError('Please agree to our Privacy Notice to receive your report.')
       return
     }
+    if (!protection.formToken || protection.tokenError) {
+      setError('Form expired. Refresh the page and try again.')
+      return
+    }
 
     setError(null)
     setPhase('pick')
@@ -321,8 +328,11 @@ export default function GbpAuditPage() {
     setCandidates([])
     setSelectedPlaceId(null)
     setPlacesLookupReady(true)
+    protection.resetTurnstile()
+    setTurnstileKey((k) => k + 1)
 
     try {
+      const formToken = await protection.fetchReadyFormToken()
       const res = await fetch('/api/gbp-lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -331,7 +341,7 @@ export default function GbpAuditPage() {
           city: city.trim(),
           industry: industry.trim() || 'Local business',
           website: protection.honeypot,
-          ...protection.spamPayload(),
+          formToken,
         }),
       })
       const data = (await res.json()) as {
@@ -641,19 +651,13 @@ export default function GbpAuditPage() {
             consent={consent}
             error={error}
             exampleChips={EXAMPLE_CHIPS}
-            canSubmit={protection.canSubmit}
-            turnstileSiteKey={protection.turnstileSiteKey}
-            turnstileResetKey={turnstileKey}
-            honeypot={protection.honeypot}
+            lookupReady={Boolean(protection.formToken) && !protection.tokenError}
             onBizChange={setBiz}
             onCityChange={setCity}
             onIndustryChange={setIndustry}
             onEmailChange={setEmail}
             onConsentChange={setConsent}
             onIndustryChip={setIndustry}
-            onTurnstileSuccess={protection.setTurnstileToken}
-            onTurnstileExpire={protection.resetTurnstile}
-            onHoneypotChange={protection.setHoneypot}
             onScan={() => void startLookup()}
           />
         )}
@@ -667,6 +671,19 @@ export default function GbpAuditPage() {
             selectedPlaceId={selectedPlaceId}
             placesConfigured={placesLookupReady}
             lookupReason={placesLookupReady ? 'no_results' : 'missing_api_key'}
+            canRunScan={protection.canSubmit}
+            turnstileSlot={
+              protection.turnstileSiteKey ? (
+                <FormProtectionFields
+                  turnstileSiteKey={protection.turnstileSiteKey}
+                  onTurnstileSuccess={protection.setTurnstileToken}
+                  onTurnstileExpire={protection.resetTurnstile}
+                  turnstileResetKey={turnstileKey}
+                  honeypotValue={protection.honeypot}
+                  onHoneypotChange={protection.setHoneypot}
+                />
+              ) : null
+            }
             onSelect={setSelectedPlaceId}
             onConfirm={confirmSelectedBusiness}
             onBack={() => {

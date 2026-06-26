@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { FormProtectionFields } from '../spam/FormProtectionFields'
 import { resolveIndustry } from '../../gbp/industryEngine'
 import {
   GbpBenchmarkBar,
@@ -164,19 +163,13 @@ type GbpAuditLandingProps = {
   consent: boolean
   error: string | null
   exampleChips: { label: string; value: string }[]
-  canSubmit: boolean
-  turnstileSiteKey: string | undefined
-  turnstileResetKey: number
-  honeypot: string
+  lookupReady: boolean
   onBizChange: (v: string) => void
   onCityChange: (v: string) => void
   onIndustryChange: (v: string) => void
   onEmailChange: (v: string) => void
   onConsentChange: (v: boolean) => void
   onIndustryChip: (v: string) => void
-  onTurnstileSuccess: (token: string) => void
-  onTurnstileExpire: () => void
-  onHoneypotChange: (v: string) => void
   onScan: () => void
 }
 
@@ -243,24 +236,18 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
     consent,
     error,
     exampleChips,
-    canSubmit,
-    turnstileSiteKey,
-    turnstileResetKey,
-    honeypot,
+    lookupReady,
     onBizChange,
     onCityChange,
     onIndustryChange,
     onEmailChange,
     onConsentChange,
     onIndustryChip,
-    onTurnstileSuccess,
-    onTurnstileExpire,
-    onHoneypotChange,
     onScan,
     variant = 'stacked',
   } = props
 
-  const scanReady = canSubmit && consent && email.trim().includes('@')
+  const scanReady = lookupReady && consent && email.trim().includes('@') && city.trim() && biz.trim()
 
   const chipRow = (
     <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
@@ -321,22 +308,14 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
           onConsentChange={onConsentChange}
         />
         {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <FormProtectionFields
-            turnstileSiteKey={turnstileSiteKey ?? ''}
-            onTurnstileSuccess={onTurnstileSuccess}
-            onTurnstileExpire={onTurnstileExpire}
-            turnstileResetKey={turnstileResetKey}
-            honeypotValue={honeypot}
-            onHoneypotChange={onHoneypotChange}
-          />
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-end">
           <button
             type="button"
             className={`${btnPrimary} sm:w-auto sm:min-w-[200px] sm:shrink-0`}
             disabled={!scanReady}
             onClick={onScan}
           >
-            Run my free scan →
+            Find my listing →
           </button>
         </div>
       </div>
@@ -377,17 +356,9 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
         onConsentChange={onConsentChange}
       />
       {error ? <p className="mt-3 text-sm text-oxblood">{error}</p> : null}
-      <FormProtectionFields
-        turnstileSiteKey={turnstileSiteKey ?? ''}
-        onTurnstileSuccess={onTurnstileSuccess}
-        onTurnstileExpire={onTurnstileExpire}
-        turnstileResetKey={turnstileResetKey}
-        honeypotValue={honeypot}
-        onHoneypotChange={onHoneypotChange}
-      />
-        <button type="button" className={`${btnPrimary} mt-4`} disabled={!scanReady} onClick={onScan}>
-          Find my listing & scan →
-        </button>
+      <button type="button" className={`${btnPrimary} mt-4`} disabled={!scanReady} onClick={onScan}>
+        Find my listing →
+      </button>
       <p className="mt-3 text-center text-xs text-ink-500">No account · CASL-compliant · Unsubscribe anytime</p>
     </div>
   )

@@ -83,6 +83,8 @@ export async function handleGbpLookup(req: VercelRequest, res: VercelResponse) {
     maxPerIp: 20,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
+    // Turnstile tokens are single-use — verified on gbp-check after the user picks a listing.
+    requireTurnstile: false,
   })
   if (!allowed) return
 
