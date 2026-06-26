@@ -391,10 +391,6 @@ export default function GbpAuditPage() {
       setError('Enter your email below — we need it to deliver the roadmap after payment.')
       return
     }
-    if (!protection.canSubmit) {
-      setError('Complete the security check below, then try again.')
-      return
-    }
     setCheckoutLoading(true)
     setError(null)
     try {
@@ -407,29 +403,85 @@ export default function GbpAuditPage() {
           email: email.trim(),
           website: protection.honeypot,
           formToken,
-          turnstileToken: protection.turnstileToken,
         }),
       })
       const data = (await res.json()) as { url?: string; error?: string }
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Checkout failed')
+      try {
+        sessionStorage.setItem('gbp_paid_scan', topline.scanId)
+      } catch {
+        /* ignore */
+      }
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed')
       setCheckoutLoading(false)
-      protection.resetTurnstile()
-      setTurnstileKey((k) => k + 1)
       void protection.refreshFormToken()
     }
   }, [topline, email, protection])
 
-  // Checkout Turnstile on results page — refresh when paid preview is visible.
-  useEffect(() => {
-    if (phase !== 'results' || deepUnlocked) return
-    void protection.refreshFormToken()
-    protection.resetTurnstile()
-    setTurnstileKey((k) => k + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, deepUnlocked])
+  const retryPaidUnlock = useCallback(
+    async (sessionId: string, scanId: string) => {
+      setPhase('unlocking')
+      setUnlockStep(0)
+      setError(null)
+      try {
+        const res = await fetch('/api/gbp-unlock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, scanId }),
+        })
+        const data = (await res.json()) as Topline & {
+          unlocked?: boolean
+          pillars?: Pillar[]
+          error?: string
+        }
+        if (!res.ok || !data.unlocked) throw new Error(data.error ?? 'Unlock failed')
+        applyUnlockPayload(data, {
+          setTopline,
+          setBiz,
+          setCity,
+          setIndustry,
+          setPillars,
+          setAiRoadmap,
+          applyPreview,
+          setDeepUnlocked,
+          setPhase,
+        })
+      } catch (err) {
+        const restoreRes = await fetch('/api/gbp-restore', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scanId }),
+        })
+        const restoreData = (await restoreRes.json()) as Topline & {
+          unlocked?: boolean
+          pillars?: Pillar[]
+          error?: string
+        }
+        if (restoreRes.ok && restoreData.unlocked) {
+          applyUnlockPayload(restoreData, {
+            setTopline,
+            setBiz,
+            setCity,
+            setIndustry,
+            setPillars,
+            setAiRoadmap,
+            applyPreview,
+            setDeepUnlocked,
+            setPhase,
+          })
+          if (!restoreData.aiRoadmap) {
+            setError('Payment confirmed — your AI plan is still generating. This page will update shortly.')
+          }
+          return
+        }
+        setError(err instanceof Error ? err.message : 'Payment unlock failed')
+        setPhase('results')
+      }
+    },
+    [applyPreview],
+  )
 
   const downloadPdf = useCallback(async () => {
     if (!topline?.scanId) return
@@ -499,9 +551,11 @@ export default function GbpAuditPage() {
           setDeepUnlocked,
           setPhase,
         })
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Payment unlock failed')
-        setPhase('input')
+        if (!data.aiRoadmap) {
+          setError('Payment confirmed — your bespoke AI plan is generating. This section updates automatically.')
+        }
+      } catch {
+        await retryPaidUnlock(sessionId, scanId)
       } finally {
         window.clearInterval(timer)
         setSearchParams({}, { replace: true })
@@ -509,7 +563,77 @@ export default function GbpAuditPage() {
     })()
 
     return () => window.clearInterval(timer)
-  }, [searchParams, setSearchParams, applyPreview])
+  }, [searchParams, setSearchParams, applyPreview, retryPaidUnlock])
+
+  // Poll for AI roadmap when payment unlocked but generation is still running.
+  useEffect(() => {
+    if (!deepUnlocked || aiRoadmap || !topline?.scanId) return
+    let cancelled = false
+    const poll = async () => {
+      try {
+        const res = await fetch('/api/gbp-restore', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scanId: topline.scanId }),
+        })
+        const data = (await res.json()) as { aiRoadmap?: AiRoadmap | null }
+        if (!cancelled && res.ok && data.aiRoadmap) {
+          setAiRoadmap(data.aiRoadmap)
+          setError(null)
+        }
+      } catch {
+        /* ignore poll errors */
+      }
+    }
+    void poll()
+    const id = window.setInterval(poll, 6000)
+    return () => {
+      cancelled = true
+      window.clearInterval(id)
+    }
+  }, [deepUnlocked, aiRoadmap, topline?.scanId])
+
+  // If this scan was paid for (same session or a prior checkout), load the unlocked plan.
+  useEffect(() => {
+    if (deepUnlocked || phase !== 'results' || !topline?.scanId) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const res = await fetch('/api/gbp-restore', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scanId: topline.scanId }),
+        })
+        const data = (await res.json()) as Topline & {
+          unlocked?: boolean
+          pillars?: Pillar[]
+          aiRoadmap?: AiRoadmap | null
+        }
+        if (cancelled || !res.ok || !data.unlocked) return
+        applyUnlockPayload(data, {
+          setTopline,
+          setBiz,
+          setCity,
+          setIndustry,
+          setPillars,
+          setAiRoadmap,
+          applyPreview,
+          setDeepUnlocked,
+          setPhase,
+        })
+        try {
+          sessionStorage.removeItem('gbp_paid_scan')
+        } catch {
+          /* ignore */
+        }
+      } catch {
+        /* not paid yet */
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [deepUnlocked, phase, topline?.scanId, applyPreview])
 
   // Re-open a paid plan only from an explicit link (?plan=scanId), e.g. the email we send after checkout.
   // Do not auto-restore from browser storage — a hard refresh should show a fresh scan form.
@@ -1017,30 +1141,30 @@ export default function GbpAuditPage() {
               <div className="h-px flex-1 bg-ink/15" />
             </div>
 
-            {deepUnlocked && aiRoadmap ? (
+            {deepUnlocked ? (
               <GbpPaidPlanUnlocked
                 businessName={topline?.businessName ?? 'your business'}
                 pdfLoading={pdfLoading}
                 onDownloadPdf={() => void downloadPdf()}
               >
-                <GbpAiRoadmapPanel roadmap={aiRoadmap} copiedKey={copiedKey} onCopy={copyText} />
+                {aiRoadmap ? (
+                  <GbpAiRoadmapPanel roadmap={aiRoadmap} copiedKey={copiedKey} onCopy={copyText} />
+                ) : (
+                  <div className="rounded-sm border border-gold/30 bg-gold/10 px-6 py-10 text-center">
+                    <span className="mx-auto mb-4 inline-block h-3 w-3 animate-pulse rounded-full bg-gold" />
+                    <p className="font-display text-xl text-ink">Building your bespoke operator plan…</p>
+                    <p className="mt-2 text-sm text-ink-600">
+                      Payment confirmed. AI is drafting all 12 sections from your audit — usually under a minute.
+                    </p>
+                  </div>
+                )}
               </GbpPaidPlanUnlocked>
             ) : (
               <GbpPaidPlanZone
                 price={ROADMAP_PRICE}
                 checkoutLoading={checkoutLoading}
-                canCheckout={protection.canSubmit && Boolean(email.trim())}
+                canCheckout={Boolean(topline?.scanId) && Boolean(email.trim())}
                 onCheckout={() => void startCheckout()}
-                turnstileSlot={
-                  <FormProtectionFields
-                    turnstileSiteKey={protection.turnstileSiteKey ?? ''}
-                    onTurnstileSuccess={protection.setTurnstileToken}
-                    onTurnstileExpire={protection.resetTurnstile}
-                    turnstileResetKey={turnstileKey}
-                    honeypotValue={protection.honeypot}
-                    onHoneypotChange={protection.setHoneypot}
-                  />
-                }
               />
             )}
 

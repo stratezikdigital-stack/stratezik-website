@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { GbpOperatorPlanPreview } from './GbpOperatorPlanPreview'
 
@@ -10,13 +9,11 @@ export function GbpPaidPlanZone({
   checkoutLoading,
   canCheckout,
   onCheckout,
-  turnstileSlot,
 }: {
   price: string
   checkoutLoading: boolean
   canCheckout: boolean
   onCheckout: () => void
-  turnstileSlot?: ReactNode
 }) {
   return (
     <section
@@ -58,7 +55,6 @@ export function GbpPaidPlanZone({
       </div>
 
       <div className="border-t border-oxblood/25 bg-oxblood/[0.12] px-6 py-6 md:px-8">
-        {turnstileSlot ? <div className="mb-5 max-w-md">{turnstileSlot}</div> : null}
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
             <p className="font-display text-lg text-ink">Ready for your bespoke plan?</p>

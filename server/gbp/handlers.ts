@@ -307,6 +307,8 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
+    // User already passed Turnstile at scan; Stripe checkout is the real gate.
+    requireTurnstile: false,
   })
   if (!allowed) return
 
