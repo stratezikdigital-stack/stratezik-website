@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
 
-const MIN_AGE_MS = 3_000
+const MIN_AGE_MS = 1_000
 const MAX_AGE_MS = 60 * 60 * 1000
 
 function secret(): string {

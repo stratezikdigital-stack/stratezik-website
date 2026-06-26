@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveIndustry } from '../../gbp/industryEngine'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
@@ -40,7 +40,7 @@ export function GbpHowItWorks() {
     {
       n: '03',
       title: 'Get the full report',
-      body: 'Email unlocks the rest: two more fixes, six-pillar scores, and competitor gaps.',
+      body: 'Email on the first form unlocks fixes, pillar charts, and competitor gaps instantly.',
     },
   ]
 
@@ -165,12 +165,72 @@ export function GbpScanProgress({ biz, industry, step }: { biz: string; industry
 
 function LockOverlay({ label }: { label: string }) {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/75 backdrop-blur-[3px] px-4 text-center">
-      <span className="mb-2 text-lg" aria-hidden>
-        🔒
-      </span>
-      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-600">{label}</p>
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-cream/60 px-4 text-center">
+      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-oxblood">{label}</p>
     </div>
+  )
+}
+
+/** @deprecated Use GbpPaidPlanZone instead */
+export function GbpPaidPreviewShell({
+  title,
+  subtitle,
+  price,
+  checkoutLoading,
+  canCheckout,
+  onCheckout,
+  turnstileSlot,
+  children,
+}: {
+  title: string
+  subtitle: string
+  price: string
+  checkoutLoading: boolean
+  canCheckout: boolean
+  onCheckout: () => void
+  turnstileSlot?: ReactNode
+  children: ReactNode
+}) {
+  return (
+    <section className="relative mt-14 overflow-hidden rounded-sm border border-oxblood/20">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-oxblood/15 bg-oxblood/5 px-6 py-4 md:px-8">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-oxblood">06 — Operator plan · preview</p>
+          <h3 className="mt-1 font-display text-xl text-ink md:text-2xl">{title}</h3>
+          <p className="mt-1 max-w-2xl text-sm text-ink-600">{subtitle}</p>
+        </div>
+        <div className="shrink-0 text-right">
+          <button
+            type="button"
+            className="btn-secondary whitespace-nowrap disabled:opacity-60"
+            disabled={checkoutLoading || !canCheckout}
+            onClick={onCheckout}
+          >
+            {checkoutLoading ? 'Redirecting…' : `Unbox with Paid Plan — ${price}`}
+          </button>
+          <p className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-ink-400">Seeing is believing</p>
+        </div>
+      </div>
+      {turnstileSlot ? <div className="border-b border-ink/8 bg-cream-50 px-6 py-3 md:px-8">{turnstileSlot}</div> : null}
+      <div className="relative bg-cream-50/80 p-6 md:p-8">
+        <div className="pointer-events-none select-none opacity-[0.78] saturate-[0.92]">{children}</div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-cream/90 to-transparent" aria-hidden />
+      </div>
+      <div className="border-t border-oxblood/10 bg-oxblood/[0.04] px-6 py-4 text-center md:px-8">
+        <p className="text-sm text-ink-600">
+          Sample structure above. Your paid plan is built from <strong className="text-ink">your</strong> audit data — categories,
+          competitors, review snippets, and city.
+        </p>
+        <button
+          type="button"
+          className="btn-primary mt-4 max-w-sm disabled:opacity-60"
+          disabled={checkoutLoading || !canCheckout}
+          onClick={onCheckout}
+        >
+          {checkoutLoading ? 'Redirecting…' : `Unbox your bespoke plan — ${price}`}
+        </button>
+      </div>
+    </section>
   )
 }
 
@@ -252,11 +312,11 @@ export function GbpPillarPreview({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-      <div className={`${panelClass} p-4 flex items-center justify-center`}>
+      <div className={`${panelClass} flex min-h-[300px] items-center justify-center p-4 md:p-6`}>
         <GbpPillarRadarChart
           pillars={rows.map((p) => ({ name: p.name, score: unlocked ? p.score : Math.min(p.score, 52) }))}
           locked={!unlocked}
-          height={220}
+          className="aspect-square h-full w-full max-h-[340px] max-w-full"
         />
       </div>
       <div className={`${panelClass} p-5`}>

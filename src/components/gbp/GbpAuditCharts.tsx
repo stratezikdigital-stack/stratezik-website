@@ -177,10 +177,12 @@ export function GbpPillarRadarChart({
   pillars,
   locked = false,
   height = 220,
+  className,
 }: {
   pillars: ChartPillar[]
   locked?: boolean
   height?: number
+  className?: string
 }) {
   const n = pillars.length
   const cx = 110
@@ -202,7 +204,12 @@ export function GbpPillarRadarChart({
     .join(' ')
 
   return (
-    <svg viewBox="0 0 220 220" className="mx-auto w-full max-w-[240px]" style={{ height }} aria-hidden>
+    <svg
+      viewBox="0 0 220 220"
+      className={className ?? 'mx-auto w-full max-w-[240px]'}
+      style={height ? { height } : undefined}
+      aria-hidden
+    >
       {levels.map((lv) => (
         <polygon
           key={lv}

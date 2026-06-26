@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createAdminClient } from '../aeo/supabase-admin.js'
 import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
-import { getStripe, stripeConfigured, GBP_ROADMAP_PRICE_CENTS, AEO_REPORT_CURRENCY } from '../aeo/stripe.js'
+import { getStripe, stripeConfigured, stripeNotConfiguredError, GBP_ROADMAP_PRICE_CENTS, AEO_REPORT_CURRENCY } from '../aeo/stripe.js'
 import { runGbpScan, topline, type GbpScanResult } from './scan.js'
+import { lookupBusinessCandidates } from './lookup.js'
 import { appendGbpLeadToSheet } from './sheets.js'
 import { generateAiRoadmap, type AiRoadmap } from './roadmap-ai.js'
 import { buildRoadmapPdf } from './pdf.js'
@@ -73,6 +74,42 @@ async function emailRoadmapOnce(
   }
 }
 
+export { lookupBusinessCandidates, type GbpBusinessCandidate } from './lookup.js'
+
+export async function handleGbpLookup(req: VercelRequest, res: VercelResponse) {
+  const body = (req.body ?? {}) as Record<string, unknown>
+  const allowed = await enforceSpamGuards(req, res, body, {
+    bucket: 'gbp-lookup',
+    maxPerIp: 20,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+  })
+  if (!allowed) return
+
+  const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
+  const city = typeof body.city === 'string' ? body.city.trim().slice(0, 80) : ''
+  const industry = typeof body.industry === 'string' ? body.industry.trim().slice(0, 80) : 'Local business'
+
+  if (!city) {
+    return res.status(400).json({ error: 'City is required — e.g. "Scarborough, ON".' })
+  }
+  if (!businessName) {
+    return res.status(400).json({ error: 'Enter your business name so we can find it on Google Maps.' })
+  }
+
+  const result = await lookupBusinessCandidates(businessName, city, industry)
+  if (!result.placesConfigured) {
+    return res.status(503).json({
+      error:
+        'Google Places lookup is not configured on this server. Set GOOGLE_PLACES_API_KEY in the environment (see .env.gbp.example).',
+      candidates: [],
+      placesConfigured: false,
+      reason: result.reason,
+    })
+  }
+  return res.status(200).json(result)
+}
+
 export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
   const allowed = await enforceSpamGuards(req, res, body, {
@@ -86,6 +123,8 @@ export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const city = typeof body.city === 'string' ? body.city.trim().slice(0, 80) : ''
   const industry = typeof body.industry === 'string' ? body.industry.trim().slice(0, 80) : 'Local business'
+  const placeId = typeof body.placeId === 'string' ? body.placeId.trim().slice(0, 200) : ''
+  const selectedName = typeof body.selectedName === 'string' ? body.selectedName.trim().slice(0, 160) : ''
 
   if (!city) {
     return res.status(400).json({ error: 'City is required — e.g. "Scarborough, ON".' })
@@ -98,25 +137,32 @@ export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
     return res.status(503).json({ error: 'Scanner is not configured yet. Please try again later.' })
   }
 
-  const cacheKey = `${businessName.toLowerCase()}|${city.toLowerCase()}|${industry.toLowerCase()}`
   const since = new Date(Date.now() - CACHE_HOURS * 60 * 60 * 1000).toISOString()
 
-  const { data: cached } = await supabase
+  const baseCacheQuery = supabase
     .from('gbp_scans')
     .select('id, result, created_at, business_name, city, industry')
-    .eq('business_name', businessName || '—')
     .eq('city', city)
     .eq('industry', industry)
     .gte('created_at', since)
     .order('created_at', { ascending: false })
     .limit(1)
-    .maybeSingle()
+
+  const { data: cached } = await (placeId
+    ? baseCacheQuery.eq('place_id', placeId)
+    : baseCacheQuery.eq('business_name', businessName || '—')
+  ).maybeSingle()
 
   if (cached) {
     return res.status(200).json(topline(cached.result as GbpScanResult, cached.id))
   }
 
-  const scan = await runGbpScan({ businessName, city, industry })
+  const scan = await runGbpScan({
+    businessName: selectedName || businessName,
+    city,
+    industry,
+    placeId: placeId || undefined,
+  })
   const { data: inserted, error } = await supabase
     .from('gbp_scans')
     .insert({
@@ -241,7 +287,7 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
 
 export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse) {
   if (!stripeConfigured()) {
-    return res.status(503).json({ error: 'Payments are not configured yet.' })
+    return res.status(503).json({ error: stripeNotConfiguredError() })
   }
 
   const body = (req.body ?? {}) as {
@@ -298,7 +344,7 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
             product_data: {
               name: `GBP Growth Roadmap — ${label}`,
               description:
-                'Custom AI growth plan: optimized categories and description, 4 ready-to-publish Google posts, 8 seeded Q&A pairs, review-request scripts, and a 90-day roadmap. Delivered as a downloadable and emailed PDF.',
+                'Top-1% operator GBP plan: category reverse-engineering from Map Pack leaders, review-SEO, keyword-rich services, reply templates, competitive integrity audit, geo-targeting, attributes/photos, authority signals, 90-day weekly plan, posts, Q&A, and 12-section PDF by email.',
             },
           },
         },

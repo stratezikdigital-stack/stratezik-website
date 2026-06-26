@@ -17,6 +17,12 @@ export function stripeConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY)
 }
 
+/** User-facing copy when checkout runs without STRIPE_SECRET_KEY. */
+export function stripeNotConfiguredError(): string {
+  if (process.env.VERCEL === '1') return 'Payments are not configured yet.'
+  return 'Stripe is not set up for local dev. Add STRIPE_SECRET_KEY (sk_test_…) to .env.local and restart npm run dev.'
+}
+
 // Prices in cents (CAD). Override via env.
 export const AEO_REPORT_PRICE_CENTS = Number(process.env.AEO_REPORT_PRICE_CENTS ?? '1000') // single page
 export const AEO_SITEMAP_PRICE_CENTS = Number(process.env.AEO_SITEMAP_PRICE_CENTS ?? '4900') // full-site audit

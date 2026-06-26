@@ -47,6 +47,25 @@ export function useFormProtection() {
     turnstileToken,
   })
 
+  /** Fetch a new timing token and wait until it passes server min-age checks. */
+  const fetchReadyFormToken = useCallback(async (): Promise<string> => {
+    const res = await fetch('/api/form-token')
+    if (!res.ok) throw new Error('Form expired. Refresh the page and try again.')
+    const data = (await res.json()) as { token?: string }
+    const token = data.token?.trim()
+    if (!token) throw new Error('Form expired. Refresh the page and try again.')
+
+    const ts = Number(token.split('.')[0])
+    if (Number.isFinite(ts)) {
+      const waitMs = 1100 - (Date.now() - ts)
+      if (waitMs > 0) await new Promise((r) => setTimeout(r, waitMs))
+    }
+
+    setFormToken(token)
+    setTokenError(false)
+    return token
+  }, [])
+
   const canSubmit =
     Boolean(formToken) && !tokenError && (!TURNSTILE_SITE_KEY || Boolean(turnstileToken))
 
@@ -59,6 +78,7 @@ export function useFormProtection() {
     setHoneypot,
     tokenError,
     refreshFormToken,
+    fetchReadyFormToken,
     resetTurnstile,
     spamPayload,
     turnstileRequired: Boolean(TURNSTILE_SITE_KEY),

@@ -332,6 +332,7 @@
     { "source": "/api/contact", "destination": "/api/aeo?action=contact" },
     { "source": "/api/growth-credit", "destination": "/api/aeo?action=growth-credit" },
     { "source": "/api/gbp-check", "destination": "/api/gbp?action=check" },
+    { "source": "/api/gbp-lookup", "destination": "/api/gbp?action=lookup" },
     { "source": "/api/gbp-lead", "destination": "/api/gbp?action=lead" },
     { "source": "/api/gbp-checkout", "destination": "/api/gbp?action=checkout" },
     { "source": "/api/gbp-unlock", "destination": "/api/gbp?action=unlock" },

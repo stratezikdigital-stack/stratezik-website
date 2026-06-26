@@ -80,6 +80,21 @@ A modern, responsive website built with React, TypeScript, and Tailwind CSS. Thi
 4. **Portfolio** - Project showcase and case studies
 5. **Contact** - Contact form and company details
 
+## GBP Local Visibility Scan (`/gbp-audit`)
+
+Free Map Pack audit with email-gated six-pillar breakdown. Paid **$29 CAD AI roadmap** delivers a top-1% operator plan:
+
+- Category reverse-engineering (leader primary + maxed additional categories)
+- Review-SEO (justification keywords, neighborhood seeding, photo asks, velocity)
+- Services build-out (keyword-rich list for "Provides" justifications)
+- Reply-SEO (5-star / mixed / negative owner-reply templates)
+- Competitive integrity audit (compliant redressal + what-not-to-do list)
+- Geo-targeting (block logic + priority neighborhoods)
+- Attributes, photo system, and authority signals (entity consistency, sameAs, local links, schema)
+- 90-day weekly plan, description, Google posts, Q&A — rendered on-page with copy buttons and as a 12-section PDF
+
+Backend: `server/gbp/` (`roadmap-ai.ts`, `scan.ts`, `pdf.ts`, `handlers.ts`). Requires `ANTHROPIC_API_KEY` for AI generation.
+
 ## 🚀 Deployment
 
 This website can be deployed to any modern hosting platform:

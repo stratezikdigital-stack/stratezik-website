@@ -2,21 +2,19 @@
  * Branded PDF for the paid GBP growth plan.
  *
  * Pure-JS (pdf-lib) so it runs in a Vercel serverless function with no headless
- * browser. The same buffer is emailed via Resend and streamed to the browser
- * for download. Layout is a simple top-down flow with automatic page breaks.
+ * browser. Renders all 12 operator sections plus a closing CTA.
  */
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from 'pdf-lib'
 import type { GbpScanResult } from './scan.js'
 import type { AiRoadmap } from './roadmap-ai.js'
 
-// Brand palette (matches the on-site results page).
 const CREAM = rgb(0.957, 0.945, 0.917)
 const INK = rgb(0.13, 0.12, 0.11)
 const INK_SOFT = rgb(0.4, 0.38, 0.35)
 const OXBLOOD = rgb(0.55, 0.18, 0.18)
 const HAIRLINE = rgb(0.82, 0.79, 0.74)
 
-const PAGE = { w: 595.28, h: 841.89 } // A4 portrait, points
+const PAGE = { w: 595.28, h: 841.89 }
 const MARGIN = 56
 const CONTENT_W = PAGE.w - MARGIN * 2
 
@@ -29,11 +27,6 @@ type Ctx = {
   display: PDFFont
 }
 
-/**
- * pdf-lib's standard fonts only encode WinAnsi. Normalize common smart
- * punctuation to ASCII and drop anything else (emoji, exotic symbols) so a
- * stray character in the AI copy can never crash PDF generation.
- */
 function clean(text: string): string {
   return text
     .replace(/[‘’‚′]/g, "'")
@@ -42,7 +35,6 @@ function clean(text: string): string {
     .replace(/…/g, '...')
     .replace(/ /g, ' ')
     .replace(/•/g, '-')
-    // Drop anything outside printable WinAnsi (e.g. emoji); keep tab + newline.
     // eslint-disable-next-line no-control-regex
     .replace(/[^\t\n\x20-\xFF]/g, '')
 }
@@ -136,7 +128,6 @@ function bullet(ctx: Ctx, text: string): void {
   ctx.y -= 2
 }
 
-/** A boxed "paste this" asset block. */
 function assetBox(ctx: Ctx, label: string, copy: string): void {
   const size = 10
   const lineH = size * 1.45
@@ -181,12 +172,11 @@ export async function buildRoadmapPdf(scan: GbpScanResult, roadmap: AiRoadmap): 
   const ctx: Ctx = { doc, page: null as unknown as PDFPage, y: 0, body, bodyBold, display }
   newPage(ctx)
 
-  // Cover header
   ctx.page.drawText('STRATEZIK', { x: MARGIN, y: ctx.y - 10, size: 9, font: bodyBold, color: OXBLOOD })
   ctx.y -= 30
   ctx.page.drawText('Google Business Profile', { x: MARGIN, y: ctx.y - 24, size: 24, font: display, color: INK })
   ctx.y -= 30
-  ctx.page.drawText('90-Day Growth Plan', { x: MARGIN, y: ctx.y - 24, size: 24, font: display, color: INK })
+  ctx.page.drawText('90-Day Operator Plan', { x: MARGIN, y: ctx.y - 24, size: 24, font: display, color: INK })
   ctx.y -= 38
   paragraph(ctx, `${scan.businessName} - ${scan.city}`, { font: bodyBold, size: 11, color: INK, gap: 2 })
   paragraph(
@@ -210,42 +200,95 @@ export async function buildRoadmapPdf(scan: GbpScanResult, roadmap: AiRoadmap): 
     ctx.y -= 4
   }
 
-  // 03 Reviews
-  sectionLabel(ctx, '03 - Reviews', 'Close the reputation gap')
+  // 03 Category reverse-engineering
+  sectionLabel(ctx, '03 - Categories', 'Reverse-engineer the Map Pack leader')
+  const cat = roadmap.categoryStrategy
+  if (cat.yourCurrentPrimary) {
+    paragraph(ctx, `Your current primary: ${cat.yourCurrentPrimary}`, { font: bodyBold, size: 10.5, color: INK, gap: 2 })
+  }
+  paragraph(ctx, `Leader primary: ${cat.leaderPrimary}`, { size: 10, gap: 2 })
+  paragraph(ctx, `Recommended primary: ${cat.recommendedPrimary}`, { font: bodyBold, size: 10.5, color: INK, gap: 2 })
+  paragraph(ctx, `Additional categories: ${cat.additionalCategories.join(', ')}`, { size: 10, gap: 6 })
+  paragraph(ctx, cat.rationale, { gap: 8 })
+
+  // 04 Review-SEO
+  sectionLabel(ctx, '04 - Review SEO', 'Keywords, photos, and velocity')
+  paragraph(ctx, `Justification keywords: ${roadmap.reviewSeo.justificationKeywords.join(', ')}`, { gap: 6 })
+  assetBox(ctx, 'Neighborhood seeding ask', roadmap.reviewSeo.neighborhoodSeedingAsk)
+  paragraph(ctx, 'Photo asks for customers:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const ask of roadmap.reviewSeo.photoAsks) bullet(ctx, ask)
+  const vp = roadmap.reviewSeo.velocityPacing
   paragraph(
     ctx,
-    `You have ${roadmap.reviewPlan.current} reviews. Target the next 90 days: ${roadmap.reviewPlan.ninetyDayTarget} (about ${roadmap.reviewPlan.perWeek} new reviews per week). ${roadmap.reviewPlan.note}`,
+    `You have ${vp.current} reviews. 90-day target: ${vp.ninetyDayTarget} (about ${vp.perWeek}/week). ${vp.note}`,
     { gap: 8 },
   )
-  assetBox(ctx, 'Text this after every completed job', roadmap.reviewRequest.sms)
-  assetBox(ctx, 'Or email this', roadmap.reviewRequest.email)
+  assetBox(ctx, 'Text after every job', roadmap.reviewSeo.reviewRequest.sms)
+  assetBox(ctx, 'Or email this', roadmap.reviewSeo.reviewRequest.email)
 
-  // 04 Profile copy
-  sectionLabel(ctx, '04 - Profile copy', 'Paste these in today')
-  paragraph(ctx, `Primary category: ${roadmap.recommendedCategories.primary}`, {
-    font: bodyBold,
-    size: 10.5,
-    color: INK,
-    gap: 2,
-  })
-  paragraph(ctx, `Backup categories: ${roadmap.recommendedCategories.secondary.join(', ')}`, { size: 10, gap: 8 })
-  assetBox(ctx, 'Your business description', roadmap.optimizedDescription)
+  // 05 Services build-out
+  sectionLabel(ctx, '05 - Services', 'Keyword-rich list for "Provides" justifications')
+  paragraph(ctx, roadmap.servicesBuildOut.providesJustificationNote, { gap: 6 })
+  for (const svc of roadmap.servicesBuildOut.services) {
+    ensure(ctx, 28)
+    paragraph(ctx, svc.name, { font: bodyBold, size: 10.5, color: INK, gap: 1 })
+    paragraph(ctx, svc.description, { size: 10, gap: 6 })
+  }
 
-  // 05 Posts
-  sectionLabel(ctx, '05 - Month one posts', 'Four posts, ready to publish')
+  // 06 Reply-SEO
+  sectionLabel(ctx, '06 - Reply SEO', 'Owner reply templates')
+  assetBox(ctx, '5-star review reply', roadmap.replySeo.fiveStar)
+  assetBox(ctx, 'Mixed review reply (3-4 stars)', roadmap.replySeo.mixed)
+  assetBox(ctx, 'Negative review reply (1-2 stars)', roadmap.replySeo.negative)
+
+  // 07 Profile copy
+  sectionLabel(ctx, '07 - Profile copy', 'Your business description')
+  assetBox(ctx, 'Paste into GBP description', roadmap.optimizedDescription)
+
+  // 08 Posts
+  sectionLabel(ctx, '08 - Month one posts', 'Four posts, ready to publish')
   for (const post of roadmap.googlePosts) {
     assetBox(ctx, `${post.week} - ${post.type}`, post.copy)
   }
 
-  // 06 Q&A
-  sectionLabel(ctx, '06 - Seed your Q&A', 'Questions to post and answer yourself')
+  // 09 Q&A
+  sectionLabel(ctx, '09 - Seed your Q&A', 'Questions to post and answer yourself')
   for (const qa of roadmap.qanda) {
     ensure(ctx, 32)
     paragraph(ctx, `Q. ${qa.question}`, { font: bodyBold, size: 10.5, color: INK, gap: 2 })
     paragraph(ctx, `A. ${qa.answer}`, { size: 10, gap: 8 })
   }
 
-  // Footer CTA
+  // 10 Competitive integrity
+  sectionLabel(ctx, '10 - Competitive integrity', 'Audit, redressal, and what not to do')
+  paragraph(ctx, 'Audit notes:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const note of roadmap.competitiveIntegrity.auditNotes) bullet(ctx, note)
+  paragraph(ctx, 'Compliant redressal steps:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const step of roadmap.competitiveIntegrity.redressalSteps) bullet(ctx, step)
+  paragraph(ctx, 'What NOT to do:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const item of roadmap.competitiveIntegrity.whatNotToDo) bullet(ctx, item)
+
+  // 11 Geo-targeting
+  sectionLabel(ctx, '11 - Geo-targeting', 'Block-by-block and neighborhood priority')
+  paragraph(ctx, roadmap.geoTargeting.blockLogic, { gap: 6 })
+  paragraph(ctx, `Priority neighborhoods: ${roadmap.geoTargeting.priorityNeighborhoods.join(', ')}`, { gap: 6 })
+  paragraph(ctx, roadmap.geoTargeting.serviceAreaNote, { gap: 8 })
+
+  // 12 Attributes, photos & authority
+  sectionLabel(ctx, '12 - Authority signals', 'Attributes, photos, entity consistency')
+  paragraph(ctx, 'Recommended attributes:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const attr of roadmap.attributesAndPhotos.recommendedAttributes) bullet(ctx, attr)
+  paragraph(ctx, 'Photo shot list:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const shot of roadmap.attributesAndPhotos.photoShotList) bullet(ctx, shot)
+  paragraph(ctx, roadmap.attributesAndPhotos.uploadCadence, { gap: 6 })
+  paragraph(ctx, 'Entity consistency:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const item of roadmap.authoritySignals.entityConsistency) bullet(ctx, item)
+  paragraph(ctx, 'sameAs profiles to link:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const link of roadmap.authoritySignals.sameAs) bullet(ctx, link)
+  paragraph(ctx, 'Local citation targets:', { font: bodyBold, size: 10, color: INK, gap: 2 })
+  for (const link of roadmap.authoritySignals.localLinks) bullet(ctx, link)
+  paragraph(ctx, roadmap.authoritySignals.schemaNote, { gap: 8 })
+
   sectionLabel(ctx, 'Next', 'Want this done for you?')
   paragraph(
     ctx,

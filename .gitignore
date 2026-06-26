@@ -48,3 +48,4 @@ coverage/
 *.mkv
 .vercel
 public/Content rendering at website.pdf
+.env*
