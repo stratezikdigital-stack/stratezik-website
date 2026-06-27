@@ -346,12 +346,14 @@ export async function generateAiRoadmap(scan: GbpScanResult): Promise<AiRoadmap 
   const userPrompt = `Here is the completed GBP audit for one business. Write the full top-1% operator growth plan as specified.\n\nAUDIT DATA:\n${buildScanFacts(scan)}`
 
   try {
+    // Use Sonnet 4.6 so generation fits inside the 60 s Vercel Fluid Compute limit.
+    // Sonnet outputs ~200 tok/s; 8 000 tokens ≈ 40 s + overhead, safely under 60 s.
+    // `effort` is a Fable 5-only field — rejected with a 400 on other models, so omit it.
     const message = await client.messages.create({
-      model: 'claude-opus-4-8',
-      max_tokens: 12000,
+      model: 'claude-sonnet-4-6',
+      max_tokens: 8000,
       output_config: {
-        effort: 'medium',
-        format: { type: 'json_schema', schema: ROADMAP_SCHEMA },
+        format: { type: 'json_schema', schema: ROADMAP_SCHEMA as { [key: string]: unknown } },
       },
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
@@ -362,14 +364,23 @@ export async function generateAiRoadmap(scan: GbpScanResult): Promise<AiRoadmap 
       return null
     }
 
+    if (message.stop_reason === 'max_tokens') {
+      console.error('[gbp/roadmap-ai] response truncated at max_tokens — output too long for budget')
+      return null
+    }
+
     const textBlock = message.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
     const text = textBlock?.text
-    if (!text) return null
+    if (!text) {
+      console.error('[gbp/roadmap-ai] no text block in response; blocks:', message.content.map((b) => b.type).join(', '))
+      return null
+    }
 
     const parsed = JSON.parse(text) as Omit<AiRoadmap, 'generatedAt' | 'model'>
     return { ...parsed, generatedAt: new Date().toISOString(), model: message.model }
   } catch (err) {
-    console.error('[gbp/roadmap-ai] generation failed:', err)
+    const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err)
+    console.error('[gbp/roadmap-ai] generation failed:', msg)
     return null
   }
 }
