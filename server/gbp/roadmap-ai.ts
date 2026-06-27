@@ -375,8 +375,15 @@ export async function generateAiRoadmap(scan: GbpScanResult): Promise<AiRoadmap 
       return null
     }
 
-    // Strip optional markdown fences the model might add despite instructions.
-    const jsonText = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim()
+    // Find the JSON object by its outermost braces — handles any preamble text,
+    // markdown fences, or trailing prose the model might add despite instructions.
+    const start = raw.indexOf('{')
+    const end = raw.lastIndexOf('}')
+    if (start === -1 || end <= start) {
+      console.error('[gbp/roadmap-ai] no JSON object in response; first 300 chars:', raw.slice(0, 300))
+      return null
+    }
+    const jsonText = raw.slice(start, end + 1)
 
     const parsed = JSON.parse(jsonText) as Omit<AiRoadmap, 'generatedAt' | 'model'>
     return { ...parsed, generatedAt: new Date().toISOString(), model: message.model }

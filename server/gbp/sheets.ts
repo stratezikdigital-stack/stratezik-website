@@ -11,10 +11,11 @@ export type GbpLeadSheetRow = {
 
 export async function appendGbpLeadToSheet(row: GbpLeadSheetRow): Promise<void> {
   const webhook =
+    process.env.GOOGLE_LEADS_WEBHOOK_URL?.trim() ||
     process.env.GOOGLE_GBP_LEADS_WEBHOOK_URL?.trim() ||
     process.env.GOOGLE_AEO_LEADS_WEBHOOK_URL?.trim()
   if (!webhook) {
-    console.warn('[gbp/sheets] GOOGLE_GBP_LEADS_WEBHOOK_URL not set — skipping sheet sync')
+    console.warn('[gbp/sheets] no sheet webhook configured — skipping sheet sync')
     return
   }
 
