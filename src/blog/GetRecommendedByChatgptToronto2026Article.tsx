@@ -1,216 +1,114 @@
-import { Link } from 'react-router-dom'
-import { BlogAuthorSignoff } from './BlogAuthorSignoff'
-import { BlogStratezikContactLink } from './BlogStratezikContactLink'
-import { getRecommendedByChatgptTorontoFaq } from './postFaqs'
+import { Markdown } from '../components/Markdown'
 
-const SLUG = 'get-recommended-by-chatgpt-toronto'
+const CONTACT_EMAIL = ['dave', '@', 'stratezik.com'].join('')
 
-const REF = {
-  adsStudy: '/blog/chatgpt-ads-toronto-industries',
-  aeoToronto: '/blog/answer-engine-optimisation-toronto',
-  recommendationPlaybook: '/blog/get-recommended-by-chatgpt-playbook',
-}
+const SOURCE_MARKDOWN = `# How to Get Your Toronto Business Recommended by ChatGPT (We Tested 90 Buying Questions)
+
+**The short version:**
+
+- We asked two AI assistants the exact questions a Toronto buyer asks before spending money. Things like "best dentist in Scarborough," "reliable plumber in downtown Toronto," and "best HVAC company in North York." Across 90 questions, the AI named a specific local business 89% of the time. This channel recommends real businesses, constantly, and most of them are independents rather than big chains.
+- The catch: the two assistants rarely agreed. For 51% of the questions, ChatGPT and Claude named completely different businesses. Being the name ChatGPT gives is no guarantee you are the name Claude or Perplexity gives.
+- Where the two engines did agree, it was almost always the dominant business in the category, the one with the deepest review history and the strongest "best of" presence.
+- You cannot buy your way into the answer itself, only into the ad slot beneath it. The recommendation is earned, and the signals that earn it are reviews, ratings, third-party roundups, and a site the AI can actually read.
+
+## Why we ran this
+
+We kept reading that AI search was going to reshape how customers find local businesses. Nobody was showing what the AI actually says. So we tested it.
+
+We wrote 90 buying questions a real customer in Toronto, Scarborough, North York, or Mississauga would type, across 18 industries, from dentists and HVAC to lawyers and movers. Then we ran the same 90 questions through two assistants: ChatGPT on its free tier, and Claude with live web search. For every answer we recorded what it named, whether the business was local, and how the AI justified the pick.
+
+This is the organic half of the study. We published a separate piece on who is paying for the ad slot beneath these answers, and the short version there is that almost nobody local is. This piece is about the answer itself, which is the part you cannot buy.
+
+## Finding 1: AI recommends local businesses far more often than people assume
+
+The fear is that AI search names only the giants. That is not what we found. Across 90 questions, ChatGPT gave a specific, named answer to 88 of them. Claude named at least one Toronto or GTA business in 80 of the 90, which is 89%.
+
+These were not all household names. The answers were full of genuine independents. For "where can I get gel nails done in Scarborough," ChatGPT named Liquid Nails Scarborough, Michell Le Nail, and Hella Nails N Pedi. For "reliable plumber in downtown Toronto," Claude named True Service Plumbing and Plumber To Your Door. For "best small business lawyer in Toronto," both named Jonathan Kleiman, a solo practitioner, ahead of any large firm.
+
+If you run a small local business and you have assumed AI search is only for the big players, that assumption is costing you. The AI is looking for a good local answer. The question is whether it finds you.
+
+## Finding 2: The two engines agreed only half the time
+
+Here is the result that surprised us most. We took every question where both assistants named a local business, then checked whether they named any of the same ones. They overlapped on 49% of questions. On the other 51%, ChatGPT and Claude named entirely different businesses.
+
+The plumber question is a clean example. ChatGPT named Mr. Rooter, Mister Plumber, and Absolute Draining and Plumbing. Claude named True Service Plumbing, Plumbers Direct, and Plumber To Your Door. Same city, same question, asked minutes apart, and not one business appeared on both lists.
+
+This matters more than any single ranking. There is no "the AI recommends us." Each engine builds its answer from different sources, and the answer shifts from one run to the next. A business owner who checks ChatGPT once, sees their name, and feels safe is reading one ticket in a much larger draw. The only durable position is to be recommendable enough that you keep surfacing across engines and across runs, not to win a single lottery.
+
+## Finding 3: Where the engines agreed, it was the category's clear leader
+
+The 49% where both engines did agree is just as instructive. The businesses they named in common were the dominant ones in their field. Jonathan Kleiman for small business law. BrainStation for tech education. Cornerstone Physiotherapy in North York. Imperial Heating and Cooling for furnace work. Bochner Eye Institute for eye care. Archer Dental for whitening.
+
+These are the businesses that have spent years building the thing AI looks for: a deep, consistent track record that shows up everywhere the AI checks. When two independent systems reach for the same name, it is usually because that name has the strongest evidence behind it. That is not luck, and it is not a trick. It is accumulation.
+
+## Finding 4: The AI told us why it picked each business
+
+We did not have to guess at the signals. The assistants explained their own reasoning, and the same words came up over and over.
+
+Reviews and star ratings appeared in the answers constantly. One plumber recommendation led with "a perfect 5.0-star rating from 696 reviews." Across the answers, review and star-rating language showed up dozens of times, and "best" or "top-rated" framing another 29 times. The assistants leaned on third-party roundups and directory listings, the "best dentist in Scarborough" style articles, to assemble their shortlists. And they favoured businesses whose location and service were stated plainly, so the match to the question was obvious.
+
+None of those signals are paid. All of them are earnable. That is the whole opportunity.
+
+## Finding 5: Sometimes AI names nobody, and that is an open door
+
+On two questions, ChatGPT declined to name anyone and gave a generic answer instead. "How do I incorporate a business in Ontario" returned a do-it-yourself explanation with no firm attached. "Who to call for a basement renovation in the GTA" returned general advice with no contractor.
+
+When the AI goes generic, the category has no obvious answer yet. For a business in that space, that is the easiest possible opening. You are not displacing an incumbent, because there isn't one. You are filling a blank the AI is actively trying to fill.
+
+## How to become the business AI names
+
+Pulling the findings together, here is the work, in the order it pays off.
+
+**Build the review record, because it is the signal AI reaches for first.** The businesses that got named had real review depth on Google and the platforms that matter for their category. This is slow and it is boring and it is the highest-return thing on this list. Ask every satisfied customer, make it easy, and keep at it.
+
+**Get into the roundups the AI reads.** The "best X in Toronto" articles, the local directories, the category-specific lists. The assistants assembled their shortlists from these. If you are not in them, you are invisible to the step where the AI builds its options.
+
+**State your location and service in plain language.** The businesses that got matched cleanly were the ones whose site and listings said exactly what they do and where, with no decoding required. "Furnace repair in downtown Toronto" should find a page that says furnace repair in downtown Toronto.
+
+**Make sure the AI can actually read your site.** This is the part most businesses miss. AI crawlers do not run JavaScript, so a site that only renders in a browser is blank to them. They look for structured data, an answer-first homepage, and a few other machine-readable signals. If those are missing, you can have the best reviews in the city and still not make the shortlist, because the AI cannot parse you.
+
+That last point is measurable, and we built a free tool for it. The Stratezik AEO Readiness Checker runs your site through the 20 checks AI assistants use to read and cite a website, gives you a score, and tells you exactly what to fix. It takes about a minute and does not ask for anything but your URL.
+
+**[Check your AEO score free](/aeo-checker)**
+
+## Frequently asked questions
+
+**How do I get my business recommended by ChatGPT?**
+Earn the signals AI looks for. Build a deep review record on Google and your category's main platforms, get listed in the "best of" roundups and directories the AI reads, state your location and service in plain language, and make sure your website is readable by AI crawlers, which do not run JavaScript. In our test, the businesses AI named consistently had all four.
+
+**Does ChatGPT recommend small local businesses or only big brands?**
+It recommends local independents far more than people expect. In our 90-question test, the answers were full of solo lawyers, neighbourhood nail salons, and independent plumbers, often ahead of national chains.
+
+**If I show up in ChatGPT, will I show up in other AI assistants too?**
+Not necessarily. In our test, ChatGPT and Claude named completely different businesses on 51% of questions. Each engine builds its answer from different sources, so you have to earn recommendability broadly rather than win one engine once.
+
+**Can I pay to appear in a ChatGPT answer?**
+No. You can buy the sponsored ad slot that appears beneath the answer, but the recommendation inside the answer is earned through the signals above. The two are separate.
+
+**Why can't AI find my business even though I rank on Google?**
+The most common reason is that your site renders only with JavaScript, which AI crawlers do not execute, so they see a blank page. Structured data and an answer-first homepage also matter. Our free AEO checker shows you which of these you are missing.
+
+## Methodology and limitations
+
+We tested 90 buying questions across 18 GTA industries, five per industry, written to mirror how a real local customer phrases a purchase-stage search. The full prompt set and both engines' results are available on request.
+
+The ChatGPT answers were recorded manually on the free tier on June 19, 2026. The Claude answers were generated with live web search and scored by script. To measure agreement between the engines, we checked whether the businesses one engine named also appeared in the other engine's answer for the same question, using normalized name matching, which is approximate by nature.
+
+This is a snapshot. AI answers change between runs, vary by user, and improve over time, so the specific names will not hold, but the pattern is the point: AI recommends local businesses often, the engines disagree frequently, and the businesses that win are the ones with the deepest earned signals. We will run this again and report what moves.
+
+## About Stratezik
+
+Stratezik is a Toronto marketing agency that runs on its own AI agent system. We help local businesses and startups get found and cited by AI search. Our paid media lead has managed more than $10 million in annual ad spend and is a Google Search Honours Award recipient.
+
+Want to know where your site stands? Run the free [AEO Readiness Checker](/aeo-checker), or reach us at [[CONTACT_EMAIL]].
+
+### Sources
+
+1. Stratezik Toronto AI Discovery study, June 2026: 90 high-intent GTA buyer questions across 18 industries, run through ChatGPT (free tier, manual, June 19, 2026) and Claude with web search. Dataset available on request.
+2. Stratezik AEO Readiness Checker and the 20-point test methodology: stratezik.com/aeo-checker.
+`
 
 export default function GetRecommendedByChatgptToronto2026Article() {
-  return (
-    <div className="max-w-[760px] mx-auto">
-      <p className="lead text-lg text-ink-700 leading-relaxed">
-        We tested 90 purchase-stage Toronto buying questions across two assistants and logged the local businesses each
-        engine named. The headline is simple: this channel already recommends real local operators constantly. The hard
-        part is consistency. ChatGPT and Claude disagreed on most query-level picks, so one lucky mention is not a
-        durable position.
-      </p>
-
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        This article is the organic recommendations cut of our broader Toronto AI discovery research. The paid ad-slot
-        findings live in our{' '}
-        <Link to={REF.adsStudy} className="text-oxblood underline underline-offset-2">
-          ChatGPT Ads Toronto industry report
-        </Link>
-        . If you want the technical implementation blueprint, see our{' '}
-        <Link to={REF.recommendationPlaybook} className="text-oxblood underline underline-offset-2">
-          2026 ChatGPT recommendation playbook
-        </Link>
-        .
-      </p>
-
-      <aside className="mt-12 p-6 md:p-8 border border-ink/10 bg-cream-50" aria-labelledby="chatgpt-toronto-answer">
-        <h2 id="chatgpt-toronto-answer" className="font-display text-xl md:text-2xl text-ink tracking-tight">
-          {getRecommendedByChatgptTorontoFaq[0].question}
-        </h2>
-        <p className="mt-4 text-ink-700 leading-relaxed">{getRecommendedByChatgptTorontoFaq[0].answer}</p>
-        <p className="mt-4 text-sm text-ink-600 leading-relaxed">
-          For Toronto and GTA operators, the immediate priority is visibility that survives engine switching. Build for
-          repeated recommendation across runs, not one screenshot win.
-        </p>
-      </aside>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Why we ran this test</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        Everyone says AI search matters now. Very few teams publish the underlying recommendation outputs from local
-        buyer questions. We wanted direct evidence founders can act on.
-      </p>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        We wrote 90 high-intent questions a real buyer in Toronto, Scarborough, North York, or Mississauga would ask
-        before spending money. Then we ran the identical set through ChatGPT (free tier, manual logging) and Claude
-        (web search enabled), and tagged what each response named.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Finding 1: AI recommends local businesses more often than most teams expect</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        Across 90 prompts, ChatGPT produced specific business recommendations on 88 queries. Claude named at least one
-        Toronto or GTA business on 80 of 90 queries. These were not only national chains. The outputs included local
-        clinics, independent trades, and solo professional practices.
-      </p>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        For operators, that means the channel is commercially live right now. Customers already ask assistants who to
-        hire. The recommendation surface is active whether your business is prepared for it or not.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Finding 2: engine disagreement is the real risk</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        In questions where both assistants named local businesses, overlap occurred on roughly half the queries. On the
-        other half, the engines named entirely different operators for the same city and intent.
-      </p>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        This is why &quot;we showed up once in ChatGPT&quot; is a weak KPI. A durable position is cross-engine
-        recommendability over repeated runs, not one assistant output captured one afternoon.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Finding 3: when they agree, they usually pick the category leader</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        The shared picks were usually businesses with the deepest evidence footprint: stronger review history, clearer
-        category authority, and broader third-party corroboration. That pattern suggests assistants converge where trust
-        signals are overwhelming, not where copy is merely polished.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Finding 4: assistants explain their choices</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        The justifications repeated the same signal groups: review volume, star ratings, category relevance, service
-        match to the question, and third-party list inclusion. Those are operationally useful because each can be
-        improved with deliberate weekly execution.
-      </p>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        If your team wants a quick machine-readability baseline before content changes, run the{' '}
-        <Link
-          to={`/aeo-checker?utm_source=blog-${SLUG}&utm_medium=inline`}
-          className="text-oxblood underline underline-offset-2"
-        >
-          AEO Readiness Checker
-        </Link>{' '}
-        and fix blockers first.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">How to become recommendable in practice</h2>
-      <h3 className="mt-10 font-display text-2xl text-ink tracking-tight">1) Build review depth and response discipline</h3>
-      <p className="mt-4 text-ink-700 leading-relaxed">
-        Review velocity and quality still carry disproportionate weight in local recommendation outputs. Ask every
-        satisfied customer, keep prompts simple, and maintain reply consistency so recency and engagement signals do not
-        stall.
-      </p>
-
-      <h3 className="mt-12 font-display text-2xl text-ink tracking-tight">2) Earn corroboration in credible roundups and directories</h3>
-      <p className="mt-4 text-ink-700 leading-relaxed">
-        Assistants frequently synthesize from &quot;best of&quot; pages and category directories. If you are absent from
-        those sources, the model has less independent evidence to attach your brand to purchase intent.
-      </p>
-
-      <h3 className="mt-12 font-display text-2xl text-ink tracking-tight">3) State service + location in plain language</h3>
-      <p className="mt-4 text-ink-700 leading-relaxed">
-        Avoid vague hero copy. A buyer asking for furnace repair downtown should map to a page that explicitly says what
-        service you provide, where, and what constraint you solve. This is basic SEO hygiene and also core AEO
-        extractability.
-      </p>
-
-      <h3 className="mt-12 font-display text-2xl text-ink tracking-tight">4) Keep key facts in initial HTML</h3>
-      <p className="mt-4 text-ink-700 leading-relaxed">
-        Many AI fetchers do not execute full client-side JavaScript. Put cite-worthy statements, FAQs, and core service
-        facts in prerendered HTML, then mirror them with truthful schema. Our{' '}
-        <Link to={REF.aeoToronto} className="text-oxblood underline underline-offset-2">
-          Toronto AEO explainer
-        </Link>{' '}
-        covers the technical baseline.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Toronto and GTA operators: where to focus first</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        Start with your highest-margin service page and your most commercially relevant neighbourhood. Tighten service
-        intent copy, reinforce entity consistency with Google Business Profile, and refresh review acquisition
-        infrastructure. Then expand to adjacent services once the first page starts appearing in recommendation audits.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">Methodology and limits</h2>
-      <p className="mt-6 text-ink-700 leading-relaxed">
-        This study reflects a June 2026 snapshot. Outputs vary by model updates, user context, and retrieval changes.
-        Agreement checks used normalized business-name matching, which is approximate by nature. The value is directional:
-        local recommendations are common, but they are unstable across engines unless your evidence footprint is strong.
-      </p>
-
-      <h2 className="mt-16 font-display text-display-3 text-ink">What to do next this week</h2>
-      <ol className="mt-6 list-decimal pl-6 space-y-3 text-ink-700 leading-relaxed">
-        <li>Run your top 15 buying prompts in ChatGPT and Claude, then log who gets named.</li>
-        <li>Fix one service page so its opening answers the purchase intent directly.</li>
-        <li>Add one quarter of review request automation and owner-reply standards.</li>
-        <li>Patch schema and no-JS readability gaps surfaced by your technical check.</li>
-        <li>
-          If you also want paid control under AI answers, use our{' '}
-          <Link
-            to={`/chatgpt-ads-cheat-sheet?utm_source=blog-${SLUG}&utm_medium=inline`}
-            className="text-oxblood underline underline-offset-2"
-          >
-            ChatGPT Ads Cheat Sheet
-          </Link>
-          .
-        </li>
-      </ol>
-
-      <p className="mt-8 text-ink-700 leading-relaxed">
-        Need operator-level help implementing this stack across SEO, AEO, and paid discovery? Use the{' '}
-        <BlogStratezikContactLink className="text-oxblood underline underline-offset-2">
-          contact form
-        </BlogStratezikContactLink>{' '}
-        and we can review your prompt list and recommendation gaps together.
-      </p>
-
-      <BlogAuthorSignoff />
-
-      <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="chatgpt-toronto-faq-heading">
-        <h2 id="chatgpt-toronto-faq-heading" className="font-display text-display-3 text-ink">
-          FAQ
-        </h2>
-        <dl className="mt-8 space-y-10">
-          {getRecommendedByChatgptTorontoFaq.slice(1).map((item) => (
-            <div key={item.question}>
-              <dt className="font-display text-xl md:text-2xl text-ink tracking-tight">{item.question}</dt>
-              <dd className="mt-4 text-ink-700 leading-relaxed">{item.answer}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="mt-16 pt-10 border-t border-ink/10" aria-labelledby="chatgpt-toronto-sources-heading">
-        <h2 id="chatgpt-toronto-sources-heading" className="font-display text-xl text-ink">
-          Sources
-        </h2>
-        <ol className="mt-4 space-y-2 text-sm text-ink-700 leading-relaxed list-decimal pl-5">
-          <li>
-            Stratezik Toronto AI Discovery dataset, June 2026. 90 high-intent GTA buying questions across 18 industries
-            run through ChatGPT (manual log) and Claude (web search).
-          </li>
-          <li>
-            <Link to={REF.adsStudy} className="text-oxblood underline underline-offset-2">
-              Companion paid placement analysis
-            </Link>{' '}
-            for the same query set and local categories.
-          </li>
-          <li>
-            <Link to={REF.recommendationPlaybook} className="text-oxblood underline underline-offset-2">
-              Detailed implementation playbook
-            </Link>{' '}
-            on schema, corroboration, and recommendation monitoring.
-          </li>
-        </ol>
-      </section>
-    </div>
-  )
+  const content = SOURCE_MARKDOWN.replace('[[CONTACT_EMAIL]]', CONTACT_EMAIL)
+  return <Markdown content={content} />
 }

@@ -165,29 +165,29 @@ export const chatgptRecommendationPlaybookFaq = [
 
 export const getRecommendedByChatgptTorontoFaq = [
   {
-    question: 'How do I get my Toronto business recommended by ChatGPT?',
+    question: 'How do I get my business recommended by ChatGPT?',
     answer:
-      'Earn the signals AI assistants reuse: deep review history on Google and category platforms, consistent inclusion in credible third-party roundups, location and service clarity in plain language, and a website that is readable in raw HTML without JavaScript rendering.',
+      'Earn the signals AI looks for. Build a deep review record on Google and your category\'s main platforms, get listed in the "best of" roundups and directories the AI reads, state your location and service in plain language, and make sure your website is readable by AI crawlers, which do not run JavaScript. In our test, the businesses AI named consistently had all four.',
   },
   {
     question: 'Do AI assistants recommend small local businesses or only large brands?',
     answer:
-      'They recommend local independents often. In our Toronto study of 90 buying questions, ChatGPT and Claude both named local businesses in most queries, including solo lawyers, neighbourhood salons, and independent trades.',
+      'It recommends local independents far more than people expect. In our 90-question test, the answers were full of solo lawyers, neighbourhood nail salons, and independent plumbers, often ahead of national chains.',
   },
   {
     question: 'If I show up in ChatGPT, will I also show up in Claude or Perplexity?',
     answer:
-      'Not reliably. In our dataset, ChatGPT and Claude named different businesses on about half of overlapping local queries, so visibility has to be built across engines, not treated as a single ranking.',
+      'Not necessarily. In our test, ChatGPT and Claude named completely different businesses on 51% of questions. Each engine builds its answer from different sources, so you have to earn recommendability broadly rather than win one engine once.',
   },
   {
     question: 'Can I pay to be recommended inside a ChatGPT answer?',
     answer:
-      'No. You can buy sponsored placement beneath the answer, but the organic recommendation itself is earned through corroborated relevance, reputation, and crawlable source quality.',
+      'No. You can buy the sponsored ad slot that appears beneath the answer, but the recommendation inside the answer is earned through the signals above. The two are separate.',
   },
   {
     question: 'Why does AI miss my business even when I rank in Google?',
     answer:
-      'A common reason is technical readability. If key service content only appears after client-side JavaScript, many AI fetchers cannot parse it. Structured data, answer-first copy, and machine-readable HTML improve recommendation odds.',
+      'The most common reason is that your site renders only with JavaScript, which AI crawlers do not execute, so they see a blank page. Structured data and an answer-first homepage also matter. Our free AEO checker shows you which of these you are missing.',
   },
 ]
 

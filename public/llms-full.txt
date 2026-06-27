@@ -168,11 +168,11 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
 - Published: 2026-05-25
 - Updated: 2026-06-17
 
-### How to Get Your Toronto Business Recommended by ChatGPT (90 Buying Questions Tested)
+### How to Get Your Toronto Business Recommended by ChatGPT (We Tested 90 Buying Questions)
 - URL: https://www.stratezik.com/blog/get-recommended-by-chatgpt-toronto
-- Summary: We tested 90 Toronto buying questions across ChatGPT and Claude. AI names local businesses often, but engine agreement is low. The practical playbook to become recommendable across both.
-- Published: 2026-06-27
-- Updated: 2026-06-27
+- Summary: Two AI assistants, 90 Toronto buying questions. They named a local business 89% of the time but agreed only half the time. How to be the one they pick.
+- Published: 2026-07-03
+- Updated: 2026-07-03
 
 ### How to Get Your Business Recommended by ChatGPT (2026 Playbook)
 - URL: https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook
