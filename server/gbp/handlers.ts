@@ -421,18 +421,14 @@ export async function handleGbpUnlock(req: VercelRequest, res: VercelResponse) {
     })
   }
 
+  // Return immediately — AI generation takes ~40 s and would hold the user on the
+  // unlock screen. The client polls /api/gbp-restore which handles generation + email.
   const scan = scanRow.result as GbpScanResult
-  const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
-  // Email the PDF (await so it completes before the serverless function exits).
-  if (aiRoadmap && email) {
-    await emailRoadmapOnce(supabase, scanRow.id, email, scan, aiRoadmap)
-  }
-
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),
     pillars: scan.pillars,
-    aiRoadmap,
+    aiRoadmap: null,
   })
 }
 
@@ -443,13 +439,14 @@ export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) 
   if (!scanId) return res.status(400).json({ error: 'Missing scan id.' })
 
   const supabase = createAdminClient()
-  const { data: paid } = await supabase
+  const { data: paidMeta } = await supabase
     .from('gbp_paid_roadmaps')
-    .select('id')
+    .select('id, email, email_sent_at')
     .eq('scan_id', scanId)
+    .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-  if (!paid) {
+  if (!paidMeta) {
     return res.status(404).json({ error: 'No paid roadmap found for this scan.' })
   }
 
@@ -462,6 +459,12 @@ export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) 
 
   const scan = scanRow.result as GbpScanResult
   const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
+
+  // Email the PDF on the first restore call that returns a roadmap.
+  if (aiRoadmap && paidMeta.email && !paidMeta.email_sent_at) {
+    await emailRoadmapOnce(supabase, scanRow.id, paidMeta.email, scan, aiRoadmap)
+  }
+
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),
