@@ -1,0 +1,26 @@
+---
+description: Preserve writer-supplied blog body text verbatim during publish tasks
+alwaysApply: true
+---
+
+# Writer Copy Is Immutable on Blog Publish
+
+When a user provides blog draft copy and asks to publish it, treat the supplied body text as immutable.
+
+## Non-negotiable
+
+- Do not rewrite, summarize, condense, reorder, or "optimize" article body copy.
+- Do not change headings, numbers, named businesses, quotes, or punctuation in the body.
+- Keep paragraph order and section structure exactly as supplied.
+
+## Allowed edits (technical publishing only)
+
+- Frontmatter-equivalent metadata (`postsMeta.ts`): slug, title, description, dates, keywords, author slug.
+- Registry wiring: `postLoaders.ts`, `postFaqs.ts`, share image mapping, related metadata files.
+- SEO/AEO technical implementation: schema wiring, canonical/meta generation via existing system, sitemap/llms artifacts from build.
+- Build/prerender/release-gate fixes that do not alter supplied body text.
+
+## If a change seems required
+
+- If a technical constraint appears to require touching body copy, stop and ask the user before changing any copy.
+- Prefer implementation workarounds that preserve the exact source text.

@@ -1,4 +1,6 @@
-import { Markdown } from '../components/Markdown'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { Link } from 'react-router-dom'
 
 const CONTACT_EMAIL = ['dave', '@', 'stratezik.com'].join('')
 
@@ -110,5 +112,54 @@ Want to know where your site stands? Run the free [AEO Readiness Checker](/aeo-c
 
 export default function GetRecommendedByChatgptToronto2026Article() {
   const content = SOURCE_MARKDOWN.replace('[[CONTACT_EMAIL]]', CONTACT_EMAIL)
-  return <Markdown content={content} />
+    // BlogPostPage already renders the article title as the only H1.
+    .replace(/^# .+\n\n/, '')
+    // Keep supplied text, normalize FAQ spacing for readable blocks.
+    .replace(/\*\*(.+?\?)\*\*\n(?!\n)/g, '**$1**\n\n')
+
+  return (
+    <div className="max-w-[760px] mx-auto">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          h1: () => null,
+          h2: ({ children }) => (
+            <h2 className="mt-16 font-display text-display-3 text-ink leading-tight tracking-[-0.02em]">
+              {children}
+            </h2>
+          ),
+          h3: ({ children }) => <h3 className="mt-12 font-display text-2xl text-ink tracking-tight">{children}</h3>,
+          p: ({ children }) => <p className="mt-6 text-ink-700 leading-relaxed">{children}</p>,
+          ul: ({ children }) => <ul className="mt-6 space-y-3 list-disc pl-5 text-ink-700 leading-relaxed">{children}</ul>,
+          ol: ({ children }) => (
+            <ol className="mt-6 space-y-3 list-decimal pl-6 text-ink-700 leading-relaxed">{children}</ol>
+          ),
+          li: ({ children }) => <li>{children}</li>,
+          strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
+          a: ({ href, children }) => {
+            const target = href ?? ''
+            if (target.startsWith('http')) {
+              return (
+                <a
+                  href={target}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-oxblood underline underline-offset-2 hover:text-ink transition-colors"
+                >
+                  {children}
+                </a>
+              )
+            }
+            return (
+              <Link to={target} className="text-oxblood underline underline-offset-2 hover:text-ink transition-colors">
+                {children}
+              </Link>
+            )
+          },
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  )
 }
