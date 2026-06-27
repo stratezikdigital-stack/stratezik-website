@@ -7,6 +7,7 @@ const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
   'get-found-2026-ai-search-visibility': '/services/seo-aeo.webp',
   'get-found-2026-content-strategy': '/services/social-media-marketing.webp',
   'get-found-2026-paid-performance': '/services/paid-search.webp',
+  'get-recommended-by-chatgpt-toronto': '/branding/blog-og-chatgpt-recommendations.png',
   'get-recommended-by-chatgpt-playbook': '/branding/blog-og-chatgpt-recommendations.png',
   'chatgpt-ads-2026-guide': '/branding/blog-og-chatgpt-ads.png',
   'chatgpt-ads-toronto-industries': '/branding/blog-og-chatgpt-ads.png',

@@ -3,6 +3,7 @@ import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
   chatgptAdsTorontoIndustriesFaq,
+  getRecommendedByChatgptTorontoFaq,
   chatgptRecommendationPlaybookFaq,
   scarboroughAgencyTriggersFaq,
   gtaAgencyTriggersScenariosFaq,
@@ -234,6 +235,25 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
       'Toronto performance marketing',
     ],
     faqEntities: getFound2026Part5PaidFaq,
+  },
+  {
+    slug: 'get-recommended-by-chatgpt-toronto',
+    title: 'How to Get Your Toronto Business Recommended by ChatGPT (90 Buying Questions Tested)',
+    description:
+      'We tested 90 Toronto buying questions across ChatGPT and Claude. AI names local businesses often, but engine agreement is low. The practical playbook to become recommendable across both.',
+    datePublished: '2026-06-27',
+    dateModified: '2026-06-27',
+    authorSlug: 'shah-md-rifat',
+    keywords: [
+      'get recommended by ChatGPT',
+      'how to show up in ChatGPT',
+      'AI search local business Toronto',
+      'answer engine optimisation Toronto',
+      'get my business recommended by AI',
+      'ChatGPT local recommendations',
+      'Toronto AEO playbook',
+    ],
+    faqEntities: getRecommendedByChatgptTorontoFaq,
   },
   {
     slug: 'get-recommended-by-chatgpt-playbook',

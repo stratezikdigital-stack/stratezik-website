@@ -163,6 +163,34 @@ export const chatgptRecommendationPlaybookFaq = [
   },
 ]
 
+export const getRecommendedByChatgptTorontoFaq = [
+  {
+    question: 'How do I get my Toronto business recommended by ChatGPT?',
+    answer:
+      'Earn the signals AI assistants reuse: deep review history on Google and category platforms, consistent inclusion in credible third-party roundups, location and service clarity in plain language, and a website that is readable in raw HTML without JavaScript rendering.',
+  },
+  {
+    question: 'Do AI assistants recommend small local businesses or only large brands?',
+    answer:
+      'They recommend local independents often. In our Toronto study of 90 buying questions, ChatGPT and Claude both named local businesses in most queries, including solo lawyers, neighbourhood salons, and independent trades.',
+  },
+  {
+    question: 'If I show up in ChatGPT, will I also show up in Claude or Perplexity?',
+    answer:
+      'Not reliably. In our dataset, ChatGPT and Claude named different businesses on about half of overlapping local queries, so visibility has to be built across engines, not treated as a single ranking.',
+  },
+  {
+    question: 'Can I pay to be recommended inside a ChatGPT answer?',
+    answer:
+      'No. You can buy sponsored placement beneath the answer, but the organic recommendation itself is earned through corroborated relevance, reputation, and crawlable source quality.',
+  },
+  {
+    question: 'Why does AI miss my business even when I rank in Google?',
+    answer:
+      'A common reason is technical readability. If key service content only appears after client-side JavaScript, many AI fetchers cannot parse it. Structured data, answer-first copy, and machine-readable HTML improve recommendation odds.',
+  },
+]
+
 export const scarboroughAgencyTriggersFaq = [
   {
     question: 'When should a Scarborough or GTA small business hire a digital marketing agency?',

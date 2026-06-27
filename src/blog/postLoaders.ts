@@ -16,6 +16,7 @@ const postLoaders: Record<string, ArticleLoader> = {
   'get-found-2026-ai-search-visibility': () => import('./GetFound2026Part3AiArticle'),
   'get-found-2026-content-strategy': () => import('./GetFound2026Part4ContentArticle'),
   'get-found-2026-paid-performance': () => import('./GetFound2026Part5PaidArticle'),
+  'get-recommended-by-chatgpt-toronto': () => import('./GetRecommendedByChatgptToronto2026Article'),
   'get-recommended-by-chatgpt-playbook': () => import('./GetRecommendedByChatGPTPlaybookArticle'),
   'chatgpt-ads-toronto-industries': () => import('./ChatGPTAdsTorontoIndustriesArticle'),
   'chatgpt-ads-2026-guide': () => import('./ChatGPTAdsGuideArticle'),
