@@ -290,7 +290,10 @@ DELIVER ALL SECTIONS:
 
 12. googlePosts: exactly 4 ready-to-publish posts (week + type + copy).
 
-13. qanda: exactly 8 seeded Q&A pairs.`
+13. qanda: exactly 8 seeded Q&A pairs.
+
+OUTPUT FORMAT:
+Respond with ONLY a valid JSON object — no markdown fences, no explanation text before or after. The object must have exactly these top-level keys: summary, competitorInsight, weeklyPlan, categoryStrategy, reviewSeo, servicesBuildOut, replySeo, competitiveIntegrity, geoTargeting, attributesAndPhotos, authoritySignals, optimizedDescription, googlePosts, qanda.`
 
 function buildScanFacts(scan: GbpScanResult): string {
   const competitors = scan.winners.map((w) => ({
@@ -346,15 +349,11 @@ export async function generateAiRoadmap(scan: GbpScanResult): Promise<AiRoadmap 
   const userPrompt = `Here is the completed GBP audit for one business. Write the full top-1% operator growth plan as specified.\n\nAUDIT DATA:\n${buildScanFacts(scan)}`
 
   try {
-    // Use Sonnet 4.6 so generation fits inside the 60 s Vercel Fluid Compute limit.
-    // Sonnet outputs ~200 tok/s; 8 000 tokens ≈ 40 s + overhead, safely under 60 s.
-    // `effort` is a Fable 5-only field — rejected with a 400 on other models, so omit it.
+    // Sonnet 4.6 at ~200 tok/s: 8 000 tokens ≈ 40 s, well inside the 60 s Vercel limit.
+    // Plain prompt-based JSON is more reliable than output_config.format (API feature-flag risk).
     const message = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 8000,
-      output_config: {
-        format: { type: 'json_schema', schema: ROADMAP_SCHEMA as { [key: string]: unknown } },
-      },
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
     })
@@ -370,13 +369,16 @@ export async function generateAiRoadmap(scan: GbpScanResult): Promise<AiRoadmap 
     }
 
     const textBlock = message.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
-    const text = textBlock?.text
-    if (!text) {
+    const raw = textBlock?.text
+    if (!raw) {
       console.error('[gbp/roadmap-ai] no text block in response; blocks:', message.content.map((b) => b.type).join(', '))
       return null
     }
 
-    const parsed = JSON.parse(text) as Omit<AiRoadmap, 'generatedAt' | 'model'>
+    // Strip optional markdown fences the model might add despite instructions.
+    const jsonText = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim()
+
+    const parsed = JSON.parse(jsonText) as Omit<AiRoadmap, 'generatedAt' | 'model'>
     return { ...parsed, generatedAt: new Date().toISOString(), model: message.model }
   } catch (err) {
     const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err)
