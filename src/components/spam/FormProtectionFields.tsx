@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 
 type FormProtectionFieldsProps = {
   turnstileSiteKey: string
@@ -30,6 +30,28 @@ export function FormProtectionFields({
 }: FormProtectionFieldsProps) {
   const turnstileSlotRef = useRef<HTMLDivElement>(null)
   const [activateTurnstile, setActivateTurnstile] = useState(false)
+  // Force a fresh widget mount when Cloudflare reports a failed challenge.
+  const [recoverKey, setRecoverKey] = useState(0)
+  const errorAttempts = useRef(0)
+  const [hardFailed, setHardFailed] = useState(false)
+
+  const handleTurnstileError = useCallback(() => {
+    // Drop any stale token so the form stays gated until a fresh pass.
+    onTurnstileExpire?.()
+    if (errorAttempts.current >= 3) {
+      setHardFailed(true)
+      return
+    }
+    errorAttempts.current += 1
+    // Remount the widget after a short beat to clear the failed state.
+    window.setTimeout(() => setRecoverKey((k) => k + 1), 1500)
+  }, [onTurnstileExpire])
+
+  const retryTurnstile = useCallback(() => {
+    errorAttempts.current = 0
+    setHardFailed(false)
+    setRecoverKey((k) => k + 1)
+  }, [])
 
   useEffect(() => {
     if (!turnstileSiteKey || activateTurnstile) return
@@ -76,15 +98,24 @@ export function FormProtectionFields({
       </div>
 
       {turnstileSiteKey ? (
-        <div ref={turnstileSlotRef} className="mt-4 flex justify-start min-h-[65px]">
-          {activateTurnstile ? (
+        <div ref={turnstileSlotRef} className="mt-4 flex flex-col items-start gap-2 min-h-[65px]">
+          {hardFailed ? (
+            <div className="text-sm text-oxblood">
+              Security check failed to load.{' '}
+              <button type="button" className="underline underline-offset-2" onClick={retryTurnstile}>
+                Try again
+              </button>
+              .
+            </div>
+          ) : activateTurnstile ? (
             <Suspense fallback={<div className="h-[65px] w-[300px] bg-cream-50 border border-ink/10" aria-hidden />}>
               <LazyTurnstile
-                key={turnstileResetKey}
+                key={`${turnstileResetKey}-${recoverKey}`}
                 siteKey={turnstileSiteKey}
                 onSuccess={onTurnstileSuccess}
                 onExpire={() => onTurnstileExpire?.()}
-                options={{ theme: 'light', size: 'normal' }}
+                onError={handleTurnstileError}
+                options={{ theme: 'light', size: 'normal', retry: 'auto', retryInterval: 2000 }}
               />
             </Suspense>
           ) : null}

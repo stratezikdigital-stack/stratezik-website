@@ -181,7 +181,9 @@ type GbpAuditLandingProps = {
   onScan: () => void
 }
 
-function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inline' }) {
+function ScanFormCard(
+  props: GbpAuditLandingProps & { variant?: 'stacked' | 'inline'; renderTurnstile?: boolean },
+) {
   const {
     cardClass,
     inputClass,
@@ -203,7 +205,12 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
     onHoneypotChange,
     onScan,
     variant = 'stacked',
+    renderTurnstile = true,
   } = props
+
+  // Only one Turnstile widget may be live per page; duplicate widgets sharing a
+  // sitekey trigger "Verification failed". Secondary forms reuse the hero token.
+  const needsCheckElsewhere = Boolean(turnstileSiteKey) && !renderTurnstile && !canSubmit
 
   const chipRow = (
     <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
@@ -255,13 +262,21 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
         <div className="mt-2">{chipRow}</div>
         {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <FormProtectionFields
-            turnstileSiteKey={turnstileSiteKey ?? ''}
-            onTurnstileSuccess={onTurnstileSuccess}
-            onTurnstileExpire={onTurnstileExpire}
-            honeypotValue={honeypot}
-            onHoneypotChange={onHoneypotChange}
-          />
+          {renderTurnstile ? (
+            <FormProtectionFields
+              turnstileSiteKey={turnstileSiteKey ?? ''}
+              onTurnstileSuccess={onTurnstileSuccess}
+              onTurnstileExpire={onTurnstileExpire}
+              honeypotValue={honeypot}
+              onHoneypotChange={onHoneypotChange}
+            />
+          ) : needsCheckElsewhere ? (
+            <p className="text-xs text-ink-500 sm:max-w-[260px]">
+              Complete the quick security check in the form at the top of the page to enable your scan.
+            </p>
+          ) : (
+            <span />
+          )}
           <button
             type="button"
             className={`${btnPrimary} sm:w-auto sm:min-w-[200px] sm:shrink-0`}
@@ -302,13 +317,19 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
       />
       <div className="mt-2">{chipRow}</div>
       {error ? <p className="mt-3 text-sm text-oxblood">{error}</p> : null}
-      <FormProtectionFields
-        turnstileSiteKey={turnstileSiteKey ?? ''}
-        onTurnstileSuccess={onTurnstileSuccess}
-        onTurnstileExpire={onTurnstileExpire}
-        honeypotValue={honeypot}
-        onHoneypotChange={onHoneypotChange}
-      />
+      {renderTurnstile ? (
+        <FormProtectionFields
+          turnstileSiteKey={turnstileSiteKey ?? ''}
+          onTurnstileSuccess={onTurnstileSuccess}
+          onTurnstileExpire={onTurnstileExpire}
+          honeypotValue={honeypot}
+          onHoneypotChange={onHoneypotChange}
+        />
+      ) : needsCheckElsewhere ? (
+        <p className="mt-4 text-xs text-ink-500">
+          Complete the quick security check in the form at the top of the page to enable your scan.
+        </p>
+      ) : null}
       <button type="button" className={`${btnPrimary} mt-4`} disabled={!canSubmit} onClick={onScan}>
         Run my free scan →
       </button>
@@ -536,7 +557,7 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
           for your website.
         </p>
         <div className="mt-8 max-w-4xl mx-auto">
-          <ScanFormCard {...props} variant="inline" />
+          <ScanFormCard {...props} variant="inline" renderTurnstile={false} />
         </div>
       </section>
     </div>
