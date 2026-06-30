@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { FormProtectionFields } from '../spam/FormProtectionFields'
 import { resolveIndustry } from '../../gbp/industryEngine'
 import {
   GbpBenchmarkBar,
@@ -19,7 +20,7 @@ const KPI_STRIP = [
   { label: 'Pillars scored', value: '6', sub: 'Weighted visibility model' },
   { label: 'Competitors mapped', value: '3+', sub: 'Map Pack holders' },
   { label: 'Copy-paste fixes', value: '3', sub: 'Ready for your GBP' },
-  { label: 'Scan time', value: '~30s', sub: 'Live Maps lookup' },
+  { label: 'Scan time', value: '~60s', sub: 'Instant topline results' },
 ]
 
 const REPORT_WALKTHROUGH = [
@@ -50,7 +51,7 @@ const REPORT_WALKTHROUGH = [
   {
     tag: '05 · Fixes',
     title: 'Three copy-paste actions',
-    body: 'All three fixes, pillar charts, and competitor gaps unlock as soon as you submit the first form with email.',
+    body: 'Fix #1 unlocks immediately. Fixes #2 and #3 — full description rewrites, review scripts, category guidance — arrive when you unlock by email.',
     visual: 'fixes' as const,
   },
 ]
@@ -68,14 +69,20 @@ const UNLOCK_TIERS = [
   {
     tier: 'Instant',
     price: 'Free',
-    items: ['Visibility score & Map Pack rank', 'All 3 fixes with copy buttons', 'Six-pillar radar + competitor gaps', 'Industry roadmap outline'],
+    items: ['Visibility score & grade', 'Map Pack rank + top 3 names', 'Fix #1 with copy button', 'Money-line estimate'],
     locked: [] as string[],
   },
   {
-    tier: 'AI operator plan',
+    tier: 'Full report',
+    price: 'Free · email',
+    items: ['Six-pillar radar + bar charts', 'Competitor gap visualization', 'Fixes #2 & #3 — full copy', 'Report copy in your inbox'],
+    locked: ['Requires email only — no account'],
+  },
+  {
+    tier: 'AI roadmap',
     price: '$29',
-    items: ['12-section bespoke plan from your audit', 'Category reverse-engineering + services', 'Review-SEO, replies, geo-targeting', 'PDF delivered to inbox'],
-    locked: ['Preview visible before you buy'],
+    items: ['90-day weekly action plan', 'Google Posts + Q&A drafts', 'Optimized description + categories', 'PDF delivered to inbox'],
+    locked: ['After full report unlock'],
   },
 ]
 
@@ -159,69 +166,19 @@ type GbpAuditLandingProps = {
   biz: string
   city: string
   industry: string
-  email: string
-  consent: boolean
   error: string | null
   exampleChips: { label: string; value: string }[]
-  lookupReady: boolean
+  canSubmit: boolean
+  turnstileSiteKey: string | undefined
+  honeypot: string
   onBizChange: (v: string) => void
   onCityChange: (v: string) => void
   onIndustryChange: (v: string) => void
-  onEmailChange: (v: string) => void
-  onConsentChange: (v: boolean) => void
   onIndustryChip: (v: string) => void
+  onTurnstileSuccess: (token: string) => void
+  onTurnstileExpire: () => void
+  onHoneypotChange: (v: string) => void
   onScan: () => void
-}
-
-function EmailConsentFields({
-  email,
-  consent,
-  inputClass,
-  onEmailChange,
-  onConsentChange,
-  dark = false,
-}: {
-  email: string
-  consent: boolean
-  inputClass: string
-  onEmailChange: (v: string) => void
-  onConsentChange: (v: boolean) => void
-  dark?: boolean
-}) {
-  const labelClass = dark ? 'text-cream/80' : 'text-ink-700'
-  const hintClass = dark ? 'text-cream/55' : 'text-ink-600'
-  const linkClass = dark ? 'text-gold underline underline-offset-2' : 'text-oxblood underline underline-offset-2'
-
-  return (
-    <>
-      <label className={`mt-4 block text-sm font-medium ${labelClass}`}>Work email</label>
-      <input
-        type="email"
-        required
-        className={`${inputClass} mt-1.5`}
-        placeholder="you@business.com"
-        value={email}
-        onChange={(e) => onEmailChange(e.target.value)}
-      />
-      <label className={`mt-3 flex items-start gap-2.5 text-xs leading-relaxed ${hintClass}`}>
-        <input
-          type="checkbox"
-          checked={consent}
-          onChange={(e) => onConsentChange(e.target.checked)}
-          required
-          className="mt-0.5 h-4 w-4 shrink-0 border-ink/20 accent-oxblood"
-        />
-        <span>
-          I agree Stratezik may email my report and related messages about services and insights for my business, as
-          described in our{' '}
-          <Link to="/privacy" className={linkClass}>
-            Privacy Notice
-          </Link>
-          . I can unsubscribe anytime. (Required under Canada&apos;s anti-spam legislation.)
-        </span>
-      </label>
-    </>
-  )
 }
 
 function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inline' }) {
@@ -232,22 +189,21 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
     biz,
     city,
     industry,
-    email,
-    consent,
     error,
     exampleChips,
-    lookupReady,
+    canSubmit,
+    turnstileSiteKey,
+    honeypot,
     onBizChange,
     onCityChange,
     onIndustryChange,
-    onEmailChange,
-    onConsentChange,
     onIndustryChip,
+    onTurnstileSuccess,
+    onTurnstileExpire,
+    onHoneypotChange,
     onScan,
     variant = 'stacked',
   } = props
-
-  const scanReady = lookupReady && consent && email.trim().includes('@') && city.trim() && biz.trim()
 
   const chipRow = (
     <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
@@ -285,9 +241,6 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
               value={city}
               onChange={(e) => onCityChange(e.target.value)}
             />
-            <p className="mt-1 text-[11px] text-ink-500">
-              Use your neighbourhood — Map Pack results change block by block, not just by metro.
-            </p>
           </div>
           <div>
             <label className="block text-xs font-medium text-ink-700">Industry</label>
@@ -300,22 +253,22 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
           </div>
         </div>
         <div className="mt-2">{chipRow}</div>
-        <EmailConsentFields
-          email={email}
-          consent={consent}
-          inputClass={inputClass}
-          onEmailChange={onEmailChange}
-          onConsentChange={onConsentChange}
-        />
         {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-end">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <FormProtectionFields
+            turnstileSiteKey={turnstileSiteKey ?? ''}
+            onTurnstileSuccess={onTurnstileSuccess}
+            onTurnstileExpire={onTurnstileExpire}
+            honeypotValue={honeypot}
+            onHoneypotChange={onHoneypotChange}
+          />
           <button
             type="button"
             className={`${btnPrimary} sm:w-auto sm:min-w-[200px] sm:shrink-0`}
-            disabled={!scanReady}
+            disabled={!canSubmit}
             onClick={onScan}
           >
-            Find my listing →
+            Run my free scan →
           </button>
         </div>
       </div>
@@ -325,7 +278,7 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
   return (
     <div className={`${cardClass} shadow-[0_20px_50px_-16px_rgba(33,31,28,0.15)]`}>
       <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-oxblood">Start your free scan</p>
-      <p className="mt-1 text-sm text-ink-600">Full report unlocks instantly — email + consent below.</p>
+      <p className="mt-1 text-sm text-ink-600">Score + Map Pack in ~60 seconds. Full charts by email.</p>
       <label className="mt-5 block text-sm font-medium text-ink-700">Business name</label>
       <input
         className={`${inputClass} mt-1.5`}
@@ -348,16 +301,16 @@ function ScanFormCard(props: GbpAuditLandingProps & { variant?: 'stacked' | 'inl
         onChange={(e) => onIndustryChange(e.target.value)}
       />
       <div className="mt-2">{chipRow}</div>
-      <EmailConsentFields
-        email={email}
-        consent={consent}
-        inputClass={inputClass}
-        onEmailChange={onEmailChange}
-        onConsentChange={onConsentChange}
-      />
       {error ? <p className="mt-3 text-sm text-oxblood">{error}</p> : null}
-      <button type="button" className={`${btnPrimary} mt-4`} disabled={!scanReady} onClick={onScan}>
-        Find my listing →
+      <FormProtectionFields
+        turnstileSiteKey={turnstileSiteKey ?? ''}
+        onTurnstileSuccess={onTurnstileSuccess}
+        onTurnstileExpire={onTurnstileExpire}
+        honeypotValue={honeypot}
+        onHoneypotChange={onHoneypotChange}
+      />
+      <button type="button" className={`${btnPrimary} mt-4`} disabled={!canSubmit} onClick={onScan}>
+        Run my free scan →
       </button>
       <p className="mt-3 text-center text-xs text-ink-500">No account · CASL-compliant · Unsubscribe anytime</p>
     </div>
@@ -496,7 +449,7 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
       <section className="py-16 md:py-24 bg-cream-100/50 border-y border-ink/10">
         <div className="max-w-2xl mx-auto text-center mb-10">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">What you unlock</p>
-          <h2 className="mt-2 font-display text-3xl text-ink tracking-tight">Free scan with email → full report → optional operator plan</h2>
+          <h2 className="mt-2 font-display text-3xl text-ink tracking-tight">Free scan → email report → optional AI plan</h2>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           {UNLOCK_TIERS.map((t, i) => (
@@ -542,9 +495,9 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
         </div>
       </section>
 
-      {/* Side-by-side free vs paid preview */}
+      {/* Side-by-side instant vs email */}
       <section className="py-16 md:py-24 grid gap-8 lg:grid-cols-2">
-        <GbpDashboardChrome title="Free with your scan" subtitle="Email on the first form" badge="Included">
+        <GbpDashboardChrome title="Instant results" subtitle="Right after you hit scan" badge="No email">
           <ul className="space-y-3 text-sm text-ink-700">
             {UNLOCK_TIERS[0].items.map((item) => (
               <li key={item} className="flex gap-2">
@@ -557,7 +510,7 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
             <GbpKpiCard label="Map Pack" value="#4" sub="Below fold" />
           </div>
         </GbpDashboardChrome>
-        <GbpDashboardChrome title="Operator plan preview" subtitle="Unbox with paid plan" badge="$29">
+        <GbpDashboardChrome title="Full report" subtitle="One email click" badge="Free unlock">
           <ul className="space-y-3 text-sm text-ink-700">
             {UNLOCK_TIERS[1].items.map((item) => (
               <li key={item} className="flex gap-2">
@@ -565,9 +518,9 @@ export function GbpAuditLanding(props: GbpAuditLandingProps) {
               </li>
             ))}
           </ul>
-          <div className="mt-4 grid gap-4 md:grid-cols-2 opacity-80">
-            <GbpPillarRadarChart pillars={SAMPLE_REPORT.pillars} height={140} />
-            <GbpCompetitorBarChart gaps={SAMPLE_REPORT.gaps.slice(0, 3)} lockAfterIndex={-1} />
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <GbpPillarRadarChart pillars={SAMPLE_REPORT.pillars} locked height={140} />
+            <GbpCompetitorBarChart gaps={SAMPLE_REPORT.gaps.slice(0, 3)} locked lockAfterIndex={0} />
           </div>
         </GbpDashboardChrome>
       </section>

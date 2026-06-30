@@ -1,9 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createAdminClient } from '../aeo/supabase-admin.js'
 import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
-import { getStripe, stripeConfigured, stripeNotConfiguredError, GBP_ROADMAP_PRICE_CENTS, AEO_REPORT_CURRENCY } from '../aeo/stripe.js'
+import { getStripe, stripeConfigured, GBP_ROADMAP_PRICE_CENTS, AEO_REPORT_CURRENCY } from '../aeo/stripe.js'
 import { runGbpScan, topline, type GbpScanResult } from './scan.js'
-import { lookupBusinessCandidates } from './lookup.js'
 import { appendGbpLeadToSheet } from './sheets.js'
 import { generateAiRoadmap, type AiRoadmap } from './roadmap-ai.js'
 import { buildRoadmapPdf } from './pdf.js'
@@ -74,44 +73,6 @@ async function emailRoadmapOnce(
   }
 }
 
-export { lookupBusinessCandidates, type GbpBusinessCandidate } from './lookup.js'
-
-export async function handleGbpLookup(req: VercelRequest, res: VercelResponse) {
-  const body = (req.body ?? {}) as Record<string, unknown>
-  const allowed = await enforceSpamGuards(req, res, body, {
-    bucket: 'gbp-lookup',
-    maxPerIp: 20,
-    windowMs: 60 * 60 * 1000,
-    honeypotField: 'website',
-    // Turnstile tokens are single-use — verified on gbp-check after the user picks a listing.
-    requireTurnstile: false,
-  })
-  if (!allowed) return
-
-  const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
-  const city = typeof body.city === 'string' ? body.city.trim().slice(0, 80) : ''
-  const industry = typeof body.industry === 'string' ? body.industry.trim().slice(0, 80) : 'Local business'
-
-  if (!city) {
-    return res.status(400).json({ error: 'City is required — e.g. "Scarborough, ON".' })
-  }
-  if (!businessName) {
-    return res.status(400).json({ error: 'Enter your business name so we can find it on Google Maps.' })
-  }
-
-  const result = await lookupBusinessCandidates(businessName, city, industry)
-  if (!result.placesConfigured) {
-    return res.status(503).json({
-      error:
-        'Google Places lookup is not configured on this server. Set GOOGLE_PLACES_API_KEY in the environment (see .env.gbp.example).',
-      candidates: [],
-      placesConfigured: false,
-      reason: result.reason,
-    })
-  }
-  return res.status(200).json(result)
-}
-
 export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
   const allowed = await enforceSpamGuards(req, res, body, {
@@ -125,8 +86,6 @@ export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const city = typeof body.city === 'string' ? body.city.trim().slice(0, 80) : ''
   const industry = typeof body.industry === 'string' ? body.industry.trim().slice(0, 80) : 'Local business'
-  const placeId = typeof body.placeId === 'string' ? body.placeId.trim().slice(0, 200) : ''
-  const selectedName = typeof body.selectedName === 'string' ? body.selectedName.trim().slice(0, 160) : ''
 
   if (!city) {
     return res.status(400).json({ error: 'City is required — e.g. "Scarborough, ON".' })
@@ -139,32 +98,25 @@ export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
     return res.status(503).json({ error: 'Scanner is not configured yet. Please try again later.' })
   }
 
+  const cacheKey = `${businessName.toLowerCase()}|${city.toLowerCase()}|${industry.toLowerCase()}`
   const since = new Date(Date.now() - CACHE_HOURS * 60 * 60 * 1000).toISOString()
 
-  const baseCacheQuery = supabase
+  const { data: cached } = await supabase
     .from('gbp_scans')
     .select('id, result, created_at, business_name, city, industry')
+    .eq('business_name', businessName || '—')
     .eq('city', city)
     .eq('industry', industry)
     .gte('created_at', since)
     .order('created_at', { ascending: false })
     .limit(1)
-
-  const { data: cached } = await (placeId
-    ? baseCacheQuery.eq('place_id', placeId)
-    : baseCacheQuery.eq('business_name', businessName || '—')
-  ).maybeSingle()
+    .maybeSingle()
 
   if (cached) {
     return res.status(200).json(topline(cached.result as GbpScanResult, cached.id))
   }
 
-  const scan = await runGbpScan({
-    businessName: selectedName || businessName,
-    city,
-    industry,
-    placeId: placeId || undefined,
-  })
+  const scan = await runGbpScan({ businessName, city, industry })
   const { data: inserted, error } = await supabase
     .from('gbp_scans')
     .insert({
@@ -289,7 +241,7 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
 
 export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse) {
   if (!stripeConfigured()) {
-    return res.status(503).json({ error: stripeNotConfiguredError() })
+    return res.status(503).json({ error: 'Payments are not configured yet.' })
   }
 
   const body = (req.body ?? {}) as {
@@ -307,8 +259,6 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
-    // User already passed Turnstile at scan; Stripe checkout is the real gate.
-    requireTurnstile: false,
   })
   if (!allowed) return
 
@@ -348,7 +298,7 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
             product_data: {
               name: `GBP Growth Roadmap — ${label}`,
               description:
-                'Top-1% operator GBP plan: category reverse-engineering from Map Pack leaders, review-SEO, keyword-rich services, reply templates, competitive integrity audit, geo-targeting, attributes/photos, authority signals, 90-day weekly plan, posts, Q&A, and 12-section PDF by email.',
+                'Custom AI growth plan: optimized categories and description, 4 ready-to-publish Google posts, 8 seeded Q&A pairs, review-request scripts, and a 90-day roadmap. Delivered as a downloadable and emailed PDF.',
             },
           },
         },
@@ -421,14 +371,18 @@ export async function handleGbpUnlock(req: VercelRequest, res: VercelResponse) {
     })
   }
 
-  // Return immediately — AI generation takes ~40 s and would hold the user on the
-  // unlock screen. The client polls /api/gbp-restore which handles generation + email.
   const scan = scanRow.result as GbpScanResult
+  const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
+  // Email the PDF (await so it completes before the serverless function exits).
+  if (aiRoadmap && email) {
+    await emailRoadmapOnce(supabase, scanRow.id, email, scan, aiRoadmap)
+  }
+
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),
     pillars: scan.pillars,
-    aiRoadmap: null,
+    aiRoadmap,
   })
 }
 
@@ -439,14 +393,13 @@ export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) 
   if (!scanId) return res.status(400).json({ error: 'Missing scan id.' })
 
   const supabase = createAdminClient()
-  const { data: paidMeta } = await supabase
+  const { data: paid } = await supabase
     .from('gbp_paid_roadmaps')
-    .select('id, email, email_sent_at')
+    .select('id')
     .eq('scan_id', scanId)
-    .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-  if (!paidMeta) {
+  if (!paid) {
     return res.status(404).json({ error: 'No paid roadmap found for this scan.' })
   }
 
@@ -459,12 +412,6 @@ export async function handleGbpRestore(req: VercelRequest, res: VercelResponse) 
 
   const scan = scanRow.result as GbpScanResult
   const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
-
-  // Email the PDF on the first restore call that returns a roadmap.
-  if (aiRoadmap && paidMeta.email && !paidMeta.email_sent_at) {
-    await emailRoadmapOnce(supabase, scanRow.id, paidMeta.email, scan, aiRoadmap)
-  }
-
   return res.status(200).json({
     unlocked: true,
     ...topline(scan, scanRow.id),

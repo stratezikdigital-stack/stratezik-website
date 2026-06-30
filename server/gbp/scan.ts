@@ -1,14 +1,5 @@
 import { resolveIndustry, sub, titleCase } from './industryEngine.js'
-import {
-  searchPlaces,
-  fetchPlaceDetails,
-  fetchPlaceById,
-  geocodeCity,
-  filterPlacesNear,
-  inferRegionCode,
-  type PlaceSummary,
-} from './places.js'
-import { normalizeBusinessName, scoreBusinessMatch } from './lookup.js'
+import { searchPlaces, fetchPlaceDetails, type PlaceSummary } from './places.js'
 
 export type GbpWinner = {
   rank: string
@@ -57,7 +48,6 @@ export type GbpProfileSignal = {
   name: string
   reviews: number
   rating: number | null
-  primaryCategory: string | null
   categoryCount: number
   hasDescription: boolean
   hasPhone: boolean
@@ -71,9 +61,6 @@ export type GbpScanResult = {
   industryDisplay: string
   placeId: string | null
   found: boolean
-  /** Google Maps listing title when we matched a profile (may differ from user input). */
-  matchedListingName: string | null
-  matchedListingAddress?: string | null
   dataSource: 'places' | 'template'
   score: number
   grade: string
@@ -278,7 +265,6 @@ function toProfileSignal(p: PlaceSummary | null): GbpProfileSignal | null {
     name: p.name,
     reviews: p.reviewCount,
     rating: p.rating,
-    primaryCategory: p.primaryTypeName ?? null,
     categoryCount: p.categoryCount ?? p.types.length,
     hasDescription: Boolean(p.hasDescription),
     hasPhone: Boolean(p.hasPhone),
@@ -306,29 +292,27 @@ function weightedScore(pillars: GbpPillar[]): number {
 }
 
 function normalizeName(s: string): string {
-  return normalizeBusinessName(s)
+  return s.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
-/** Substring matches only when the overlap is long enough (avoids "insec" → Insectica). */
-function namesLikelyMatch(target: string, candidate: string): boolean {
-  return scoreBusinessMatch(target, { name: candidate } as PlaceSummary) >= 70
-}
-
-function findUserPlace(businessName: string, candidates: PlaceSummary[]): PlaceSummary | null {
+function findUserPlace(
+  businessName: string,
+  candidates: PlaceSummary[],
+): PlaceSummary | null {
   const target = normalizeName(businessName)
-  if (!target || !candidates.length) return null
-
+  if (!target) return candidates[0] ?? null
   const exact = candidates.find((c) => normalizeName(c.name) === target)
   if (exact) return exact
-
-  return candidates.find((c) => namesLikelyMatch(target, normalizeName(c.name))) ?? null
+  const partial = candidates.find(
+    (c) => normalizeName(c.name).includes(target) || target.includes(normalizeName(c.name)),
+  )
+  return partial ?? candidates[0] ?? null
 }
 
 export async function runGbpScan(input: {
   businessName: string
   city: string
   industry: string
-  placeId?: string
 }): Promise<GbpScanResult> {
   const businessName = input.businessName.trim()
   const city = input.city.trim()
@@ -345,40 +329,17 @@ export async function runGbpScan(input: {
   const bizQuery = businessName
     ? `${businessName} ${city}`.trim()
     : `${trade} ${city}`.trim()
-  // Places Text Search has no device GPS — "near me" is meaningless without coordinates.
-  // Search by trade + city with a geocoded location bias instead.
-  const packTextQuery = `${trade} in ${city}`.trim()
 
-  const geoCenter = await geocodeCity(city)
-  const regionCode = inferRegionCode(city)
-  const searchOpts = geoCenter
-    ? { location: geoCenter, radiusMeters: 22000, regionCode }
-    : { regionCode }
-
-  const [bizResultsRaw, packResultsRaw] = await Promise.all([
-    searchPlaces(bizQuery, 5, searchOpts),
-    searchPlaces(packTextQuery, 10, searchOpts),
+  const [bizResults, packResults] = await Promise.all([
+    searchPlaces(bizQuery, 5),
+    searchPlaces(`${searchQuery} in ${city}`, 10),
   ])
-
-  const packFiltered =
-    geoCenter && packResultsRaw ? filterPlacesNear(packResultsRaw, geoCenter, 35) : packResultsRaw
-  const bizResults = bizResultsRaw
-  const packResults = packFiltered
 
   const dataSource = bizResults || packResults ? 'places' : 'template'
   const pack = packResults ?? []
-  const lookupPool = [...(bizResults ?? []), ...pack].filter(
-    (p, i, arr) => arr.findIndex((x) => x.placeId === p.placeId) === i,
-  )
-
-  let youRaw: PlaceSummary | null = null
-  if (input.placeId) {
-    youRaw = await fetchPlaceById(input.placeId)
-  } else if (businessName) {
-    youRaw = findUserPlace(businessName, lookupPool)
-  } else {
-    youRaw = pack[0] ?? null
-  }
+  const youRaw = businessName
+    ? findUserPlace(businessName, bizResults ?? pack)
+    : (pack[0] ?? null)
   const competitorsRaw = pack.filter((p) => p.placeId !== youRaw?.placeId).slice(0, 3)
 
   // Lever 2: enrich the user + top competitors with Place Details (real
@@ -410,8 +371,6 @@ export async function runGbpScan(input: {
   if (you && pack.length > 0) {
     const idx = pack.findIndex((p) => p.placeId === you.placeId)
     rankNum = idx >= 0 ? idx + 1 : Math.min(pack.length + 1, 10)
-  } else if (!you) {
-    rankNum = 0
   }
 
   const pillars = mergePillars(template.pillars, you, competitors)
@@ -434,21 +393,19 @@ export async function runGbpScan(input: {
     industryDisplay,
     placeId: you?.placeId ?? null,
     found: Boolean(you),
-    matchedListingName: you?.name ?? null,
-    matchedListingAddress: you?.formattedAddress ?? null,
     dataSource,
     score,
     grade,
     verdict: template.verdict,
     rankNum,
-    rankWord: rankNum > 0 ? rankWord(rankNum) : '—',
+    rankWord: rankWord(rankNum),
     moneyLine: template.moneyLine.includes(' ')
       ? template.moneyLine
       : `${template.moneyLine}`,
     query: searchQuery,
-    youRating: you?.rating?.toFixed(1) ?? '',
-    youReviews: you?.reviewCount ?? 0,
-    gapText: rankNum > 3 ? `↓ ${Math.max(0, rankNum - 3)} more results ↓` : rankNum === 0 ? 'Not in top results for this search' : template.gapText,
+    youRating: you?.rating?.toFixed(1) ?? template.youRating,
+    youReviews: you?.reviewCount ?? template.youReviews,
+    gapText: rankNum > 3 ? `↓ ${Math.max(0, rankNum - 3)} more results ↓` : template.gapText,
     topCompetitor: topComp,
     winners,
     pillars,
@@ -481,8 +438,6 @@ export function topline(scan: GbpScanResult, scanId: string) {
     rankWord: scan.rankWord,
     query: scan.query,
     found: scan.found,
-    matchedListingName: scan.matchedListingName,
-    matchedListingAddress: scan.matchedListingAddress ?? null,
     dataSource: scan.dataSource,
     youRating: scan.youRating,
     youReviews: scan.youReviews,
@@ -490,12 +445,7 @@ export function topline(scan: GbpScanResult, scanId: string) {
     winners: scan.winners,
     quickWins: scan.quickWins,
     gapText: scan.gapText,
-    headline:
-      scan.found && scan.rankNum > 0
-        ? `You're the ${scan.rankWord} option people see for "${scan.query}" — not in the top 3.`
-        : scan.found
-          ? `We found your listing on Google Maps — checking Map Pack position for "${scan.query}".`
-          : `We couldn't match "${scan.businessName}" on Google Maps — rivals below are live; run again with your exact GBP name.`,
+    headline: `You're the ${scan.rankWord} option people see for "${scan.query}" — not in the top 3.`,
     mapsUri: scan.mapsUri,
     checkedAt: scan.checkedAt,
     topCompetitor: scan.topCompetitor,

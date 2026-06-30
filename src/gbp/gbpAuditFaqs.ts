@@ -8,7 +8,7 @@ export const GBP_AUDIT_FAQS = [
   {
     question: 'Does the scan use live Google Maps data?',
     answer:
-      'Yes — before the audit runs, we search Google Maps near your city and show matching listings with addresses so you confirm the right business. The full scan then uses that exact profile (ratings, reviews, categories). Top Map Pack rivals are location-biased but may still differ slightly from your phone’s personalised results. Use “Compare on Google” on your report to spot-check.',
+      'When our Places API connection is configured, the tool pulls live competitor names, ratings, review counts, and your listing details from Google Maps. If no match is found or the API is unavailable, industry templates provide realistic benchmarks so you still get actionable fixes.',
   },
   {
     question: 'Who is this for?',
@@ -18,7 +18,7 @@ export const GBP_AUDIT_FAQS = [
   {
     question: 'What do I get for free vs the paid roadmap?',
     answer:
-      'Free: topline score, Map Pack view, three fixes with copy-paste text, and the six-pillar breakdown — unlocked when you submit the first form with email. The $29 CAD operator plan adds a bespoke 12-section AI plan from your audit data.',
+      'Free: topline score, Map Pack view, three weekend fixes with copy-paste text, and the six-pillar breakdown after email opt-in. The $29 CAD roadmap unlocks a competitor gap chart and a prioritized 90-day Google Business Profile plan.',
   },
   {
     question: 'How is this different from the AEO Readiness Checker?',

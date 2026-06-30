@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
 import { handleCheck, handleLead } from './server/aeo/handlers'
-import { handleGbpCheck, handleGbpLookup, handleGbpLead, handleGbpCheckout, handleGbpUnlock, handleGbpRestore, handleGbpRoadmapPdf } from './server/gbp/handlers'
+import { handleGbpCheck, handleGbpLead } from './server/gbp/handlers'
 import { handleContact, handleFormToken, handleGrowthCredit } from './server/forms/handlers'
 import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
 
@@ -38,13 +38,6 @@ function pseudoResponse(res: import('http').ServerResponse): import('@vercel/nod
     },
     json(payload: unknown) {
       sendJson(res, res.statusCode || 200, payload)
-    },
-    setHeader(key: string, value: string) {
-      res.setHeader(key, value)
-      return this
-    },
-    send(body: Buffer | Uint8Array | string) {
-      res.end(body)
     },
   } as unknown as import('@vercel/node').VercelResponse
 }
@@ -108,45 +101,9 @@ export function aeoDevApiPlugin(): Plugin {
             return
           }
 
-          if (url.startsWith('/api/gbp-lookup') && req.method === 'POST') {
+          if (url.startsWith('/api/gbp-check') && req.method === 'POST') {
             const body = await readJsonBody(req)
-            await handleGbpLookup(
-              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
-              pseudoResponse(res),
-            )
-            return
-          }
-
-          if (url.startsWith('/api/gbp-checkout') && req.method === 'POST') {
-            const body = await readJsonBody(req)
-            await handleGbpCheckout(
-              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
-              pseudoResponse(res),
-            )
-            return
-          }
-
-          if (url.startsWith('/api/gbp-unlock') && req.method === 'POST') {
-            const body = await readJsonBody(req)
-            await handleGbpUnlock(
-              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
-              pseudoResponse(res),
-            )
-            return
-          }
-
-          if (url.startsWith('/api/gbp-restore') && req.method === 'POST') {
-            const body = await readJsonBody(req)
-            await handleGbpRestore(
-              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
-              pseudoResponse(res),
-            )
-            return
-          }
-
-          if (url.startsWith('/api/gbp-roadmap-pdf') && req.method === 'POST') {
-            const body = await readJsonBody(req)
-            await handleGbpRoadmapPdf(
+            await handleGbpCheck(
               { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
               pseudoResponse(res),
             )
@@ -160,21 +117,6 @@ export function aeoDevApiPlugin(): Plugin {
               pseudoResponse(res),
             )
             return
-          }
-
-          if (url.startsWith('/api/gbp-check') && req.method === 'POST') {
-            const body = await readJsonBody(req)
-            await handleGbpCheck(
-              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
-              pseudoResponse(res),
-            )
-            return
-          }
-
-          if (url.startsWith('/api/aeo-checkout') && req.method === 'POST') {
-            return sendJson(res, 503, {
-              error: 'Stripe checkout runs on Vercel preview/production. Deploy or use stratezik-web locally for paid flow testing.',
-            })
           }
 
           if (url.startsWith('/api/aeo-check') && req.method === 'POST') {
@@ -193,6 +135,12 @@ export function aeoDevApiPlugin(): Plugin {
               pseudoResponse(res),
             )
             return
+          }
+
+          if (url.startsWith('/api/aeo-checkout') && req.method === 'POST') {
+            return sendJson(res, 503, {
+              error: 'Stripe checkout runs on Vercel preview/production. Deploy or use stratezik-web locally for paid flow testing.',
+            })
           }
 
           if (

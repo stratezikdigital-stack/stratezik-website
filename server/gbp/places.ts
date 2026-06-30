@@ -14,7 +14,6 @@ export type PlaceSummary = {
   hasHours: boolean
   businessStatus: string | null
   mapsUri: string | null
-  location?: { latitude: number; longitude: number } | null
   // Enriched via Place Details (New). Undefined until/unless details are fetched.
   primaryTypeName?: string | null
   categoryCount?: number
@@ -36,44 +35,20 @@ const FIELD_MASK = [
   'places.regularOpeningHours',
   'places.businessStatus',
   'places.googleMapsUri',
-  'places.location',
 ].join(',')
 
 // Place Details (New): single-place field mask is NOT prefixed with `places.`.
 const DETAILS_FIELD_MASK = [
   'id',
-  'displayName',
-  'formattedAddress',
   'rating',
   'userRatingCount',
   'types',
-  'photos',
-  'websiteUri',
-  'regularOpeningHours',
-  'businessStatus',
-  'googleMapsUri',
-  'location',
   'primaryTypeDisplayName',
   'editorialSummary',
   'nationalPhoneNumber',
   'accessibilityOptions',
   'paymentOptions',
   'reviews',
-].join(',')
-
-const SUMMARY_FIELD_MASK = [
-  'id',
-  'displayName',
-  'formattedAddress',
-  'rating',
-  'userRatingCount',
-  'types',
-  'photos',
-  'websiteUri',
-  'regularOpeningHours',
-  'businessStatus',
-  'googleMapsUri',
-  'location',
 ].join(',')
 
 function apiKey(): string | null {
@@ -93,7 +68,6 @@ function mapPlace(raw: Record<string, unknown>): PlaceSummary {
   const displayName = raw.displayName as { text?: string } | undefined
   const photos = raw.photos as unknown[] | undefined
   const hours = raw.regularOpeningHours as { periods?: unknown[] } | undefined
-  const loc = raw.location as { latitude?: number; longitude?: number } | undefined
   return {
     placeId: String(raw.id ?? ''),
     name: displayName?.text ?? 'Unknown',
@@ -106,106 +80,17 @@ function mapPlace(raw: Record<string, unknown>): PlaceSummary {
     hasHours: Boolean(hours?.periods?.length),
     businessStatus: typeof raw.businessStatus === 'string' ? raw.businessStatus : null,
     mapsUri: typeof raw.googleMapsUri === 'string' ? raw.googleMapsUri : null,
-    location:
-      typeof loc?.latitude === 'number' && typeof loc?.longitude === 'number'
-        ? { latitude: loc.latitude, longitude: loc.longitude }
-        : null,
   }
-}
-
-export type GeoPoint = { latitude: number; longitude: number }
-
-export type SearchPlacesOptions = {
-  location?: GeoPoint
-  /** Bias radius in meters (Places API max 50_000). */
-  radiusMeters?: number
-  regionCode?: string
-}
-
-function haversineKm(a: GeoPoint, b: GeoPoint): number {
-  const toRad = (d: number) => (d * Math.PI) / 180
-  const R = 6371
-  const dLat = toRad(b.latitude - a.latitude)
-  const dLon = toRad(b.longitude - a.longitude)
-  const lat1 = toRad(a.latitude)
-  const lat2 = toRad(b.latitude)
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2
-  return 2 * R * Math.asin(Math.sqrt(h))
-}
-
-/** Geocode "Scarborough, ON" → lat/lng for location-biased Places search. */
-export async function geocodeCity(city: string): Promise<GeoPoint | null> {
-  const key = apiKey()
-  const address = city.trim()
-  if (!key || !address) return null
-
-  try {
-    const url = new URL('https://maps.googleapis.com/maps/api/geocode/json')
-    url.searchParams.set('address', address)
-    url.searchParams.set('key', key)
-    const res = await fetch(url.toString(), { signal: AbortSignal.timeout(12000) })
-    if (!res.ok) return null
-    const data = (await res.json()) as {
-      results?: { geometry?: { location?: { lat?: number; lng?: number } } }[]
-    }
-    const loc = data.results?.[0]?.geometry?.location
-    if (typeof loc?.lat !== 'number' || typeof loc?.lng !== 'number') return null
-    return { latitude: loc.lat, longitude: loc.lng }
-  } catch (err) {
-    console.error('[gbp/places] geocode error:', err)
-    return null
-  }
-}
-
-export function inferRegionCode(city: string): string {
-  const c = city.toLowerCase()
-  if (/\b(on|bc|ab|qc|mb|sk|ns|nb|nl|pe|yt|nt|nu)\b/.test(c) || c.includes('canada')) return 'ca'
-  if (/\b(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy)\b/.test(c)) {
-    return 'us'
-  }
-  return 'ca'
-}
-
-export function filterPlacesNear(
-  places: PlaceSummary[],
-  center: GeoPoint,
-  maxKm: number,
-): PlaceSummary[] {
-  const withDistance = places.map((p) => ({
-    p,
-    km:
-      p.location != null
-        ? haversineKm(center, { latitude: p.location.latitude, longitude: p.location.longitude })
-        : null,
-  }))
-  const inRange = withDistance.filter((x) => x.km == null || x.km <= maxKm)
-  if (inRange.length >= 3) return inRange.map((x) => x.p)
-  return places
 }
 
 export async function searchPlaces(
   textQuery: string,
   maxResultCount = 10,
-  options?: SearchPlacesOptions,
 ): Promise<PlaceSummary[] | null> {
   const key = apiKey()
   if (!key) return null
 
   try {
-    const body: Record<string, unknown> = { textQuery, maxResultCount }
-    if (options?.location) {
-      body.locationBias = {
-        circle: {
-          center: options.location,
-          radius: options.radiusMeters ?? 25000,
-        },
-      }
-    }
-    if (options?.regionCode) {
-      body.regionCode = options.regionCode
-    }
-
     const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
       method: 'POST',
       headers: {
@@ -213,7 +98,7 @@ export async function searchPlaces(
         'X-Goog-Api-Key': key,
         'X-Goog-FieldMask': FIELD_MASK,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ textQuery, maxResultCount }),
       signal: AbortSignal.timeout(20000),
     })
     if (!res.ok) {
@@ -224,31 +109,6 @@ export async function searchPlaces(
     return (data.places ?? []).map(mapPlace)
   } catch (err) {
     console.error('[gbp/places] searchText error:', err)
-    return null
-  }
-}
-
-export async function fetchPlaceById(placeId: string): Promise<PlaceSummary | null> {
-  const key = apiKey()
-  if (!key || !placeId) return null
-
-  try {
-    const res = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, {
-      method: 'GET',
-      headers: {
-        'X-Goog-Api-Key': key,
-        'X-Goog-FieldMask': SUMMARY_FIELD_MASK,
-      },
-      signal: AbortSignal.timeout(15000),
-    })
-    if (!res.ok) {
-      console.error('[gbp/places] fetchPlaceById failed', placeId, res.status, await res.text())
-      return null
-    }
-    const raw = (await res.json()) as Record<string, unknown>
-    return mapPlace({ ...raw, id: raw.id ?? placeId })
-  } catch (err) {
-    console.error('[gbp/places] fetchPlaceById error:', placeId, err)
     return null
   }
 }

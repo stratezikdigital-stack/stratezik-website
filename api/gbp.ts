@@ -1,7 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import {
   handleGbpCheck,
-  handleGbpLookup,
   handleGbpCheckout,
   handleGbpFull,
   handleGbpLead,
@@ -17,7 +16,6 @@ function resolveAction(req: VercelRequest): string | null {
   const path = (req.url ?? '').split('?')[0]
   const legacy: Record<string, string> = {
     '/api/gbp-check': 'check',
-    '/api/gbp-lookup': 'lookup',
     '/api/gbp-lead': 'lead',
     '/api/gbp-checkout': 'checkout',
     '/api/gbp-unlock': 'unlock',
@@ -41,8 +39,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   switch (action) {
     case 'check':
       return handleGbpCheck(req, res)
-    case 'lookup':
-      return handleGbpLookup(req, res)
     case 'lead':
       return handleGbpLead(req, res)
     case 'checkout':
