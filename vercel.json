@@ -7,8 +7,18 @@
     "api/gbp.ts": {
       "maxDuration": 60,
       "includeFiles": "server/**"
+    },
+    "api/stripe-webhook.ts": {
+      "maxDuration": 30,
+      "includeFiles": "server/**"
     }
   },
+  "crons": [
+    {
+      "path": "/api/reconcile-orders",
+      "schedule": "0 13 * * *"
+    }
+  ],
   "redirects": [
     {
       "source": "/scan",
@@ -331,6 +341,7 @@
     { "source": "/api/form-token", "destination": "/api/aeo?action=form-token" },
     { "source": "/api/contact", "destination": "/api/aeo?action=contact" },
     { "source": "/api/growth-credit", "destination": "/api/aeo?action=growth-credit" },
+    { "source": "/api/reconcile-orders", "destination": "/api/aeo?action=reconcile-orders" },
     { "source": "/api/gbp-check", "destination": "/api/gbp?action=check" },
     { "source": "/api/gbp-lead", "destination": "/api/gbp?action=lead" },
     { "source": "/api/gbp-checkout", "destination": "/api/gbp?action=checkout" },

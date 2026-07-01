@@ -35,7 +35,14 @@ export function CustomCursor() {
     }
     apply()
     mq.addEventListener('change', apply)
-    return () => mq.removeEventListener('change', apply)
+    return () => {
+      mq.removeEventListener('change', apply)
+      // Restore the native cursor when this component unmounts (e.g. navigating
+      // to a route without the desktop chrome, like the cheat-sheet landing).
+      // Otherwise `cursor: none` stays on <html> with no custom cursor drawn,
+      // leaving the pointer invisible.
+      document.documentElement.classList.remove('has-custom-cursor')
+    }
   }, [])
 
   useEffect(() => {

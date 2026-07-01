@@ -182,6 +182,7 @@ export default function GbpAuditPage() {
   const [industry, setIndustry] = useState('Pest control')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
+  const [roadmapConsent, setRoadmapConsent] = useState(false)
   const [topline, setTopline] = useState<Topline | null>(null)
   const [pillars, setPillars] = useState<Pillar[] | null>(null)
   const [compGaps, setCompGaps] = useState<CompGap[] | null>(null)
@@ -333,6 +334,10 @@ export default function GbpAuditPage() {
       setError('Complete the security check below, then try again.')
       return
     }
+    if (!roadmapConsent) {
+      setError('Please agree to the Terms & Refund Policy before paying.')
+      return
+    }
     setCheckoutLoading(true)
     setError(null)
     try {
@@ -342,6 +347,7 @@ export default function GbpAuditPage() {
         body: JSON.stringify({
           scanId: topline.scanId,
           email: email.trim(),
+          termsConsent: roadmapConsent,
           website: protection.honeypot,
           ...protection.spamPayload(),
         }),
@@ -356,7 +362,7 @@ export default function GbpAuditPage() {
       setTurnstileKey((k) => k + 1)
       void protection.refreshFormToken()
     }
-  }, [topline, email, protection])
+  }, [topline, email, roadmapConsent, protection])
 
   const downloadPdf = useCallback(async () => {
     if (!topline?.scanId) return
@@ -929,12 +935,33 @@ export default function GbpAuditPage() {
                       honeypotValue={protection.honeypot}
                       onHoneypotChange={protection.setHoneypot}
                     />
+                    <label className="mt-4 flex items-start gap-2.5 text-left text-xs text-ink-600 leading-relaxed">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-oxblood"
+                        checked={roadmapConsent}
+                        onChange={(e) => setRoadmapConsent(e.target.checked)}
+                      />
+                      <span>
+                        I agree to the{' '}
+                        <a
+                          href="/privacy#paid-reports"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-oxblood underline underline-offset-2"
+                        >
+                          Terms &amp; Refund Policy
+                        </a>
+                        . The roadmap is a custom digital service; if it fails to generate on our
+                        side we retry, deliver it manually, or issue a credit or refund.
+                      </span>
+                    </label>
                   </div>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <button
                       type="button"
                       className={btnSecondary}
-                      disabled={checkoutLoading || !protection.canSubmit || !email.trim()}
+                      disabled={checkoutLoading || !protection.canSubmit || !email.trim() || !roadmapConsent}
                       onClick={() => void startCheckout()}
                     >
                       {checkoutLoading ? 'Redirecting…' : `Get the AI roadmap — ${ROADMAP_PRICE}`}

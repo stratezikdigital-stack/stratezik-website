@@ -121,6 +121,33 @@ Uses a **separate** Apps Script project (`google-apps-script-growth-credit.js`).
 7. For local dev, add the same to `.env.local` in the project root
 8. Redeploy; submit a test on `/growth-credit` and confirm the row appears only on **Marketing Credit**
 
+### Paid Order Issues (`Paid Order Issues` tab)
+
+Alerts you when a customer **pays** for an AEO or GBP report but it is **not delivered** (generation failed, or they never returned to the results page). Uses a **separate** Apps Script project (`google-apps-script-paid-order-issues.js`).
+
+| Timestamp | Product | Email | Amount | Scan / Domain | Stripe Session | Status | Attempts | Last Error | Reason | Resolved? |
+|-----------|---------|-------|--------|---------------|----------------|--------|----------|------------|--------|-----------|
+
+#### Paid Order Issues setup (one-time)
+
+1. [Google Apps Script](https://script.google.com) → **New project** → name it **Stratezik Paid Order Issues**
+2. Paste `google-apps-script-paid-order-issues.js` → **Save**
+3. Run **`setupPaidIssuesSheet`** once (creates/headers the **Paid Order Issues** tab)
+4. Run **`sendTestEmail`** once and approve MailApp permissions
+5. **Deploy → New deployment → Web app** (Execute as: Me, Access: Anyone) → copy the `/exec` URL
+6. Add to Vercel (Production + Development): `GOOGLE_PAID_ISSUES_WEBHOOK_URL` = that URL
+7. Redeploy the site. You can force a test alert by hitting `/api/reconcile-orders` after inserting a fake undelivered row, or just wait for the next real failure.
+
+## 💳 **Paid order failure monitoring (full setup)**
+
+This protects paid AEO/GBP reports so you're notified whenever a customer is charged but the report isn't delivered — then you can retry, deliver manually, or issue a credit/refund. Pieces:
+
+1. **Supabase table** — run `supabase/paid_orders.sql` in the Supabase SQL editor (Dashboard → SQL). This is the ledger of every paid order and whether it was delivered.
+2. **Stripe webhook** — in the [Stripe Dashboard → Developers → Webhooks](https://dashboard.stripe.com/webhooks): **Add endpoint** = `https://www.stratezik.com/api/stripe-webhook`, listen for **`checkout.session.completed`**. Copy the **Signing secret** (`whsec_…`) and add it to Vercel as `STRIPE_WEBHOOK_SECRET`. This records every payment even if the customer never returns to the site.
+3. **Alerts** — set `GOOGLE_PAID_ISSUES_WEBHOOK_URL` (above) and `RESEND_API_KEY` so failures email you and log to the sheet. Optional: `PAID_ISSUES_EMAIL` (defaults to stratezikdigital@gmail.com), `PAID_ISSUES_FROM_EMAIL`.
+4. **Reconciliation cron** — already configured in `vercel.json` (`/api/reconcile-orders`, daily). Set `CRON_SECRET` in Vercel so only Vercel Cron can trigger it. It flags any paid order still undelivered after 15 minutes. (Sub-daily schedules require a Vercel Pro plan; the inline failure alert fires immediately regardless.)
+5. **Consent** — the AEO and GBP checkout forms now require ticking the **Terms & Refund Policy** (Privacy Notice §17) before payment; consent + timestamp are stored on the order.
+
 ## 🔧 **Alternative: Use Formspree (Easier)**
 
 If you prefer a simpler solution:

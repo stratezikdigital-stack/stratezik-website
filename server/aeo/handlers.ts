@@ -13,6 +13,10 @@ import {
 } from './stripe.js'
 import { runDeepScan, type DeepScanResult } from './deep-scan.js'
 import { runSitemapAudit, type SitemapAudit } from './sitemap.js'
+import { recordPaidOrder, markOrderDelivered, markOrderFailed } from '../payments/orders.js'
+
+const PAID_FAILED_MESSAGE =
+  'Payment received — but we hit a snag generating your report. Our team has been notified and will email it to you shortly. If you don’t hear back, contact dave@stratezik.com with your payment confirmation.'
 
 const CACHE_HOURS = 24
 const MAX_SITEMAP_PAGES = 25
@@ -203,8 +207,15 @@ export async function handleCheckout(req: VercelRequest, res: VercelResponse) {
     domain?: unknown
     competitors?: unknown
     website?: unknown
+    termsConsent?: unknown
     formToken?: unknown
     turnstileToken?: unknown
+  }
+
+  if (body.termsConsent !== true) {
+    return res
+      .status(400)
+      .json({ error: 'Please agree to the Terms & Refund Policy before paying.' })
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
@@ -281,7 +292,16 @@ export async function handleCheckout(req: VercelRequest, res: VercelResponse) {
           },
         },
       ],
-      metadata: { product, scanId, domain, email, competitors },
+      metadata: {
+        product,
+        ledgerProduct: product === 'sitemap' ? 'aeo-sitemap' : 'aeo-report',
+        scanId,
+        domain,
+        email,
+        competitors,
+        termsConsent: 'yes',
+        termsConsentTs: new Date().toISOString(),
+      },
       success_url: `${origin}/aeo-checker?${successQuery}`,
       cancel_url: `${origin}/aeo-checker?canceled=1`,
     })
@@ -346,19 +366,36 @@ export async function handleUnlock(req: VercelRequest, res: VercelResponse) {
     .eq('stripe_session_id', sessionId)
     .maybeSingle()
   if (existing) {
+    await markOrderDelivered(sessionId)
     return res.status(200).json({ deep: existing.result as DeepScanResult, base: baseTopline })
   }
 
-  const deep = await runDeepScan(base, { competitorDomains })
-  await supabase.from('aeo_deep_scans').insert({
-    scan_id: scanRow.id,
-    stripe_session_id: sessionId,
+  // Ensure the paid order is on record before we attempt generation, so a
+  // failure below can be flagged and alerted (even if the webhook is delayed).
+  await recordPaidOrder({
+    sessionId,
+    product: 'aeo-report',
     email: email || null,
+    scanId: scanRow.id,
     domain: scanRow.domain,
-    result: deep,
   })
 
-  return res.status(200).json({ deep, base: baseTopline })
+  try {
+    const deep = await runDeepScan(base, { competitorDomains })
+    await supabase.from('aeo_deep_scans').insert({
+      scan_id: scanRow.id,
+      stripe_session_id: sessionId,
+      email: email || null,
+      domain: scanRow.domain,
+      result: deep,
+    })
+    await markOrderDelivered(sessionId)
+    return res.status(200).json({ deep, base: baseTopline })
+  } catch (err) {
+    console.error('[aeo/unlock] deep scan generation failed:', err)
+    await markOrderFailed(sessionId, err instanceof Error ? err.message : String(err))
+    return res.status(500).json({ error: PAID_FAILED_MESSAGE })
+  }
 }
 
 export async function handleSitemap(req: VercelRequest, res: VercelResponse) {
@@ -422,15 +459,24 @@ export async function handleSitemapUnlock(req: VercelRequest, res: VercelRespons
     .eq('stripe_session_id', sessionId)
     .maybeSingle()
   if (existing) {
+    await markOrderDelivered(sessionId)
     return res.status(200).json({ audit: existing.result as SitemapAudit })
   }
 
-  const audit = await runSitemapAudit(domain, { maxPages: MAX_SITEMAP_PAGES })
-  await supabase.from('aeo_sitemap_audits').insert({
-    stripe_session_id: sessionId,
-    domain,
-    result: audit,
-  })
+  await recordPaidOrder({ sessionId, product: 'aeo-sitemap', domain })
 
-  return res.status(200).json({ audit })
+  try {
+    const audit = await runSitemapAudit(domain, { maxPages: MAX_SITEMAP_PAGES })
+    await supabase.from('aeo_sitemap_audits').insert({
+      stripe_session_id: sessionId,
+      domain,
+      result: audit,
+    })
+    await markOrderDelivered(sessionId)
+    return res.status(200).json({ audit })
+  } catch (err) {
+    console.error('[aeo/sitemap-unlock] audit generation failed:', err)
+    await markOrderFailed(sessionId, err instanceof Error ? err.message : String(err))
+    return res.status(500).json({ error: PAID_FAILED_MESSAGE })
+  }
 }

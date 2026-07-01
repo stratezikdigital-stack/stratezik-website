@@ -7,8 +7,12 @@ import { appendGbpLeadToSheet } from './sheets.js'
 import { generateAiRoadmap, type AiRoadmap } from './roadmap-ai.js'
 import { buildRoadmapPdf } from './pdf.js'
 import { sendRoadmapEmail } from './email.js'
+import { recordPaidOrder, markOrderDelivered, markOrderFailed } from '../payments/orders.js'
 
 const CACHE_HOURS = 24
+
+const PAID_FAILED_MESSAGE =
+  'Payment received — but we hit a snag building your roadmap. Our team has been notified and will email your plan shortly. If you don’t hear back, contact dave@stratezik.com with your payment confirmation.'
 
 type SupabaseAdmin = ReturnType<typeof createAdminClient>
 
@@ -250,8 +254,15 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
     scanId?: unknown
     email?: unknown
     website?: unknown
+    termsConsent?: unknown
     formToken?: unknown
     turnstileToken?: unknown
+  }
+
+  if (body.termsConsent !== true) {
+    return res
+      .status(400)
+      .json({ error: 'Please agree to the Terms & Refund Policy before paying.' })
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
@@ -305,7 +316,14 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
           },
         },
       ],
-      metadata: { product: 'gbp-roadmap', scanId, email, businessName: scanRow.business_name },
+      metadata: {
+        product: 'gbp-roadmap',
+        scanId,
+        email,
+        businessName: scanRow.business_name,
+        termsConsent: 'yes',
+        termsConsentTs: new Date().toISOString(),
+      },
       success_url: `${origin}/gbp-audit?session_id={CHECKOUT_SESSION_ID}&scanId=${scanId}`,
       cancel_url: `${origin}/gbp-audit?canceled=1`,
     })
@@ -373,19 +391,42 @@ export async function handleGbpUnlock(req: VercelRequest, res: VercelResponse) {
     })
   }
 
-  const scan = scanRow.result as GbpScanResult
-  const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
-  // Email the PDF (await so it completes before the serverless function exits).
-  if (aiRoadmap && email) {
-    await emailRoadmapOnce(supabase, scanRow.id, email, scan, aiRoadmap)
-  }
-
-  return res.status(200).json({
-    unlocked: true,
-    ...topline(scan, scanRow.id),
-    pillars: scan.pillars,
-    aiRoadmap,
+  // Ensure the paid order is on record before we generate, so a failure below
+  // can be flagged and alerted even if the Stripe webhook is delayed.
+  await recordPaidOrder({
+    sessionId,
+    product: 'gbp-roadmap',
+    email: email || null,
+    scanId: scanRow.id,
   })
+
+  const scan = scanRow.result as GbpScanResult
+  try {
+    const aiRoadmap = await ensureAiRoadmap(supabase, scanRow.id, scan)
+    // Email the PDF (await so it completes before the serverless function exits).
+    if (aiRoadmap && email) {
+      await emailRoadmapOnce(supabase, scanRow.id, email, scan, aiRoadmap)
+    }
+
+    if (aiRoadmap) {
+      await markOrderDelivered(sessionId)
+    } else {
+      // Payment captured but the AI plan came back empty — alert so we can
+      // deliver it manually; still unlock the rest of the paid report on-screen.
+      await markOrderFailed(sessionId, 'AI roadmap generation returned no result')
+    }
+
+    return res.status(200).json({
+      unlocked: true,
+      ...topline(scan, scanRow.id),
+      pillars: scan.pillars,
+      aiRoadmap,
+    })
+  } catch (err) {
+    console.error('[gbp/unlock] roadmap generation failed:', err)
+    await markOrderFailed(sessionId, err instanceof Error ? err.message : String(err))
+    return res.status(500).json({ error: PAID_FAILED_MESSAGE })
+  }
 }
 
 /** Reload a paid roadmap when the user returns without Stripe query params. */

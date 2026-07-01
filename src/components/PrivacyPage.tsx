@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const SITE = 'https://www.stratezik.com'
-const LAST_UPDATED = 'June 16, 2026'
+const LAST_UPDATED = 'June 30, 2026'
 
 const sectionClass = 'mt-12 pt-10 border-t border-ink/10 first:mt-0 first:pt-0 first:border-t-0'
 const h2Class = 'font-display text-2xl text-ink tracking-tight'
@@ -393,8 +393,61 @@ export default function PrivacyPage() {
           </p>
         </section>
 
+        <section id="paid-reports" className={sectionClass}>
+          <h2 className={h2Class}>17. Paid Reports — Payments, Refunds &amp; Credits</h2>
+          <p className={pClass}>
+            Some of our tools produce <strong className="text-ink">paid reports</strong> — currently the AEO Checker
+            page and full-site audits, and the Google Business Profile (GBP) Growth Roadmap. These are{' '}
+            <strong className="text-ink">custom digital services generated on demand</strong> at the time of purchase,
+            using data and AI analysis available at that moment, and delivered to you on-screen and/or by email.
+          </p>
+          <p className={pClass}>
+            When you pay for a report, you tick a box confirming you have read and agree to the terms in this section.
+            We record that consent (and its timestamp) with your order.
+          </p>
+          <ul className={ulClass}>
+            <li>
+              <strong className="text-ink">Successful delivery is a final sale.</strong> Because each report is
+              generated specifically for you and made available immediately, a purchase is{' '}
+              <strong className="text-ink">non-refundable once the report has been successfully generated</strong> and
+              delivered to you.
+            </li>
+            <li>
+              <strong className="text-ink">If generation fails on our side.</strong> In the rare case that we take
+              payment but cannot deliver your report due to a technical failure, we detect it automatically. We will,
+              at our discretion: (a) retry and deliver it, (b) prepare and deliver it manually, or (c) if it still
+              cannot be delivered, provide a <strong className="text-ink">free re-run credit or a full refund</strong>{' '}
+              of that purchase.
+            </li>
+            <li>
+              <strong className="text-ink">How to reach us.</strong> If you paid and did not receive your report,
+              email{' '}
+              <a href="mailto:dave@stratezik.com" className="text-oxblood underline underline-offset-2">
+                dave@stratezik.com
+              </a>{' '}
+              within <strong className="text-ink">30 days</strong> with your payment confirmation. We monitor failed
+              deliveries automatically, but contacting us ensures we resolve yours quickly.
+            </li>
+            <li>
+              <strong className="text-ink">No refunds for change of mind or results.</strong> Reports are
+              informational and reflect the data and AI analysis available at generation time. Scores, findings, and
+              recommendations are not guarantees of rankings, traffic, revenue, or other outcomes, and are not grounds
+              for a refund once delivered.
+            </li>
+            <li>
+              <strong className="text-ink">Payment processing.</strong> Payments are handled by Stripe. We do not
+              receive or store your full card details. Stripe processes your payment information under its own terms
+              and privacy policy.
+            </li>
+          </ul>
+          <p className={pClass}>
+            Nothing in this section limits any non-waivable rights you may have under applicable consumer protection
+            law.
+          </p>
+        </section>
+
         <section id="changes" className={sectionClass}>
-          <h2 className={h2Class}>17. Changes to This Notice</h2>
+          <h2 className={h2Class}>18. Changes to This Notice</h2>
           <p className={pClass}>
             We may update this Privacy Notice from time to time to reflect changes in our practices or the law. We will
             post the new version here and update the &ldquo;Last Updated&rdquo; date at the top. Where the law requires

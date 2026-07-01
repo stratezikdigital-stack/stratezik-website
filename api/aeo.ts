@@ -9,6 +9,7 @@ import {
 } from '../server/aeo/handlers.js'
 import { handleContact, handleFormToken, handleGrowthCredit } from '../server/forms/handlers.js'
 import { handleGuideAccess, handleGuideLead } from '../server/cheatsheet/handlers.js'
+import { reconcilePaidOrders } from '../server/payments/orders.js'
 
 /** Map legacy /api/aeo-* paths and ?action= query to a single handler key. */
 function resolveAction(req: VercelRequest): string | null {
@@ -35,6 +36,14 @@ function resolveAction(req: VercelRequest): string | null {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const action = resolveAction(req)
 
+  if (action === 'reconcile-orders' && req.method === 'GET') {
+    const secret = process.env.CRON_SECRET?.trim()
+    if (secret && req.headers.authorization !== `Bearer ${secret}`) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+    const alerted = await reconcilePaidOrders()
+    return res.status(200).json({ ok: true, alerted })
+  }
   if (action === 'form-token' && req.method === 'GET') {
     return handleFormToken(req, res)
   }

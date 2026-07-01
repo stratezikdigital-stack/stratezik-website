@@ -235,6 +235,7 @@ export default function AeoCheckerPage() {
   const [searchParams] = useSearchParams()
 
   const [checkoutBusy, setCheckoutBusy] = useState<'' | 'report' | 'sitemap'>('')
+  const [termsConsent, setTermsConsent] = useState(false)
   const [competitors, setCompetitors] = useState('') // customer-chosen competitor domains
   const [deep, setDeep] = useState<DeepScanResult | null>(null)
   const [deepBase, setDeepBase] = useState<BaseTopline | null>(null)
@@ -390,6 +391,10 @@ export default function AeoCheckerPage() {
       setError('Please complete the security check and try again.')
       return
     }
+    if (!termsConsent) {
+      setError('Please agree to the Terms & Refund Policy before paying.')
+      return
+    }
     setCheckoutBusy(product)
     setError('')
     try {
@@ -401,6 +406,7 @@ export default function AeoCheckerPage() {
           scanId: topline.scanId,
           domain: topline.domain,
           email,
+          termsConsent,
           competitors: competitors
             .split(/[,\s]+/)
             .map((s) => s.trim())
@@ -757,6 +763,29 @@ export default function AeoCheckerPage() {
                     onHoneypotChange={protection.setHoneypot}
                   />
 
+                  <label className="mt-5 flex items-start gap-2.5 text-left text-xs text-ink-600 leading-relaxed">
+                    <input
+                      type="checkbox"
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-oxblood"
+                      checked={termsConsent}
+                      onChange={(e) => setTermsConsent(e.target.checked)}
+                    />
+                    <span>
+                      I agree to the{' '}
+                      <a
+                        href="/privacy#paid-reports"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-oxblood underline underline-offset-2"
+                      >
+                        Terms &amp; Refund Policy
+                      </a>
+                      : reports are custom-generated digital services. If generation fails on our
+                      side, we retry, deliver manually, or issue a credit or refund; successfully
+                      delivered reports are non-refundable.
+                    </span>
+                  </label>
+
                   {/* $10 vs $49 — value comparison */}
                   <div className="mt-6 grid items-stretch gap-4 lg:grid-cols-2">
                     <PlanCard
@@ -773,7 +802,7 @@ export default function AeoCheckerPage() {
                       ]}
                       cta={checkoutBusy === 'report' ? 'Starting checkout…' : `Run it on my site for ${PRICE}`}
                       onClick={() => handleCheckout('report')}
-                      disabled={checkoutBusy !== '' || !protection.canSubmit}
+                      disabled={checkoutBusy !== '' || !protection.canSubmit || !termsConsent}
                       highlight
                     />
                     <PlanCard
@@ -791,7 +820,7 @@ export default function AeoCheckerPage() {
                       ]}
                       cta={checkoutBusy === 'sitemap' ? 'Starting checkout…' : `Audit my whole site for ${SITEMAP_PRICE}`}
                       onClick={() => handleCheckout('sitemap')}
-                      disabled={checkoutBusy !== '' || !protection.canSubmit}
+                      disabled={checkoutBusy !== '' || !protection.canSubmit || !termsConsent}
                     />
                   </div>
                   {error && <p className="mt-3 text-center text-sm text-oxblood">{error}</p>}
