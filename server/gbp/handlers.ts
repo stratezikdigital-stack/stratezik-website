@@ -219,7 +219,9 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Something went wrong. Try again.' })
   }
 
-  void appendGbpLeadToSheet({
+  // Await the sheet sync: on Vercel the function is frozen once the response is
+  // sent, so a fire-and-forget fetch to the Apps Script webhook never completes.
+  await appendGbpLeadToSheet({
     email,
     name,
     businessName: scanRow.business_name,

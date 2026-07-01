@@ -173,18 +173,21 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Something went wrong. Try again.' })
   }
 
-  void appendAeoLeadToSheet({
-    email,
-    name,
-    domain: scanRow.domain,
-    score: scanRow.total,
-    source,
-    consent,
-    groupAPct: scan.groupA.pct,
-    groupBPct: scan.groupB.pct,
-  })
-
-  const emailResult = await sendReportEmail(email, scan, name)
+  // Await the sheet sync (in parallel with the email): on Vercel the function is
+  // frozen once the response is sent, so a fire-and-forget webhook fetch is dropped.
+  const [, emailResult] = await Promise.all([
+    appendAeoLeadToSheet({
+      email,
+      name,
+      domain: scanRow.domain,
+      score: scanRow.total,
+      source,
+      consent,
+      groupAPct: scan.groupA.pct,
+      groupBPct: scan.groupB.pct,
+    }),
+    sendReportEmail(email, scan, name),
+  ])
   return res.status(200).json({ criteria: scan.criteria, emailSent: emailResult.sent })
 }
 

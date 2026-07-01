@@ -96,7 +96,9 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
     guideUrl: `${appOrigin()}${guideUrl}&utm_source=email&utm_medium=delivery&utm_campaign=chatgpt-ads-cheat-sheet`,
   })
 
-  void appendChatGptLeadToSheet({
+  // Await the sheet sync: on Vercel the function is frozen once the response is
+  // sent, so a fire-and-forget fetch to the Apps Script webhook never completes.
+  await appendChatGptLeadToSheet({
     email,
     firstName: firstName || undefined,
     vertical,
