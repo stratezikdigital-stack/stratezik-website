@@ -7,11 +7,15 @@ const CONTACT_WEBHOOK_FALLBACK =
   'https://script.google.com/macros/s/AKfycbyRQyW4slnqjxI4yY75-Tj2RX-uTlJg5dUIZBbaRnsJ1yBB8tPdOZmI3sV0T3WX4wL_/exec'
 
 function contactWebhookUrl(): string {
-  return (process.env.GOOGLE_CONTACT_WEBHOOK_URL || CONTACT_WEBHOOK_FALLBACK).trim()
+  return (
+    process.env.GOOGLE_LEADS_WEBHOOK_URL ||
+    process.env.GOOGLE_CONTACT_WEBHOOK_URL ||
+    CONTACT_WEBHOOK_FALLBACK
+  ).trim()
 }
 
 function growthCreditWebhookUrl(): string {
-  return (process.env.GOOGLE_GROWTH_CREDIT_WEBHOOK_URL || '').trim()
+  return (process.env.GOOGLE_LEADS_WEBHOOK_URL || process.env.GOOGLE_GROWTH_CREDIT_WEBHOOK_URL || '').trim()
 }
 
 async function postToAppsScript(
@@ -54,6 +58,7 @@ export async function handleContact(req: VercelRequest, res: VercelResponse) {
 
   const webhook = contactWebhookUrl()
   const ok = await postToAppsScript(webhook, {
+    type: 'contact',
     name,
     email,
     company,
@@ -101,6 +106,7 @@ export async function handleGrowthCredit(req: VercelRequest, res: VercelResponse
   }
 
   const ok = await postToAppsScript(webhook, {
+    type: 'growth-credit',
     first_name: firstName,
     last_name: lastName,
     business,

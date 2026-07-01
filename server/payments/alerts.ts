@@ -56,12 +56,15 @@ async function sendAlertEmail(order: PaidOrderRow, reason: string): Promise<void
 }
 
 async function appendIssueToSheet(order: PaidOrderRow, reason: string): Promise<void> {
-  const webhook = process.env.GOOGLE_PAID_ISSUES_WEBHOOK_URL?.trim()
+  const webhook =
+    process.env.GOOGLE_LEADS_WEBHOOK_URL?.trim() ||
+    process.env.GOOGLE_PAID_ISSUES_WEBHOOK_URL?.trim()
   if (!webhook) {
-    console.warn('[payments/alerts] GOOGLE_PAID_ISSUES_WEBHOOK_URL not set — skipping sheet sync')
+    console.warn('[payments/alerts] GOOGLE_LEADS_WEBHOOK_URL not set — skipping sheet sync')
     return
   }
   const params = new URLSearchParams({
+    type: 'paid-issue',
     product: order.product,
     email: order.email ?? '',
     amount: centsToLabel(order.amount_cents, order.currency),

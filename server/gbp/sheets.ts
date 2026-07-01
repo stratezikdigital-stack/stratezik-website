@@ -10,13 +10,16 @@ export type GbpLeadSheetRow = {
 }
 
 export async function appendGbpLeadToSheet(row: GbpLeadSheetRow): Promise<void> {
-  const webhook = process.env.GOOGLE_GBP_LEADS_WEBHOOK_URL?.trim()
+  const webhook =
+    process.env.GOOGLE_LEADS_WEBHOOK_URL?.trim() ||
+    process.env.GOOGLE_GBP_LEADS_WEBHOOK_URL?.trim()
   if (!webhook) {
-    console.warn('[gbp/sheets] GOOGLE_GBP_LEADS_WEBHOOK_URL not set — skipping sheet sync')
+    console.warn('[gbp/sheets] GOOGLE_LEADS_WEBHOOK_URL not set — skipping sheet sync')
     return
   }
 
   const params = new URLSearchParams({
+    type: 'gbp',
     name: row.name ?? '',
     email: row.email,
     domain: `${row.businessName} · ${row.city}`,

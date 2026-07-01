@@ -9,13 +9,16 @@ export type ChatGptLeadSheetRow = {
 }
 
 export async function appendChatGptLeadToSheet(row: ChatGptLeadSheetRow): Promise<void> {
-  const webhook = process.env.GOOGLE_CHATGPT_LEADS_WEBHOOK_URL?.trim()
+  const webhook =
+    process.env.GOOGLE_LEADS_WEBHOOK_URL?.trim() ||
+    process.env.GOOGLE_CHATGPT_LEADS_WEBHOOK_URL?.trim()
   if (!webhook) {
-    console.warn('[cheatsheet/sheets] GOOGLE_CHATGPT_LEADS_WEBHOOK_URL not set — skipping sheet sync')
+    console.warn('[cheatsheet/sheets] GOOGLE_LEADS_WEBHOOK_URL not set — skipping sheet sync')
     return
   }
 
   const params = new URLSearchParams({
+    type: 'chatgpt',
     first_name: row.firstName ?? '',
     email: row.email,
     vertical: row.vertical ?? '',

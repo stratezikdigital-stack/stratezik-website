@@ -1,5 +1,24 @@
 # Google Sheets Integration Setup Guide
 
+## ✅ Current setup: ONE unified router (do this)
+
+All lead types (contact, GBP, AEO, growth-credit, ChatGPT, paid-order-issues) now go through a **single Apps Script** and a **single webhook URL**. This replaces the per-product scripts below — do **not** paste multiple lead scripts into one project (they all define `doGet`/`doPost` and collide, so only one ever runs).
+
+**Why:** the site sends a `type` field (`contact`, `gbp`, `aeo`, `growth-credit`, `chatgpt`, `paid-issue`) to one URL; the router writes to the correct tab.
+
+**Setup (one time):**
+1. Open the **Stratezik Leads** spreadsheet → **Extensions → Apps Script**.
+2. **Delete every existing `.gs` file** in that project and paste **`google-apps-script-router.js`** as the only file. Save.
+3. Run **`setupAllSheets`** once (creates/headers all tabs), then **`sendTestEmail`** once and approve the permission prompt.
+4. **Deploy → Manage deployments → Edit (pencil) → Version: New version → Deploy.** Copy the `/exec` URL.
+5. In Vercel (Production + Development) set **`GOOGLE_LEADS_WEBHOOK_URL`** = that `/exec` URL, then redeploy.
+6. Verify: open `…/exec?type=chatgpt&email=test@example.com` — it should return **"chatgpt lead recorded"** and add a row to the `ChatGpt Leads` tab.
+
+The old per-product `GOOGLE_*_WEBHOOK_URL` vars are no longer needed (the code still falls back to them if `GOOGLE_LEADS_WEBHOOK_URL` is unset). The sections below document the individual tab schemas for reference.
+
+---
+
+
 ## 🎯 **How to Set Up Lead Capture in Google Sheets**
 
 ### **Step 1: Create Google Sheet**
