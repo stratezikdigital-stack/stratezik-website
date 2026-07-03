@@ -41,11 +41,11 @@ var TABS = {
   },
   aeo: {
     name: 'AEO Readiness List',
-    headers: ['Timestamp', 'Name', 'Email', 'Domain', 'Score (/20)', 'Group A %', 'Group B %', 'Source', 'Consent'],
+    headers: ['Timestamp', 'Name', 'Email', 'Domain', 'Score (/20)', 'Group A %', 'Group B %', 'Source', 'Consent', 'Business'],
   },
   chatgpt: {
     name: 'ChatGpt Leads',
-    headers: ['Timestamp', 'First Name', 'Email', 'Vertical', 'Consent', 'Source', 'Delivery Email Sent'],
+    headers: ['Timestamp', 'First Name', 'Email', 'Vertical', 'Consent', 'Source', 'Delivery Email Sent', 'Business'],
   },
   'paid-issue': {
     name: 'Paid Order Issues',
@@ -65,6 +65,15 @@ function getOrCreateTab(key) {
   if (sheet.getLastRow() === 0) {
     sheet.getRange(1, 1, 1, cfg.headers.length).setValues([cfg.headers]);
     sheet.getRange(1, 1, 1, cfg.headers.length).setFontWeight('bold');
+  } else {
+    // Backfill any newly-added trailing headers (e.g. "Business") onto an
+    // existing tab so new columns get a label instead of landing blank.
+    var existingCols = sheet.getLastColumn();
+    if (cfg.headers.length > existingCols) {
+      var extra = cfg.headers.slice(existingCols);
+      sheet.getRange(1, existingCols + 1, 1, extra.length).setValues([extra]);
+      sheet.getRange(1, existingCols + 1, 1, extra.length).setFontWeight('bold');
+    }
   }
   return sheet;
 }
@@ -171,7 +180,7 @@ function recordAeo(p) {
   var ts = new Date();
   // Sheet logging only — the visitor report email is sent by the site (Resend).
   getOrCreateTab('aeo').appendRow([
-    ts, p.name || '', p.email || '', p.domain || '', p.score || '', p.group_a || '', p.group_b || '', p.source || 'aeo-checker', p.consent || '',
+    ts, p.name || '', p.email || '', p.domain || '', p.score || '', p.group_a || '', p.group_b || '', p.source || 'aeo-checker', p.consent || '', p.business || '',
   ]);
   return 'aeo lead recorded';
 }
@@ -179,12 +188,13 @@ function recordAeo(p) {
 function recordChatgpt(p) {
   var ts = new Date();
   getOrCreateTab('chatgpt').appendRow([
-    ts, p.first_name || '', p.email || '', p.vertical || '', p.consent || '', p.source || 'chatgpt-ads-cheat-sheet', p.email_sent || '',
+    ts, p.first_name || '', p.email || '', p.vertical || '', p.consent || '', p.source || 'chatgpt-ads-cheat-sheet', p.email_sent || '', p.business || '',
   ]);
   notify(
     'ChatGPT Ads cheat sheet lead — ' + (p.email || 'unknown email'),
     'New ChatGPT Ads Cheat Sheet lead on stratezik.com/chatgpt-ads-cheat-sheet.\n\n' +
       'First name: ' + (p.first_name || '(not provided)') + '\n' +
+      'Business: ' + (p.business || '(not provided)') + '\n' +
       'Email: ' + (p.email || '(not provided)') + '\n' +
       'Vertical: ' + (p.vertical || '(not provided)') + '\n' +
       'Consent: ' + (p.consent || '(not provided)') + '\n' +

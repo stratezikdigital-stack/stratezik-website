@@ -33,6 +33,7 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as {
     email?: unknown
     firstName?: unknown
+    businessName?: unknown
     vertical?: unknown
     consent?: unknown
     company?: unknown
@@ -52,10 +53,17 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
   if (!allowed) return
 
   const firstName = typeof body.firstName === 'string' ? body.firstName.trim().slice(0, 80) : ''
+  const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const vertical =
     typeof body.vertical === 'string' && VERTICALS.includes(body.vertical) ? body.vertical : null
   const consent = body.consent === true
 
+  if (!firstName) {
+    return res.status(400).json({ error: 'Please enter your name.' })
+  }
+  if (!businessName) {
+    return res.status(400).json({ error: 'Please enter your business name.' })
+  }
   if (!consent) {
     return res.status(400).json({
       error:
@@ -76,15 +84,22 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
 
   try {
     const supabase = createAdminClient()
-    const { error } = await supabase.from('guide_leads').insert({
+    const row = {
       email,
       first_name: firstName || null,
+      business_name: businessName || null,
       vertical,
       consent,
       consent_ts: new Date().toISOString(),
       ip,
       source: SOURCE,
-    })
+    }
+    let { error } = await supabase.from('guide_leads').insert(row)
+    if (error && /business_name/i.test(error.message)) {
+      // business_name column not migrated yet — store the rest so we don't lose the lead.
+      const { business_name: _omit, ...rest } = row
+      ;({ error } = await supabase.from('guide_leads').insert(rest))
+    }
     if (error) console.error('[guide-lead] store failed (continuing):', error.message)
   } catch (err) {
     console.error('[guide-lead] supabase error (continuing):', err)
@@ -101,6 +116,7 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
   await appendChatGptLeadToSheet({
     email,
     firstName: firstName || undefined,
+    businessName: businessName || undefined,
     vertical,
     source: SOURCE,
     consent,

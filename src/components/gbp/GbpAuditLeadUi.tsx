@@ -2,6 +2,7 @@ import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveIndustry } from '../../gbp/industryEngine'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
+import { EmailTypoHint } from '../spam/EmailTypoHint'
 import { GbpCompetitorBarChart, GbpPillarBarChart, GbpPillarRadarChart, GbpEmailGatePreview } from './GbpAuditCharts'
 
 export const GBP_SCAN_STEPS = [
@@ -329,6 +330,8 @@ export function GbpReportUnlockChecklist({ emailUnlocked }: { emailUnlocked: boo
 
 export function GbpEmailUnlockGate({
   email,
+  name,
+  businessName,
   consent,
   loading,
   canSubmit,
@@ -336,6 +339,8 @@ export function GbpEmailUnlockGate({
   turnstileResetKey,
   honeypot,
   onEmailChange,
+  onNameChange,
+  onBusinessNameChange,
   onConsentChange,
   onTurnstileSuccess,
   onTurnstileExpire,
@@ -348,6 +353,8 @@ export function GbpEmailUnlockGate({
   sticky,
 }: {
   email: string
+  name: string
+  businessName: string
   consent: boolean
   loading: boolean
   canSubmit: boolean
@@ -355,6 +362,8 @@ export function GbpEmailUnlockGate({
   turnstileResetKey: number
   honeypot: string
   onEmailChange: (v: string) => void
+  onNameChange: (v: string) => void
+  onBusinessNameChange: (v: string) => void
   onConsentChange: (v: boolean) => void
   onTurnstileSuccess: (token: string) => void
   onTurnstileExpire: () => void
@@ -387,13 +396,33 @@ export function GbpEmailUnlockGate({
         </div>
         <div className="flex flex-col gap-3">
           <input
+            type="text"
+            required
+            autoComplete="name"
+            className={inputClass}
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => onNameChange(e.target.value)}
+          />
+          <input
+            type="text"
+            required
+            autoComplete="organization"
+            className={inputClass}
+            placeholder="Business name"
+            value={businessName}
+            onChange={(e) => onBusinessNameChange(e.target.value)}
+          />
+          <input
             type="email"
             required
+            autoComplete="email"
             className={inputClass}
             placeholder="you@business.com"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
           />
+          <EmailTypoHint email={email} onAccept={onEmailChange} />
           <label className="flex items-start gap-2.5 text-xs text-ink-600 leading-relaxed">
             <input
               type="checkbox"

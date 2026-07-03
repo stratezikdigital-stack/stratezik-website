@@ -2,6 +2,7 @@
 export type AeoLeadSheetRow = {
   email: string
   name?: string
+  businessName?: string
   domain: string
   score: number | null
   source: string | null
@@ -22,6 +23,7 @@ export async function appendAeoLeadToSheet(row: AeoLeadSheetRow): Promise<void> 
   const params = new URLSearchParams({
     type: 'aeo',
     name: row.name ?? '',
+    business: row.businessName ?? '',
     email: row.email,
     domain: row.domain,
     score: row.score === null ? 'unverifiable' : String(row.score),

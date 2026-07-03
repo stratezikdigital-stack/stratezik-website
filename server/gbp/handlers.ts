@@ -161,6 +161,7 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
     scanId?: unknown
     email?: unknown
     name?: unknown
+    businessName?: unknown
     consent?: unknown
     source?: unknown
     website?: unknown
@@ -179,7 +180,8 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
   if (!allowed) return
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
-  const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : undefined
+  const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
+  const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const consent = body.consent === true
   const source = typeof body.source === 'string' ? body.source.trim().slice(0, 120) : 'gbp-audit'
 
@@ -188,6 +190,12 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
   }
   if (!scanId) {
     return res.status(400).json({ error: 'Scan not found — run the check again.' })
+  }
+  if (!name) {
+    return res.status(400).json({ error: 'Please enter your name.' })
+  }
+  if (!businessName) {
+    return res.status(400).json({ error: 'Please enter your business name.' })
   }
   if (!consent) {
     return res.status(400).json({
@@ -208,11 +216,12 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
   }
 
   const scan = scanRow.result as GbpScanResult
+  const resolvedBusiness = businessName || scanRow.business_name
   const { error: leadError } = await supabase.from('gbp_leads').insert({
     email,
     name: name || null,
     scan_id: scanRow.id,
-    business_name: scanRow.business_name,
+    business_name: resolvedBusiness,
     city: scanRow.city,
     score: scanRow.score,
     consent,
@@ -227,8 +236,8 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
   // sent, so a fire-and-forget fetch to the Apps Script webhook never completes.
   await appendGbpLeadToSheet({
     email,
-    name,
-    businessName: scanRow.business_name,
+    name: name || undefined,
+    businessName: resolvedBusiness,
     city: scanRow.city,
     score: scanRow.score,
     source,

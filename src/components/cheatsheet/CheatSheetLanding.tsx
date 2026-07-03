@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
+import { EmailTypoHint } from '../spam/EmailTypoHint'
 import { useFormProtection } from '../../lib/spam/useFormProtection'
 import { CheatSheetHeader } from './CheatSheetHeader'
 
@@ -64,6 +65,7 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
   const formRef = useRef<HTMLDivElement>(null)
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
+  const [businessName, setBusinessName] = useState('')
   const [vertical, setVertical] = useState('')
   const [consent, setConsent] = useState(false)
   const [company, setCompany] = useState('')
@@ -79,6 +81,14 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
+    if (!firstName.trim()) {
+      setError('Please enter your name.')
+      return
+    }
+    if (!businessName.trim()) {
+      setError('Please enter your business name.')
+      return
+    }
     if (!consent) {
       setError('Please tick the consent box so we can send the cheat sheet.')
       return
@@ -95,6 +105,7 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
         body: JSON.stringify({
           email,
           firstName,
+          businessName,
           vertical,
           consent,
           company,
@@ -278,15 +289,28 @@ export function CheatSheetLanding({ peek }: { peek: string }) {
                 autoComplete="email"
                 className="input-editorial"
               />
+              <EmailTypoHint email={email} onAccept={setEmail} />
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="First name (optional)"
+                  placeholder="First name"
+                  required
                   autoComplete="given-name"
                   className="input-editorial"
                 />
+                <input
+                  type="text"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Business name"
+                  required
+                  autoComplete="organization"
+                  className="input-editorial"
+                />
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <select
                   value={vertical}
                   onChange={(e) => setVertical(e.target.value)}

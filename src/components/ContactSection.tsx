@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
+import { EmailTypoHint } from './spam/EmailTypoHint'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { useSection } from '../three/world/useSection'
 import { useWorldStore } from '../three/world/store'
@@ -177,23 +178,31 @@ export default function ContactSection() {
                       onChange={handleInputChange}
                       required
                     />
-                    <Field
-                      id="email"
-                      name="email"
-                      type="email"
-                      label="Email address"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
+                    <div>
+                      <Field
+                        id="email"
+                        name="email"
+                        type="email"
+                        label="Email address"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <EmailTypoHint
+                        email={formData.email}
+                        onAccept={(fixed) => setFormData((d) => ({ ...d, email: fixed }))}
+                        className="mt-2"
+                      />
+                    </div>
                   </div>
 
                   <Field
                     id="company"
                     name="company"
-                    label="Company"
+                    label="Company / business name"
                     value={formData.company}
                     onChange={handleInputChange}
+                    required
                   />
 
                   <Field

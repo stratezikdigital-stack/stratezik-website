@@ -52,8 +52,8 @@ export async function handleContact(req: VercelRequest, res: VercelResponse) {
   const company = typeof body.company === 'string' ? body.company.trim().slice(0, 120) : ''
   const message = typeof body.message === 'string' ? body.message.trim().slice(0, 4000) : ''
 
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required.' })
+  if (!name || !email || !company) {
+    return res.status(400).json({ error: 'Name, email, and company are required.' })
   }
 
   const webhook = contactWebhookUrl()

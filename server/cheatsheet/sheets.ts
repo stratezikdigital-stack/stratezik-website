@@ -2,6 +2,7 @@
 export type ChatGptLeadSheetRow = {
   email: string
   firstName?: string
+  businessName?: string
   vertical: string | null
   source: string
   consent: boolean
@@ -20,6 +21,7 @@ export async function appendChatGptLeadToSheet(row: ChatGptLeadSheetRow): Promis
   const params = new URLSearchParams({
     type: 'chatgpt',
     first_name: row.firstName ?? '',
+    business: row.businessName ?? '',
     email: row.email,
     vertical: row.vertical ?? '',
     source: row.source,

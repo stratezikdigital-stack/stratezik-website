@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { clientIp } from '../aeo/rate-limit.js'
 import { isDisposableEmail } from './disposable-email.js'
+import { isDeliverableEmailDomain } from './email-deliverable.js'
 import { verifyFormToken } from './form-token.js'
 import { checkRateLimit } from './rate-limit.js'
 import { turnstileConfigured, verifyTurnstile } from './turnstile.js'
@@ -80,6 +81,12 @@ export async function enforceSpamGuards(
     }
     if (isDisposableEmail(email)) {
       res.status(400).json({ error: 'Please use a work or personal email we can reply to.' })
+      return false
+    }
+    if (!(await isDeliverableEmailDomain(email))) {
+      res.status(400).json({
+        error: 'That email domain can’t receive mail — please double-check your address.',
+      })
       return false
     }
     if (!(await checkRateLimit(`${opts.bucket}:email:${email}`, 5, 24 * 60 * 60 * 1000))) {

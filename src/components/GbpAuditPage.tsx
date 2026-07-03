@@ -181,6 +181,8 @@ export default function GbpAuditPage() {
   const [city, setCity] = useState('')
   const [industry, setIndustry] = useState('Pest control')
   const [email, setEmail] = useState('')
+  const [leadName, setLeadName] = useState('')
+  const [leadBusiness, setLeadBusiness] = useState('')
   const [consent, setConsent] = useState(false)
   const [roadmapConsent, setRoadmapConsent] = useState(false)
   const [topline, setTopline] = useState<Topline | null>(null)
@@ -213,6 +215,11 @@ export default function GbpAuditPage() {
     )
     return () => timers.forEach(clearTimeout)
   }, [phase])
+
+  // Prefill the unlock form's business name from the scan (editable by the user).
+  useEffect(() => {
+    if (topline?.businessName) setLeadBusiness((b) => b || topline.businessName)
+  }, [topline])
 
   const applyPreview = useCallback((data: Topline) => {
     setCompGaps(data.competitorGaps ?? null)
@@ -275,6 +282,14 @@ export default function GbpAuditPage() {
     async (e: FormEvent) => {
       e.preventDefault()
       if (!topline || !protection.canSubmit) return
+      if (!leadName.trim()) {
+        setError('Please enter your name.')
+        return
+      }
+      if (!leadBusiness.trim()) {
+        setError('Please enter your business name.')
+        return
+      }
       if (!consent) {
         setError('Please agree to our Privacy Notice to receive your report.')
         return
@@ -288,6 +303,8 @@ export default function GbpAuditPage() {
           body: JSON.stringify({
             scanId: topline.scanId,
             email,
+            name: leadName,
+            businessName: leadBusiness,
             consent: true,
             source: 'gbp-audit',
             website: protection.honeypot,
@@ -318,7 +335,7 @@ export default function GbpAuditPage() {
         void protection.refreshFormToken()
       }
     },
-    [topline, email, consent, protection],
+    [topline, email, leadName, leadBusiness, consent, protection],
   )
 
   const startCheckout = useCallback(async () => {
@@ -871,6 +888,8 @@ export default function GbpAuditPage() {
                 {error && !emailUnlocked ? <p className="mt-4 text-sm text-oxblood">{error}</p> : null}
                 <GbpEmailUnlockGate
                 email={email}
+                name={leadName}
+                businessName={leadBusiness}
                 consent={consent}
                 loading={loading}
                 canSubmit={protection.canSubmit}
@@ -878,6 +897,8 @@ export default function GbpAuditPage() {
                 turnstileResetKey={turnstileKey}
                 honeypot={protection.honeypot}
                 onEmailChange={setEmail}
+                onNameChange={setLeadName}
+                onBusinessNameChange={setLeadBusiness}
                 onConsentChange={setConsent}
                 onTurnstileSuccess={protection.setTurnstileToken}
                 onTurnstileExpire={protection.resetTurnstile}

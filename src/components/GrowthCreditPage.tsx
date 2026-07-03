@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
+import { EmailTypoHint } from './spam/EmailTypoHint'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { GROWTH_CREDIT_FAQS } from '../growth-credit/growthCreditFaqs'
 
@@ -375,6 +376,11 @@ export default function GrowthCreditPage() {
                       onChange={handleChange}
                       className="input-editorial w-full"
                       autoComplete="email"
+                    />
+                    <EmailTypoHint
+                      email={form.email}
+                      onAccept={(fixed) => setForm((prev) => ({ ...prev, email: fixed }))}
+                      className="mt-2"
                     />
                   </div>
                   <div>

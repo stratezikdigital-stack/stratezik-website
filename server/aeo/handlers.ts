@@ -112,6 +112,7 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
     scanId?: unknown
     email?: unknown
     name?: unknown
+    businessName?: unknown
     consent?: unknown
     source?: unknown
     website?: unknown
@@ -130,12 +131,19 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
   if (!allowed) return
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
-  const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : undefined
+  const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
+  const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const consent = body.consent === true
   const source = typeof body.source === 'string' ? body.source.trim().slice(0, 120) : null
 
   if (!scanId) {
     return res.status(400).json({ error: 'A valid email is required.' })
+  }
+  if (!name) {
+    return res.status(400).json({ error: 'Please enter your name.' })
+  }
+  if (!businessName) {
+    return res.status(400).json({ error: 'Please enter your business name.' })
   }
   if (!consent) {
     return res.status(400).json({
@@ -162,16 +170,23 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
   }
 
   const scan = scanRow.result as AeoScanResult
-  const { error: leadError } = await supabase.from('aeo_leads').insert({
+  const leadRow = {
     email,
     name: name || null,
+    business_name: businessName || null,
     domain: scanRow.domain,
     scan_id: scanRow.id,
     score: scanRow.total,
     sub_scores: Object.fromEntries(scan.criteria.map((c) => [c.key, c.score])),
     consent,
     source,
-  })
+  }
+  let { error: leadError } = await supabase.from('aeo_leads').insert(leadRow)
+  if (leadError && /business_name/i.test(leadError.message)) {
+    // business_name column not migrated yet — store the rest so the lead is never lost.
+    const { business_name: _omit, ...rest } = leadRow
+    ;({ error: leadError } = await supabase.from('aeo_leads').insert(rest))
+  }
   if (leadError) {
     console.error('[aeo/lead] failed to store lead:', leadError)
     return res.status(500).json({ error: 'Something went wrong. Try again.' })
@@ -182,7 +197,8 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
   const [, emailResult] = await Promise.all([
     appendAeoLeadToSheet({
       email,
-      name,
+      name: name || undefined,
+      businessName: businessName || undefined,
       domain: scanRow.domain,
       score: scanRow.total,
       source,

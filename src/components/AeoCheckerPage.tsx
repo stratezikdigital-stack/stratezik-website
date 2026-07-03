@@ -11,6 +11,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
+import { EmailTypoHint } from './spam/EmailTypoHint'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import { resolveLeadSource } from '../aeo/checkerLinks'
 import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
@@ -227,6 +228,7 @@ export default function AeoCheckerPage() {
 
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [businessName, setBusinessName] = useState('')
   const [consent, setConsent] = useState(false)
   const [leadBusy, setLeadBusy] = useState(false)
   const [leadError, setLeadError] = useState('')
@@ -348,6 +350,14 @@ export default function AeoCheckerPage() {
   async function handleLead(e: FormEvent) {
     e.preventDefault()
     if (!topline) return
+    if (!name.trim()) {
+      setLeadError('Please enter your name.')
+      return
+    }
+    if (!businessName.trim()) {
+      setLeadError('Please enter your business name.')
+      return
+    }
     if (!protection.canSubmit) {
       setLeadError('Please complete the security check and try again.')
       return
@@ -362,6 +372,7 @@ export default function AeoCheckerPage() {
           scanId: topline.scanId,
           email,
           name,
+          businessName,
           consent,
           source: leadSource,
           ...protection.spamPayload(),
@@ -615,18 +626,39 @@ export default function AeoCheckerPage() {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Name (optional)"
-                      className={`${inputSm} sm:w-44`}
-                    />
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@company.com"
+                      placeholder="Name"
                       required
+                      autoComplete="name"
                       className={`${inputSm} flex-1`}
                     />
-                    <button type="submit" disabled={leadBusy || !protection.canSubmit} className={btnPrimary}>
+                    <input
+                      type="text"
+                      value={businessName}
+                      onChange={(e) => setBusinessName(e.target.value)}
+                      placeholder="Business name"
+                      required
+                      autoComplete="organization"
+                      className={`${inputSm} flex-1`}
+                    />
+                  </div>
+                  <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                    <div className="flex-1">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@company.com"
+                        required
+                        autoComplete="email"
+                        className={`${inputSm} w-full`}
+                      />
+                      <EmailTypoHint email={email} onAccept={setEmail} className="mt-2" />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={leadBusy || !protection.canSubmit}
+                      className={`${btnPrimary} sm:self-start`}
+                    >
                       {leadBusy ? 'Sending…' : 'Send my report'}
                     </button>
                   </div>
