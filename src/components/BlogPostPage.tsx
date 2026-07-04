@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AuthorHeadshot } from '../blog/AuthorHeadshot'
 import { BlogDiscoveryHub } from '../blog/BlogDiscoveryHub'
+import { BlogHeroImage } from '../blog/BlogHeroImage'
 import { BlogArticleBody } from '../blog/LazyBlogArticle'
 import { BlogAiSummarizeBar } from './BlogAiSummarizeBar'
 import { getPostBySlug } from '../blog/posts'
@@ -85,6 +86,8 @@ const BlogPostPage = ({ articleComponent }: BlogPostPageProps) => {
           </div>
           <BlogAiSummarizeBar title={post.title} slug={post.slug} />
         </motion.header>
+
+        <BlogHeroImage slug={post.slug} title={post.title} className="mt-10 md:mt-12" />
 
         <div className="mt-14 md:mt-20">
           <BlogArticleBody post={post} articleComponent={articleComponent} />

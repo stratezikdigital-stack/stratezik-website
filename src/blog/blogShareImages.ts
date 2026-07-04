@@ -1,26 +1,35 @@
-/** Per-article OG/social images (1200×630 service art or dedicated blog-og assets). */
-const BLOG_SHARE_IMAGE_BY_SLUG: Record<string, string> = {
-  'when-hire-digital-marketing-agency-scarborough-gta': '/services/services-hub.webp',
-  'signs-time-digital-marketing-agency-gta': '/services/paid-search.webp',
-  'get-found-2026-brand-positioning': '/services/brand-strategy.webp',
-  'get-found-2026-seo-organic-search': '/services/seo-aeo.webp',
-  'get-found-2026-ai-search-visibility': '/services/seo-aeo.webp',
-  'get-found-2026-content-strategy': '/services/social-media-marketing.webp',
-  'get-found-2026-paid-performance': '/services/paid-search.webp',
-  'get-recommended-by-chatgpt-toronto': '/branding/blog-og-chatgpt-recommendations.png',
-  'get-recommended-by-chatgpt-playbook': '/branding/blog-og-chatgpt-recommendations.png',
-  'chatgpt-ads-2026-guide': '/branding/blog-og-chatgpt-ads.png',
-  'chatgpt-ads-toronto-industries': '/branding/blog-og-chatgpt-ads.png',
-  'google-maps-ranking-service-business': '/services/google-business-profile-maps.webp',
-  'insectica-gta-pest-control-scaling-case-study': '/branding/blog-og-insectica-case-study.png',
-  'answer-engine-optimisation-toronto': '/services/seo-aeo-local-seo.webp',
-  'ai-native-gtm-build-from-day-1': '/services/ai-agents.webp',
-  'ai-native-gtm-cited-by-chatgpt': '/branding/blog-og-chatgpt-recommendations.png',
-  'ai-native-gtm-agent-stack-by-stage': '/services/ai-agents.webp',
-  'ai-native-gtm-marketing-hire-2026': '/services/ai-agents.webp',
-  'old-seo-to-agent-ready-seo-2026': '/services/seo-aeo.webp',
+/** Per-article hero + OG/social images (1024×576 chessboard art). */
+const BLOG_HERO_IMAGE_BY_SLUG: Record<string, string> = {
+  'old-seo-to-agent-ready-seo-2026': '/branding/blog-heroes/old-seo-to-agent-ready-seo-2026.jpg',
+  'ai-native-gtm-build-from-day-1': '/branding/blog-heroes/ai-native-gtm-build-from-day-1.jpg',
+  'ai-native-gtm-cited-by-chatgpt': '/branding/blog-heroes/ai-native-gtm-cited-by-chatgpt.jpg',
+  'ai-native-gtm-agent-stack-by-stage': '/branding/blog-heroes/ai-native-gtm-agent-stack-by-stage.jpg',
+  'ai-native-gtm-marketing-hire-2026': '/branding/blog-heroes/ai-native-gtm-marketing-hire-2026.jpg',
+  'when-hire-digital-marketing-agency-scarborough-gta':
+    '/branding/blog-heroes/when-hire-digital-marketing-agency-scarborough-gta.jpg',
+  'signs-time-digital-marketing-agency-gta': '/branding/blog-heroes/signs-time-digital-marketing-agency-gta.jpg',
+  'get-found-2026-brand-positioning': '/branding/blog-heroes/get-found-2026-brand-positioning.jpg',
+  'get-found-2026-seo-organic-search': '/branding/blog-heroes/get-found-2026-seo-organic-search.jpg',
+  'get-found-2026-ai-search-visibility': '/branding/blog-heroes/get-found-2026-ai-search-visibility.jpg',
+  'get-found-2026-content-strategy': '/branding/blog-heroes/get-found-2026-content-strategy.jpg',
+  'get-found-2026-paid-performance': '/branding/blog-heroes/get-found-2026-paid-performance.jpg',
+  'get-recommended-by-chatgpt-toronto': '/branding/blog-heroes/get-recommended-by-chatgpt-toronto.jpg',
+  'get-recommended-by-chatgpt-playbook': '/branding/blog-heroes/get-recommended-by-chatgpt-playbook.jpg',
+  'chatgpt-ads-toronto-industries': '/branding/blog-heroes/chatgpt-ads-toronto-industries.jpg',
+  'chatgpt-ads-2026-guide': '/branding/blog-heroes/chatgpt-ads-2026-guide.jpg',
+  'google-maps-ranking-service-business': '/branding/blog-heroes/google-maps-ranking-service-business.jpg',
+  'insectica-gta-pest-control-scaling-case-study':
+    '/branding/blog-heroes/insectica-gta-pest-control-scaling-case-study.jpg',
+  'answer-engine-optimisation-toronto': '/branding/blog-heroes/answer-engine-optimisation-toronto.jpg',
 }
 
+const FALLBACK = '/branding/og-share.png'
+
+export function getBlogHeroImagePath(slug: string): string | null {
+  return BLOG_HERO_IMAGE_BY_SLUG[slug] ?? null
+}
+
+/** OG/Twitter + Article JSON-LD image — same dedicated hero art when available. */
 export function getBlogShareImagePath(slug: string): string {
-  return BLOG_SHARE_IMAGE_BY_SLUG[slug] ?? '/services/services-hub.webp'
+  return BLOG_HERO_IMAGE_BY_SLUG[slug] ?? FALLBACK
 }
