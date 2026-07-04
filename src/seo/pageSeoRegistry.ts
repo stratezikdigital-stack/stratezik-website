@@ -323,9 +323,9 @@ export const FREE_TOOLS_SEO: RouteSeoConfig = {
 
 export const GROWTH_CREDIT_SEO: RouteSeoConfig = {
   path: '/growth-credit',
-  title: '$3,000 Growth Credit for Canadian SMBs | Stratezik Digital',
+  title: 'Stratezik Growth Credits: Up to $3,000 | Stratezik Digital',
   description:
-    'Qualifying Canadian startups and SMBs can apply $3,000 in Stratezik Growth Credits against onboarding. Free 20-minute growth assessment. Local search, paid ads, delivery platforms.',
+    'Qualifying Canadian businesses can receive up to $3,000 in Stratezik Growth Credits — automatically applied to up to 40% of your monthly management retainer for 12 months. Free growth assessment.',
   ogType: 'website',
   ogImageUrl: DEFAULT_OG_IMAGE,
   ogImageWidth: BRAND_OG_DIMENSIONS.width,

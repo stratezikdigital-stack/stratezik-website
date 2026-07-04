@@ -10,9 +10,9 @@ export function buildGrowthCreditJsonLd() {
       '@type': 'WebPage',
       '@id': `${PAGE_URL}#webpage`,
       url: PAGE_URL,
-      name: '$3,000 Growth Credit for Canadian SMBs',
+      name: 'Stratezik Growth Credits: Up to $3,000 to Fuel Your Foundation',
       description:
-        'Stratezik Growth Credits for qualifying Canadian startups and SMBs. $3,000 applied against onboarding after a free 20-minute growth assessment.',
+        'Proprietary funding program for qualifying Canadian businesses. Up to $3,000 in service credits applied automatically to monthly invoices — up to 40% of eligible Stratezik management fees for 12 months.',
       isPartOf: { '@type': 'WebSite', '@id': `${SITE_ORIGIN}/#website`, name: 'Stratezik', url: SITE_ORIGIN },
       inLanguage: 'en-CA',
       about: {
@@ -37,7 +37,7 @@ export function buildGrowthCreditJsonLd() {
       priceCurrency: 'CAD',
       eligibleRegion: { '@type': 'Country', name: 'Canada' },
       description:
-        'Marketing credit applied against Stratezik onboarding for qualifying Canadian startups and SMBs after a free growth assessment.',
+        'Up to CAD $3,000 promotional service credit for qualifying Canadian businesses. Automatically offsets up to 40% of eligible monthly Stratezik management fees for 12 months. Not applicable to third-party ad spend. Subject to approval.',
       seller: organizationNode,
       availability: 'https://schema.org/LimitedAvailability',
     },
