@@ -365,8 +365,9 @@ export const BLOG_INDEX_SEO: RouteSeoConfig = {
 function blogPostSeo(post: (typeof blogPostsMeta)[number]): RouteSeoConfig {
   const sharePath = post.shareImagePath ?? getBlogShareImagePath(post.slug)
   const dims = ogImageDimensionsForPath(sharePath)
-  const jsonLd =
-    post.faqEntities && post.faqEntities.length > 0
+  const jsonLd = post.buildJsonLd
+    ? post.buildJsonLd(post)
+    : post.faqEntities && post.faqEntities.length > 0
       ? buildArticleWithFaqJsonLd(post, post.faqEntities)
       : buildSimpleArticleJsonLd(post)
 

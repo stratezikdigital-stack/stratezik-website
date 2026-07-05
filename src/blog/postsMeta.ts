@@ -1,5 +1,9 @@
 import type { BlogPostMeta } from './postTypes'
 import {
+  buildTorontoAiCitationTrackerHubJsonLd,
+  buildTorontoAiCitationTrackerJulyJsonLd,
+} from './buildTorontoAiCitationTrackerJsonLd'
+import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
   chatgptAdsTorontoIndustriesFaq,
@@ -19,6 +23,7 @@ import {
   aiNativeGtmPart3Faq,
   aiNativeGtmPart4Faq,
   oldSeoToAgentReadyFaq,
+  torontoAiCitationTrackerJulyFaq,
 } from './postFaqs'
 
 export type BlogPostMetaEntry = BlogPostMeta & { faqEntities?: { question: string; answer: string }[] }
@@ -252,6 +257,47 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
       'get my business recommended by AI',
     ],
     faqEntities: getRecommendedByChatgptTorontoFaq,
+  },
+  {
+    slug: 'toronto-ai-citation-tracker',
+    title: 'Toronto AI Citation Tracker',
+    description:
+      'Monthly Toronto AI citation research: which assistants recommend local businesses, tracked across ChatGPT, Perplexity, Google AI Mode, and Claude. Latest edition and archive.',
+    datePublished: '2026-07-08',
+    dateModified: '2026-07-08',
+    authorSlug: 'shah-md-rifat',
+    layout: 'research',
+    researchLabel: 'Monthly series · Toronto & GTA',
+    keywords: [
+      'Toronto AI citation tracker',
+      'AI search visibility Toronto',
+      'ChatGPT local business Toronto',
+      'Perplexity vs Google AI Mode',
+      'does AI recommend my business',
+      'Claude local search Toronto',
+    ],
+    buildJsonLd: buildTorontoAiCitationTrackerHubJsonLd,
+  },
+  {
+    slug: 'toronto-ai-citation-tracker-july-2026',
+    title: 'Toronto AI Citation Tracker: July 2026',
+    description:
+      'We asked ChatGPT, Perplexity, Google AI Mode, and Claude 50 Toronto buying questions. 89% named a local business; Perplexity trailed at 74% and sent Scarborough to the UK.',
+    datePublished: '2026-07-08',
+    dateModified: '2026-07-08',
+    authorSlug: 'shah-md-rifat',
+    layout: 'research',
+    researchLabel: 'Original research · Toronto & GTA · July 2026',
+    keywords: [
+      'Toronto AI search visibility',
+      'AI citation tracker Toronto',
+      'ChatGPT local business Toronto',
+      'Perplexity vs Google AI Mode',
+      'does AI recommend my business',
+      'Claude local search Toronto',
+    ],
+    faqEntities: torontoAiCitationTrackerJulyFaq,
+    buildJsonLd: (meta) => buildTorontoAiCitationTrackerJulyJsonLd(meta, torontoAiCitationTrackerJulyFaq),
   },
   {
     slug: 'get-recommended-by-chatgpt-playbook',

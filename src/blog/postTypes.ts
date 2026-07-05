@@ -14,6 +14,10 @@ export type BlogPostMeta = {
   authorSlug?: string
   /** Wider canvas + research chrome for data-heavy pillars. */
   layout?: 'default' | 'research'
+  /** Badge line on research-layout posts (defaults to June 2026 legacy copy). */
+  researchLabel?: string
+  /** Override default Article/FAQ JSON-LD graph. */
+  buildJsonLd?: (meta: BlogPostMeta) => unknown
 }
 
 export type BlogPostDefinition = BlogPostMeta & {

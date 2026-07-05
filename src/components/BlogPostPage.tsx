@@ -54,7 +54,7 @@ const BlogPostPage = ({ articleComponent }: BlogPostPageProps) => {
         >
           {isResearch ? (
             <p className="mb-5 inline-flex border border-oxblood/25 bg-oxblood-50/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-oxblood">
-              Original research · Toronto &amp; GTA · June 2026
+              {post.researchLabel ?? 'Original research · Toronto & GTA · June 2026'}
             </p>
           ) : null}
           <h1 className="font-display text-display-3 md:text-[clamp(2.25rem,5vw,3.25rem)] text-ink leading-[1.05] tracking-[-0.035em]">

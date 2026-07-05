@@ -481,3 +481,36 @@ export const insecticaCaseStudyFaq = [
       'Yes. Organic impressions grew roughly one hundred sixty-eight times from the February twenty twenty five baseline to peak months in early twenty twenty six, and average Google ranking position improved from the high fifties to about fifteen by April twenty twenty six alongside consistent paid demand and structured site content.',
   },
 ]
+
+export const torontoAiCitationTrackerJulyFaq = [
+  {
+    question: 'What is the Toronto AI Citation Tracker?',
+    answer:
+      'It is Stratezik\'s monthly research series measuring which AI assistants — ChatGPT, Perplexity, Google AI Mode, and Claude — name specific Toronto and GTA businesses when asked real purchase-stage questions. The July 2026 edition is edition one, our baseline across 50 frozen queries and 200 data points.',
+  },
+  {
+    question: 'How often do AI assistants recommend local Toronto businesses?',
+    answer:
+      'In July 2026, across all 200 answers (50 queries × four engines), an assistant named a specific Toronto or GTA business 89% of the time. Google AI Mode led at 98%, Claude at 94%, ChatGPT at 90%, and Perplexity at 74%.',
+  },
+  {
+    question: 'Why does Perplexity sometimes recommend UK businesses for Scarborough queries?',
+    answer:
+      'On several Scarborough queries in our July 2026 collection, Perplexity resolved the place name to Scarborough in North Yorkshire, England, and recommended businesses there. ChatGPT, Google AI Mode, and Claude kept Scarborough in Toronto on the same queries.',
+  },
+  {
+    question: 'Does Claude give the same local recommendations as ChatGPT?',
+    answer:
+      'Not necessarily. Claude scored 94% local naming in July 2026 versus ChatGPT\'s 90%, but Claude was run signed in while the other three engines were logged out. On several queries Claude reflected account context rather than a neutral consumer view.',
+  },
+  {
+    question: 'Which Toronto service categories had the weakest AI citation coverage?',
+    answer:
+      'General contracting had the lowest combined local naming at 75%, followed by accounting at 80%, and home services and pest control at 85%. Restaurants and medical clinics reached 100% across all four engines in July 2026.',
+  },
+  {
+    question: 'Can Stratezik track my business or category in future editions?',
+    answer:
+      'Yes. Email dave@stratezik.com to request custom query tracking or category inclusion. New monthly editions publish at stratezik.com/blog/toronto-ai-citation-tracker with archived permalinks for each month.',
+  },
+]

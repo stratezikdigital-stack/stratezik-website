@@ -160,6 +160,16 @@ export default function GetRecommendedByChatgptToronto2026Article() {
       >
         {content}
       </ReactMarkdown>
+      <p className="mt-8 text-ink-700 leading-relaxed border-t border-ink/10 pt-8">
+        We track this every month — see the latest{' '}
+        <Link
+          to="/blog/toronto-ai-citation-tracker?utm_source=chatgpt-guide&utm_medium=inline"
+          className="text-oxblood underline underline-offset-2 hover:text-ink transition-colors"
+        >
+          Toronto AI Citation Tracker
+        </Link>
+        .
+      </p>
     </div>
   )
 }
