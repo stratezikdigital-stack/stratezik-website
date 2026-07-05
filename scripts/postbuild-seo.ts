@@ -15,6 +15,7 @@ import {
   replaceRootInner,
 } from './prerender-static'
 import { pingSearchEngines } from './pingSearchEngines'
+import { indexNowPathsFromConfigs, submitIndexNow } from './submitIndexNow'
 import { optimizeCriticalCss } from './optimize-critical-css'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -224,6 +225,25 @@ ${blogPosts
       summary: page.description,
       type: page.path === '/aeo-checker' ? 'AEO readiness checker' : page.path === '/growth-credit' ? 'Growth credit offer' : 'Research report',
     }))
+    context.researchSeries = [
+      {
+        name: 'Toronto AI Citation Tracker',
+        hubUrl: `${SITE_ORIGIN}/blog/toronto-ai-citation-tracker`,
+        cadence: 'monthly',
+        plainTextIndex: `${SITE_ORIGIN}/llms-full.txt`,
+        latestEdition: {
+          month: 'July 2026',
+          url: `${SITE_ORIGIN}/blog/toronto-ai-citation-tracker-july-2026`,
+          collectionDate: '2026-07-03',
+          dataPoints: 200,
+          headlineFindings: [
+            '89% of 200 AI answers named a specific Toronto or GTA business',
+            'Google AI Mode 98%, Claude 94%, ChatGPT 90%, Perplexity 74% local naming',
+            'Perplexity resolved several Scarborough queries to the United Kingdom',
+          ],
+        },
+      },
+    ]
     context.generated = new Date().toISOString().slice(0, 10)
     const json = `${JSON.stringify(context, null, 2)}\n`
     fs.writeFileSync(baseContextPath, json, 'utf8')
@@ -232,6 +252,7 @@ ${blogPosts
   }
 
   await pingSearchEngines(`${SITE_ORIGIN}/sitemap.xml`)
+  await submitIndexNow(indexNowPathsFromConfigs(configs))
 }
 
 main().catch((err) => {

@@ -311,5 +311,24 @@
       "summary": "Qualifying Canadian businesses can receive up to $3,000 in Stratezik Growth Credits — automatically applied to up to 40% of your monthly management retainer for 12 months. Free growth assessment.",
       "type": "Growth credit offer"
     }
+  ],
+  "researchSeries": [
+    {
+      "name": "Toronto AI Citation Tracker",
+      "hubUrl": "https://www.stratezik.com/blog/toronto-ai-citation-tracker",
+      "cadence": "monthly",
+      "plainTextIndex": "https://www.stratezik.com/llms-full.txt",
+      "latestEdition": {
+        "month": "July 2026",
+        "url": "https://www.stratezik.com/blog/toronto-ai-citation-tracker-july-2026",
+        "collectionDate": "2026-07-03",
+        "dataPoints": 200,
+        "headlineFindings": [
+          "89% of 200 AI answers named a specific Toronto or GTA business",
+          "Google AI Mode 98%, Claude 94%, ChatGPT 90%, Perplexity 74% local naming",
+          "Perplexity resolved several Scarborough queries to the United Kingdom"
+        ]
+      }
+    }
   ]
 }
