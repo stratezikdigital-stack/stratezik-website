@@ -6,6 +6,7 @@ export const TRACKER_JULY_MAIN_MARKDOWN = `**The short version:**
 - The four engines are not equal. Google AI Mode named a local business 98% of the time, Claude 94%, ChatGPT 90%, and Perplexity only 74%. Which assistant your customer opens changes whether you exist in the answer.
 - Perplexity has a Scarborough problem. On several Scarborough queries it resolved the name to Scarborough in the United Kingdom and recommended businesses there. The other three engines kept Scarborough in Toronto every time.
 - Claude behaves differently from the other three because it is the one engine people use while signed in. On a few queries it read the founder's own account context into the answer instead of acting as a neutral consumer tool. We flag this because it changes how you should read Claude's numbers, and because it is a preview of a problem every logged-in AI assistant will eventually have.
+- ChatGPT is starting to sell ads on these questions, but barely. Only 2 of 50 questions showed a live ad, and both went to a mismatched advertiser (an Ottawa lawyer, a windows company on a bathroom-reno question). 8 of 10 categories showed zero ads.
 - This is edition one, our baseline. From August we report month-over-month movement: who gained AI visibility, who lost it, and which categories shifted.
 
 ## Why we run this
@@ -82,11 +83,19 @@ Across the 200 answers, most of the businesses named were different from one eng
 
 Neinstein Personal Injury Lawyers was named 6 times across our 20 injury-law answers, more than any other firm, appearing in every engine we tested. AvantDerm, a dermatology and skin clinic, was named by all four engines on the same dermatologist query, alongside FCP Dermatology and HealthOne Harbourfront Skin Clinic across three of the four. Laneway Home Builders led the general-contracting category, and Expert GTA Electric led home services. These are businesses that have built deep, consistent review histories and cross-platform presence, and the assistants reward that consistency by converging on them regardless of which one you ask.
 
-One more thing worth noting: on a sedation-dentistry query, ChatGPT displayed a sponsored ad, a 123Dentist card, directly beneath the answer. AI assistants are beginning to sell placement inside these results, which is a separate and fast-moving story we track elsewhere.
+## Finding 6: ChatGPT is starting to sell ads on these questions, but not many, and not always in the right place
+
+This is ChatGPT-only, because ChatGPT is the only one of the four engines where we saw an ad. Across all 150 Google AI Mode, Perplexity, and Claude answers this month, none carried a labelled advertisement. ChatGPT did, so we went back and checked all 50 frozen questions specifically for a sponsored placement, using the actual "Ad" label ChatGPT shows, not organic map or citation cards, which can look similar at a glance.
+
+The count is small: **2 of 50 questions (4%) carried a live ad** when we checked. "Best personal injury lawyer in Toronto" surfaced an ad for Bergeron Clifford Injury Lawyers, a firm based in Ottawa, not Toronto or the GTA. "Bathroom renovation Scarborough budget" surfaced an ad for EcoTech Windows & Doors, a windows and doors company, not a bathroom renovator. Both are mismatches: one on geography, one on category. The other 8 categories, dental, accounting, pest control, plumbing, restaurants, wellness, medical, and home services, showed zero ads across all 25 questions we checked in them.
+
+Ad presence also is not stable. During our July 3 collection, a sedation-dentistry question showed a sponsored 123Dentist card. We reran the identical question two days later and the ad was gone, replaced by an organic answer. Whatever inventory ChatGPT is selling against Toronto local-service questions right now is thin and appears to rotate in and out session to session.
+
+We are not calling this a mature industry-by-industry competitiveness index. Two live ads and one that vanished is a start, not a verdict, and we will keep checking every month alongside the tracker itself to build the pattern out properly. What we can say now: on the handful of high-intent Toronto local questions where ChatGPT does show an ad, the two advertisers we found were not well matched to the query, a lawyer from the wrong city and a home-improvement category from the wrong trade. For a Toronto business in almost any of these categories, that reads less like "someone else already owns this" and more like open ground nobody has properly claimed yet, with the caveat that a thin, badly-targeted ad market can fill in fast once more advertisers notice it.
 
 ## What this means for Toronto business owners
 
-Four things follow from edition one.
+Five things follow from edition one.
 
 First, do not assume AI search skips small local businesses. It named them in 89% of answers, and the businesses it named were mostly independents, not national chains.
 
@@ -96,9 +105,13 @@ Third, if you use Claude signed into a business account to check your own visibi
 
 Fourth, watch this space. The number that matters is not this month's 89%. It is whether your category and your business move up or down as we run this every month. That comparison starts in August.
 
+Fifth, if you are weighing paid placement inside ChatGPT answers, the field is close to empty right now. We found live ads on only 2 of 50 Toronto local-service questions, and both were mismatched to the query. That will not stay true forever, so this is closer to a short window than a permanent gap.
+
 ## Methodology and limitations
 
 We tested 50 frozen questions across 10 GTA categories, five per category, chosen to reflect real purchase-stage searches. The same questions run every month so the numbers stay comparable. Collection date: July 3, 2026. ChatGPT, Perplexity, and Google AI Mode were run logged out in fresh sessions per query. Claude was run signed into a Stratezik account, the only practical way to query it for this kind of task, and its answers on a handful of queries reflected that account context rather than a neutral consumer view (see Finding 3).
+
+The ChatGPT ad-presence check (Finding 6) is a separate companion dataset, not part of the frozen local-business scoring. We checked all 50 questions on July 3 and again on July 5 for a labelled "Ad" placement, recording the advertiser and copy where one appeared. This dataset is new this month and will build up month over month alongside the tracker.
 
 This is a snapshot. AI answers vary between runs, by user, and over time, so any single month is a reading rather than a verdict. This is edition one, so there is no prior month to compare against yet. The point of the exercise is the trend line we start building here. The full question set and dataset are available on request.`
 
@@ -171,4 +184,5 @@ Stratezik is a Toronto marketing agency that runs on its own AI agent system. We
 ### Sources
 
 1. Stratezik Toronto AI Citation Tracker, July 2026: 50 frozen high-intent GTA buyer questions across 10 categories, run through ChatGPT, Perplexity, Google AI Mode, and Claude on July 3, 2026. Dataset available on request.
-2. Stratezik AEO Readiness Checker and 20-point methodology: stratezik.com/aeo-checker.`
+2. Stratezik ChatGPT Ad-Presence Dataset, July 2026: the same 50 questions checked for a labelled ChatGPT ad placement on July 3 and July 5, 2026. Dataset available on request.
+3. Stratezik AEO Readiness Checker and 20-point methodology: stratezik.com/aeo-checker.`

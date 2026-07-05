@@ -7,11 +7,17 @@ import { BlogGrowthCreditMidPromo } from './BlogGrowthCreditMidPromo'
 import {
   ResearchAnswerAside,
   ResearchArticleRoot,
+  ResearchDataTable,
   ResearchHeroStats,
   ResearchProse,
   ResearchWide,
 } from './BlogResearchLayout'
 import { TorontoAiCitationTrackerSeriesNav } from './TorontoAiCitationTrackerSeriesNav'
+import {
+  CHATGPT_AD_PRESENCE_BY_CATEGORY,
+  CHATGPT_HISTORICAL_AD_SIGHTING,
+  CHATGPT_LIVE_AD_ROWS,
+} from './torontoChatgptAdPresenceJuly2026Data'
 import {
   TRACKER_JULY_ABOUT_MARKDOWN,
   TRACKER_JULY_MAIN_MARKDOWN,
@@ -126,6 +132,53 @@ export default function TorontoAiCitationTrackerJuly2026Article() {
 
       <ResearchProse className="speakable-tracker-finding-1">
         <TrackerMarkdown content={findings} />
+
+        <ResearchDataTable caption="Table 3. ChatGPT labelled ad presence by category, July 5, 2026 DOM scan (50 frozen queries, 5 per category).">
+          <table className="w-full min-w-[320px] border-collapse text-sm text-left">
+            <thead>
+              <tr>
+                <th className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-500">Category</th>
+                <th className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-500">
+                  Live ads (July 5)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {CHATGPT_AD_PRESENCE_BY_CATEGORY.map((row) => (
+                <tr key={row.category}>
+                  <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{row.category}</td>
+                  <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{row.liveAds}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </ResearchDataTable>
+
+        <ResearchDataTable caption="Table 4. Live ChatGPT ads found on July 5, 2026, plus one historical sighting from July 3 that did not reproduce.">
+          <table className="w-full min-w-[480px] border-collapse text-sm text-left">
+            <thead>
+              <tr>
+                <th className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-500">Query</th>
+                <th className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-500">Advertiser</th>
+                <th className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-500">Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CHATGPT_LIVE_AD_ROWS.map((row) => (
+                <tr key={row.query}>
+                  <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{row.query}</td>
+                  <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{row.advertiser}</td>
+                  <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{row.mismatch}</td>
+                </tr>
+              ))}
+              <tr>
+                <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{CHATGPT_HISTORICAL_AD_SIGHTING.query}</td>
+                <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{CHATGPT_HISTORICAL_AD_SIGHTING.advertiser}</td>
+                <td className="px-4 py-3 text-ink-700 border-t border-ink/10">{CHATGPT_HISTORICAL_AD_SIGHTING.note}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ResearchDataTable>
       </ResearchProse>
 
       <ResearchProse>
