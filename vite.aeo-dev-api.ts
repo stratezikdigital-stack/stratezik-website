@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
-import { handleCheck, handleLead } from './server/aeo/handlers'
+import { handleCheck, handleLead, handleScanQuota } from './server/aeo/handlers'
 import { handleGbpCheck, handleGbpLead } from './server/gbp/handlers'
 import { handleContact, handleFormToken, handleGrowthCredit } from './server/forms/handlers'
 import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
@@ -114,6 +114,14 @@ export function aeoDevApiPlugin(): Plugin {
             const body = await readJsonBody(req)
             await handleGbpLead(
               { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
+              pseudoResponse(res),
+            )
+            return
+          }
+
+          if (url.startsWith('/api/aeo-quota') && req.method === 'GET') {
+            await handleScanQuota(
+              { method: 'GET', headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
               pseudoResponse(res),
             )
             return

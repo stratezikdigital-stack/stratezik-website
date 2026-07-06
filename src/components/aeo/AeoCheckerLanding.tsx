@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { FormEvent } from 'react'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
+import { ScanQuotaHint } from './ScanQuotaHint'
 import {
   FreeToolSectionHeader,
   FreeToolSparkline,
@@ -72,6 +73,7 @@ function WalkthroughVisual({ kind }: { kind: (typeof WALKTHROUGH)[number]['visua
 type Props = {
   url: string
   error: string | null
+  scanQuotaLabel: string | null
   canSubmit: boolean
   turnstileSiteKey: string | undefined
   turnstileResetKey: number
@@ -91,6 +93,7 @@ function UrlScanForm(props: Props & { variant?: 'inline' | 'panel' }) {
     variant = 'panel',
     url,
     error,
+    scanQuotaLabel,
     canSubmit,
     turnstileSiteKey,
     turnstileResetKey,
@@ -114,6 +117,7 @@ function UrlScanForm(props: Props & { variant?: 'inline' | 'panel' }) {
         </div>
         <FormProtectionFields turnstileSiteKey={turnstileSiteKey ?? ''} onTurnstileSuccess={onTurnstileSuccess} onTurnstileExpire={onTurnstileExpire} turnstileResetKey={turnstileResetKey} honeypotValue={honeypot} onHoneypotChange={onHoneypotChange} />
         {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
+        <ScanQuotaHint label={scanQuotaLabel} className="mt-2" />
       </form>
     )
   }
@@ -128,6 +132,7 @@ function UrlScanForm(props: Props & { variant?: 'inline' | 'panel' }) {
       </div>
       <FormProtectionFields turnstileSiteKey={turnstileSiteKey ?? ''} onTurnstileSuccess={onTurnstileSuccess} onTurnstileExpire={onTurnstileExpire} turnstileResetKey={turnstileResetKey} honeypotValue={honeypot} onHoneypotChange={onHoneypotChange} />
       {error ? <p className="mt-2 text-sm text-oxblood">{error}</p> : null}
+      <ScanQuotaHint label={scanQuotaLabel} className="mt-2" />
     </form>
   )
 }
@@ -138,6 +143,7 @@ export function AeoCheckerLanding(props: Props) {
       <AeoHeroLauncher
         url={props.url}
         error={props.error}
+        scanQuotaLabel={props.scanQuotaLabel}
         canSubmit={props.canSubmit}
         turnstileSiteKey={props.turnstileSiteKey}
         turnstileResetKey={props.turnstileResetKey}

@@ -13,6 +13,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { FormProtectionFields } from './spam/FormProtectionFields'
 import { EmailTypoHint } from './spam/EmailTypoHint'
 import { useFormProtection } from '../lib/spam/useFormProtection'
+import { formatScanQuotaLabel, parseScanQuota, type ScanQuota } from '../lib/aeo/scanQuota'
 import { resolveLeadSource } from '../aeo/checkerLinks'
 import { AEO_CHECKER_FAQS } from '../aeo/checkerFaqs'
 import { AeoCheckerLanding } from './aeo/AeoCheckerLanding'
@@ -244,10 +245,26 @@ export default function AeoCheckerPage() {
   const [sitemapAudit, setSitemapAudit] = useState<SitemapAudit | null>(null)
   const [unlockStep, setUnlockStep] = useState(0)
   const [turnstileKey, setTurnstileKey] = useState(0)
+  const [scanQuota, setScanQuota] = useState<ScanQuota | null>(null)
   const protection = useFormProtection()
+  const scanQuotaLabel = scanQuota ? formatScanQuotaLabel(scanQuota) : null
 
   const stepTimer = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(() => () => { if (stepTimer.current) clearInterval(stepTimer.current) }, [])
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const res = await fetch('/api/aeo-quota')
+        if (!res.ok) return
+        const data = (await res.json()) as Record<string, unknown>
+        const quota = parseScanQuota(data)
+        if (quota) setScanQuota(quota)
+      } catch {
+        /* quota hint is optional */
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     const prefill = searchParams.get('url')?.trim()
@@ -330,9 +347,11 @@ export default function AeoCheckerPage() {
           website: protection.honeypot,
         }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Scan failed. Try again.')
-      setTopline(data)
+      const data = (await res.json()) as Record<string, unknown>
+      const quota = parseScanQuota(data)
+      if (quota) setScanQuota(quota)
+      if (!res.ok) throw new Error((data.error as string | undefined) ?? 'Scan failed. Try again.')
+      setTopline(data as unknown as Topline)
       setPhase('topline')
       protection.resetTurnstile()
       setTurnstileKey((k) => k + 1)
@@ -454,6 +473,7 @@ export default function AeoCheckerPage() {
         <AeoCheckerLanding
           url={url}
           error={error}
+          scanQuotaLabel={scanQuotaLabel}
           canSubmit={protection.canSubmit}
           turnstileSiteKey={protection.turnstileSiteKey}
           turnstileResetKey={turnstileKey}

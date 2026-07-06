@@ -42,7 +42,7 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+  const guard = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
     bucket: 'guide-lead',
     maxPerIp: 10,
     windowMs: 60 * 60 * 1000,
@@ -50,7 +50,7 @@ export async function handleGuideLead(req: VercelRequest, res: VercelResponse) {
     email,
     silentHoneypotResponse: { ok: true, guideUrl: '/chatgpt-ads-cheat-sheet', emailSent: false },
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const firstName = typeof body.firstName === 'string' ? body.firstName.trim().slice(0, 80) : ''
   const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''

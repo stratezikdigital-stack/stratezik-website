@@ -336,6 +336,7 @@
     { "source": "/api/aeo-unlock", "destination": "/api/aeo?action=unlock" },
     { "source": "/api/aeo-sitemap", "destination": "/api/aeo?action=sitemap" },
     { "source": "/api/aeo-sitemap-unlock", "destination": "/api/aeo?action=sitemap-unlock" },
+    { "source": "/api/aeo-quota", "destination": "/api/aeo?action=quota" },
     { "source": "/api/guide-lead", "destination": "/api/aeo?action=guide-lead" },
     { "source": "/api/guide-access", "destination": "/api/aeo?action=guide-access" },
     { "source": "/api/form-token", "destination": "/api/aeo?action=form-token" },

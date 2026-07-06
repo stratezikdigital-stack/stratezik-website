@@ -1,6 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './scan.js'
 import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
+import { peekRateLimit } from '../spam/rate-limit.js'
+import { clientIp } from './rate-limit.js'
+import {
+  AEO_SCAN_MAX_PER_IP,
+  AEO_SCAN_WINDOW_MS,
+  scanQuotaKey,
+  toScanQuota,
+  type ScanQuotaPayload,
+} from './scan-quota.js'
 import { createAdminClient } from './supabase-admin.js'
 import { sendReportEmail } from './email.js'
 import { appendAeoLeadToSheet } from './sheets.js'
@@ -48,15 +57,25 @@ function topline(scan: AeoScanResult, scanId: string) {
   }
 }
 
+export async function handleScanQuota(req: VercelRequest, res: VercelResponse) {
+  const ip = clientIp(req)
+  const status = await peekRateLimit(scanQuotaKey(ip), AEO_SCAN_MAX_PER_IP, AEO_SCAN_WINDOW_MS)
+  return res.status(200).json({ scanQuota: toScanQuota(status) })
+}
+
 export async function handleCheck(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
-  const allowed = await enforceSpamGuards(req, res, body, {
+  const guard = await enforceSpamGuards(req, res, body, {
     bucket: 'aeo-scan',
-    maxPerIp: 5,
-    windowMs: 60 * 60 * 1000,
+    maxPerIp: AEO_SCAN_MAX_PER_IP,
+    windowMs: AEO_SCAN_WINDOW_MS,
     honeypotField: 'website',
+    rateLimitAfterValidation: true,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
+  const scanQuota: ScanQuotaPayload | undefined = guard.rateLimit
+    ? toScanQuota(guard.rateLimit)
+    : undefined
 
   const url = body.url
   const domain = typeof url === 'string' ? normaliseDomain(url) : null
@@ -84,7 +103,7 @@ export async function handleCheck(req: VercelRequest, res: VercelResponse) {
     .maybeSingle()
 
   if (cached) {
-    return res.status(200).json(topline(cached.result as AeoScanResult, cached.id))
+    return res.status(200).json({ ...topline(cached.result as AeoScanResult, cached.id), scanQuota })
   }
 
   const scan = await runAeoScan(domain)
@@ -104,7 +123,7 @@ export async function handleCheck(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Something went wrong storing your scan. Try again.' })
   }
 
-  return res.status(200).json(topline(scan, inserted.id))
+  return res.status(200).json({ ...topline(scan, inserted.id), scanQuota })
 }
 
 export async function handleLead(req: VercelRequest, res: VercelResponse) {
@@ -121,14 +140,14 @@ export async function handleLead(req: VercelRequest, res: VercelResponse) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+  const guard = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
     bucket: 'aeo-lead',
     maxPerIp: 10,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
@@ -235,14 +254,14 @@ export async function handleCheckout(req: VercelRequest, res: VercelResponse) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+  const guard = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
     bucket: 'aeo-checkout',
     maxPerIp: 10,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const product: AeoProduct = body.product === 'sitemap' ? 'sitemap' : 'report'
   const competitors = Array.isArray(body.competitors)
@@ -416,13 +435,13 @@ export async function handleUnlock(req: VercelRequest, res: VercelResponse) {
 
 export async function handleSitemap(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
-  const allowed = await enforceSpamGuards(req, res, body, {
+  const guard = await enforceSpamGuards(req, res, body, {
     bucket: 'aeo-sitemap',
     maxPerIp: 3,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const url = body.url
   const domain = typeof url === 'string' ? normaliseDomain(url) : null

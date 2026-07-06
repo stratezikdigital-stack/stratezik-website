@@ -2,11 +2,13 @@
 
 import type { FormEvent } from 'react'
 import { FormProtectionFields } from '../spam/FormProtectionFields'
+import { ScanQuotaHint } from './ScanQuotaHint'
 import { AEO_SAMPLE, AeoScoreRing } from './AeoCheckerCharts'
 
 type Props = {
   url: string
   error: string | null
+  scanQuotaLabel: string | null
   canSubmit: boolean
   turnstileSiteKey: string | undefined
   turnstileResetKey: number
@@ -102,6 +104,7 @@ export function AeoHeroLauncher(props: Props) {
               honeypotValue={props.honeypot}
               onHoneypotChange={props.onHoneypotChange}
             />
+            <ScanQuotaHint label={props.scanQuotaLabel} className="mt-3" />
             <p className="mt-3 text-xs text-ink-500">
               Topline score in ~20s · Full breakdown by email · No account
             </p>

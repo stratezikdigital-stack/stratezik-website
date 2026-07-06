@@ -39,14 +39,14 @@ export async function handleContact(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
 
-  const allowed = await enforceSpamGuards(req, res, body, {
+  const guard = await enforceSpamGuards(req, res, body, {
     bucket: 'contact',
     maxPerIp: 8,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'fax',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const name = typeof body.name === 'string' ? body.name.trim().slice(0, 120) : ''
   const company = typeof body.company === 'string' ? body.company.trim().slice(0, 120) : ''
@@ -86,14 +86,14 @@ export async function handleGrowthCredit(req: VercelRequest, res: VercelResponse
   const body = (req.body ?? {}) as Record<string, unknown>
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
 
-  const allowed = await enforceSpamGuards(req, res, body, {
+  const guard = await enforceSpamGuards(req, res, body, {
     bucket: 'growth-credit',
     maxPerIp: 6,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const firstName = typeof body.firstName === 'string' ? body.firstName.trim().slice(0, 80) : ''
   const lastName = typeof body.lastName === 'string' ? body.lastName.trim().slice(0, 80) : ''

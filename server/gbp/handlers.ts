@@ -79,13 +79,13 @@ async function emailRoadmapOnce(
 
 export async function handleGbpCheck(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>
-  const allowed = await enforceSpamGuards(req, res, body, {
+  const guard = await enforceSpamGuards(req, res, body, {
     bucket: 'gbp-scan',
     maxPerIp: 8,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const businessName = typeof body.businessName === 'string' ? body.businessName.trim().slice(0, 120) : ''
   const city = typeof body.city === 'string' ? body.city.trim().slice(0, 80) : ''
@@ -170,14 +170,14 @@ export async function handleGbpLead(req: VercelRequest, res: VercelResponse) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+  const guard = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
     bucket: 'gbp-lead',
     maxPerIp: 10,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
@@ -275,14 +275,14 @@ export async function handleGbpCheckout(req: VercelRequest, res: VercelResponse)
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const allowed = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
+  const guard = await enforceSpamGuards(req, res, body as Record<string, unknown>, {
     bucket: 'gbp-checkout',
     maxPerIp: 10,
     windowMs: 60 * 60 * 1000,
     honeypotField: 'website',
     email,
   })
-  if (!allowed) return
+  if (!guard.allowed) return
 
   const scanId = typeof body.scanId === 'string' ? body.scanId : ''
   if (!EMAIL_RE.test(email) || !scanId) {

@@ -1,8 +1,16 @@
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
-import { rateLimit as memoryRateLimit } from '../aeo/rate-limit.js'
+import { consumeMemoryRateLimit, peekMemoryRateLimit } from '../aeo/rate-limit.js'
 
 const limiterCache = new Map<string, Ratelimit>()
+
+export type RateLimitStatus = {
+  allowed: boolean
+  used: number
+  limit: number
+  remaining: number
+  resetAt: number
+}
 
 function upstashAvailable(): boolean {
   return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
@@ -24,11 +32,40 @@ function getDistributedLimiter(max: number, windowMs: number): Ratelimit {
   return limiter
 }
 
-/** Distributed when Upstash is configured; otherwise per-instance in-memory. */
-export async function checkRateLimit(key: string, max: number, windowMs: number): Promise<boolean> {
-  if (upstashAvailable()) {
-    const { success } = await getDistributedLimiter(max, windowMs).limit(key)
-    return success
+function fromUpstash(limit: number, remaining: number, reset: number, allowed: boolean): RateLimitStatus {
+  return {
+    allowed,
+    used: Math.max(0, limit - remaining),
+    limit,
+    remaining,
+    resetAt: reset,
   }
-  return memoryRateLimit(key, max, windowMs)
+}
+
+/** Distributed when Upstash is configured; otherwise per-instance in-memory. */
+export async function consumeRateLimit(
+  key: string,
+  max: number,
+  windowMs: number,
+): Promise<RateLimitStatus> {
+  if (upstashAvailable()) {
+    const { success, limit, remaining, reset } = await getDistributedLimiter(max, windowMs).limit(key)
+    return fromUpstash(limit, remaining, reset, success)
+  }
+  return consumeMemoryRateLimit(key, max, windowMs)
+}
+
+/** Read current usage without consuming a request. */
+export async function peekRateLimit(key: string, max: number, windowMs: number): Promise<RateLimitStatus> {
+  if (upstashAvailable()) {
+    const { remaining, reset, limit } = await getDistributedLimiter(max, windowMs).getRemaining(key)
+    return fromUpstash(limit, remaining, reset, remaining > 0)
+  }
+  return peekMemoryRateLimit(key, max, windowMs)
+}
+
+/** @deprecated Prefer consumeRateLimit for status-aware callers. */
+export async function checkRateLimit(key: string, max: number, windowMs: number): Promise<boolean> {
+  const { allowed } = await consumeRateLimit(key, max, windowMs)
+  return allowed
 }

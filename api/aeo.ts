@@ -3,6 +3,7 @@ import {
   handleCheck,
   handleCheckout,
   handleLead,
+  handleScanQuota,
   handleSitemap,
   handleSitemapUnlock,
   handleUnlock,
@@ -24,6 +25,7 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/aeo-unlock': 'unlock',
     '/api/aeo-sitemap': 'sitemap',
     '/api/aeo-sitemap-unlock': 'sitemap-unlock',
+    '/api/aeo-quota': 'quota',
     '/api/guide-lead': 'guide-lead',
     '/api/guide-access': 'guide-access',
     '/api/form-token': 'form-token',
@@ -46,6 +48,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (action === 'form-token' && req.method === 'GET') {
     return handleFormToken(req, res)
+  }
+  if (action === 'quota' && req.method === 'GET') {
+    return handleScanQuota(req, res)
   }
   if (action === 'guide-access' && req.method === 'GET') {
     return handleGuideAccess(req, res)
