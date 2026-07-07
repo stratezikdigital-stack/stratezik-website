@@ -154,17 +154,18 @@ export const PRIVACY_SEO: RouteSeoConfig = {
 
 export const AEO_CHECKER_SEO: RouteSeoConfig = {
   path: '/aeo-checker',
-  title: 'AEO Readiness Checker: Free 20-Point Website Test | Stratezik',
+  title: 'Free AEO Checker: 20-Point Website Readiness Test | Stratezik',
   description:
-    'Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).',
+    'Free AEO checker — scan your site in ~20 seconds. Score AI crawler access, schema, answer-first copy, and llms.txt. Benchmarked vs 50 Toronto startups (median 10.75/20).',
   ogType: 'website',
   ogImageUrl: DEFAULT_OG_IMAGE,
   ogImageWidth: BRAND_OG_DIMENSIONS.width,
   ogImageHeight: BRAND_OG_DIMENSIONS.height,
-  ogImageAlt: 'Stratezik AEO Readiness Checker: free 20-point website test',
+  ogImageAlt: 'Stratezik free AEO checker — 20-point website readiness test',
   keywords: [
-    'AEO readiness test',
     'AEO checker',
+    'free AEO checker',
+    'AEO readiness test',
     'free AEO audit',
     'answer engine optimization',
     'answer engine optimisation',
@@ -179,7 +180,7 @@ export const AEO_CHECKER_SEO: RouteSeoConfig = {
   ],
   jsonLd: buildAeoCheckerJsonLd(),
   datePublished: '2026-06-01',
-  dateModified: '2026-06-14',
+  dateModified: '2026-07-07',
   sitemapPriority: 0.92,
   sitemapChangefreq: 'weekly',
 }

@@ -22,9 +22,11 @@ export function buildAeoCheckerJsonLd() {
       '@type': 'WebPage',
       '@id': `${PAGE_URL}#webpage`,
       url: PAGE_URL,
-      name: 'AEO Readiness Checker',
+      name: 'Free AEO Checker — 20-Point Website Readiness Test',
       description:
-        'Free 20-point AEO readiness test for your website. Benchmarked against 50 funded Toronto startups.',
+        'Free AEO checker — scan your site in ~20 seconds. Score AI crawler access, schema, answer-first copy, and llms.txt. Benchmarked vs 50 Toronto startups.',
+      datePublished: '2026-06-01',
+      dateModified: '2026-07-07',
       isPartOf: { '@type': 'WebSite', '@id': `${SITE_ORIGIN}/#website`, name: 'Stratezik', url: SITE_ORIGIN },
       about: {
         '@type': 'Thing',
@@ -40,13 +42,14 @@ export function buildAeoCheckerJsonLd() {
     {
       '@type': 'WebApplication',
       '@id': `${PAGE_URL}#app`,
-      name: 'Stratezik AEO Readiness Checker',
+      name: 'Stratezik Free AEO Checker',
       url: PAGE_URL,
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Web',
       browserRequirements: 'Requires JavaScript',
+      dateModified: '2026-07-07',
       description:
-        'Free machine-verified AEO readiness test: AI crawler access, SSR, entity alignment, Organization and FAQ schema, answer-first copy, llms.txt, and pricing transparency. Optional paid AI visibility and full-site audits.',
+        'Free AEO checker with machine-verified scoring: AI crawler access, SSR, entity alignment, Organization and FAQ schema, answer-first copy, llms.txt, and pricing transparency. Optional paid AI visibility and full-site audits.',
       featureList: [
         '20-point AEO readiness score',
         'Defaults vs deliberate split',

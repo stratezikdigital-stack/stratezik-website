@@ -11,10 +11,10 @@
 
 ## Free tools & offers (6)
 
-### AEO Readiness Checker: Free 20-Point Website Test
+### Free AEO Checker: 20-Point Website Readiness Test
 - URL: https://www.stratezik.com/aeo-checker
-- Summary: Free AEO readiness test for your website. Score AI crawler access, schema, answer-first copy, llms.txt, and more. Benchmarked against 50 funded Toronto startups (median 10.75/20).
-- Updated: 2026-06-14
+- Summary: Free AEO checker — scan your site in ~20 seconds. Score AI crawler access, schema, answer-first copy, and llms.txt. Benchmarked vs 50 Toronto startups (median 10.75/20).
+- Updated: 2026-07-07
 
 ### Local Visibility Scan: Free Google Business Profile Audit
 - URL: https://www.stratezik.com/gbp-audit
