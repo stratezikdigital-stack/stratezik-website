@@ -96,7 +96,7 @@ export function buildTorontoAiCitationTrackerHubJsonLd(meta: BlogPostMeta) {
           '@type': 'Article',
           '@id': `${SITE_ORIGIN}/blog/${edition.slug}#article`,
           url: `${SITE_ORIGIN}/blog/${edition.slug}`,
-          name: `Toronto AI Citation Tracker: ${edition.monthLabel}`,
+          name: `Toronto AI Citation & ChatGPT Ads Tracker: ${edition.monthLabel}`,
           datePublished: edition.datePublished,
         })),
       },

@@ -3,6 +3,7 @@ import {
   buildTorontoAiCitationTrackerHubJsonLd,
   buildTorontoAiCitationTrackerJulyJsonLd,
 } from './buildTorontoAiCitationTrackerJsonLd'
+import { buildTorontoChatgptAdsIndexJsonLd } from './buildTorontoChatgptAdsIndexJsonLd'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -24,6 +25,7 @@ import {
   aiNativeGtmPart4Faq,
   oldSeoToAgentReadyFaq,
   torontoAiCitationTrackerJulyFaq,
+  torontoChatgptAdsIndexFaq,
 } from './postFaqs'
 
 export type BlogPostMetaEntry = BlogPostMeta & { faqEntities?: { question: string; answer: string }[] }
@@ -260,9 +262,9 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
   },
   {
     slug: 'toronto-ai-citation-tracker',
-    title: 'Toronto AI Citation Tracker',
+    title: 'Toronto AI Citation & ChatGPT Ads Tracker',
     description:
-      'Monthly Toronto AI citation research: which assistants recommend local businesses, tracked across ChatGPT, Perplexity, Google AI Mode, and Claude. Latest edition and archive.',
+      'Monthly Toronto research on AI citations and ChatGPT ads: which assistants recommend local businesses, plus a competitiveness map across 18 industries. Latest edition and archive.',
     datePublished: '2026-07-08',
     dateModified: '2026-07-08',
     authorSlug: 'shah-md-rifat',
@@ -295,9 +297,31 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
       'Perplexity vs Google AI Mode',
       'does AI recommend my business',
       'Claude local search Toronto',
+      'ChatGPT ads Toronto',
     ],
     faqEntities: torontoAiCitationTrackerJulyFaq,
     buildJsonLd: (meta) => buildTorontoAiCitationTrackerJulyJsonLd(meta, torontoAiCitationTrackerJulyFaq),
+  },
+  {
+    slug: 'toronto-chatgpt-ads-index',
+    title: 'The Toronto ChatGPT Ads Index',
+    description:
+      'Which Toronto industries show ChatGPT ads, how competitive they are, and where the open lanes sit. 18 industries mapped, with real CPC and CPM. Updated monthly.',
+    datePublished: '2026-07-06',
+    dateModified: '2026-07-06',
+    authorSlug: 'shah-md-rifat',
+    layout: 'research',
+    researchLabel: 'Living index · Toronto & GTA · Updated monthly',
+    keywords: [
+      'Toronto ChatGPT ads',
+      'ChatGPT ads cost 2026',
+      'ChatGPT ads by industry',
+      'ChatGPT advertising Toronto',
+      'do I need ChatGPT ads',
+      'ChatGPT ads CPC CPM',
+    ],
+    faqEntities: torontoChatgptAdsIndexFaq,
+    buildJsonLd: (meta) => buildTorontoChatgptAdsIndexJsonLd(meta, torontoChatgptAdsIndexFaq),
   },
   {
     slug: 'get-recommended-by-chatgpt-playbook',
@@ -414,7 +438,12 @@ export function getPostMetaBySlug(slug: string | undefined) {
   return blogPostsMeta.find((p) => p.slug === slug)
 }
 
+/** Posts visible on /blog, author pages, discovery hub, and sitemap (direct URL still works for drafts). */
+export function getPublishedBlogPosts() {
+  return blogPostsMeta.filter((p) => p.published !== false)
+}
+
 /** Homepage + noscript featured list (newest by dateModified). */
 export function getFeaturedBlogPosts(limit = 4) {
-  return [...blogPostsMeta].sort((a, b) => b.dateModified.localeCompare(a.dateModified)).slice(0, limit)
+  return [...getPublishedBlogPosts()].sort((a, b) => b.dateModified.localeCompare(a.dateModified)).slice(0, limit)
 }

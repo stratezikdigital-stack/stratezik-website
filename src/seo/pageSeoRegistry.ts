@@ -1,5 +1,5 @@
 import { getBlogShareImagePath } from '../blog/blogShareImages'
-import { blogPostsMeta } from '../blog/postsMeta'
+import { blogPostsMeta, getPublishedBlogPosts } from '../blog/postsMeta'
 import { buildArticleWithFaqJsonLd, buildSimpleArticleJsonLd } from '../blog/buildArticleJsonLd'
 import { buildBlogIndexJsonLd } from '../blog/buildBlogIndexJsonLd'
 import { authors, buildAuthorPageJsonLd, getAuthorBySlug } from './authors'
@@ -357,7 +357,7 @@ export const BLOG_INDEX_SEO: RouteSeoConfig = {
   ogImageWidth: BRAND_OG_DIMENSIONS.width,
   ogImageHeight: BRAND_OG_DIMENSIONS.height,
   ogImageAlt: 'Stratezik Blog',
-  jsonLd: buildBlogIndexJsonLd(blogPostsMeta),
+  jsonLd: buildBlogIndexJsonLd(getPublishedBlogPosts()),
   sitemapPriority: 0.85,
   sitemapChangefreq: 'weekly',
 }
@@ -372,6 +372,7 @@ function blogPostSeo(post: (typeof blogPostsMeta)[number]): RouteSeoConfig {
       : buildSimpleArticleJsonLd(post)
 
   const author = getAuthorBySlug(post.authorSlug)
+  const isDraft = post.published === false
 
   return {
     path: `/blog/${post.slug}`,
@@ -389,6 +390,8 @@ function blogPostSeo(post: (typeof blogPostsMeta)[number]): RouteSeoConfig {
     jsonLd,
     sitemapPriority: 0.92,
     sitemapChangefreq: 'monthly',
+    includeInSitemap: !isDraft,
+    robots: isDraft ? 'noindex, nofollow' : undefined,
   }
 }
 

@@ -18,6 +18,8 @@ export type BlogPostMeta = {
   researchLabel?: string
   /** Override default Article/FAQ JSON-LD graph. */
   buildJsonLd?: (meta: BlogPostMeta) => unknown
+  /** When false, post is preview-only: direct URL works, but hidden from listings and sitemap. Default true. */
+  published?: boolean
 }
 
 export type BlogPostDefinition = BlogPostMeta & {

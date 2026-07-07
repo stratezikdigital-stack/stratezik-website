@@ -19,6 +19,7 @@ const postLoaders: Record<string, ArticleLoader> = {
   'get-recommended-by-chatgpt-toronto': () => import('./GetRecommendedByChatgptToronto2026Article'),
   'toronto-ai-citation-tracker': () => import('./TorontoAiCitationTrackerHubArticle'),
   'toronto-ai-citation-tracker-july-2026': () => import('./TorontoAiCitationTrackerJuly2026Article'),
+  'toronto-chatgpt-ads-index': () => import('./TorontoChatgptAdsIndexArticle'),
   'get-recommended-by-chatgpt-playbook': () => import('./GetRecommendedByChatGPTPlaybookArticle'),
   'chatgpt-ads-toronto-industries': () => import('./ChatGPTAdsTorontoIndustriesArticle'),
   'chatgpt-ads-2026-guide': () => import('./ChatGPTAdsGuideArticle'),

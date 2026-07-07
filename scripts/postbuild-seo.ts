@@ -138,7 +138,9 @@ async function main(): Promise<void> {
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap, 'utf8')
   console.log(`[seo] sitemap.xml (${configs.length} URLs)`)
 
-  const blogPosts = configs.filter((c) => c.path.startsWith('/blog/') && c.path !== '/blog')
+  const blogPosts = configs.filter(
+    (c) => c.path.startsWith('/blog/') && c.path !== '/blog' && c.includeInSitemap !== false,
+  )
   const toolPages = configs.filter((c) =>
     ['/aeo-checker', '/gbp-audit', '/toronto-startup-website-audit-2026', '/growth-credit', '/chatgpt-ads-cheat-sheet', '/free-tools'].includes(c.path),
   )
@@ -242,6 +244,23 @@ ${blogPosts
             'Perplexity resolved several Scarborough queries to the United Kingdom',
           ],
         },
+      },
+      {
+        name: 'Toronto ChatGPT Ads Index',
+        hubUrl: `${SITE_ORIGIN}/blog/toronto-chatgpt-ads-index`,
+        cadence: 'monthly',
+        type: 'living_index',
+        latestEdition: {
+          month: 'July 2026',
+          url: `${SITE_ORIGIN}/blog/toronto-chatgpt-ads-index`,
+          industries: 18,
+          headlineFindings: [
+            '48% of 90 commercial buyer questions carried a ChatGPT ad in June baseline',
+            'Fitness, pest control, and electrical showed zero ads in sample',
+            '59% of commercial ads were on-target vs 36% in local-service categories',
+          ],
+        },
+        relatedSeries: `${SITE_ORIGIN}/blog/toronto-ai-citation-tracker`,
       },
     ]
     context.generated = new Date().toISOString().slice(0, 10)

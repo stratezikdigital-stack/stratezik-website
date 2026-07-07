@@ -94,7 +94,7 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
   - [AI strategy consulting Toronto](https://www.stratezik.com/services/ai-agents/ai-strategy): Toronto AI strategy consulting for founders deciding what to automate first. Agent org design, context engineering, and a deployment roadmap from operators.
   - [custom AI agent development Toronto](https://www.stratezik.com/services/ai-agents/agent-development): Toronto custom AI agent build and deployment. End-to-end work from context engineering and tool integration to handoff, by an agency that runs on its own agents.
 
-## Blog articles (21)
+## Blog articles (22)
 
 ### The Shift From Old SEO to Agent-Ready SEO in 2026
 - URL: https://www.stratezik.com/blog/old-seo-to-agent-ready-seo-2026
@@ -174,9 +174,9 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
 - Published: 2026-07-03
 - Updated: 2026-07-03
 
-### Toronto AI Citation Tracker
+### Toronto AI Citation & ChatGPT Ads Tracker
 - URL: https://www.stratezik.com/blog/toronto-ai-citation-tracker
-- Summary: Monthly Toronto AI citation research: which assistants recommend local businesses, tracked across ChatGPT, Perplexity, Google AI Mode, and Claude. Latest edition and archive.
+- Summary: Monthly Toronto research on AI citations and ChatGPT ads: which assistants recommend local businesses, plus a competitiveness map across 18 industries. Latest edition and archive.
 - Published: 2026-07-08
 - Updated: 2026-07-08
 
@@ -185,6 +185,12 @@ Service areas: Toronto, Scarborough, and the Greater Toronto Area (GTA), Canada.
 - Summary: We asked ChatGPT, Perplexity, Google AI Mode, and Claude 50 Toronto buying questions. 89% named a local business; Perplexity trailed at 74% and sent Scarborough to the UK.
 - Published: 2026-07-08
 - Updated: 2026-07-08
+
+### The Toronto ChatGPT Ads Index
+- URL: https://www.stratezik.com/blog/toronto-chatgpt-ads-index
+- Summary: Which Toronto industries show ChatGPT ads, how competitive they are, and where the open lanes sit. 18 industries mapped, with real CPC and CPM. Updated monthly.
+- Published: 2026-07-06
+- Updated: 2026-07-06
 
 ### How to Get Your Business Recommended by ChatGPT (2026 Playbook)
 - URL: https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook

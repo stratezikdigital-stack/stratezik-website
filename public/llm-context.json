@@ -66,7 +66,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-07-05",
+  "generated": "2026-07-07",
   "articles": [
     {
       "title": "The Shift From Old SEO to Agent-Ready SEO in 2026",
@@ -121,12 +121,16 @@
       "url": "https://www.stratezik.com/blog/get-recommended-by-chatgpt-toronto"
     },
     {
-      "title": "Toronto AI Citation Tracker",
+      "title": "Toronto AI Citation & ChatGPT Ads Tracker",
       "url": "https://www.stratezik.com/blog/toronto-ai-citation-tracker"
     },
     {
       "title": "Toronto AI Citation Tracker: July 2026",
       "url": "https://www.stratezik.com/blog/toronto-ai-citation-tracker-july-2026"
+    },
+    {
+      "title": "The Toronto ChatGPT Ads Index",
+      "url": "https://www.stratezik.com/blog/toronto-chatgpt-ads-index"
     },
     {
       "title": "How to Get Your Business Recommended by ChatGPT (2026 Playbook)",
@@ -329,6 +333,23 @@
           "Perplexity resolved several Scarborough queries to the United Kingdom"
         ]
       }
+    },
+    {
+      "name": "Toronto ChatGPT Ads Index",
+      "hubUrl": "https://www.stratezik.com/blog/toronto-chatgpt-ads-index",
+      "cadence": "monthly",
+      "type": "living_index",
+      "latestEdition": {
+        "month": "July 2026",
+        "url": "https://www.stratezik.com/blog/toronto-chatgpt-ads-index",
+        "industries": 18,
+        "headlineFindings": [
+          "48% of 90 commercial buyer questions carried a ChatGPT ad in June baseline",
+          "Fitness, pest control, and electrical showed zero ads in sample",
+          "59% of commercial ads were on-target vs 36% in local-service categories"
+        ]
+      },
+      "relatedSeries": "https://www.stratezik.com/blog/toronto-ai-citation-tracker"
     }
   ]
 }

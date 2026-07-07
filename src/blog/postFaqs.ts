@@ -482,6 +482,39 @@ export const insecticaCaseStudyFaq = [
   },
 ]
 
+export const torontoChatgptAdsIndexFaq = [
+  {
+    question: 'What is the Toronto ChatGPT Ads Index?',
+    answer:
+      'It is Stratezik\'s living monthly map of where ChatGPT shows ads to Toronto buyers, industry by industry. Each edition records ad presence, who advertised, relevance to the question, competitiveness tiers, and directional CPC/CPM ranges across 18 industries.',
+  },
+  {
+    question: 'How competitive are ChatGPT ads in Toronto right now?',
+    answer:
+      'In the June 2026 logged-in baseline (90 commercial buyer questions), 48% carried an ad. B2B SaaS, finance, and travel sat at saturated tiers; fitness, pest control, and electrical showed no ads. July\'s lighter two-question spot check read 25% overall, but presence rotates week to week.',
+  },
+  {
+    question: 'Do Toronto local businesses need ChatGPT ads yet?',
+    answer:
+      'For most local categories, organic AI recommendations still matter more than paid placement. The index exists so you can see whether your industry is worth a test budget or whether fixing citations and site clarity is the smarter move first. White-space lanes like fitness, pest control, and electrical had no relevant bidders in our samples.',
+  },
+  {
+    question: 'How much do ChatGPT ads cost in Toronto in 2026?',
+    answer:
+      'OpenAI publishes no official rates. Third-party reporting and our market reads point to roughly $3 to $5 per click or $25 to $60 CPM in general categories, with software and finance higher. Self-serve access opened May 2026 with no minimum spend.',
+  },
+  {
+    question: 'Which Toronto industries show the most ChatGPT ads?',
+    answer:
+      'In our June baseline, saturated tiers included B2B SaaS, finance and insurance, and travel and hospitality (ads on nearly every question). Online education and professional services looked crowded but mostly carried non-endemic advertisers, leaving relevance gaps for operators actually in those categories.',
+  },
+  {
+    question: 'How often is the Toronto ChatGPT Ads Index updated?',
+    answer:
+      'Monthly, on the same cadence as the Toronto AI Citation Tracker. Each refresh re-runs the logged-in ad check, updates the month-over-month map, and logs a dated changelog on this page.',
+  },
+]
+
 export const torontoAiCitationTrackerJulyFaq = [
   {
     question: 'What is the Toronto AI Citation Tracker?',

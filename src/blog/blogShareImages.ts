@@ -16,6 +16,7 @@ const BLOG_HERO_IMAGE_BY_SLUG: Record<string, string> = {
   'get-recommended-by-chatgpt-toronto': '/branding/blog-heroes/get-recommended-by-chatgpt-toronto.jpg',
   'toronto-ai-citation-tracker': '/branding/blog-heroes/toronto-ai-citation-tracker.jpg',
   'toronto-ai-citation-tracker-july-2026': '/branding/blog-heroes/toronto-ai-citation-tracker-july-2026.jpg',
+  'toronto-chatgpt-ads-index': '/branding/blog-heroes/chatgpt-ads-toronto-industries.jpg',
   'get-recommended-by-chatgpt-playbook': '/branding/blog-heroes/get-recommended-by-chatgpt-playbook.jpg',
   'chatgpt-ads-toronto-industries': '/branding/blog-heroes/chatgpt-ads-toronto-industries.jpg',
   'chatgpt-ads-2026-guide': '/branding/blog-heroes/chatgpt-ads-2026-guide.jpg',

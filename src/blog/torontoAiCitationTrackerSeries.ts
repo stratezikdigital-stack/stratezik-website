@@ -1,6 +1,6 @@
 export const TORONTO_AI_CITATION_TRACKER_HUB_SLUG = 'toronto-ai-citation-tracker'
 
-export const TORONTO_AI_CITATION_TRACKER_TITLE = 'Toronto AI Citation Tracker'
+export const TORONTO_AI_CITATION_TRACKER_TITLE = 'Toronto AI Citation & ChatGPT Ads Tracker'
 
 export type TorontoAiCitationTrackerEdition = {
   slug: string
@@ -16,7 +16,7 @@ export const TORONTO_AI_CITATION_TRACKER_EDITIONS: TorontoAiCitationTrackerEditi
     slug: 'toronto-ai-citation-tracker-july-2026',
     monthLabel: 'July 2026',
     datePublished: '2026-07-08',
-    headline: '89% of answers named a local business; Perplexity trailed at 74%',
+    headline: '89% local citations + ChatGPT ad map across 18 industries',
     isCurrent: true,
   },
 ]

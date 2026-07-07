@@ -27,9 +27,9 @@ export default function TorontoAiCitationTrackerHubArticle() {
         <ResearchHeroStats
           stats={[
             { value: '89%', label: 'Latest: local business named', detail: `${current.monthLabel} baseline across 4 engines` },
-            { value: '4', label: 'AI engines tracked', detail: 'ChatGPT · Perplexity · Google AI Mode · Claude' },
+            { value: '48%', label: 'ChatGPT ad rate (logged in)', detail: '90 buyer questions · 18 industries' },
             { value: '50', label: 'Frozen queries monthly', detail: '10 GTA service categories' },
-            { value: '12', label: 'Editions per year', detail: 'Monthly readings + quarterly rollups' },
+            { value: '4', label: 'AI engines tracked', detail: 'ChatGPT · Perplexity · Google AI Mode · Claude' },
           ]}
         />
       </ResearchWide>
@@ -37,8 +37,9 @@ export default function TorontoAiCitationTrackerHubArticle() {
       <ResearchProse>
         <p className="lead text-lg text-ink-700 leading-relaxed speakable-tracker-finding-1">
           {TORONTO_AI_CITATION_TRACKER_TITLE} is Stratezik&apos;s recurring measure of which AI assistants actually recommend
-          Toronto and GTA businesses — category by category, month after month. This is the canonical home for the series:
-          start with the latest edition below, then browse the archive as we publish new readings.
+          Toronto and GTA businesses — and where ChatGPT is selling ads against buyer questions. Category by category, month
+          after month. This is the canonical home for the series: start with the latest edition below, then browse the archive
+          as we publish new readings.
         </p>
 
         <section className="mt-12 border border-ink/12 bg-cream-50 p-6 md:p-8" aria-labelledby="current-edition-heading">
@@ -47,9 +48,9 @@ export default function TorontoAiCitationTrackerHubArticle() {
             {current.monthLabel}: {current.headline}
           </h2>
           <p className="mt-4 text-ink-700 leading-relaxed">
-            Edition one (baseline): 200 data points from 50 frozen high-intent buyer questions across dental, injury law,
-            accounting, pest control, plumbing, general contracting, restaurants, wellness, medical clinics, and home services.
-            Google AI Mode led at 98% local naming; Perplexity trailed at 74% and mishandled Scarborough on several queries.
+            Edition one (baseline): 200 data points from 50 frozen high-intent buyer questions across 10 local-service categories,
+            plus a logged-in ChatGPT ad map across 18 industries. Google AI Mode led at 98% local naming; Perplexity trailed at
+            74%; Finding 3 maps which categories are open, competitive, or saturated for paid ChatGPT placement.
           </p>
           <Link
             to={`/blog/${current.slug}?utm_source=tracker-hub&utm_medium=cta`}
@@ -66,7 +67,7 @@ export default function TorontoAiCitationTrackerHubArticle() {
               to={`/blog/${current.slug}?utm_source=tracker-hub&utm_medium=archive`}
               className="font-display text-lg text-oxblood hover:text-ink underline underline-offset-2"
             >
-              Toronto AI Citation Tracker: {current.monthLabel}
+              Toronto AI Citation & ChatGPT Ads Tracker: {current.monthLabel}
             </Link>
             <p className="mt-2 text-sm text-ink-600 leading-relaxed">{current.headline}</p>
             <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-400">
