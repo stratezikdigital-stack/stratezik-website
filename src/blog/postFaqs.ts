@@ -515,6 +515,39 @@ export const torontoChatgptAdsIndexFaq = [
   },
 ]
 
+export const torontoStartupWebsiteAudit2026Faq = [
+  {
+    question: 'How were the 50 companies selected?',
+    answer:
+      'We compiled a list of Toronto and GTA-headquartered startups that publicly announced a funding round between January 2024 and April 2026, using BetaKit funding announcements, the Crunchbase Toronto/GTA filter, the Communitech member directory, and the MaRS portfolio. We excluded stealth-mode companies with no website, companies acquired or wound down before the audit date, and companies headquartered outside the GTA even if Toronto-incubated.',
+  },
+  {
+    question: 'Why did some companies fail to load?',
+    answer:
+      'Site fetch failures can come from aggressive bot protection (Cloudflare challenge pages, rate limiting), temporary downtime during the audit window, or genuine infrastructure problems. We attempted multiple fetches per company across two windows (May and June 2026), and the set of failing sites shifted between them, which is evidence that much of the blocking is intermittent rather than structural. Where no fetch succeeded, we marked the affected dimensions unverifiable rather than guessing.',
+  },
+  {
+    question: 'Can I see the underlying dataset?',
+    answer:
+      'Yes. Email dave@stratezik.com for access to the full dataset (CSV format) with company names, scores, and notes. We will also provide sector-specific cuts on request (for example, fintech only or B2B SaaS only).',
+  },
+  {
+    question: 'Will you audit the same companies in 2027?',
+    answer:
+      'Yes. The same 50 companies will be re-audited in Q2 2027 using the same rubric. Year-over-year comparison will become the headline finding in the 2027 report.',
+  },
+  {
+    question: 'My company is in the dataset and I disagree with the score. What do I do?',
+    answer:
+      'Email dave@stratezik.com with the specific dimension you are disputing and supporting evidence (screenshots, links, third-party verification). If the evidence is conclusive, we will update the score and republish the dataset with a changelog note. If the evidence is inconclusive, we will note the dispute in the dataset and leave the score unchanged.',
+  },
+  {
+    question: 'Can I use this data in a presentation or article?',
+    answer:
+      'Yes. Attribute it to "Stratezik Toronto Startup Website Audit 2026" and link to this report. If you are a journalist or researcher, email dave@stratezik.com for embargoed access to the 2027 report.',
+  },
+]
+
 export const torontoAiCitationTrackerJulyFaq = [
   {
     question: 'What is the Toronto AI Citation Tracker?',

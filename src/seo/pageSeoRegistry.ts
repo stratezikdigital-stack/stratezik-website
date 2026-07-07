@@ -275,7 +275,7 @@ export const CHATGPT_CHEAT_SHEET_SEO: RouteSeoConfig = {
   ],
   jsonLd: buildCheatSheetJsonLd(),
   datePublished: '2026-06-12',
-  dateModified: '2026-06-12',
+  dateModified: '2026-07-07',
   sitemapPriority: 0.93,
   sitemapChangefreq: 'weekly',
 }

@@ -11,6 +11,8 @@ import { TorontoAiCitationTrackerSeriesNav } from './TorontoAiCitationTrackerSer
 import {
   TORONTO_AI_CITATION_TRACKER_HUB_SLUG,
   TORONTO_AI_CITATION_TRACKER_TITLE,
+  TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG,
+  TORONTO_STARTUP_WEBSITE_AUDIT_TITLE,
   getCurrentTorontoAiCitationTrackerEdition,
 } from './torontoAiCitationTrackerSeries'
 
@@ -41,6 +43,24 @@ export default function TorontoAiCitationTrackerHubArticle() {
           after month. This is the canonical home for the series: start with the latest edition below, then browse the archive
           as we publish new readings.
         </p>
+
+        <section className="mt-12 border border-ink/12 bg-cream-50 p-6 md:p-8" aria-labelledby="foundational-audit-heading">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-oxblood">Foundational research</p>
+          <h2 id="foundational-audit-heading" className="mt-3 font-display text-2xl text-ink tracking-tight">
+            {TORONTO_STARTUP_WEBSITE_AUDIT_TITLE}
+          </h2>
+          <p className="mt-4 text-ink-700 leading-relaxed">
+            Before we track who AI names each month, we audited 50 funded Toronto startups on positioning, content, trust,
+            and the same 20-Point AEO Readiness Test that powers our free checker. Median composite 59/100; median AEO
+            10.75/20; 95% of AEO points come from defaults, 29% from deliberate work.
+          </p>
+          <Link
+            to={`/blog/${TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG}?utm_source=tracker-hub&utm_medium=cta`}
+            className="mt-6 inline-flex items-center gap-2 border border-ink px-6 py-3 font-medium text-ink hover:bg-ink hover:text-cream transition-colors"
+          >
+            Read the full audit report &rarr;
+          </Link>
+        </section>
 
         <section className="mt-12 border border-ink/12 bg-cream-50 p-6 md:p-8" aria-labelledby="current-edition-heading">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-oxblood">Current edition</p>

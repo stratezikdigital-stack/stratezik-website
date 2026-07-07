@@ -24,6 +24,12 @@ export default function TorontoStartupAuditPage() {
             </Link>
             . The doors are open, but the house is empty.
           </p>
+          <Link
+            to="/blog/toronto-startup-website-audit-2026?utm_source=audit-landing&utm_medium=cta"
+            className="mt-8 inline-flex items-center gap-2 bg-ink text-cream px-7 py-3 font-medium tracking-wide hover:bg-oxblood transition-colors"
+          >
+            Read the full audit report (10 findings, ranked tables) &rarr;
+          </Link>
         </header>
 
         <section className="border-t border-ink/15 pt-10 space-y-10">

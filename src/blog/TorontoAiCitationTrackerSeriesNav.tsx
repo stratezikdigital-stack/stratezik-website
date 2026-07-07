@@ -3,6 +3,8 @@ import {
   TORONTO_AI_CITATION_TRACKER_EDITIONS,
   TORONTO_AI_CITATION_TRACKER_HUB_SLUG,
   TORONTO_AI_CITATION_TRACKER_TITLE,
+  TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG,
+  TORONTO_STARTUP_WEBSITE_AUDIT_TITLE,
 } from './torontoAiCitationTrackerSeries'
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 /** Hub + monthly edition cross-links for the recurring citation tracker. */
 export function TorontoAiCitationTrackerSeriesNav({ currentSlug, variant = 'top' }: Props) {
   const onHub = currentSlug === TORONTO_AI_CITATION_TRACKER_HUB_SLUG
+  const onAudit = currentSlug === TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG
 
   return (
     <nav
@@ -28,6 +31,16 @@ export function TorontoAiCitationTrackerSeriesNav({ currentSlug, variant = 'top'
       <p className="mt-2 text-sm text-ink-600 leading-relaxed">
         {onHub ? (
           <>You are on the series hub — the canonical home for every edition.</>
+        ) : onAudit ? (
+          <>
+            Flagship audit:{' '}
+            <Link
+              to={`/blog/${TORONTO_AI_CITATION_TRACKER_HUB_SLUG}`}
+              className="text-oxblood underline underline-offset-2 hover:text-ink"
+            >
+              View the citation tracker hub
+            </Link>
+          </>
         ) : (
               <>
                 Edition:{' '}
@@ -58,6 +71,22 @@ export function TorontoAiCitationTrackerSeriesNav({ currentSlug, variant = 'top'
             </Link>
           )}
           <span className="text-ink-500"> · Latest edition + archive</span>
+        </li>
+        <li className={onAudit ? 'text-ink font-medium' : 'text-ink-700'}>
+          {onAudit ? (
+            <span>
+              {TORONTO_STARTUP_WEBSITE_AUDIT_TITLE}{' '}
+              <span className="font-mono text-[10px] uppercase tracking-wider text-oxblood">(this report)</span>
+            </span>
+          ) : (
+            <Link
+              to={`/blog/${TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG}`}
+              className="text-oxblood hover:text-ink underline underline-offset-2"
+            >
+              {TORONTO_STARTUP_WEBSITE_AUDIT_TITLE}
+            </Link>
+          )}
+          <span className="text-ink-500"> · 50 startups · 20-point AEO test · May–June 2026</span>
         </li>
         {TORONTO_AI_CITATION_TRACKER_EDITIONS.map((edition) => {
           const active = edition.slug === currentSlug

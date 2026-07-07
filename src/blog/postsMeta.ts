@@ -4,6 +4,7 @@ import {
   buildTorontoAiCitationTrackerJulyJsonLd,
 } from './buildTorontoAiCitationTrackerJsonLd'
 import { buildTorontoChatgptAdsIndexJsonLd } from './buildTorontoChatgptAdsIndexJsonLd'
+import { buildTorontoStartupWebsiteAudit2026JsonLd } from './buildTorontoStartupWebsiteAudit2026JsonLd'
 import {
   answerEngineTorontoFaq,
   chatgptAdsGuideFaq,
@@ -26,6 +27,7 @@ import {
   oldSeoToAgentReadyFaq,
   torontoAiCitationTrackerJulyFaq,
   torontoChatgptAdsIndexFaq,
+  torontoStartupWebsiteAudit2026Faq,
 } from './postFaqs'
 
 export type BlogPostMetaEntry = BlogPostMeta & { faqEntities?: { question: string; answer: string }[] }
@@ -259,6 +261,29 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
       'get my business recommended by AI',
     ],
     faqEntities: getRecommendedByChatgptTorontoFaq,
+  },
+  {
+    slug: 'toronto-startup-website-audit-2026',
+    title: 'The Toronto Startup Website Audit 2026',
+    description:
+      'We audited 50 funded Toronto startups on a 20-point AI-search test. 95% of their AEO points come from defaults; 5% deploy FAQ schema. Median: 59/100.',
+    datePublished: '2026-07-07',
+    dateModified: '2026-07-07',
+    authorSlug: 'shah-md-rifat',
+    layout: 'research',
+    researchLabel: 'Flagship research · Toronto & GTA · May–June 2026',
+    keywords: [
+      'Toronto startup marketing audit',
+      'Toronto startup website audit',
+      'AEO readiness Toronto startups',
+      'Toronto startup AEO score',
+      '20-point AEO test',
+      'Toronto funded startups marketing',
+      'startup marketing health Toronto',
+      'answer engine optimization startups',
+    ],
+    faqEntities: torontoStartupWebsiteAudit2026Faq,
+    buildJsonLd: (meta) => buildTorontoStartupWebsiteAudit2026JsonLd(meta, torontoStartupWebsiteAudit2026Faq),
   },
   {
     slug: 'toronto-ai-citation-tracker',

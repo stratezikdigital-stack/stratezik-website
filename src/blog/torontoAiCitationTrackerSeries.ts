@@ -2,6 +2,11 @@ export const TORONTO_AI_CITATION_TRACKER_HUB_SLUG = 'toronto-ai-citation-tracker
 
 export const TORONTO_AI_CITATION_TRACKER_TITLE = 'Toronto AI Citation & ChatGPT Ads Tracker'
 
+/** Flagship audit that defines the 20-point AEO test used across the research series. */
+export const TORONTO_STARTUP_WEBSITE_AUDIT_BLOG_SLUG = 'toronto-startup-website-audit-2026'
+
+export const TORONTO_STARTUP_WEBSITE_AUDIT_TITLE = 'The Toronto Startup Website Audit 2026'
+
 export type TorontoAiCitationTrackerEdition = {
   slug: string
   monthLabel: string

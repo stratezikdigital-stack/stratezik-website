@@ -229,6 +229,23 @@ ${blogPosts
     }))
     context.researchSeries = [
       {
+        name: 'Toronto Startup Website Audit',
+        hubUrl: `${SITE_ORIGIN}/blog/toronto-startup-website-audit-2026`,
+        cadence: 'annual',
+        type: 'flagship_audit',
+        latestEdition: {
+          year: '2026',
+          url: `${SITE_ORIGIN}/blog/toronto-startup-website-audit-2026`,
+          sampleSize: 50,
+          headlineFindings: [
+            'Median composite score 59/100 across 44 verifiable companies',
+            'Median AEO readiness 10.75/20 on the 20-point machine-verified test',
+            '95% of AEO points from defaults vs 29% from deliberate schema and copy work',
+          ],
+        },
+        relatedSeries: `${SITE_ORIGIN}/blog/toronto-ai-citation-tracker`,
+      },
+      {
         name: 'Toronto AI Citation Tracker',
         hubUrl: `${SITE_ORIGIN}/blog/toronto-ai-citation-tracker`,
         cadence: 'monthly',
