@@ -8,11 +8,22 @@ export const INDEXNOW_KEY = 'stratezik-indexnow-7f3a9c2e1b4d8f6a'
 const INDEXNOW_HOST = 'www.stratezik.com'
 const KEY_LOCATION = `${SITE_ORIGIN}/${INDEXNOW_KEY}.txt`
 
+const INDEXNOW_ENDPOINTS = [
+  'https://api.indexnow.org/indexnow',
+  'https://www.bing.com/indexnow',
+  'https://yandex.com/indexnow',
+  'https://searchadvisor.naver.com/indexnow',
+  'https://search.seznam.cz/indexnow',
+] as const
+
 /** Always ping these after deploy — hub, research, machine-readable indexes. */
 export const INDEXNOW_PRIORITY_PATHS = [
   '/',
+  '/blog/toronto-startup-website-audit-2026',
+  '/toronto-startup-website-audit-2026',
   '/blog/toronto-ai-citation-tracker',
   '/blog/toronto-ai-citation-tracker-july-2026',
+  '/blog/toronto-chatgpt-ads-index',
   '/blog/get-recommended-by-chatgpt-toronto',
   '/llms-full.txt',
   '/llm-context.json',
@@ -36,19 +47,28 @@ export async function submitIndexNow(urlPaths: string[]): Promise<void> {
   }
 
   try {
-    const res = await fetch('https://api.indexnow.org/indexnow', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(body),
-    })
+    for (const endpoint of INDEXNOW_ENDPOINTS) {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify(body),
+      })
 
-    if (res.ok || res.status === 202) {
-      console.log(`[seo] IndexNow submitted ${unique.length} URL(s) → HTTP ${res.status}`)
-      return
+      const host = new URL(endpoint).hostname
+      if (res.ok || res.status === 202) {
+        console.log(`[seo] IndexNow ${host} → HTTP ${res.status} (${unique.length} URL(s))`)
+        continue
+      }
+
+      const text = await res.text().catch(() => '')
+      if (host.includes('bing') || host.includes('indexnow.org')) {
+        console.warn(
+          `[seo] IndexNow ${host} → HTTP ${res.status} (non-fatal)${text ? `: ${text.slice(0, 160)}` : ''} — verify www.stratezik.com in Bing Webmaster Tools to enable Bing/ChatGPT discovery`,
+        )
+      } else {
+        console.warn(`[seo] IndexNow ${host} → HTTP ${res.status} (non-fatal)${text ? `: ${text.slice(0, 120)}` : ''}`)
+      }
     }
-
-    const text = await res.text().catch(() => '')
-    console.warn(`[seo] IndexNow → HTTP ${res.status} (non-fatal)${text ? `: ${text.slice(0, 200)}` : ''}`)
   } catch (err) {
     console.warn('[seo] IndexNow submission failed (non-fatal):', err)
   }
