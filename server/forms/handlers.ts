@@ -124,3 +124,81 @@ export async function handleGrowthCredit(req: VercelRequest, res: VercelResponse
 
   return res.status(200).json({ ok: true })
 }
+
+export async function handleSurvey(req: VercelRequest, res: VercelResponse) {
+  const webhook = contactWebhookUrl()
+  if (!webhook) {
+    return res.status(503).json({
+      error: 'Survey capture is not configured yet. Email dave@stratezik.com instead.',
+    })
+  }
+
+  const body = (req.body ?? {}) as Record<string, unknown>
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+
+  const guard = await enforceSpamGuards(req, res, body, {
+    bucket: 'survey',
+    maxPerIp: 10,
+    windowMs: 60 * 60 * 1000,
+    honeypotField: 'website',
+    email: email || undefined,
+  })
+  if (!guard.allowed) return
+
+  const str = (key: string, max = 500) =>
+    typeof body[key] === 'string' ? body[key].trim().slice(0, max) : ''
+
+  const location = str('location', 80)
+  const employees = str('employees', 40)
+  const marketingManager = str('marketingManager', 120)
+  const biggestChallenge = str('biggestChallenge', 160)
+  const aiFamiliarity = str('aiFamiliarity', 160)
+  const skills = str('skills', 800)
+  const supportIntent = str('supportIntent', 80)
+  const monthlyBudget = str('monthlyBudget', 40)
+  const oneChange = str('oneChange', 500)
+
+  if (
+    !location ||
+    !employees ||
+    !marketingManager ||
+    !biggestChallenge ||
+    !aiFamiliarity ||
+    !skills ||
+    !supportIntent ||
+    !monthlyBudget ||
+    !oneChange
+  ) {
+    return res.status(400).json({ error: 'Please complete all required questions.' })
+  }
+
+  const ok = await postToAppsScript(webhook, {
+    type: 'survey',
+    location,
+    location_other: str('locationOther', 120),
+    employees,
+    marketing_manager: marketingManager,
+    biggest_challenge: biggestChallenge,
+    biggest_challenge_other: str('biggestChallengeOther', 200),
+    ai_familiarity: aiFamiliarity,
+    skills,
+    support_intent: supportIntent,
+    monthly_budget: monthlyBudget,
+    one_change: oneChange,
+    findings_summary: str('findingsSummary', 120),
+    follow_up_consent: str('followUpConsent', 20),
+    preferred_contact: str('preferredContact', 40),
+    phone: str('phone', 40),
+    email,
+    source: str('source', 80) || 'gta-smb-readiness-survey',
+    ref: str('ref', 80),
+    ip: clientIp(req),
+  })
+
+  if (!ok) {
+    console.error('[survey] Apps Script webhook failed')
+    return res.status(502).json({ error: 'Could not save your response. Email dave@stratezik.com instead.' })
+  }
+
+  return res.status(200).json({ ok: true })
+}

@@ -23,7 +23,7 @@ export const PRERENDER_BODY_EXACT = new Set([
 export const PRERENDER_BODY_PREFIXES = ['/blog/', '/authors/', '/services/']
 
 /** Token-gated or noindex routes — head only, no body prerender. */
-export const PRERENDER_BODY_EXCLUDE = ['/chatgpt-ads-cheat-sheet/guide']
+export const PRERENDER_BODY_EXCLUDE = ['/chatgpt-ads-cheat-sheet/guide', '/research/gta-smb-readiness']
 
 export function shouldPrerenderBody(path: string): boolean {
   if (PRERENDER_BODY_EXCLUDE.some((ex) => path === ex || path.startsWith(`${ex}/`))) {

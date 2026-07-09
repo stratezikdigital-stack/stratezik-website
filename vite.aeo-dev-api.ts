@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
 import { handleCheck, handleLead, handleScanQuota } from './server/aeo/handlers'
 import { handleGbpCheck, handleGbpLead } from './server/gbp/handlers'
-import { handleContact, handleFormToken, handleGrowthCredit } from './server/forms/handlers'
+import { handleContact, handleFormToken, handleGrowthCredit, handleSurvey } from './server/forms/handlers'
 import { handleGuideLead, handleGuideAccess } from './server/cheatsheet/handlers'
 
 function readJsonBody(req: import('http').IncomingMessage): Promise<unknown> {
@@ -77,6 +77,15 @@ export function aeoDevApiPlugin(): Plugin {
           if (url.startsWith('/api/growth-credit') && req.method === 'POST') {
             const body = await readJsonBody(req)
             await handleGrowthCredit(
+              { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
+              pseudoResponse(res),
+            )
+            return
+          }
+
+          if (url.startsWith('/api/survey') && req.method === 'POST') {
+            const body = await readJsonBody(req)
+            await handleSurvey(
               { method: 'POST', body, headers: req.headers, query: {} } as import('@vercel/node').VercelRequest,
               pseudoResponse(res),
             )

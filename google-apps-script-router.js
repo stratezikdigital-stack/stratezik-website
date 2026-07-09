@@ -51,6 +51,30 @@ var TABS = {
     name: 'Paid Order Issues',
     headers: ['Timestamp', 'Product', 'Email', 'Amount', 'Scan / Domain', 'Stripe Session', 'Status', 'Attempts', 'Last Error', 'Reason', 'Resolved?'],
   },
+  survey: {
+    name: 'Survey Responses',
+    headers: [
+      'Timestamp',
+      'Location',
+      'Location Other',
+      'Employees',
+      'Marketing Manager',
+      'Biggest Challenge',
+      'Challenge Other',
+      'AI Familiarity',
+      'Skills (up to 3)',
+      'Support Intent (3 mo)',
+      'Monthly Budget',
+      'One Change',
+      'Findings Summary',
+      'Follow-up Consent',
+      'Preferred Contact',
+      'Phone',
+      'Email',
+      'Source',
+      'Ref',
+    ],
+  },
 };
 
 function getSpreadsheet() {
@@ -215,6 +239,52 @@ function recordPaidIssue(p) {
   return 'paid-order issue recorded';
 }
 
+function recordSurvey(p) {
+  var ts = new Date();
+  getOrCreateTab('survey').appendRow([
+    ts,
+    p.location || '',
+    p.location_other || '',
+    p.employees || '',
+    p.marketing_manager || '',
+    p.biggest_challenge || '',
+    p.biggest_challenge_other || '',
+    p.ai_familiarity || '',
+    p.skills || '',
+    p.support_intent || '',
+    p.monthly_budget || '',
+    p.one_change || '',
+    p.findings_summary || '',
+    p.follow_up_consent || '',
+    p.preferred_contact || '',
+    p.phone || '',
+    p.email || '',
+    p.source || 'gta-smb-readiness-survey',
+    p.ref || '',
+  ]);
+  notify(
+    'GTA SMB survey response' + (p.location ? ' — ' + p.location : ''),
+    'New Digital Marketing & AI Readiness survey response.\n\n' +
+      'Location: ' + (p.location || '(not provided)') + '\n' +
+      'Employees: ' + (p.employees || '(not provided)') + '\n' +
+      'Marketing manager: ' + (p.marketing_manager || '(not provided)') + '\n' +
+      'Biggest challenge: ' + (p.biggest_challenge || '(not provided)') + '\n' +
+      'AI familiarity: ' + (p.ai_familiarity || '(not provided)') + '\n' +
+      'Skills: ' + (p.skills || '(not provided)') + '\n' +
+      'Support intent: ' + (p.support_intent || '(not provided)') + '\n' +
+      'Monthly budget: ' + (p.monthly_budget || '(not provided)') + '\n' +
+      'One change: ' + (p.one_change || '(not provided)') + '\n' +
+      'Findings summary: ' + (p.findings_summary || '(not provided)') + '\n' +
+      'Follow-up consent: ' + (p.follow_up_consent || '(not provided)') + '\n' +
+      'Contact: ' + (p.preferred_contact || '(none)') + ' · ' + (p.phone || '') + ' · ' + (p.email || '') + '\n' +
+      'Source: ' + (p.source || 'gta-smb-readiness-survey') + '\n' +
+      'Ref: ' + (p.ref || '(none)') + '\n' +
+      'Received: ' + ts + '\n',
+    p.email,
+  );
+  return 'survey response recorded';
+}
+
 function route(e) {
   var p = getParams(e);
   var type = String(p.type || '').toLowerCase();
@@ -225,6 +295,7 @@ function route(e) {
     case 'aeo': return recordAeo(p);
     case 'chatgpt': return recordChatgpt(p);
     case 'paid-issue': return recordPaidIssue(p);
+    case 'survey': return recordSurvey(p);
     default: throw new Error('Unknown or missing type: "' + type + '"');
   }
 }

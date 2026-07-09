@@ -296,6 +296,22 @@ export const CHATGPT_CHEAT_SHEET_GUIDE_SEO: RouteSeoConfig = {
   sitemapChangefreq: 'monthly',
 }
 
+export const GTA_SMB_SURVEY_SEO: RouteSeoConfig = {
+  path: '/research/gta-smb-readiness',
+  title: 'GTA SMB Digital Marketing & AI Readiness Survey | Stratezik',
+  description:
+    'Independent market research survey for Scarborough, Toronto GTA, and Ontario small and medium businesses.',
+  ogType: 'website',
+  ogImageUrl: DEFAULT_OG_IMAGE,
+  ogImageWidth: BRAND_OG_DIMENSIONS.width,
+  ogImageHeight: BRAND_OG_DIMENSIONS.height,
+  ogImageAlt: 'Stratezik market research survey',
+  robots: 'noindex, nofollow',
+  includeInSitemap: false,
+  sitemapPriority: 0,
+  sitemapChangefreq: 'monthly',
+}
+
 export const FREE_TOOLS_SEO: RouteSeoConfig = {
   path: '/free-tools',
   title: 'Free Marketing Tools | AEO Checker & ChatGPT Ads Playbook | Stratezik',
@@ -478,6 +494,7 @@ export function getAllRouteSeoConfigs(): RouteSeoConfig[] {
     TORONTO_AUDIT_SEO,
     CHATGPT_CHEAT_SHEET_SEO,
     CHATGPT_CHEAT_SHEET_GUIDE_SEO,
+    GTA_SMB_SURVEY_SEO,
     FREE_TOOLS_SEO,
     GROWTH_CREDIT_SEO,
     SERVICES_HUB_SEO,

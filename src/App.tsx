@@ -24,6 +24,7 @@ const ServicePage = lazy(() => import('./components/ServicePage'))
 const BlogPage = lazy(() => import('./components/BlogPage'))
 const BlogPostPage = lazy(() => import('./components/BlogPostPage'))
 const AuthorPage = lazy(() => import('./components/AuthorPage'))
+const GtaSmbSurveyPage = lazy(() => import('./components/GtaSmbSurveyPage'))
 
 function RouteFallback() {
   return <div className="min-h-[40vh]" aria-hidden="true" />
@@ -63,14 +64,16 @@ function ScrollToHash() {
 function AppContent() {
   const location = useLocation()
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+  const isSurvey = location.pathname.startsWith('/research/gta-smb-readiness')
+  const immersive = isCheatSheet || isSurvey
 
   return (
     <>
       <ScrollToTop />
       <ScrollToHash />
       <div className="relative z-10 min-h-screen">
-        {!isCheatSheet && <Navbar />}
-        <main className={isCheatSheet ? '' : 'pt-36'}>
+        {!immersive && <Navbar />}
+        <main className={immersive ? '' : 'pt-36'}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -83,6 +86,7 @@ function AppContent() {
               <Route path="/free-tools" element={<FreeToolsPage />} />
               <Route path="/chatgpt-ads-cheat-sheet" element={<CheatSheetLandingPage />} />
               <Route path="/chatgpt-ads-cheat-sheet/guide" element={<CheatSheetGuidePage />} />
+              <Route path="/research/gta-smb-readiness" element={<GtaSmbSurveyPage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/services/:slug" element={<ServicePage />} />
               <Route path="/services/:slug/:child" element={<ServicePage />} />
@@ -92,8 +96,8 @@ function AppContent() {
             </Routes>
           </Suspense>
         </main>
-        {!isCheatSheet && <Footer />}
-        {!isCheatSheet && <CookieConsentBanner />}
+        {!immersive && <Footer />}
+        {!immersive && <CookieConsentBanner />}
       </div>
     </>
   )
@@ -103,14 +107,16 @@ function AppShell() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isCheatSheet = location.pathname.startsWith('/chatgpt-ads-cheat-sheet')
+  const isSurvey = location.pathname.startsWith('/research/gta-smb-readiness')
+  const immersive = isCheatSheet || isSurvey
   const mobile = useIsMobile()
-  const [loaded, setLoaded] = useState(() => isCheatSheet || getIsMobile())
+  const [loaded, setLoaded] = useState(() => immersive || getIsMobile())
 
   useEffect(() => {
-    if (isCheatSheet || mobile) setLoaded(true)
-  }, [isCheatSheet, mobile])
+    if (immersive || mobile) setLoaded(true)
+  }, [immersive, mobile])
 
-  const showDesktopChrome = !isCheatSheet && !mobile
+  const showDesktopChrome = !immersive && !mobile
 
   return (
     <>

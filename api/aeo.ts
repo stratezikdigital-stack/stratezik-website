@@ -8,7 +8,7 @@ import {
   handleSitemapUnlock,
   handleUnlock,
 } from '../server/aeo/handlers.js'
-import { handleContact, handleFormToken, handleGrowthCredit } from '../server/forms/handlers.js'
+import { handleContact, handleFormToken, handleGrowthCredit, handleSurvey } from '../server/forms/handlers.js'
 import { handleGuideAccess, handleGuideLead } from '../server/cheatsheet/handlers.js'
 import { reconcilePaidOrders } from '../server/payments/orders.js'
 
@@ -31,6 +31,7 @@ function resolveAction(req: VercelRequest): string | null {
     '/api/form-token': 'form-token',
     '/api/contact': 'contact',
     '/api/growth-credit': 'growth-credit',
+    '/api/survey': 'survey',
   }
   return legacy[path] ?? null
 }
@@ -63,6 +64,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (action === 'growth-credit' && req.method === 'POST') {
     return handleGrowthCredit(req, res)
+  }
+  if (action === 'survey' && req.method === 'POST') {
+    return handleSurvey(req, res)
   }
 
   if (req.method !== 'POST') {

@@ -4,7 +4,7 @@
 
 All lead types (contact, GBP, AEO, growth-credit, ChatGPT, paid-order-issues) now go through a **single Apps Script** and a **single webhook URL**. This replaces the per-product scripts below — do **not** paste multiple lead scripts into one project (they all define `doGet`/`doPost` and collide, so only one ever runs).
 
-**Why:** the site sends a `type` field (`contact`, `gbp`, `aeo`, `growth-credit`, `chatgpt`, `paid-issue`) to one URL; the router writes to the correct tab.
+**Why:** the site sends a `type` field (`contact`, `gbp`, `aeo`, `growth-credit`, `chatgpt`, `paid-issue`, `survey`) to one URL; the router writes to the correct tab.
 
 **Setup (one time):**
 1. Open the **Stratezik Leads** spreadsheet → **Extensions → Apps Script**.

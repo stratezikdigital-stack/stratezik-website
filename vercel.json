@@ -342,6 +342,7 @@
     { "source": "/api/form-token", "destination": "/api/aeo?action=form-token" },
     { "source": "/api/contact", "destination": "/api/aeo?action=contact" },
     { "source": "/api/growth-credit", "destination": "/api/aeo?action=growth-credit" },
+    { "source": "/api/survey", "destination": "/api/aeo?action=survey" },
     { "source": "/api/reconcile-orders", "destination": "/api/aeo?action=reconcile-orders" },
     { "source": "/api/gbp-check", "destination": "/api/gbp?action=check" },
     { "source": "/api/gbp-lead", "destination": "/api/gbp?action=lead" },
@@ -519,6 +520,19 @@
     },
     {
       "source": "/chatgpt-ads-cheat-sheet/guide",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/research/gta-smb-readiness",
       "headers": [
         {
           "key": "X-Robots-Tag",
