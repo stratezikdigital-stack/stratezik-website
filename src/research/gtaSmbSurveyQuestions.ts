@@ -1,12 +1,8 @@
+/** Verbatim survey copy from the Google Form — do not paraphrase question text. */
+
 export type SurveyChoice = { value: string; label: string }
 
-export type SurveyStep =
-  | {
-      id: string
-      kind: 'intro'
-      title: string
-      body: string
-    }
+export type SurveyQuestion =
   | {
       id: string
       kind: 'single'
@@ -21,7 +17,7 @@ export type SurveyStep =
       id: string
       kind: 'multi'
       question: string
-      field: keyof GtaSmbSurveyAnswers
+      field: 'skills'
       max: number
       required?: boolean
       choices: SurveyChoice[]
@@ -32,13 +28,25 @@ export type SurveyStep =
       question: string
       field: keyof GtaSmbSurveyAnswers
       required?: boolean
-      placeholder?: string
       maxLength?: number
     }
   | {
       id: string
-      kind: 'contact'
+      kind: 'contact-preference'
       question: string
+      field: 'preferredContact'
+    }
+  | {
+      id: string
+      kind: 'phone'
+      question: string
+      field: 'phone'
+    }
+  | {
+      id: string
+      kind: 'email'
+      question: string
+      field: 'email'
     }
 
 export type GtaSmbSurveyAnswers = {
@@ -79,14 +87,18 @@ export const EMPTY_SURVEY_ANSWERS: GtaSmbSurveyAnswers = {
   email: '',
 }
 
-export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
-  {
-    id: 'intro',
-    kind: 'intro',
-    title: 'Digital Marketing & AI Readiness Survey',
-    body:
-      'Stratezik Digital Inc. is conducting independent market research on the digital marketing needs, AI awareness, and skills gaps of small and medium businesses across Scarborough, the Toronto GTA, and Ontario. About 3 minutes. Responses are anonymous unless you choose to share contact details at the end.',
-  },
+/** Verbatim intro from Google Form. */
+export const SURVEY_INTRO = {
+  title:
+    'We Stratezik Digital Inc. — Digital Marketing & AI Readiness Survey (Scarborough, Toronto GTA, Ontario)',
+  purpose:
+    'Stratezik Digital Inc. is conducting independent market research to understand the digital marketing needs, AI awareness, and skills gaps of small and medium businesses across Scarborough, the Toronto GTA, and Ontario.',
+  time: 'This survey takes about 3 minutes.',
+  privacy:
+    'Responses are anonymous unless you choose to identify your business. Results will be reported in aggregate. This is research-only and contains no promotional content. If you choose to opt in to follow-up, you will give explicit consent for future communications. You may request deletion of your responses at any time by replying to the contact details below.',
+}
+
+export const SURVEY_QUESTIONS: SurveyQuestion[] = [
   {
     id: 'location',
     kind: 'single',
@@ -98,19 +110,19 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
     choices: [
       { value: 'Scarborough', label: 'Scarborough' },
       { value: 'Toronto (other GTA)', label: 'Toronto (other GTA)' },
-      { value: 'Other', label: 'Other (Ontario)' },
+      { value: 'Other', label: 'Other:' },
     ],
   },
   {
-    id: 'team',
+    id: 'employees',
     kind: 'single',
     question: 'How many employees does your business have?',
     field: 'employees',
     required: true,
     choices: [
-      { value: '1 - 9', label: '1 – 9' },
-      { value: '10 - 49', label: '10 – 49' },
-      { value: '50 - 199', label: '50 – 199' },
+      { value: '1 - 9', label: '1 - 9' },
+      { value: '10 - 49', label: '10 - 49' },
+      { value: '50 - 199', label: '50 - 199' },
       { value: '200+', label: '200+' },
     ],
   },
@@ -131,7 +143,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
   {
     id: 'challenge',
     kind: 'single',
-    question: 'What is your single biggest digital marketing challenge right now?',
+    question: 'Which of the following is your single biggest digital marketing challenge right now?',
     field: 'biggestChallenge',
     required: true,
     allowOther: true,
@@ -144,7 +156,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
       { value: 'Lack of time or internal expertise', label: 'Lack of time or internal expertise' },
       { value: 'Difficulty producing content (video, copy)', label: 'Difficulty producing content (video, copy)' },
       { value: 'Not using or unsure about AI tools', label: 'Not using or unsure about AI tools' },
-      { value: 'Other', label: 'Other' },
+      { value: 'Other', label: 'Other:' },
     ],
   },
   {
@@ -172,7 +184,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
   {
     id: 'skills',
     kind: 'multi',
-    question: 'Which marketing skills would you most like help with?',
+    question: 'Which marketing skills would you most like help with? (Select up to 3)',
     field: 'skills',
     max: 3,
     required: true,
@@ -190,7 +202,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
     ],
   },
   {
-    id: 'intent-budget',
+    id: 'support-intent',
     kind: 'single',
     question: 'Are you likely to engage external support or training in the next 3 months?',
     field: 'supportIntent',
@@ -221,7 +233,6 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
     question: 'In one sentence, what single marketing change would most improve your business this year?',
     field: 'oneChange',
     required: true,
-    placeholder: 'e.g. More qualified leads from Google Maps…',
     maxLength: 500,
   },
   {
@@ -233,7 +244,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
     choices: [
       {
         value: 'Yes — please send me the summary (no commercial messages)',
-        label: 'Yes — send me the summary (no commercial messages)',
+        label: 'Yes — please send me the summary (no commercial messages)',
       },
       { value: 'No — thank you', label: 'No — thank you' },
     ],
@@ -241,7 +252,7 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
   {
     id: 'follow-up',
     kind: 'single',
-    question: 'May we follow up about this research if we have clarifying questions?',
+    question: 'Follow-up consent',
     field: 'followUpConsent',
     required: true,
     choices: [
@@ -250,10 +261,124 @@ export const GTA_SMB_SURVEY_STEPS: SurveyStep[] = [
     ],
   },
   {
-    id: 'contact',
-    kind: 'contact',
-    question: 'Optional contact details',
+    id: 'preferred-contact',
+    kind: 'contact-preference',
+    question: 'Prefered communication method',
+    field: 'preferredContact',
+  },
+  {
+    id: 'phone',
+    kind: 'phone',
+    question: 'Phone Number',
+    field: 'phone',
+  },
+  {
+    id: 'email',
+    kind: 'email',
+    question: 'Email',
+    field: 'email',
   },
 ]
 
-export const SURVEY_STEP_COUNT = GTA_SMB_SURVEY_STEPS.length
+/** ~5 questions per screen after intro. */
+export const SURVEY_PAGE_QUESTION_IDS: string[][] = [
+  ['location', 'employees', 'marketing-manager', 'challenge', 'ai'],
+  ['skills', 'support-intent', 'budget', 'one-change', 'findings'],
+  ['follow-up', 'preferred-contact', 'phone', 'email'],
+]
+
+export function questionById(id: string): SurveyQuestion | undefined {
+  return SURVEY_QUESTIONS.find((q) => q.id === id)
+}
+
+export function needsContactFields(answers: GtaSmbSurveyAnswers): boolean {
+  return (
+    answers.findingsSummary.startsWith('Yes') ||
+    answers.followUpConsent === 'Yes'
+  )
+}
+
+/** Progress units: each core question + conditional contact fields when visible. */
+export function surveyProgress(answers: GtaSmbSurveyAnswers): { answered: number; total: number; pct: number } {
+  const coreIds = [...SURVEY_PAGE_QUESTION_IDS[0], ...SURVEY_PAGE_QUESTION_IDS[1], 'follow-up']
+  let answered = 0
+  let total = coreIds.length
+
+  for (const id of coreIds) {
+    const q = questionById(id)
+    if (q && isQuestionAnswered(q, answers)) answered++
+  }
+
+  if (needsContactFields(answers)) {
+    total += 1
+    if (answers.preferredContact) answered++
+
+    const pref = answers.preferredContact
+    if (pref === 'Phone' || pref === 'Both Phone & Email') {
+      total += 1
+      if (answers.phone.trim()) answered++
+    }
+    if (pref === 'Email' || pref === 'Both Phone & Email') {
+      total += 1
+      if (answers.email.trim()) answered++
+    }
+  }
+
+  const pct = total > 0 ? Math.min(100, Math.round((answered / total) * 100)) : 0
+  return { answered, total, pct }
+}
+
+export function isQuestionAnswered(q: SurveyQuestion, answers: GtaSmbSurveyAnswers): boolean {
+  if (q.kind === 'single') {
+    const v = String(answers[q.field] ?? '').trim()
+    if (!v) return false
+    if (q.allowOther && v === 'Other') {
+      return Boolean(q.otherField && String(answers[q.otherField] ?? '').trim())
+    }
+    return true
+  }
+  if (q.kind === 'multi') return answers.skills.length > 0
+  if (q.kind === 'text') return Boolean(String(answers[q.field] ?? '').trim())
+  if (q.kind === 'contact-preference') return Boolean(answers.preferredContact)
+  if (q.kind === 'phone') return Boolean(answers.phone.trim())
+  if (q.kind === 'email') return Boolean(answers.email.trim())
+  return false
+}
+
+export function validatePage(pageIndex: number, answers: GtaSmbSurveyAnswers): string | null {
+  const ids = SURVEY_PAGE_QUESTION_IDS[pageIndex] ?? []
+  for (const id of ids) {
+    const q = questionById(id)
+    if (!q) continue
+    if (q.kind === 'contact-preference' || q.kind === 'phone' || q.kind === 'email') {
+      if (!needsContactFields(answers)) continue
+      if (q.kind === 'contact-preference' && !answers.preferredContact) {
+        return 'Please select a preferred communication method.'
+      }
+      if (q.kind === 'phone') {
+        const pref = answers.preferredContact
+        if ((pref === 'Phone' || pref === 'Both Phone & Email') && !answers.phone.trim()) {
+          return 'Please enter your phone number.'
+        }
+      }
+      if (q.kind === 'email') {
+        const pref = answers.preferredContact
+        if ((pref === 'Email' || pref === 'Both Phone & Email') && !answers.email.trim()) {
+          return 'Please enter your email.'
+        }
+        if (
+          answers.email &&
+          (pref === 'Email' || pref === 'Both Phone & Email') &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())
+        ) {
+          return 'Please enter a valid email address.'
+        }
+      }
+      continue
+    }
+    if (q.required && !isQuestionAnswered(q, answers)) {
+      return 'Please answer all required questions on this page.'
+    }
+  }
+  return null
+}

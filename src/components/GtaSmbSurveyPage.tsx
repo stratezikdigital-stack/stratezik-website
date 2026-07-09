@@ -4,80 +4,36 @@ import { FormProtectionFields } from './spam/FormProtectionFields'
 import { useFormProtection } from '../lib/spam/useFormProtection'
 import {
   EMPTY_SURVEY_ANSWERS,
-  GTA_SMB_SURVEY_STEPS,
-  SURVEY_STEP_COUNT,
+  SURVEY_INTRO,
+  SURVEY_PAGE_QUESTION_IDS,
+  needsContactFields,
+  questionById,
+  surveyProgress,
+  validatePage,
   type GtaSmbSurveyAnswers,
-  type SurveyStep,
+  type SurveyQuestion,
 } from '../research/gtaSmbSurveyQuestions'
 
-function needsContactFields(answers: GtaSmbSurveyAnswers): boolean {
-  return (
-    answers.findingsSummary.startsWith('Yes') ||
-    answers.followUpConsent === 'Yes'
-  )
-}
-
-function validateStep(step: SurveyStep, answers: GtaSmbSurveyAnswers): string | null {
-  if (step.kind === 'intro') return null
-
-  if (step.kind === 'single') {
-    const value = String(answers[step.field] ?? '').trim()
-    if (step.required && !value) return 'Please select an option.'
-    if (step.allowOther && value === 'Other') {
-      const otherKey = step.otherField
-      if (otherKey && !String(answers[otherKey] ?? '').trim()) {
-        return 'Please specify your answer.'
-      }
-    }
-    return null
-  }
-
-  if (step.kind === 'multi') {
-    const selected = answers[step.field] as string[]
-    if (step.required && selected.length === 0) return 'Select at least one option.'
-    if (selected.length > step.max) return `Select up to ${step.max} options.`
-    return null
-  }
-
-  if (step.kind === 'text') {
-    const value = String(answers[step.field] ?? '').trim()
-    if (step.required && !value) return 'Please enter a short answer.'
-    return null
-  }
-
-  if (step.kind === 'contact') {
-    if (!needsContactFields(answers)) return null
-    const pref = answers.preferredContact
-    if (!pref) return 'Choose how we should reach you.'
-    if ((pref === 'Phone' || pref === 'Both Phone & Email') && !answers.phone.trim()) {
-      return 'Enter a phone number.'
-    }
-    if ((pref === 'Email' || pref === 'Both Phone & Email') && !answers.email.trim()) {
-      return 'Enter an email address.'
-    }
-    if (answers.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())) {
-      return 'Enter a valid email address.'
-    }
-    return null
-  }
-
-  return null
-}
+const PAGE_COUNT = SURVEY_PAGE_QUESTION_IDS.length
 
 function ChoiceCard({
   selected,
   label,
   onSelect,
+  compact,
 }: {
   selected: boolean
   label: string
   onSelect: () => void
+  compact?: boolean
 }) {
   return (
     <button
       type="button"
       onClick={onSelect}
-      className={`w-full text-left rounded-sm border px-4 py-3.5 transition-colors ${
+      className={`w-full text-left rounded-sm border transition-colors ${
+        compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5'
+      } ${
         selected
           ? 'border-oxblood bg-oxblood/5 text-ink'
           : 'border-ink/15 bg-cream hover:border-ink/30 text-ink-700'
@@ -98,13 +54,165 @@ function ChoiceCard({
   )
 }
 
+function SurveyQuestionBlock({
+  q,
+  answers,
+  setSingle,
+  toggleSkill,
+}: {
+  q: SurveyQuestion
+  answers: GtaSmbSurveyAnswers
+  setSingle: (field: keyof GtaSmbSurveyAnswers, value: string) => void
+  toggleSkill: (value: string) => void
+}) {
+  if (q.kind === 'contact-preference' || q.kind === 'phone' || q.kind === 'email') {
+    if (!needsContactFields(answers)) return null
+  }
+
+  if (q.kind === 'phone') {
+    const pref = answers.preferredContact
+    if (pref !== 'Phone' && pref !== 'Both Phone & Email') return null
+  }
+  if (q.kind === 'email') {
+    const pref = answers.preferredContact
+    if (pref !== 'Email' && pref !== 'Both Phone & Email') return null
+  }
+
+  return (
+    <fieldset className="border-t border-ink/10 pt-8 first:border-t-0 first:pt-0">
+      <legend className="font-display text-xl md:text-2xl tracking-tight text-ink leading-snug mb-4">
+        {q.question}
+        {q.kind !== 'contact-preference' && q.kind !== 'phone' && q.kind !== 'email' && (
+          <span className="text-oxblood ml-1" aria-hidden>
+            *
+          </span>
+        )}
+      </legend>
+
+      {q.kind === 'single' ? (
+        <>
+          <div className="space-y-2">
+            {q.choices.map((choice) => (
+              <ChoiceCard
+                key={choice.value}
+                label={choice.label}
+                compact
+                selected={answers[q.field] === choice.value}
+                onSelect={() => setSingle(q.field, choice.value)}
+              />
+            ))}
+          </div>
+          {q.allowOther && answers[q.field] === 'Other' && q.otherField ? (
+            <input
+              type="text"
+              value={String(answers[q.otherField] ?? '')}
+              onChange={(e) => setSingle(q.otherField!, e.target.value)}
+              placeholder="Other"
+              className="mt-3 w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
+            />
+          ) : null}
+        </>
+      ) : null}
+
+      {q.kind === 'multi' ? (
+        <>
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-400">
+            {answers.skills.length}/3 selected
+          </p>
+          <div className="space-y-2">
+            {q.choices.map((choice) => {
+              const selected = answers.skills.includes(choice.value)
+              const disabled = !selected && answers.skills.length >= q.max
+              return (
+                <button
+                  key={choice.value}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => toggleSkill(choice.value)}
+                  className={`w-full text-left rounded-sm border px-3 py-2.5 text-sm transition-colors ${
+                    selected
+                      ? 'border-oxblood bg-oxblood/5 text-ink'
+                      : disabled
+                        ? 'border-ink/10 bg-cream-50 text-ink-300 cursor-not-allowed'
+                        : 'border-ink/15 bg-cream hover:border-ink/30 text-ink-700'
+                  }`}
+                >
+                  <span className="flex items-start gap-3">
+                    <span
+                      className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${
+                        selected ? 'border-oxblood bg-oxblood' : 'border-ink/25'
+                      }`}
+                      aria-hidden
+                    >
+                      {selected ? <span className="text-[10px] text-cream font-bold">✓</span> : null}
+                    </span>
+                    <span className="leading-snug">{choice.label}</span>
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </>
+      ) : null}
+
+      {q.kind === 'text' ? (
+        <textarea
+          value={String(answers[q.field] ?? '')}
+          onChange={(e) => setSingle(q.field, e.target.value)}
+          maxLength={q.maxLength ?? 500}
+          rows={3}
+          className="w-full border border-ink/20 bg-cream px-4 py-3 text-ink leading-relaxed focus:border-oxblood focus:outline-none resize-y min-h-[96px]"
+        />
+      ) : null}
+
+      {q.kind === 'contact-preference' ? (
+        <div className="space-y-2">
+          {[
+            { value: 'Phone', label: 'Phone' },
+            { value: 'Email', label: 'Email' },
+            { value: 'Both Phone & Email', label: 'Both Phone & Email' },
+          ].map((choice) => (
+            <ChoiceCard
+              key={choice.value}
+              label={choice.label}
+              compact
+              selected={answers.preferredContact === choice.value}
+              onSelect={() => setSingle('preferredContact', choice.value)}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {q.kind === 'phone' ? (
+        <input
+          type="tel"
+          value={answers.phone}
+          onChange={(e) => setSingle('phone', e.target.value)}
+          className="w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
+          autoComplete="tel"
+        />
+      ) : null}
+
+      {q.kind === 'email' ? (
+        <input
+          type="email"
+          value={answers.email}
+          onChange={(e) => setSingle('email', e.target.value)}
+          className="w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
+          autoComplete="email"
+        />
+      ) : null}
+    </fieldset>
+  )
+}
+
 export default function GtaSmbSurveyPage() {
   const [params] = useSearchParams()
   const ref = params.get('ref')?.trim().slice(0, 80) ?? ''
 
-  const [stepIndex, setStepIndex] = useState(0)
+  const [pageIndex, setPageIndex] = useState(-1)
   const [answers, setAnswers] = useState<GtaSmbSurveyAnswers>({ ...EMPTY_SURVEY_ANSWERS })
-  const [stepError, setStepError] = useState('')
+  const [pageError, setPageError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
@@ -121,14 +229,15 @@ export default function GtaSmbSurveyPage() {
     refreshFormToken,
   } = useFormProtection()
 
-  const step = GTA_SMB_SURVEY_STEPS[stepIndex]
-  const progressPct = Math.round(((stepIndex + 1) / SURVEY_STEP_COUNT) * 100)
-
-  const showContactFields = useMemo(() => needsContactFields(answers), [answers])
+  const progress = useMemo(() => surveyProgress(answers), [answers])
+  const showContact = useMemo(() => needsContactFields(answers), [answers])
+  const isIntro = pageIndex < 0
+  const isLastPage = pageIndex === PAGE_COUNT - 1
+  const pageQuestionIds = pageIndex >= 0 ? SURVEY_PAGE_QUESTION_IDS[pageIndex] : []
 
   const setSingle = (field: keyof GtaSmbSurveyAnswers, value: string) => {
     setAnswers((prev) => ({ ...prev, [field]: value }))
-    setStepError('')
+    setPageError('')
   }
 
   const toggleSkill = (value: string) => {
@@ -140,34 +249,42 @@ export default function GtaSmbSurveyPage() {
       if (current.length >= 3) return prev
       return { ...prev, skills: [...current, value] }
     })
-    setStepError('')
+    setPageError('')
   }
 
   const goNext = () => {
-    const err = validateStep(step, answers)
-    if (err) {
-      setStepError(err)
+    if (isIntro) {
+      setPageIndex(0)
+      setPageError('')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (stepIndex < SURVEY_STEP_COUNT - 1) {
-      setStepIndex((i) => i + 1)
-      setStepError('')
+    const err = validatePage(pageIndex, answers)
+    if (err) {
+      setPageError(err)
+      return
+    }
+    if (pageIndex < PAGE_COUNT - 1) {
+      setPageIndex((i) => i + 1)
+      setPageError('')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
   const goBack = () => {
-    if (stepIndex > 0) {
-      setStepIndex((i) => i - 1)
-      setStepError('')
+    if (pageIndex === 0) {
+      setPageIndex(-1)
+    } else if (pageIndex > 0) {
+      setPageIndex((i) => i - 1)
     }
+    setPageError('')
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    const err = validateStep(step, answers)
+    const err = validatePage(pageIndex, answers)
     if (err) {
-      setStepError(err)
+      setPageError(err)
       return
     }
     if (!turnstileSiteKey) {
@@ -214,28 +331,23 @@ export default function GtaSmbSurveyPage() {
   if (submitted) {
     return (
       <main className="min-h-screen bg-cream">
-        <div className="container-custom mx-auto max-w-xl px-6 py-16 md:px-12 md:py-24">
+        <div className="container-custom mx-auto max-w-2xl px-6 py-16 md:px-12 md:py-24">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">Thank you</p>
           <h1 className="mt-3 font-display text-4xl tracking-tight text-ink">Response recorded.</h1>
           <p className="mt-6 lead text-ink-600">
-            Your answers help us map digital marketing and AI readiness across Scarborough and the Toronto GTA.
             {answers.findingsSummary.startsWith('Yes')
-              ? ' We will email the aggregated research summary when it is ready — no promotional messages.'
-              : ' We appreciate your time.'}
+              ? 'We will send the aggregated research summary when it is ready — no commercial messages.'
+              : 'Thank you for contributing to this research.'}
           </p>
           <p className="mt-4 text-sm text-ink-500">
-            Questions about privacy? See our{' '}
             <Link to="/privacy" className="text-oxblood underline underline-offset-2">
               Privacy Notice
             </Link>
-            .
           </p>
         </div>
       </main>
     )
   }
-
-  const isLastStep = stepIndex === SURVEY_STEP_COUNT - 1
 
   return (
     <main className="min-h-screen bg-cream">
@@ -244,188 +356,66 @@ export default function GtaSmbSurveyPage() {
           <Link to="/" className="font-display text-lg tracking-tight text-ink">
             Stratezik
           </Link>
-          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-400">
-            Step {stepIndex + 1} of {SURVEY_STEP_COUNT}
+          {!isIntro ? (
+            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-400">
+              {progress.answered} of {progress.total} answered
+            </div>
+          ) : null}
+        </div>
+        {!isIntro ? (
+          <div className="h-1 bg-ink/5" aria-hidden>
+            <div
+              className="h-full bg-oxblood transition-all duration-300"
+              style={{ width: `${progress.pct}%` }}
+            />
           </div>
-        </div>
-        <div className="h-1 bg-ink/5" aria-hidden>
-          <div className="h-full bg-oxblood transition-all duration-300" style={{ width: `${progressPct}%` }} />
-        </div>
+        ) : null}
       </header>
 
-      <div className="container-custom mx-auto max-w-xl px-6 py-10 md:px-12 md:py-14">
-        <form onSubmit={isLastStep ? handleSubmit : (e) => e.preventDefault()} className="space-y-8">
-          {step.kind === 'intro' ? (
+      <div className="container-custom mx-auto max-w-2xl px-6 py-10 md:px-12 md:py-14">
+        <form onSubmit={isLastPage ? handleSubmit : (e) => e.preventDefault()} className="space-y-8">
+          {isIntro ? (
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">Independent research</p>
-              <h1 className="mt-3 font-display text-3xl md:text-4xl tracking-tight text-ink leading-[1.1]">
-                {step.title}
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-oxblood">Research survey</p>
+              <h1 className="mt-3 font-display text-2xl md:text-3xl tracking-tight text-ink leading-[1.15]">
+                {SURVEY_INTRO.title}
               </h1>
-              <p className="mt-6 lead text-ink-600">{step.body}</p>
-              <ul className="mt-8 space-y-3 text-sm text-ink-600 border-t border-ink/10 pt-8">
-                <li className="flex gap-3">
-                  <span className="font-mono text-oxblood">~3 min</span>
-                  <span>Short, one-question screens</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-mono text-oxblood">Private</span>
-                  <span>Anonymous unless you share contact details</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-mono text-oxblood">Summary</span>
-                  <span>Optional copy of aggregate GTA findings</span>
-                </li>
-              </ul>
-            </div>
-          ) : null}
-
-          {step.kind === 'single' ? (
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl tracking-tight text-ink leading-snug">
-                {step.question}
-              </h2>
-              <div className="mt-6 space-y-2.5">
-                {step.choices.map((choice) => (
-                  <ChoiceCard
-                    key={choice.value}
-                    label={choice.label}
-                    selected={answers[step.field] === choice.value}
-                    onSelect={() => setSingle(step.field, choice.value)}
-                  />
-                ))}
-              </div>
-              {step.allowOther && answers[step.field] === 'Other' && step.otherField ? (
-                <input
-                  type="text"
-                  value={String(answers[step.otherField] ?? '')}
-                  onChange={(e) => setSingle(step.otherField!, e.target.value)}
-                  placeholder="Please specify"
-                  className="mt-4 w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
-                />
-              ) : null}
-            </div>
-          ) : null}
-
-          {step.kind === 'multi' ? (
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl tracking-tight text-ink leading-snug">
-                {step.question}
-              </h2>
-              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-400">
-                Select up to {step.max} · {answers.skills.length}/{step.max} chosen
-              </p>
-              <div className="mt-6 space-y-2.5">
-                {step.choices.map((choice) => {
-                  const selected = answers.skills.includes(choice.value)
-                  const disabled = !selected && answers.skills.length >= step.max
-                  return (
-                    <button
-                      key={choice.value}
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => toggleSkill(choice.value)}
-                      className={`w-full text-left rounded-sm border px-4 py-3.5 transition-colors ${
-                        selected
-                          ? 'border-oxblood bg-oxblood/5 text-ink'
-                          : disabled
-                            ? 'border-ink/10 bg-cream-50 text-ink-300 cursor-not-allowed'
-                            : 'border-ink/15 bg-cream hover:border-ink/30 text-ink-700'
-                      }`}
-                    >
-                      <span className="flex items-start gap-3">
-                        <span
-                          className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${
-                            selected ? 'border-oxblood bg-oxblood' : 'border-ink/25'
-                          }`}
-                          aria-hidden
-                        >
-                          {selected ? <span className="text-[10px] text-cream font-bold">✓</span> : null}
-                        </span>
-                        <span className="leading-snug">{choice.label}</span>
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ) : null}
-
-          {step.kind === 'text' ? (
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl tracking-tight text-ink leading-snug">
-                {step.question}
-              </h2>
-              <textarea
-                value={String(answers[step.field] ?? '')}
-                onChange={(e) => setSingle(step.field, e.target.value)}
-                placeholder={step.placeholder}
-                maxLength={step.maxLength ?? 500}
-                rows={4}
-                className="mt-6 w-full border border-ink/20 bg-cream px-4 py-3 text-ink leading-relaxed focus:border-oxblood focus:outline-none resize-y min-h-[120px]"
-              />
-            </div>
-          ) : null}
-
-          {step.kind === 'contact' ? (
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl tracking-tight text-ink leading-snug">
-                {step.question}
-              </h2>
-              {!showContactFields ? (
-                <p className="mt-4 text-ink-600 leading-relaxed">
-                  You opted out of the findings summary and follow-up — no contact details needed. Tap submit to
-                  finish.
+              <div className="mt-6 space-y-4 text-ink-600 leading-relaxed">
+                <p>
+                  <span className="font-medium text-ink">Purpose:</span> {SURVEY_INTRO.purpose}
                 </p>
-              ) : (
-                <>
-                  <p className="mt-4 text-ink-600 leading-relaxed">
-                    Only if you asked for the research summary or agreed to follow-up. We will not add you to
-                    marketing lists without separate consent.
-                  </p>
-                  <div className="mt-6 space-y-2.5">
-                    {[
-                      { value: 'Email', label: 'Email' },
-                      { value: 'Phone', label: 'Phone' },
-                      { value: 'Both Phone & Email', label: 'Both phone & email' },
-                    ].map((choice) => (
-                      <ChoiceCard
-                        key={choice.value}
-                        label={choice.label}
-                        selected={answers.preferredContact === choice.value}
-                        onSelect={() => setSingle('preferredContact', choice.value)}
-                      />
-                    ))}
-                  </div>
-                  {(answers.preferredContact === 'Phone' ||
-                    answers.preferredContact === 'Both Phone & Email') && (
-                    <label className="mt-6 block">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">Phone</span>
-                      <input
-                        type="tel"
-                        value={answers.phone}
-                        onChange={(e) => setSingle('phone', e.target.value)}
-                        className="mt-2 w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
-                        autoComplete="tel"
-                      />
-                    </label>
-                  )}
-                  {(answers.preferredContact === 'Email' ||
-                    answers.preferredContact === 'Both Phone & Email') && (
-                    <label className="mt-6 block">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500">Email</span>
-                      <input
-                        type="email"
-                        value={answers.email}
-                        onChange={(e) => setSingle('email', e.target.value)}
-                        className="mt-2 w-full border border-ink/20 bg-cream px-4 py-3 text-ink focus:border-oxblood focus:outline-none"
-                        autoComplete="email"
-                      />
-                    </label>
-                  )}
-                </>
-              )}
-              {isLastStep ? (
-                <div className="mt-8">
+                <p>
+                  <span className="font-medium text-ink">Time:</span> {SURVEY_INTRO.time}
+                </p>
+                <p>
+                  <span className="font-medium text-ink">Privacy:</span> {SURVEY_INTRO.privacy}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {pageQuestionIds.map((id) => {
+                const q = questionById(id)
+                if (!q) return null
+                return (
+                  <SurveyQuestionBlock
+                    key={id}
+                    q={q}
+                    answers={answers}
+                    setSingle={setSingle}
+                    toggleSkill={toggleSkill}
+                  />
+                )
+              })}
+
+              {isLastPage && !showContact ? (
+                <p className="text-sm text-ink-500 border-t border-ink/10 pt-6">
+                  No contact details required based on your answers above.
+                </p>
+              ) : null}
+
+              {isLastPage ? (
+                <div className="border-t border-ink/10 pt-8">
                   <FormProtectionFields
                     turnstileSiteKey={turnstileSiteKey}
                     onTurnstileSuccess={setTurnstileToken}
@@ -440,37 +430,30 @@ export default function GtaSmbSurveyPage() {
                 </div>
               ) : null}
             </div>
-          ) : null}
+          )}
 
-          {stepError ? <p className="text-sm text-oxblood">{stepError}</p> : null}
+          {pageError ? <p className="text-sm text-oxblood">{pageError}</p> : null}
           {submitError ? <p className="text-sm text-oxblood">{submitError}</p> : null}
 
           <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-ink/10">
             <button
               type="button"
               onClick={goBack}
-              disabled={stepIndex === 0 || submitting}
+              disabled={isIntro || submitting}
               className="text-sm text-ink-500 hover:text-ink disabled:opacity-40"
             >
               Back
             </button>
-            {isLastStep ? (
+            {isLastPage ? (
               <button type="submit" disabled={submitting} className="btn-primary w-full sm:w-auto">
-                {submitting ? 'Submitting…' : 'Submit survey'}
+                {submitting ? 'Submitting…' : 'Submit'}
               </button>
             ) : (
               <button type="button" onClick={goNext} className="btn-primary w-full sm:w-auto">
-                Continue
+                {isIntro ? 'Start survey' : 'Continue'}
               </button>
             )}
           </div>
-
-          <p className="text-xs text-ink-400 leading-relaxed">
-            Stratezik Digital Inc. · Research only ·{' '}
-            <Link to="/privacy" className="underline underline-offset-2 hover:text-ink-600">
-              Privacy Notice
-            </Link>
-          </p>
         </form>
       </div>
     </main>
