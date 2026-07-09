@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { CLUTCH_PROFILE_URL, CRUNCHBASE_ORG_URL } from '../constants/externalLinks'
 import { SocialProfileLinks } from './SocialProfileLinks'
 
 /**
@@ -38,6 +39,8 @@ const Footer = () => {
         { name: 'dave@stratezik.com', href: 'mailto:dave@stratezik.com' },
         { name: '437.525.4772', href: 'tel:+14375254772' },
         { name: 'Toronto, Canada', href: 'https://maps.google.com/?q=2466+Eglinton+Ave+E,+Toronto' },
+        { name: 'Clutch', href: CLUTCH_PROFILE_URL },
+        { name: 'Crunchbase', href: CRUNCHBASE_ORG_URL },
       ],
     },
   ]
