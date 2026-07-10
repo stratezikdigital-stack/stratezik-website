@@ -8,6 +8,8 @@ export const GOOGLE_BUSINESS_PROFILE_URL = 'https://share.google/VEBDLnS7ZRK7cxR
 
 export const LINKEDIN_COMPANY_URL = 'https://www.linkedin.com/company/stratezik/'
 
+export const X_PROFILE_URL = 'https://x.com/stratezik'
+
 export const CLUTCH_PROFILE_URL = 'https://clutch.co/profile/stratezik-digital'
 
 export const CRUNCHBASE_ORG_URL =
@@ -30,6 +32,7 @@ export type SocialProfile = {
 /** Owned social profiles — order matches footer icon row. */
 export const SOCIAL_PROFILES: SocialProfile[] = [
   { id: 'linkedin', label: 'Stratezik on LinkedIn', href: LINKEDIN_COMPANY_URL },
+  { id: 'x', label: 'Stratezik on X', href: X_PROFILE_URL },
   { id: 'clutch', label: 'Stratezik on Clutch', href: CLUTCH_PROFILE_URL },
   { id: 'crunchbase', label: 'Stratezik on Crunchbase', href: CRUNCHBASE_ORG_URL },
   { id: 'youtube', label: 'Stratezik on YouTube', href: YOUTUBE_CHANNEL_URL },
