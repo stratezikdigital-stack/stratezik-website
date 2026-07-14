@@ -356,15 +356,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/direct-booking-pitch",
-      "destination": "/direct-booking-pitch/index.html"
-    },
-    {
-      "source": "/direct-booking-pitch/",
-      "destination": "/direct-booking-pitch/index.html"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/((?!direct-booking-pitch).*)",
       "destination": "/index.html"
     }
   ],

@@ -70,7 +70,12 @@ export async function optimizeCriticalCss(distDir: string): Promise<void> {
     logLevel: 'warn',
   })
 
-  const htmlFiles = listHtmlFiles(distDir)
+  const htmlFiles = listHtmlFiles(distDir).filter((file) => {
+    // Standalone sales sheets / AI Studio bundles are not SPA prerenders.
+    const rel = path.relative(distDir, file).replaceAll('\\', '/')
+    if (rel.startsWith('direct-booking-pitch/')) return false
+    return true
+  })
   for (const file of htmlFiles) {
     const html = fs.readFileSync(file, 'utf8')
     const optimized = trimMobileModulePreloads(
