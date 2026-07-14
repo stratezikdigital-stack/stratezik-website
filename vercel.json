@@ -356,6 +356,14 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/direct-booking-pitch",
+      "destination": "/direct-booking-pitch/index.html"
+    },
+    {
+      "source": "/direct-booking-pitch/",
+      "destination": "/direct-booking-pitch/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -533,6 +541,32 @@
     },
     {
       "source": "/research/gta-smb-readiness",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/direct-booking-pitch",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/direct-booking-pitch/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
