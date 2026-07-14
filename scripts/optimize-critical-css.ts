@@ -73,7 +73,7 @@ export async function optimizeCriticalCss(distDir: string): Promise<void> {
   const htmlFiles = listHtmlFiles(distDir).filter((file) => {
     // Standalone sales sheets / AI Studio bundles are not SPA prerenders.
     const rel = path.relative(distDir, file).replaceAll('\\', '/')
-    if (rel.startsWith('direct-booking-pitch/')) return false
+    if (rel.startsWith('build-profitable-website/')) return false
     return true
   })
   for (const file of htmlFiles) {

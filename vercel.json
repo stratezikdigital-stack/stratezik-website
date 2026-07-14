@@ -21,6 +21,16 @@
   ],
   "redirects": [
     {
+      "source": "/direct-booking-pitch",
+      "destination": "/build-profitable-website",
+      "permanent": true
+    },
+    {
+      "source": "/direct-booking-pitch/",
+      "destination": "/build-profitable-website",
+      "permanent": true
+    },
+    {
       "source": "/scan",
       "destination": "https://www.stratezik.com/gbp-audit",
       "permanent": true
@@ -356,7 +366,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/((?!direct-booking-pitch).*)",
+      "source": "/((?!build-profitable-website).*)",
       "destination": "/index.html"
     }
   ],
@@ -580,7 +590,7 @@
       ]
     },
     {
-      "source": "/direct-booking-pitch",
+      "source": "/build-profitable-website",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -593,7 +603,7 @@
       ]
     },
     {
-      "source": "/direct-booking-pitch/",
+      "source": "/build-profitable-website/",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -606,7 +616,7 @@
       ]
     },
     {
-      "source": "/direct-booking-pitch/(.*)",
+      "source": "/build-profitable-website/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
