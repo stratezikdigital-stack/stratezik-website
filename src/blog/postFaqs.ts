@@ -548,6 +548,49 @@ export const torontoStartupWebsiteAudit2026Faq = [
   },
 ]
 
+export const howToAppearInChatgptAnswersFaq = [
+  {
+    question: "How do I appear in ChatGPT's answers?",
+    answer:
+      'Make your site reachable to AI crawlers, make its core content readable without JavaScript, and structure a direct answer to the question a customer would ask. ChatGPT pulls from pages it can fetch and parse, then names the businesses those pages describe clearly. Do those three things and you become eligible to be named. Skip them and you are invisible no matter how good you are.',
+  },
+  {
+    question: 'Does ChatGPT recommend specific businesses?',
+    answer:
+      'Yes. For local and commercial queries it routinely names real companies, not just generic advice. When we ran 50 Toronto buying questions through the major assistants, one named a specific local business 89% of the time, and ChatGPT specifically did so on 90% of its answers.',
+  },
+  {
+    question: 'How does ChatGPT choose which businesses to name?',
+    answer:
+      'It retrieves pages it can fetch and read, favours content that answers the question directly and carries clear structure (headings, schema, an obvious "who we serve"), and cross-references your identity across the web. Clarity and consistency win far more than keyword density. It is choosing the easiest source to quote, not the loudest one.',
+  },
+  {
+    question: "Why isn't my business appearing in ChatGPT?",
+    answer:
+      'Almost always one of three failures: the assistant cannot fetch your site (a CDN or bot rule blocks it), your homepage is blank without JavaScript (so a crawler that does not run JavaScript sees nothing), or your content has no structured, answer-first passage for the AI to lift. Each one makes you invisible on its own.',
+  },
+  {
+    question: 'How do I check if ChatGPT mentions my business?',
+    answer:
+      'Run your site and your key buying questions through a purpose-built checker rather than guessing. Our free AEO checker fetches your page the way an AI crawler does, tests whether it renders without JavaScript, looks for the schema and answer-first structure AI engines reward, and flags exactly what is missing.',
+  },
+  {
+    question: 'Do I need ChatGPT ads to show up?',
+    answer:
+      'No. The organic recommendation and the ad are two different things. Ads sit in a separate labelled card, usually below the answer, and appear mostly on commercial queries. The businesses ChatGPT names inside its actual answer earned that spot through structure and clarity, not spend.',
+  },
+  {
+    question: 'Is appearing in ChatGPT the same as ranking on Google?',
+    answer:
+      'Related, but not the same. Classic SEO optimises for a page of blue links a human scans. Appearing in AI answers optimises for a machine that fetches, parses, and quotes one passage. The overlap is real (both reward good content and a healthy site), but AI adds requirements SEO never cared about, like rendering without JavaScript and carrying machine-readable structure.',
+  },
+  {
+    question: 'What is the fastest way to start appearing in ChatGPT?',
+    answer:
+      'Fix the three eligibility failures in order: confirm your site loads without JavaScript, allow the AI crawlers in robots.txt and at your CDN, and add one answer-first paragraph plus basic Organization and FAQ schema to your top pages. None of it takes more than an afternoon, and it is the same checklist the AI engines actually reward.',
+  },
+]
+
 export const torontoAiCitationTrackerJulyFaq = [
   {
     question: 'What is the Toronto AI Citation Tracker?',

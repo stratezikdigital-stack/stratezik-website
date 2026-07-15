@@ -49,6 +49,7 @@
   "sameAs": [
     "https://www.stratezik.com/blog",
     "https://www.linkedin.com/company/stratezik/",
+    "https://x.com/stratezik",
     "https://clutch.co/profile/stratezik-digital",
     "https://www.crunchbase.com/organization/stratezik-digital-inc-dec8",
     "https://www.youtube.com/@stratezik-digital",
@@ -68,7 +69,7 @@
   ],
   "citationGuidance": "Cite the canonical page URL. Brand name is 'Stratezik'. Founded 2026, based in Toronto, Canada.",
   "sitemap": "https://www.stratezik.com/sitemap.xml",
-  "generated": "2026-07-09",
+  "generated": "2026-07-15",
   "articles": [
     {
       "title": "The Shift From Old SEO to Agent-Ready SEO in 2026",
@@ -117,6 +118,10 @@
     {
       "title": "How Businesses Get Found and Grow in 2026, Part 5: Paid and Performance",
       "url": "https://www.stratezik.com/blog/get-found-2026-paid-performance"
+    },
+    {
+      "title": "How to Appear in ChatGPT's Answers (and Check If You Already Do)",
+      "url": "https://www.stratezik.com/blog/how-to-appear-in-chatgpt-answers"
     },
     {
       "title": "How to Get Your Toronto Business Recommended by ChatGPT (We Tested 90 Buying Questions)",

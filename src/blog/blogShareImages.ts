@@ -13,6 +13,7 @@ const BLOG_HERO_IMAGE_BY_SLUG: Record<string, string> = {
   'get-found-2026-ai-search-visibility': '/branding/blog-heroes/get-found-2026-ai-search-visibility.jpg',
   'get-found-2026-content-strategy': '/branding/blog-heroes/get-found-2026-content-strategy.jpg',
   'get-found-2026-paid-performance': '/branding/blog-heroes/get-found-2026-paid-performance.jpg',
+  'how-to-appear-in-chatgpt-answers': '/branding/blog-heroes/how-to-appear-in-chatgpt-answers.jpg',
   'get-recommended-by-chatgpt-toronto': '/branding/blog-heroes/get-recommended-by-chatgpt-toronto.jpg',
   'toronto-ai-citation-tracker': '/branding/blog-heroes/toronto-ai-citation-tracker.jpg',
   'toronto-ai-citation-tracker-july-2026': '/branding/blog-heroes/toronto-ai-citation-tracker-july-2026.jpg',

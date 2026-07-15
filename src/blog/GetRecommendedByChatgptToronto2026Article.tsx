@@ -168,6 +168,13 @@ export default function GetRecommendedByChatgptToronto2026Article() {
         >
           Toronto AI Citation Tracker
         </Link>
+        . For the practical checklist on showing up at all, read{' '}
+        <Link
+          to="/blog/how-to-appear-in-chatgpt-answers?utm_source=chatgpt-guide&utm_medium=inline"
+          className="text-oxblood underline underline-offset-2 hover:text-ink transition-colors"
+        >
+          how to appear in ChatGPT&apos;s answers
+        </Link>
         .
       </p>
     </div>

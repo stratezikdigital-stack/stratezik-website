@@ -10,6 +10,7 @@ import {
   chatgptAdsGuideFaq,
   chatgptAdsTorontoIndustriesFaq,
   getRecommendedByChatgptTorontoFaq,
+  howToAppearInChatgptAnswersFaq,
   chatgptRecommendationPlaybookFaq,
   scarboroughAgencyTriggersFaq,
   gtaAgencyTriggersScenariosFaq,
@@ -244,6 +245,25 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
       'Toronto performance marketing',
     ],
     faqEntities: getFound2026Part5PaidFaq,
+  },
+  {
+    slug: 'how-to-appear-in-chatgpt-answers',
+    title: "How to Appear in ChatGPT's Answers (and Check If You Already Do)",
+    description:
+      'ChatGPT names real businesses in its answers. Here is how it decides who, why yours may be missing, and a free way to check whether it mentions you.',
+    datePublished: '2026-07-14',
+    dateModified: '2026-07-14',
+    authorSlug: 'shah-md-rifat',
+    keywords: [
+      'how to appear in ChatGPT',
+      'does ChatGPT recommend businesses',
+      "why isn't my business in ChatGPT",
+      'how does ChatGPT choose sources',
+      'check if ChatGPT mentions my business',
+      'answer engine optimization Toronto',
+      'AEO checker',
+    ],
+    faqEntities: howToAppearInChatgptAnswersFaq,
   },
   {
     slug: 'get-recommended-by-chatgpt-toronto',
