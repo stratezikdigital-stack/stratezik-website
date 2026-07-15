@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Stratezik Blog — research &amp; AEO</title>
+    <link>https://www.stratezik.com/blog</link>
+    <description>Original Toronto / GTA research and practical guides on ChatGPT visibility, answer engine optimisation, and local growth from Stratezik.</description>
+    <language>en-ca</language>
+    <lastBuildDate>Wed, 15 Jul 2026 12:00:00 GMT</lastBuildDate>
+    <atom:link href="https://www.stratezik.com/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://www.stratezik.com/branding/og-share.png</url>
+      <title>Stratezik Blog</title>
+      <link>https://www.stratezik.com/blog</link>
+    </image>
+    <item>
+      <title>How to Appear in ChatGPT&apos;s Answers (and Check If You Already Do)</title>
+      <link>https://www.stratezik.com/blog/how-to-appear-in-chatgpt-answers</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/how-to-appear-in-chatgpt-answers</guid>
+      <pubDate>Tue, 14 Jul 2026 12:00:00 GMT</pubDate>
+      <description>ChatGPT names real businesses in its answers. Here is how it decides who, why yours may be missing, and a free way to check whether it mentions you.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>how to appear in ChatGPT</category>
+      <category>does ChatGPT recommend businesses</category>
+      <category>why isn&apos;t my business in ChatGPT</category>
+      <category>how does ChatGPT choose sources</category>
+      <category>check if ChatGPT mentions my business</category>
+    </item>
+    <item>
+      <title>Toronto AI Citation &amp; ChatGPT Ads Tracker</title>
+      <link>https://www.stratezik.com/blog/toronto-ai-citation-tracker</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/toronto-ai-citation-tracker</guid>
+      <pubDate>Wed, 08 Jul 2026 12:00:00 GMT</pubDate>
+      <description>Monthly Toronto research on AI citations and ChatGPT ads: which assistants recommend local businesses, plus a competitiveness map across 18 industries. Latest edition and archive.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Toronto AI citation tracker</category>
+      <category>AI search visibility Toronto</category>
+      <category>ChatGPT local business Toronto</category>
+      <category>Perplexity vs Google AI Mode</category>
+      <category>does AI recommend my business</category>
+    </item>
+    <item>
+      <title>Toronto AI Citation Tracker: July 2026</title>
+      <link>https://www.stratezik.com/blog/toronto-ai-citation-tracker-july-2026</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/toronto-ai-citation-tracker-july-2026</guid>
+      <pubDate>Wed, 08 Jul 2026 12:00:00 GMT</pubDate>
+      <description>We asked ChatGPT, Perplexity, Google AI Mode, and Claude 50 Toronto buying questions. 89% named a local business; Perplexity trailed at 74% and sent Scarborough to the UK.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Toronto AI search visibility</category>
+      <category>AI citation tracker Toronto</category>
+      <category>ChatGPT local business Toronto</category>
+      <category>Perplexity vs Google AI Mode</category>
+      <category>does AI recommend my business</category>
+    </item>
+    <item>
+      <title>The Toronto Startup Website Audit 2026</title>
+      <link>https://www.stratezik.com/blog/toronto-startup-website-audit-2026</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/toronto-startup-website-audit-2026</guid>
+      <pubDate>Tue, 07 Jul 2026 12:00:00 GMT</pubDate>
+      <description>We audited 50 funded Toronto startups on a 20-point AI-search test. 95% of their AEO points come from defaults; 5% deploy FAQ schema. Median: 59/100.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Toronto startup marketing audit</category>
+      <category>Toronto startup website audit</category>
+      <category>AEO readiness Toronto startups</category>
+      <category>Toronto startup AEO score</category>
+      <category>20-point AEO test</category>
+    </item>
+    <item>
+      <title>The Toronto ChatGPT Ads Index</title>
+      <link>https://www.stratezik.com/blog/toronto-chatgpt-ads-index</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/toronto-chatgpt-ads-index</guid>
+      <pubDate>Mon, 06 Jul 2026 12:00:00 GMT</pubDate>
+      <description>Which Toronto industries show ChatGPT ads, how competitive they are, and where the open lanes sit. 18 industries mapped, with real CPC and CPM. Updated monthly.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Toronto ChatGPT ads</category>
+      <category>ChatGPT ads cost 2026</category>
+      <category>ChatGPT ads by industry</category>
+      <category>ChatGPT advertising Toronto</category>
+      <category>do I need ChatGPT ads</category>
+    </item>
+    <item>
+      <title>How to Get Your Toronto Business Recommended by ChatGPT (We Tested 90 Buying Questions)</title>
+      <link>https://www.stratezik.com/blog/get-recommended-by-chatgpt-toronto</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-recommended-by-chatgpt-toronto</guid>
+      <pubDate>Fri, 03 Jul 2026 12:00:00 GMT</pubDate>
+      <description>Two AI assistants, 90 Toronto buying questions. They named a local business 89% of the time but agreed only half the time. How to be the one they pick.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>get recommended by ChatGPT</category>
+      <category>how to show up in ChatGPT</category>
+      <category>AI search for local business Toronto</category>
+      <category>answer engine optimization Toronto</category>
+      <category>get my business recommended by AI</category>
+    </item>
+    <item>
+      <title>ChatGPT Is Already Running Ads in Toronto. We Checked 90 Local Buying Questions to See Who&apos;s Buying Them.</title>
+      <link>https://www.stratezik.com/blog/chatgpt-ads-toronto-industries</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/chatgpt-ads-toronto-industries</guid>
+      <pubDate>Fri, 19 Jun 2026 12:00:00 GMT</pubDate>
+      <description>We ran 90 Toronto buying questions through ChatGPT. Ads already show on 48%, from 33 advertisers, but only one was a local business. Industry map, opportunity tiers, and what to do first.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>ChatGPT ads Toronto</category>
+      <category>ChatGPT advertising Canada</category>
+      <category>ChatGPT ads for small business</category>
+      <category>AI search advertising Toronto</category>
+      <category>should my business advertise on ChatGPT</category>
+    </item>
+    <item>
+      <title>The Shift From Old SEO to Agent-Ready SEO in 2026</title>
+      <link>https://www.stratezik.com/blog/old-seo-to-agent-ready-seo-2026</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/old-seo-to-agent-ready-seo-2026</guid>
+      <pubDate>Mon, 08 Jun 2026 12:00:00 GMT</pubDate>
+      <description>How Toronto teams move from keyword-era SEO to agent-ready content: answer-first pages, provenance, structured data, and citations that survive AI summaries.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>agent-ready SEO</category>
+      <category>old SEO vs new SEO 2026</category>
+      <category>answer engine optimisation</category>
+      <category>AI citations SEO</category>
+      <category>Toronto SEO AEO</category>
+    </item>
+    <item>
+      <title>AI-Native GTM Part 4: The 2026 Marketing Hire</title>
+      <link>https://www.stratezik.com/blog/ai-native-gtm-marketing-hire-2026</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/ai-native-gtm-marketing-hire-2026</guid>
+      <pubDate>Mon, 08 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Part 4 of the AI-native GTM series: what your 2026 marketing hire should look like, how to test AI fluency, and the three hires to avoid.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>startup marketing hire 2026</category>
+      <category>fractional CMO Toronto</category>
+      <category>AI marketing hire</category>
+      <category>first marketing hire startup</category>
+      <category>head of growth hire</category>
+    </item>
+    <item>
+      <title>AI-Native GTM Part 1: Build the Function From Day 1</title>
+      <link>https://www.stratezik.com/blog/ai-native-gtm-build-from-day-1</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/ai-native-gtm-build-from-day-1</guid>
+      <pubDate>Wed, 03 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Part 1 of our AI-native GTM series for Toronto founders: design a marketing function around agents from day one and out-run US-funded rivals.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>AI-native GTM startup</category>
+      <category>Toronto startup marketing</category>
+      <category>startup GTM 2026</category>
+      <category>marketing function design</category>
+      <category>AI agents marketing</category>
+    </item>
+    <item>
+      <title>AI-Native GTM Part 2: Be Cited by ChatGPT First</title>
+      <link>https://www.stratezik.com/blog/ai-native-gtm-cited-by-chatgpt</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/ai-native-gtm-cited-by-chatgpt</guid>
+      <pubDate>Mon, 01 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Part 2 of the AI-native GTM series: why Toronto startups should claim AI search visibility now, before US-funded competitors do. Five practical moves.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>AEO for startups</category>
+      <category>ChatGPT visibility startup</category>
+      <category>AI search startup</category>
+      <category>Toronto startup AEO</category>
+      <category>answer engine optimisation startup</category>
+    </item>
+    <item>
+      <title>AI-Native GTM Part 3: The Agent Stack by Funding Stage</title>
+      <link>https://www.stratezik.com/blog/ai-native-gtm-agent-stack-by-stage</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/ai-native-gtm-agent-stack-by-stage</guid>
+      <pubDate>Mon, 01 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Part 3 of the AI-native GTM series: which AI tools and agents to build or buy at each funding stage, pre-seed through Series A. No vendor pitch.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>AI marketing stack startup</category>
+      <category>startup AI tools</category>
+      <category>agent stack</category>
+      <category>Toronto startup tooling</category>
+      <category>AI tools by funding stage</category>
+    </item>
+    <item>
+      <title>10 Signs It Is Time to Partner With a Digital Marketing Agency (GTA SMB Scenarios)</title>
+      <link>https://www.stratezik.com/blog/signs-time-digital-marketing-agency-gta</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/signs-time-digital-marketing-agency-gta</guid>
+      <pubDate>Sat, 30 May 2026 12:00:00 GMT</pubDate>
+      <description>Part 2 of our GTA agency guide: ten triggers shown as real Scarborough, Toronto, and Ontario neighbourhood scenarios, from no-time owners and leaking ad spend to weak local search, stalled growth, and post-pivot resets, with the first moves Stratezik makes.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>signs to hire digital marketing agency</category>
+      <category>Scarborough small business marketing</category>
+      <category>Toronto GTA SMB digital marketing</category>
+      <category>when to outsource marketing Ontario</category>
+      <category>local SEO Scarborough</category>
+    </item>
+    <item>
+      <title>When GTA SMBs Decide It Is Time for a Digital Marketing Agency</title>
+      <link>https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/when-hire-digital-marketing-agency-scarborough-gta</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>Ten real triggers Scarborough and Toronto SMBs hit before hiring an agency: flat conversions, rising ad waste, Maps gaps, launches, expansion, reviews, bandwidth limits, and seasonal urgency, plus Stratezik audit steps and an RFP checklist.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>digital marketing agency Scarborough</category>
+      <category>Toronto GTA SMB marketing</category>
+      <category>when to hire marketing agency</category>
+      <category>Google Ads agency Toronto</category>
+      <category>local SEO Scarborough</category>
+    </item>
+    <item>
+      <title>How Businesses Get Found and Grow in 2026, Part 1: Brand and Positioning</title>
+      <link>https://www.stratezik.com/blog/get-found-2026-brand-positioning</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-found-2026-brand-positioning</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>Positioning before tactics: differentiation that survives the competitor test, voice and visual identity, reputation systems, and trust signals that make SEO, AI, content, and paid work harder together.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>brand positioning small business 2026</category>
+      <category>differentiation local business</category>
+      <category>reputation management SEO AI</category>
+      <category>founder brand voice</category>
+      <category>Stratezik Get Found 2026</category>
+    </item>
+    <item>
+      <title>How Businesses Get Found and Grow in 2026, Part 2: SEO and Organic Search</title>
+      <link>https://www.stratezik.com/blog/get-found-2026-seo-organic-search</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-found-2026-seo-organic-search</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>Keyword fanout, answer-first on-page work, technical plumbing, backlink authority, and indexing gates. Why organic search remains the bedrock AI visibility builds on, not a rival to it.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>SEO organic search 2026</category>
+      <category>keyword fanout local business</category>
+      <category>technical SEO AI crawlers</category>
+      <category>local backlink authority</category>
+      <category>indexing audit</category>
+    </item>
+    <item>
+      <title>How Businesses Get Found and Grow in 2026, Part 3: AI Search Visibility</title>
+      <link>https://www.stratezik.com/blog/get-found-2026-ai-search-visibility</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-found-2026-ai-search-visibility</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>AEO and GEO citations, conversational fanout, schema and crawler access, share-of-voice audits, and how ChatGPT, Perplexity, and Gemini differ. Built on Part 2 SEO authority.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>answer engine optimisation 2026</category>
+      <category>AI search visibility local business</category>
+      <category>ChatGPT Perplexity Gemini citations</category>
+      <category>SOCi AI local visibility</category>
+      <category>OppAlerts LLM factors</category>
+    </item>
+    <item>
+      <title>How Businesses Get Found and Grow in 2026, Part 4: Content Strategy</title>
+      <link>https://www.stratezik.com/blog/get-found-2026-content-strategy</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-found-2026-content-strategy</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>Founder-led storytelling, educational guides, ethical lead magnets, short-form video transcripts, repurposing ladders, plus how Part 4 locks to brand, SEO, and AI layers before paid acceleration.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>founder-led content strategy</category>
+      <category>local business repurposing playbook</category>
+      <category>AI-friendly educational guides</category>
+      <category>lead magnets service business</category>
+      <category>video transcripts SEO AI</category>
+    </item>
+    <item>
+      <title>How Businesses Get Found and Grow in 2026, Part 5: Paid and Performance</title>
+      <link>https://www.stratezik.com/blog/get-found-2026-paid-performance</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-found-2026-paid-performance</guid>
+      <pubDate>Mon, 25 May 2026 12:00:00 GMT</pubDate>
+      <description>Why order matters inside the pillar, paid versus organic interplay, disciplined Google Ads, retargeting with Part 4 assets, CAC and ROAS guardrails, funnel honesty, plus Insectica proof and services alignment.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>paid social local business 2026</category>
+      <category>Google Ads retargeting strategy</category>
+      <category>CAC ROAS LTV playbook</category>
+      <category>marketing attribution pragmatic</category>
+      <category>Stratezik Get Found 2026</category>
+    </item>
+    <item>
+      <title>How to Get Your Business Recommended by ChatGPT (2026 Playbook)</title>
+      <link>https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/get-recommended-by-chatgpt-playbook</guid>
+      <pubDate>Mon, 11 May 2026 12:00:00 GMT</pubDate>
+      <description>SOCi visibility stats, citation research, OppAlerts correlations, schema + answer-first tactics, crawler checks, GTA measurement habits, plus honest limits on controlling generative mentions.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>ChatGPT recommend business</category>
+      <category>answer engine optimisation playbook</category>
+      <category>LocalBusiness schema ChatGPT</category>
+      <category>SOCi AI local visibility 2026</category>
+      <category>Perplexity ChatGPT citations</category>
+    </item>
+    <item>
+      <title>ChatGPT Ads in 2026: Setup, Costs, and When to Skip It</title>
+      <link>https://www.stratezik.com/blog/chatgpt-ads-2026-guide</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/chatgpt-ads-2026-guide</guid>
+      <pubDate>Mon, 11 May 2026 12:00:00 GMT</pubDate>
+      <description>How OpenAI Ads Manager Beta places sponsored recommendations in ChatGPT, what context hints replace keywords, reported pricing bands, geography, category gates, and honest fit notes for Toronto operators.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>ChatGPT Ads</category>
+      <category>Ads Manager Beta OpenAI</category>
+      <category>context hints advertising</category>
+      <category>ChatGPT CPC ads</category>
+      <category>Canada ChatGPT advertising</category>
+    </item>
+    <item>
+      <title>Why Service Businesses Lose on Google Maps</title>
+      <link>https://www.stratezik.com/blog/google-maps-ranking-service-business</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/google-maps-ranking-service-business</guid>
+      <pubDate>Thu, 07 May 2026 12:00:00 GMT</pubDate>
+      <description>Whitespark 2026 local ranking factors put GBP primary category ahead of reviews for Maps pack influence. What Ontario service operators should fix first: categories, hours, and per-service site depth.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Google Maps ranking service business</category>
+      <category>Google Business Profile primary category</category>
+      <category>Ontario local SEO</category>
+      <category>local pack ranking factors 2026</category>
+      <category>GBP audit Ontario</category>
+    </item>
+    <item>
+      <title>How We Scaled a Toronto Pest Control Company: The Insectica Story (700+ Leads, Full Breakdown)</title>
+      <link>https://www.stratezik.com/blog/insectica-gta-pest-control-scaling-case-study</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/insectica-gta-pest-control-scaling-case-study</guid>
+      <pubDate>Sat, 02 May 2026 12:00:00 GMT</pubDate>
+      <description>Month-by-month narrative of Insectica Pest Control’s GTA growth: ten ad groups, CPA-first bidding, 700+ paid conversions at ~$43 CPL, organic impressions up 168x, plus charts and infographic.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>Insectica Pest Control case study</category>
+      <category>Toronto pest control marketing</category>
+      <category>Google Ads pest control CPL</category>
+      <category>GTA local lead generation</category>
+      <category>organic growth Search Console</category>
+    </item>
+    <item>
+      <title>Answer Engine Optimisation for Toronto Businesses</title>
+      <link>https://www.stratezik.com/blog/answer-engine-optimisation-toronto</link>
+      <guid isPermaLink="true">https://www.stratezik.com/blog/answer-engine-optimisation-toronto</guid>
+      <pubDate>Fri, 01 May 2026 12:00:00 GMT</pubDate>
+      <description>Most websites cited in Google&apos;s AI-generated answers don&apos;t rank in the organic top 10 for that query. What answer engine optimisation means for Toronto businesses.</description>
+      <dc:creator>Shah Md. Rifat</dc:creator>
+      <category>answer engine optimisation Toronto</category>
+      <category>AI search Toronto</category>
+      <category>Google AI Overviews local business</category>
+      <category>AEO vs SEO Toronto</category>
+      <category>ChatGPT local recommendations</category>
+    </item>
+  </channel>
+</rss>

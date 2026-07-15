@@ -1,5 +1,5 @@
 import type { RouteSeoConfig } from './pageSeoRegistry'
-import { canonicalUrl } from './siteConfig'
+import { SITE_ORIGIN, canonicalUrl } from './siteConfig'
 import { TWITTER_SITE } from './siteConfig'
 
 const ROUTE_JSON_LD_ID = 'stratezik-jsonld'
@@ -67,6 +67,12 @@ export function buildRouteHeadHtml(config: RouteSeoConfig): string {
   lines.push(metaLine('meta', { name: 'twitter:image:alt', content: config.ogImageAlt }))
 
   lines.push(`    <link rel="canonical" href="${escapeHtml(url)}" />`)
+
+  if (config.path === '/blog' || config.path.startsWith('/blog/')) {
+    lines.push(
+      `    <link rel="alternate" type="application/rss+xml" title="Stratezik Blog RSS" href="${SITE_ORIGIN}/blog/rss.xml" />`,
+    )
+  }
 
   lines.push(
     metaLine('meta', {

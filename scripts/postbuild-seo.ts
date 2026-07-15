@@ -17,6 +17,7 @@ import {
 import { pingSearchEngines } from './pingSearchEngines'
 import { indexNowPathsFromConfigs, submitIndexNow } from './submitIndexNow'
 import { optimizeCriticalCss } from './optimize-critical-css'
+import { generateBlogRssXml } from './generate-blog-rss'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -137,6 +138,15 @@ async function main(): Promise<void> {
   fs.writeFileSync(path.join(rootDir, 'public', 'sitemap.xml'), sitemap, 'utf8')
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap, 'utf8')
   console.log(`[seo] sitemap.xml (${configs.length} URLs)`)
+
+  const blogRss = generateBlogRssXml()
+  const blogRssPublicDir = path.join(rootDir, 'public', 'blog')
+  fs.mkdirSync(blogRssPublicDir, { recursive: true })
+  fs.writeFileSync(path.join(blogRssPublicDir, 'rss.xml'), blogRss, 'utf8')
+  const blogRssDistDir = path.join(distDir, 'blog')
+  fs.mkdirSync(blogRssDistDir, { recursive: true })
+  fs.writeFileSync(path.join(blogRssDistDir, 'rss.xml'), blogRss, 'utf8')
+  console.log('[seo] blog/rss.xml')
 
   const blogPosts = configs.filter(
     (c) => c.path.startsWith('/blog/') && c.path !== '/blog' && c.includeInSitemap !== false,

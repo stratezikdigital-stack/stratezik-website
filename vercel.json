@@ -366,7 +366,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/((?!build-profitable-website).*)",
+      "source": "/((?!build-profitable-website|blog/rss\\.xml).*)",
       "destination": "/index.html"
     }
   ],
@@ -414,6 +414,23 @@
     {
       "source": "/",
       "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/blog/rss.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
