@@ -567,7 +567,7 @@ export const howToAppearInChatgptAnswersFaq = [
   {
     question: "Why isn't my business appearing in ChatGPT?",
     answer:
-      'Almost always one of three failures: the assistant cannot fetch your site (a CDN or bot rule blocks it), your homepage is blank without JavaScript (so a crawler that does not run JavaScript sees nothing), or your content has no structured, answer-first passage for the AI to lift. Each one makes you invisible on its own.',
+      'Almost always one of three failures: the assistant cannot find or fetch your site (a CDN or bot rule blocks its crawler, or you are not in the index it searches, which still leans partly on Bing), your homepage is blank without JavaScript (so a crawler that does not run JavaScript sees nothing), or your content has no structured, answer-first passage for the AI to lift. Each one makes you invisible on its own.',
   },
   {
     question: 'How do I check if ChatGPT mentions my business?',

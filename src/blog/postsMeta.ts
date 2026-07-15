@@ -252,7 +252,7 @@ export const blogPostsMeta: BlogPostMetaEntry[] = [
     description:
       'ChatGPT names real businesses in its answers. Here is how it decides who, why yours may be missing, and a free way to check whether it mentions you.',
     datePublished: '2026-07-14',
-    dateModified: '2026-07-14',
+    dateModified: '2026-07-15',
     authorSlug: 'shah-md-rifat',
     keywords: [
       'how to appear in ChatGPT',

@@ -29,7 +29,7 @@ Think of it less like a ranking contest and more like a busy assistant grabbing 
 
 ## Why isn't my business showing up in ChatGPT?
 
-**Why isn't my business appearing in ChatGPT?** Almost always one of three failures: the assistant cannot fetch your site (a CDN or bot rule blocks it), your homepage is blank without JavaScript (so a crawler that does not run JavaScript sees nothing), or your content has no structured, answer-first passage for the AI to lift. Each one makes you invisible on its own.
+**Why isn't my business appearing in ChatGPT?** Almost always one of three failures: the assistant cannot find or fetch your site (a CDN or bot rule blocks its crawler, or you are not in the index it searches, which still leans partly on Bing), your homepage is blank without JavaScript (so a crawler that does not run JavaScript sees nothing), or your content has no structured, answer-first passage for the AI to lift. Each one makes you invisible on its own.
 
 We audited 50 funded Toronto companies and watched this play out. The doors were open on the easy stuff, roughly 90% allowed AI crawlers, but the deliberate work was missing: only 5% had FAQ schema, and only a third passed a plain "what do you do" test in their first line. And here is the one that quietly wrecks the most sites: if your homepage renders blank with JavaScript turned off, most AI crawlers see a blank page too, because they do not execute JavaScript. You can be a great business and still be a white screen to the machine.
 
@@ -59,10 +59,11 @@ Here is the order we would work in for a Toronto business starting from zero:
 
 1. **Run the [AEO checker](/aeo-checker)** so you are fixing real gaps, not guessing.
 2. **Load your homepage with JavaScript disabled.** If it is blank, that is your first and biggest job. Get your core content into the raw HTML.
-3. **Open the doors.** Allow GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and CCBot in robots.txt, then check your CDN, because Cloudflare can block AI bots even when robots.txt says yes.
-4. **Write one answer-first paragraph** on each key page that states plainly who you serve, where, and what you do.
-5. **Add Organization and FAQPage schema** with the real questions your customers ask.
-6. **Make your identity consistent** across your site, Google Business Profile, and any directories, so the assistant cross-references you cleanly.
+3. **Open the doors to the right bots.** In robots.txt allow OAI-SearchBot, the crawler behind ChatGPT's live search, which is not the same as GPTBot (OpenAI's training crawler). Allow both, plus ClaudeBot, PerplexityBot, Google-Extended, and CCBot. Then check your CDN, because Cloudflare can block AI bots even when robots.txt says yes.
+4. **Get into Bing's index.** ChatGPT's search is a hybrid: it draws on OpenAI's own OAI-SearchBot index, Bing's crawling infrastructure, and undisclosed partners. Bing's measured share has fallen over the past year, but registering in Bing Webmaster Tools and submitting your URLs through IndexNow is cheap, fast, and still helps ChatGPT find and remember your latest pages.
+5. **Write one answer-first paragraph** on each key page that states plainly who you serve, where, and what you do.
+6. **Add Organization and FAQPage schema** with the real questions your customers ask.
+7. **Make your identity consistent** across your site, Google Business Profile, and any directories, so the assistant cross-references you cleanly.
 
 Do those six and you move from invisible to eligible, which is most of the battle. We watched companies in our audit skip every one of them while doing sophisticated marketing everywhere else, which is the frustrating part: the fix is cheap, and the businesses that do it first are quietly taking the answers while everyone else argues about keywords.
 
@@ -77,6 +78,7 @@ We would rather you check your own site and fix it yourself than take our word f
 1. Stratezik Toronto AI Citation Tracker, July 2026: 50 frozen buying questions across four AI engines, scored for whether each answer names a local business. Available at [stratezik.com/blog/toronto-ai-citation-tracker-july-2026](/blog/toronto-ai-citation-tracker-july-2026).
 2. Stratezik Toronto Startup Website Audit 2026: 50 funded Toronto startups scored on a machine-verified 20-point AEO test. Dataset available on request.
 3. Stratezik Toronto ChatGPT Ads Index: monthly reading of where ChatGPT shows ads to Toronto buyers. Available at [stratezik.com/blog/toronto-chatgpt-ads-index](/blog/toronto-chatgpt-ads-index).
+4. ChatGPT Search sourcing (a re-ranked hybrid of OpenAI's own OAI-SearchBot index, Bing's crawling infrastructure, and undisclosed partners; OAI-SearchBot powers live search while GPTBot is training-only): Yoast, ["What is ChatGPT Search"](https://yoast.com/chatgpt-search/); AI+Automation, ["Does ChatGPT Use Bing or Google"](https://aiplusautomation.com/blog/chatgpt-bing-or-google).
 
 ---
 
