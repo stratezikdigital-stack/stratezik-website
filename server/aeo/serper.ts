@@ -1,6 +1,5 @@
-// Serper.dev — real Google SERP results. Used for PAID features only, where its
-// ground-truth ranking is the best-fit signal (competitor discovery, real-world
-// search presence). The free readiness scan stays on Tavily.
+// Serper.dev — Google SERP results. Used for ChatGPT Search readiness (free scan
+// site: indexation gate) and paid features (competitor discovery / ranking).
 
 export interface SerperOrganic {
   title: string

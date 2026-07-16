@@ -28,6 +28,11 @@ export const AEO_CHECKER_FAQS: CheckerFaq[] = [
       'Eight criteria, each worth 2.5 points: AI crawler access (robots.txt), JavaScript-free rendering, off-page entity alignment (LinkedIn/Crunchbase), Organization schema, FAQPage schema, answer-first formatting, llms.txt, and pricing transparency. Group A covers what your stack gives you by default; Group B is what you must build deliberately.',
   },
   {
+    question: 'What is ChatGPT Search readiness?',
+    answer:
+      'A separate gate on every free scan. ChatGPT Search and Copilot need OAI-SearchBot to reach your homepage and your site to be indexed for search. The checker probes OAI-SearchBot access and runs a site: indexation check, then points you to Bing Webmaster Tools for the Bing-specific confirmation ChatGPT Search still depends on.',
+  },
+  {
     question: 'Who built this AEO checker?',
     answer:
       'Stratezik Digital, a Toronto digital marketing agency specializing in SEO, AEO, paid media, and growth strategy for startups and SMBs across Canada. The test is the same machine-verified framework published in the Toronto Startup Website Audit 2026 research report.',

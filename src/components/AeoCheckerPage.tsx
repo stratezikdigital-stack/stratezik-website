@@ -50,6 +50,7 @@ const SCANNER_PLAIN: Record<string, string> = {
 
 const CHECK_STEPS = [
   'Checking AI crawler access (robots.txt)…',
+  'Probing OAI-SearchBot for ChatGPT Search…',
   'Reading your homepage without JavaScript…',
   'Looking for Organization schema…',
   'Looking for FAQPage schema…',
@@ -85,6 +86,16 @@ interface CrawlerProbe {
   entries: CrawlerProbeEntry[]
 }
 
+interface ChatGptSearchReadiness {
+  botAllowed: boolean | null
+  botStatus: number
+  indexed: boolean | null
+  indexSource: 'google' | 'bing' | null
+  indexPagesSeen: number
+  ready: boolean
+  summary: string
+}
+
 interface Topline {
   scanId: string
   domain: string
@@ -101,6 +112,7 @@ interface Topline {
     n: number
   }
   crawlerProbe?: CrawlerProbe
+  chatgptSearch?: ChatGptSearchReadiness
 }
 
 interface Criterion {
@@ -712,6 +724,8 @@ export default function AeoCheckerPage() {
               )}
             </>
           )}
+
+          {topline.chatgptSearch && <ChatGptSearchCard data={topline.chatgptSearch} />}
 
           {phase === 'breakdown' && criteria && (
             <div className="mt-6">
@@ -1379,6 +1393,79 @@ function PrintButton() {
     >
       ↓ Download PDF
     </button>
+  )
+}
+
+function ChatGptSearchCard({ data }: { data: ChatGptSearchReadiness }) {
+  const Row = ({
+    label,
+    ok,
+    detail,
+  }: {
+    label: string
+    ok: boolean | null
+    detail: string
+  }) => (
+    <li className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border border-ink/10 bg-cream-50 px-4 py-2.5 text-sm">
+      <span className="text-ink-700">{label}</span>
+      <span
+        className={`font-semibold ${
+          ok === true ? 'text-green-700' : ok === false ? 'text-oxblood' : 'text-ink-400'
+        }`}
+      >
+        {ok === true ? '✓ ' : ok === false ? '✗ ' : '– '}
+        {detail}
+      </span>
+    </li>
+  )
+
+  return (
+    <div
+      className={`mt-6 border p-6 md:p-8 ${
+        data.ready ? 'border-green-700/35 bg-cream-50' : 'border-oxblood/30 bg-cream-50'
+      }`}
+    >
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-oxblood">
+          ChatGPT Search readiness
+        </p>
+        <span
+          className={`rounded-full px-3 py-0.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] ${
+            data.ready ? 'bg-green-700/15 text-green-700' : 'bg-oxblood/15 text-oxblood'
+          }`}
+        >
+          {data.ready ? 'Ready' : 'Not ready'}
+        </span>
+      </div>
+      <p className="mt-3 max-w-2xl text-sm text-ink-600 leading-relaxed">
+        ChatGPT Search &amp; Copilot pull from <strong className="text-ink">Bing&apos;s index</strong> via{' '}
+        <strong className="text-ink">OAI-SearchBot</strong>. Both gates must pass or you can&apos;t appear
+        there — the biggest AI-search surface.
+      </p>
+      <ul className="mt-4 space-y-2">
+        <Row
+          label="OAI-SearchBot can reach your site"
+          ok={data.botAllowed}
+          detail={
+            data.botAllowed
+              ? 'allowed'
+              : `blocked${data.botStatus ? ` (${data.botStatus})` : ''}`
+          }
+        />
+        <Row
+          label={`You’re indexed for search${data.indexSource === 'google' ? ' (Google)' : ''}`}
+          ok={data.indexed}
+          detail={
+            data.indexed === true
+              ? `indexed${data.indexPagesSeen ? ` (${data.indexPagesSeen}+ pages)` : ''}`
+              : data.indexed === false
+                ? 'not found'
+                : 'unconfirmed'
+          }
+        />
+      </ul>
+      <p className="mt-3 text-sm text-ink-500 leading-relaxed">→ {data.summary}</p>
+    </div>
   )
 }
 

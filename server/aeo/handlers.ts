@@ -54,6 +54,7 @@ function topline(scan: AeoScanResult, scanId: string) {
     benchmark: BENCHMARK,
     checkedAt: scan.checkedAt,
     crawlerProbe: scan.crawlerProbe,
+    chatgptSearch: scan.chatgptSearch,
   }
 }
 

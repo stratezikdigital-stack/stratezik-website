@@ -2,6 +2,8 @@
 // Ported from stratezik-conductor/src/aeo20.ts so tool scores stay consistent
 // with the published Toronto Startup Website Audit 2026 research.
 
+import { serperConfigured, serperSearch } from './serper.js'
+
 const UA = 'Mozilla/5.0 (compatible; StratezikAudit/1.0; +https://stratezik.com/aeo-checker)'
 const AI_BOTS = ['GPTBot', 'CCBot', 'Google-Extended', 'PerplexityBot', 'ClaudeBot']
 
@@ -36,6 +38,17 @@ export interface CrawlerProbe {
   entries: CrawlerProbeEntry[]
 }
 
+/** ChatGPT Search / Copilot: OAI-SearchBot access + web indexation gates. */
+export interface ChatGptSearchReadiness {
+  botAllowed: boolean | null
+  botStatus: number
+  indexed: boolean | null
+  indexSource: 'google' | 'bing' | null
+  indexPagesSeen: number
+  ready: boolean
+  summary: string
+}
+
 export interface AeoScanResult {
   domain: string
   url: string
@@ -49,6 +62,8 @@ export interface AeoScanResult {
   /** First ~500 chars of stripped homepage copy (for deep-scan buyer queries). */
   snippet: string
   crawlerProbe?: CrawlerProbe
+  /** Runs on every real scan (skipped for lightweight competitor scans). */
+  chatgptSearch?: ChatGptSearchReadiness
 }
 
 export const BENCHMARK = {
@@ -279,6 +294,76 @@ export async function probeAiCrawlers(domain: string): Promise<CrawlerProbe> {
   }
 }
 
+const OAI_SEARCHBOT_UA =
+  'Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)'
+
+/**
+ * Web indexation via Serper (Google site:). Server-side Bing scraping is unreliable
+ * and Bing's API is retiring — Google hits are a strong prerequisite; copy points
+ * users to Bing Webmaster Tools for the Bing-specific confirmation ChatGPT Search uses.
+ */
+async function webIndexCheck(
+  domain: string,
+): Promise<{ indexed: boolean | null; pages: number; source: 'google' | null }> {
+  const bare = domain.replace(/^www\./, '')
+  if (!serperConfigured()) return { indexed: null, pages: 0, source: null }
+  try {
+    const results = await serperSearch(`site:${bare}`, 10)
+    const hits = results.filter((r) => {
+      try {
+        const h = new URL(r.link).hostname.replace(/^www\./, '').toLowerCase()
+        return h === bare || h.endsWith('.' + bare)
+      } catch {
+        return false
+      }
+    })
+    return { indexed: hits.length > 0, pages: hits.length, source: 'google' }
+  } catch {
+    return { indexed: null, pages: 0, source: null }
+  }
+}
+
+/** Two gates for ChatGPT Search / Copilot: OAI-SearchBot reach + indexed presence. */
+export async function checkChatGptSearchReadiness(domain: string): Promise<ChatGptSearchReadiness> {
+  const base = `https://${domain}`
+  const [botRes, idx] = await Promise.all([
+    fetch(base, {
+      headers: { 'User-Agent': OAI_SEARCHBOT_UA, Accept: 'text/html,*/*' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(12000),
+    })
+      .then((r) => ({ allowed: r.ok, status: r.status }))
+      .catch(() => ({ allowed: false, status: 0 })),
+    webIndexCheck(domain),
+  ])
+
+  const ready = botRes.allowed === true && idx.indexed === true
+  const bingNote =
+    ' ChatGPT Search retrieves from Bing — confirm/submit your site free at Bing Webmaster Tools.'
+  let summary: string
+  if (botRes.allowed && idx.indexed) {
+    summary = `OAI-SearchBot can read your site and you're indexed on the web — the two prerequisites for ChatGPT Search.${bingNote}`
+  } else if (!botRes.allowed && idx.indexed === false) {
+    summary = `You block OAI-SearchBot AND aren't showing up indexed — you effectively cannot appear in ChatGPT Search today.${bingNote}`
+  } else if (!botRes.allowed) {
+    summary = `OAI-SearchBot (ChatGPT's crawler) can't reach your site${botRes.status ? ` (HTTP ${botRes.status})` : ''} — unblock it in your firewall/CDN so ChatGPT Search can read you.`
+  } else if (idx.indexed === false) {
+    summary = `OAI-SearchBot can reach you, but we found no indexed pages for your domain — get indexed first.${bingNote}`
+  } else {
+    summary = `OAI-SearchBot can reach you. We couldn't confirm indexation automatically — verify at Bing Webmaster Tools, which is what ChatGPT Search uses.`
+  }
+
+  return {
+    botAllowed: botRes.status === 0 ? false : botRes.allowed,
+    botStatus: botRes.status,
+    indexed: idx.indexed,
+    indexSource: idx.source,
+    indexPagesSeen: idx.pages,
+    ready,
+    summary,
+  }
+}
+
 export async function runAeoScan(
   domain: string,
   options: AeoScanOptions = {},
@@ -454,10 +539,12 @@ export async function runAeoScan(
     }
   }
 
-  const crawlerProbe =
-    total === 'unverifiable' && !options.skipEntityAlignment
-      ? await probeAiCrawlers(domain)
-      : undefined
+  // ChatGPT Search readiness runs on every real scan. AI-crawler probe only when blocked.
+  const isCompetitorScan = Boolean(options.skipEntityAlignment || options.skipAnswerFirst)
+  const [crawlerProbe, chatgptSearch] = await Promise.all([
+    total === 'unverifiable' && !isCompetitorScan ? probeAiCrawlers(domain) : Promise.resolve(undefined),
+    isCompetitorScan ? Promise.resolve(undefined) : checkChatGptSearchReadiness(domain),
+  ])
 
   return {
     domain,
@@ -471,5 +558,6 @@ export async function runAeoScan(
     companyName,
     snippet,
     crawlerProbe,
+    chatgptSearch,
   }
 }
