@@ -1,0 +1,8 @@
+# Keep CLI deploys under Vercel's 100MB file limit
+*.mov
+*.mp4
+*.webm
+node_modules
+dist
+.DS_Store
+Screen Recording*
