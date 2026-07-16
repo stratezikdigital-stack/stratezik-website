@@ -1,5 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { runAeoScan, normaliseDomain, BENCHMARK, type AeoScanResult } from './scan.js'
+import {
+  runAeoScan,
+  normaliseDomain,
+  BENCHMARK,
+  checkChatGptSearchReadiness,
+  type AeoScanResult,
+} from './scan.js'
 import { enforceSpamGuards, EMAIL_RE } from '../spam/validate.js'
 import { peekRateLimit } from '../spam/rate-limit.js'
 import { clientIp } from './rate-limit.js'
@@ -104,7 +110,25 @@ export async function handleCheck(req: VercelRequest, res: VercelResponse) {
     .maybeSingle()
 
   if (cached) {
-    return res.status(200).json({ ...topline(cached.result as AeoScanResult, cached.id), scanQuota })
+    const cachedResult = cached.result as AeoScanResult
+    // Older cache rows predate ChatGPT Search readiness — backfill so the card always shows.
+    if (!cachedResult.chatgptSearch) {
+      try {
+        const chatgptSearch = await checkChatGptSearchReadiness(domain)
+        const patched = { ...cachedResult, chatgptSearch }
+        void supabase
+          .from('aeo_scans')
+          .update({ result: patched })
+          .eq('id', cached.id)
+          .then(({ error }) => {
+            if (error) console.error('[aeo/check] failed to backfill chatgptSearch:', error)
+          })
+        return res.status(200).json({ ...topline(patched, cached.id), scanQuota })
+      } catch (err) {
+        console.error('[aeo/check] chatgptSearch backfill failed:', err)
+      }
+    }
+    return res.status(200).json({ ...topline(cachedResult, cached.id), scanQuota })
   }
 
   const scan = await runAeoScan(domain)
